@@ -1,0 +1,119 @@
+/* 1. 主題色板 */
+:root {
+  /* 基本色 */
+  --color-primary: #252A34;    /* 深灰 */
+  --color-accent1: #E23E57;    /* 派對紅 */
+  --color-accent2: #08D9D6;    /* 青翠藍 */
+  --color-accent3: #FF2E63;    /* 粉紅 */
+
+  /* 中性色 */
+  --color-bg: #FFFFFF;
+  --color-text: #1A1A1A;
+
+  /* 排版 */
+  --font-sans: 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Courier New', monospace;
+
+  /* 間距 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 32px;
+  --space-xl: 64px;
+
+  /* 版面寬度 */
+  --max-width: 1200px;
+}
+
+/* 2. 全局基礎樣式 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+/* 超連結 */
+a {
+  color: var(--color-accent1);
+  text-decoration: none;
+  position: relative;
+}
+a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 100%; height: 2px;
+  background: var(--color-accent1);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s ease;
+}
+a:hover::after {
+  transform: scaleX(1);
+}
+
+/* 圖片 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 3. 容器與網格系統 */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* 4. 常用排版元素 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  color: var(--color-primary);
+}
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+
+p {
+  margin-bottom: var(--space-md);
+}
+
+/* 強調文字 */
+strong {
+  color: var(--color-accent2);
+}
+
+/* 5. 按鈕樣式（Bauhaus 幾何感） */
+.button {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-transform: uppercase;
+  border: 2px solid var(--color-accent3);
+  background: none;
+  color: var(--color-accent3);
+  cursor: pointer;
+  transition: background .3s ease, color .3s ease;
+}
+.button:hover {
+  background: var(--color-accent3);
+  color: var(--color-bg);
+}

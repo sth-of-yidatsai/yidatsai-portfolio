@@ -1,0 +1,133 @@
+.header {
+  position: fixed;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  padding: var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+}
+
+.menu-icon {
+  width: 80px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.line {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--color-text);
+  transform-origin: center;
+}
+
+/* Animations */
+.line1,
+.line2 {
+  animation-duration: 0.8s;
+  animation-fill-mode: forwards;
+}
+
+.line1.open {
+  animation-name: toX1;
+}
+
+.line2.open {
+  animation-name: toX2;
+}
+
+.line1:not(.open) {
+  animation-name: toMenu1;
+}
+
+.line2:not(.open) {
+  animation-name: toMenu2;
+}
+
+@keyframes toX1 {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(10px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(10px) rotate(-45deg);
+  }
+}
+
+@keyframes toX2 {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-10px) rotate(45deg);
+  }
+}
+
+@keyframes toMenu1 {
+  0% {
+    transform: translateY(10px) rotate(-45deg);
+  }
+  50% {
+    transform: translateY(10px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes toMenu2 {
+  0% {
+    transform: translateY(-10px) rotate(45deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: -100vw;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 1s ease;
+  z-index: 999;
+}
+
+.overlay.open {
+  left: 0;
+}
+
+.overlay ul {
+  list-style: none;
+  text-align: center;
+}
+
+.overlay li {
+  margin: var(--space-lg) 0;
+}
+
+.overlay a {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-bg);
+  text-decoration: none;
+}

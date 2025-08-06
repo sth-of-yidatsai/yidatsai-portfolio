@@ -1,0 +1,80 @@
+/* modern-css-reset v1.7.0 | MIT License | https://github.com/hankchizljaw/modern-css-reset */
+
+/* 1. Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+
+/* 3. Allow percentage-based heights in the application */
+html,
+body {
+  height: 100%;
+}
+
+/* 4. Improve text rendering */
+body {
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* 5. Make images, videos, canvases and svg scale nicely */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 6. Inherit fonts for form elements */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 7. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+figure,
+dl,
+dd {
+  overflow-wrap: break-word;
+}
+
+/* 8. Create a root stacking context */
+#root,
+#__next {
+  isolation: isolate;
+}
+
+/* 9. Remove all animations/transitions for people who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

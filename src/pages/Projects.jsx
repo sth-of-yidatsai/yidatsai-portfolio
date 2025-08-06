@@ -1,3 +1,3 @@
 export default function Projects() {
-  return <h1>作品集</h1>;
+  return <h1>WORK</h1>;
 }

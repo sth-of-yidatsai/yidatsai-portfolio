@@ -1,3 +1,3 @@
 export default function About() {
-  return <h1>關於我</h1>;
+  return <h1>ABOUT</h1>;
 }
