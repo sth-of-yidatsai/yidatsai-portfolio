@@ -9,9 +9,9 @@ export default function Header() {
 
   // 圖片輪播數據 - 使用三個project的第一張圖片
   const images = [
-    '/src/assets/images/projects/project-001/project-001-img-01.jpg',
-    '/src/assets/images/projects/project-002/project-002-img-01.jpg',
-    '/src/assets/images/projects/project-003/project-003-img-01.jpg'
+    '/src/assets/images/projects/project-001/project-001-img-01.webp',
+    '/src/assets/images/projects/project-002/project-002-img-01.webp',
+    '/src/assets/images/projects/project-003/project-003-img-01.webp'
   ];
 
   // 自動輪播
