@@ -7,11 +7,11 @@ export default function Header() {
   
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  // 圖片輪播數據 - 使用三個project的第一張圖片
+  // 圖片輪播數據 - 使用public資料夾中的圖片
   const images = [
-    '/src/assets/images/projects/project-001/project-001-img-01.webp',
-    '/src/assets/images/projects/project-002/project-002-img-01.webp',
-    '/src/assets/images/projects/project-003/project-003-img-01.webp'
+    '/images/carousel/carousel-01.webp',
+    '/images/carousel/carousel-02.webp',
+    '/images/carousel/carousel-03.webp'
   ];
 
   // 自動輪播
