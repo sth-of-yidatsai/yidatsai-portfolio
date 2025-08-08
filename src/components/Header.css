@@ -25,6 +25,12 @@
   width: 100%;
   background: var(--color-text);
   transform-origin: center;
+  transition: background-color 0.3s ease;
+}
+
+/* 當overlay打開時，menu按鈕變為白色 */
+.overlay.open + .header .line {
+  background: #fff;
 }
 
 /* Animations */
@@ -98,36 +104,191 @@
   }
 }
 
+/* 全版覆蓋選單 */
 .overlay {
   position: fixed;
   top: 0;
-  left: -100vw;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  background: var(--color-primary);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: left 1s ease;
   z-index: 999;
+  pointer-events: none;
 }
 
 .overlay.open {
-  left: 0;
+  pointer-events: all;
 }
 
-.overlay ul {
+/* 左半邊 - 導航選單 */
+.menu-section {
+  width: 50vw;
+  height: 100vh;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-lg);
+  position: relative;
+  transform: translateX(-100%);
+  z-index: 1001;
+  transition: transform 0.6s ease;
+}
+
+.overlay.open .menu-section {
+  transform: translateX(0);
+}
+
+/* 收闔時左半邊的動畫 */
+.overlay:not(.open) .menu-section {
+  transform: translateX(-100%);
+  transition-delay: 0.3s;
+}
+
+.navigation {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation ul {
   list-style: none;
-  text-align: center;
+  padding: 0;
+  margin: 0;
 }
 
-.overlay li {
-  margin: var(--space-lg) 0;
+.navigation li {
+  margin: var(--space-xl) 0;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
 }
 
-.overlay a {
+.navigation li:nth-child(1) { animation-delay: 0.3s; }
+.navigation li:nth-child(2) { animation-delay: 0.4s; }
+.navigation li:nth-child(3) { animation-delay: 0.5s; }
+.navigation li:nth-child(4) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navigation a {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: color 0.3s ease;
+}
+
+.navigation a:hover {
+  color: var(--color-primary);
+}
+
+.brand-info {
+  position: absolute;
+  bottom: var(--space-lg);
+  left: var(--space-lg);
+  right: var(--space-lg);
+}
+
+.brand-line {
+  width: 100%;
+  height: 1px;
+  background: #fff;
+  margin-bottom: var(--space-md);
+}
+
+.brand-text {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-name {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--color-bg);
-  text-decoration: none;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.brand-year {
+  font-size: 0.9rem;
+  color: #fff;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 1px;
+}
+
+/* 右半邊 - 圖片輪播 */
+.carousel-section {
+  width: 50vw;
+  height: 100vh;
+  background: #1a1a1a;
+  position: relative;
+  overflow: hidden;
+  transform: translateX(-200%);
+  z-index: 1000;
+}
+
+.overlay.open .carousel-section {
+  animation: carouselSlide 1.2s ease forwards;
+}
+
+/* 收闔時右半邊的動畫 */
+.overlay:not(.open) .carousel-section {
+  animation: carouselSlideOut 0.6s ease forwards;
+}
+
+@keyframes carouselSlide {
+  0% {
+    transform: translateX(-200%);
+  }
+  50% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes carouselSlideOut {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(-200%);
+  }
+}
+
+.carousel-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.carousel-slide.active {
+  opacity: 1;
 }
