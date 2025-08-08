@@ -7,12 +7,11 @@ export default function Header() {
   
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  // 圖片輪播數據 - 使用在線示例圖片
+  // 圖片輪播數據 - 使用三個project的第一張圖片
   const images = [
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop'
+    '/src/assets/images/projects/project-001/project-001-img-01.jpg',
+    '/src/assets/images/projects/project-002/project-002-img-01.jpg',
+    '/src/assets/images/projects/project-003/project-003-img-01.jpg'
   ];
 
   // 自動輪播
@@ -20,7 +19,7 @@ export default function Header() {
     if (isOpen) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length);
-      }, 3000);
+      }, 4500);
       return () => clearInterval(interval);
     }
   }, [isOpen, images.length]);

@@ -1,18 +1,29 @@
-/* 1. 主題色板 */
+/* 1. 主題色板 - 灰色調系統 */
 :root {
-  /* 基本色 */
-  --color-primary: #252A34;    /* 深灰 */
-  --color-accent1: #E23E57;    /* 派對紅 */
-  --color-accent2: #08D9D6;    /* 青翠藍 */
-  --color-accent3: #FF2E63;    /* 粉紅 */
+  /* 灰色調色板 */
+  --color-primary: #2d2d2d;    /* 深灰 */
+  --color-secondary: #c6c3be;  /* 淺灰 */
+  --color-accent: #ccc;        /* 中灰 */
+  --color-light: #f5f5f5;      /* 極淺灰 */
+  --color-dark: #1a1a1a;       /* 極深灰 */
 
   /* 中性色 */
-  --color-bg: #FFFFFF;
-  --color-text: #1A1A1A;
+  --color-bg: #ffffff;
+  --color-text: #2d2d2d;
+  --color-text-light: #666;
+  --color-border: #e0e0e0;
 
-  /* 排版 */
-  --font-sans: 'Helvetica Neue', Arial, sans-serif;
+  /* 排版 - Montserrat + Noto Sans TC */
+  --font-sans: 'Montserrat', 'Noto Sans TC', sans-serif;
   --font-mono: 'Courier New', monospace;
+
+  /* 字重 */
+  --font-light: 300;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-black: 900;
 
   /* 間距 */
   --space-xs: 4px;
@@ -20,100 +31,267 @@
   --space-md: 16px;
   --space-lg: 32px;
   --space-xl: 64px;
+  --space-2xl: 128px;
 
   /* 版面寬度 */
   --max-width: 1200px;
+  --max-width-wide: 1400px;
+  --max-width-narrow: 800px;
+
+  /* 圓角 */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  /* 陰影 */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* 2. 全局基礎樣式 */
 body {
-  margin: 0;
-  padding: 0;
   font-family: var(--font-sans);
   background-color: var(--color-bg);
   color: var(--color-text);
   line-height: 1.6;
+  font-weight: var(--font-regular);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* 超連結 */
+/* 3. 超連結 */
 a {
-  color: var(--color-accent1);
+  color: var(--color-primary);
   text-decoration: none;
   position: relative;
+  transition: color 0.3s ease;
 }
+
+a:hover {
+  color: var(--color-accent);
+}
+
 a::after {
   content: '';
   position: absolute;
-  left: 0; bottom: -2px;
-  width: 100%; height: 2px;
-  background: var(--color-accent1);
+  left: 0; 
+  bottom: -2px;
+  width: 100%; 
+  height: 1px;
+  background: var(--color-accent);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform .3s ease;
+  transition: transform 0.3s ease;
 }
+
 a:hover::after {
   transform: scaleX(1);
 }
 
-/* 圖片 */
+/* 4. 圖片 */
 img {
   max-width: 100%;
   height: auto;
   display: block;
+  border-radius: var(--radius-sm);
 }
 
-/* 3. 容器與網格系統 */
+/* 5. 容器與網格系統 */
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 var(--space-md);
 }
 
+.container-wide {
+  max-width: var(--max-width-wide);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.container-narrow {
+  max-width: var(--max-width-narrow);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* 網格系統 */
 .grid {
   display: grid;
   gap: var(--space-lg);
 }
+
 .grid-2 {
   grid-template-columns: repeat(2, 1fr);
 }
+
 .grid-3 {
   grid-template-columns: repeat(3, 1fr);
 }
 
-/* 4. 常用排版元素 */
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* 響應式網格 */
+@media (max-width: 768px) {
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 6. 常用排版元素 */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);
-  font-weight: 700;
+  font-weight: var(--font-bold);
   margin-bottom: var(--space-md);
   color: var(--color-primary);
+  line-height: 1.2;
 }
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.75rem; }
+
+h1 { 
+  font-size: 3rem; 
+  font-weight: var(--font-black);
+  letter-spacing: -0.02em;
+}
+
+h2 { 
+  font-size: 2.5rem; 
+  font-weight: var(--font-bold);
+}
+
+h3 { 
+  font-size: 2rem; 
+  font-weight: var(--font-semibold);
+}
+
+h4 { 
+  font-size: 1.5rem; 
+  font-weight: var(--font-medium);
+}
+
+h5 { 
+  font-size: 1.25rem; 
+  font-weight: var(--font-medium);
+}
+
+h6 { 
+  font-size: 1rem; 
+  font-weight: var(--font-medium);
+}
 
 p {
   margin-bottom: var(--space-md);
+  color: var(--color-text);
+  line-height: 1.7;
 }
 
 /* 強調文字 */
 strong {
-  color: var(--color-accent2);
+  color: var(--color-primary);
+  font-weight: var(--font-semibold);
 }
 
-/* 5. 按鈕樣式（Bauhaus 幾何感） */
+em {
+  font-style: italic;
+  color: var(--color-text-light);
+}
+
+/* 7. 按鈕樣式 */
 .button {
   display: inline-block;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-sm) var(--space-lg);
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: var(--font-medium);
+  font-size: 0.9rem;
   text-transform: uppercase;
-  border: 2px solid var(--color-accent3);
+  letter-spacing: 0.05em;
+  border: 2px solid var(--color-primary);
   background: none;
-  color: var(--color-accent3);
+  color: var(--color-primary);
   cursor: pointer;
-  transition: background .3s ease, color .3s ease;
+  transition: all 0.3s ease;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
 }
+
 .button:hover {
-  background: var(--color-accent3);
+  background: var(--color-primary);
+  color: var(--color-bg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.button-secondary {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.button-secondary:hover {
+  background: var(--color-accent);
   color: var(--color-bg);
 }
+
+/* 8. 卡片樣式 */
+.card {
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* 9. 分隔線 */
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--space-lg) 0;
+}
+
+/* 10. 文字工具類 */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-light { color: var(--color-text-light); }
+.text-primary { color: var(--color-primary); }
+.text-accent { color: var(--color-accent); }
+
+.font-light { font-weight: var(--font-light); }
+.font-regular { font-weight: var(--font-regular); }
+.font-medium { font-weight: var(--font-medium); }
+.font-semibold { font-weight: var(--font-semibold); }
+.font-bold { font-weight: var(--font-bold); }
+.font-black { font-weight: var(--font-black); }
+
+/* 11. 間距工具類 */
+.mt-xs { margin-top: var(--space-xs); }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+
+.mb-xs { margin-bottom: var(--space-xs); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
+.pt-xs { padding-top: var(--space-xs); }
+.pt-sm { padding-top: var(--space-sm); }
+.pt-md { padding-top: var(--space-md); }
+.pt-lg { padding-top: var(--space-lg); }
+.pt-xl { padding-top: var(--space-xl); }
+
+.pb-xs { padding-bottom: var(--space-xs); }
+.pb-sm { padding-bottom: var(--space-sm); }
+.pb-md { padding-bottom: var(--space-md); }
+.pb-lg { padding-bottom: var(--space-lg); }
+.pb-xl { padding-bottom: var(--space-xl); }

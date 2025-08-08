@@ -17,20 +17,25 @@
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.menu-icon:hover {
+  transform: scale(1.05);
 }
 
 .line {
   display: block;
   height: 2px;
   width: 100%;
-  background: var(--color-text);
+  background: var(--color-primary);
   transform-origin: center;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 /* 當overlay打開時，menu按鈕變為白色 */
 .overlay.open + .header .line {
-  background: #fff;
+  background: var(--color-bg);
 }
 
 /* Animations */
@@ -124,7 +129,7 @@
 .menu-section {
   width: 50vw;
   height: 100vh;
-  background: #000;
+  background: var(--color-primary);
   display: flex;
   flex-direction: column;
   padding: var(--space-lg);
@@ -164,10 +169,18 @@
   animation: fadeInUp 0.6s ease forwards;
 }
 
-.navigation li:nth-child(1) { animation-delay: 0.3s; }
-.navigation li:nth-child(2) { animation-delay: 0.4s; }
-.navigation li:nth-child(3) { animation-delay: 0.5s; }
-.navigation li:nth-child(4) { animation-delay: 0.6s; }
+.navigation li:nth-child(1) {
+  animation-delay: 0.3s;
+}
+.navigation li:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.navigation li:nth-child(3) {
+  animation-delay: 0.5s;
+}
+.navigation li:nth-child(4) {
+  animation-delay: 0.6s;
+}
 
 @keyframes fadeInUp {
   to {
@@ -178,16 +191,33 @@
 
 .navigation a {
   font-size: 2.5rem;
-  font-weight: 700;
-  color: #fff;
+  font-weight: var(--font-bold);
+  color: var(--color-bg);
   text-decoration: none;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: color 0.3s ease;
+  letter-spacing: 0.1em;
+  transition: color 0.3s ease, transform 0.3s ease;
+  position: relative;
 }
 
 .navigation a:hover {
-  color: var(--color-primary);
+  color: var(--color-secondary);
+  transform: translateX(10px);
+}
+
+.navigation a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background: var(--color-secondary);
+  transition: width 0.3s ease;
+}
+
+.navigation a:hover::after {
+  width: 100%;
 }
 
 .brand-info {
@@ -200,8 +230,9 @@
 .brand-line {
   width: 100%;
   height: 1px;
-  background: #fff;
+  background: var(--color-bg);
   margin-bottom: var(--space-md);
+  opacity: 0.3;
 }
 
 .brand-text {
@@ -212,25 +243,27 @@
 
 .brand-name {
   font-size: 2rem;
-  font-weight: 700;
-  color: #fff;
+  font-weight: var(--font-black);
+  color: var(--color-bg);
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 0.2em;
 }
 
 .brand-year {
   font-size: 0.9rem;
-  color: #fff;
+  font-weight: var(--font-light);
+  color: var(--color-bg);
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  letter-spacing: 1px;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
 }
 
 /* 右半邊 - 圖片輪播 */
 .carousel-section {
   width: 50vw;
   height: 100vh;
-  background: #1a1a1a;
+  background: var(--color-dark);
   position: relative;
   overflow: hidden;
   transform: translateX(-200%);

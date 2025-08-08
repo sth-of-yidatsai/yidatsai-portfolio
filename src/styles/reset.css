@@ -22,6 +22,7 @@ body {
 body {
   text-rendering: optimizeSpeed;
   line-height: 1.5;
+  /* 移除重複的margin和padding，讓global.css處理 */
 }
 
 /* 5. Make images, videos, canvases and svg scale nicely */
