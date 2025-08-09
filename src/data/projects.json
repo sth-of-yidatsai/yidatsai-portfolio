@@ -1,0 +1,20 @@
+[
+  {
+    "id": "project-001",
+    "title": "The notebook design",
+    "year": "2024",
+    "imageSrc": "/images/carousel/carousel-01.webp"
+  },
+  {
+    "id": "project-002", 
+    "title": "Mobile App Interface",
+    "year": "2023",
+    "imageSrc": "/images/carousel/carousel-02.webp"
+  },
+  {
+    "id": "project-003",
+    "title": "Web Platform Design",
+    "year": "2022", 
+    "imageSrc": "/images/carousel/carousel-03.webp"
+  }
+]

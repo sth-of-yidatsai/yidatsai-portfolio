@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import './Header.css';
+import projectsData from '../data/projects.json';
+import arrowIcon from '../assets/icons/arrow_outward_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,12 +9,22 @@ export default function Header() {
   
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  // 圖片輪播數據 - 使用public資料夾中的圖片
-  const images = [
-    '/images/carousel/carousel-01.webp',
-    '/images/carousel/carousel-02.webp',
-    '/images/carousel/carousel-03.webp'
-  ];
+  // 控制滾動條顯示/隱藏
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('menu-open');
+    } else {
+      document.body.classList.remove('menu-open');
+    }
+
+    // 清理函數：組件卸載時移除 class
+    return () => {
+      document.body.classList.remove('menu-open');
+    };
+  }, [isOpen]);
+
+  // 使用 JSON 資料
+  const images = projectsData.map(project => project.imageSrc);
 
   // 自動輪播
   useEffect(() => {
@@ -23,6 +35,11 @@ export default function Header() {
       return () => clearInterval(interval);
     }
   }, [isOpen, images.length]);
+
+  const handleProjectClick = () => {
+    // 導向專案頁面
+    window.location.href = '/projects';
+  };
 
   return (
     <>
@@ -47,7 +64,7 @@ export default function Header() {
         </div>
         
         {/* 右半邊 - 圖片輪播 */}
-        <div className="carousel-section">
+        <div className="carousel-section">  
           <div className="carousel-container">
             {images.map((image, index) => (
               <div 
@@ -56,6 +73,29 @@ export default function Header() {
                 style={{ backgroundImage: `url(${image})` }}
               />
             ))}
+          </div>
+          
+          {/* 資訊區塊 */}
+          <div className="project-info-panel">
+            <div className="info-content">
+              <div className="info-text-section">
+                <div className="year-section">
+                  <div className="info-item">
+                    <span className="info-label">Year:</span>
+                    <span className="info-value">{projectsData[currentImageIndex]?.year}</span>
+                  </div>
+                </div>
+                <div className="title-section">
+                  <div className="info-item">
+                    <span className="info-label">Title:</span>
+                    <span className="info-value">{projectsData[currentImageIndex]?.title}</span>
+                  </div>
+                </div>
+              </div>
+              <button className="project-button" onClick={handleProjectClick}>
+                <img src={arrowIcon} alt="View Project" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
