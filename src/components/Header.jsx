@@ -23,8 +23,8 @@ export default function Header() {
     };
   }, [isOpen]);
 
-  // 使用 JSON 資料
-  const images = projectsData.map(project => project.imageSrc);
+  // 使用 JSON 資料 - 從 projectImages 的第一張圖片作為輪播圖片
+  const images = projectsData.map(project => project.projectImages[0]);
 
   // 自動輪播
   useEffect(() => {

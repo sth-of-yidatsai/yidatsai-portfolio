@@ -1,13 +1,28 @@
 .header {
   position: fixed;
   width: 100vw;
-  top: 0;
+  top: -30px;
   left: 0;
-  padding: var(--space-md);
+  padding: var(--space-lg) var(--space-md);
   display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 999;
+}
+
+.logo {
+  font-size: 4rem;
+  font-weight: var(--font-medium);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.overlay.open + .header .logo {
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
 }
 
 .menu-icon {
@@ -33,12 +48,11 @@
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* 當overlay打開時，menu按鈕變為白色 */
 .overlay.open + .header .line {
   background: var(--color-bg);
 }
 
-/* Animations */
+/* menu-icon 動畫 */
 .line1,
 .line2 {
   animation-duration: 0.8s;
@@ -134,7 +148,7 @@ body.menu-open {
 .menu-section {
   width: 50vw;
   height: 100vh;
-  background: var(--color-primary);
+  background: var(--color-dark);
   display: flex;
   flex-direction: column;
   padding: var(--space-lg);
@@ -157,8 +171,9 @@ body.menu-open {
 .navigation {
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: start;
+  justify-content: start;
+  padding-top: var(--space-xl);
 }
 
 .navigation ul {
@@ -168,7 +183,7 @@ body.menu-open {
 }
 
 .navigation li {
-  margin: var(--space-xl) 0;
+  margin: var(--space-lg) 0;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.6s ease forwards;
@@ -195,8 +210,8 @@ body.menu-open {
 }
 
 .navigation a {
-  font-size: 2.5rem;
-  font-weight: var(--font-bold);
+  font-size: 2rem;
+  font-weight: var(--font-semibold);
   color: var(--color-bg);
   text-decoration: none;
   text-transform: uppercase;
@@ -227,7 +242,7 @@ body.menu-open {
 
 .brand-info {
   position: absolute;
-  bottom: var(--space-lg);
+  bottom: var(--space-sm);
   left: var(--space-lg);
   right: var(--space-lg);
 }
@@ -236,32 +251,34 @@ body.menu-open {
   width: 100%;
   height: 1px;
   background: var(--color-bg);
-  margin-bottom: var(--space-md);
   opacity: 0.3;
+  margin-bottom: var(--space-sm);
 }
 
 .brand-text {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
+  gap: var(--space-sm);
+  overflow: hidden;
+  max-height: 150px;
 }
 
 .brand-name {
-  font-size: 2rem;
-  font-weight: var(--font-black);
-  color: var(--color-bg);
+  font-size: 10rem;
+  font-weight: var(--font-bold);
+  color: var(--color-accent);
   text-transform: uppercase;
-  letter-spacing: 0.2em;
 }
 
 .brand-year {
-  font-size: 0.9rem;
-  font-weight: var(--font-light);
-  color: var(--color-bg);
+  font-size: 1.2rem;
+  font-weight: var(--font-medium);
+  color: var(--color-accent);
   writing-mode: vertical-rl;
   text-orientation: mixed;
   letter-spacing: 0.1em;
-  opacity: 0.7;
+  margin-top: var(--space-lg);
 }
 
 /* 右半邊 - 圖片輪播 */
@@ -380,7 +397,7 @@ body.menu-open {
   justify-content: center;
   align-items: center;
   gap: var(--space-lg);
-  padding: var(--space-sm);
+  padding: var(--space-md);
 }
 
 .title-section {
@@ -389,8 +406,9 @@ body.menu-open {
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: var(--space-md);
   padding-bottom: var(--space-sm);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .year-section {
@@ -421,9 +439,10 @@ body.menu-open {
 }
 
 .info-value {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: var(--font-medium);
   color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.03rem;
   text-align: center;
   writing-mode: vertical-rl;
   text-orientation: mixed;
@@ -450,14 +469,7 @@ body.menu-open {
   align-self: flex-end;
   flex-shrink: 0;
   box-sizing: border-box;
-}
-
-.project-button:hover {
-  transform: scale(1.1);
-}
-
-.project-button:active {
-  transform: scale(0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .project-button img {
