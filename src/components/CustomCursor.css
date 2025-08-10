@@ -8,12 +8,7 @@
   z-index: 9999;
   transform: translate(-50%, -50%);
   transition: all 0.15s ease-out;
-  background-color: rgba(
-    45,
-    45,
-    45,
-    0.8
-  ); /* 半透明背景讓 mix-blend-mode 有效果 */
+  background-color: rgba(45, 45, 45, 1); /* 完全不透明，較高對比效果 */
   mix-blend-mode: difference;
 }
 
@@ -43,13 +38,18 @@
 /* 懸停狀態 */
 .custom-cursor.hovering {
   transform: translate(-50%, -50%) scale(1.5);
-  background-color: rgba(204, 204, 204, 0.6); /* 懸停時使用不同的半透明顏色 */
+  background-color: rgba(
+    204,
+    204,
+    204,
+    1
+  ); /* 懸停時也使用完全不透明，高對比效果 */
 }
 
 /* 針對不同主題的適配 */
 @media (prefers-color-scheme: dark) {
   .custom-cursor {
-    background-color: rgba(245, 245, 245, 0.8); /* 深色模式下使用淺色半透明 */
+    background-color: rgba(245, 245, 245, 1); /* 深色模式下使用淺色完全不透明 */
   }
 
   .custom-cursor-dot {
@@ -57,7 +57,12 @@
   }
 
   .custom-cursor.hovering {
-    background-color: rgba(198, 195, 190, 0.6); /* 深色模式下的懸停效果 */
+    background-color: rgba(
+      198,
+      195,
+      190,
+      1
+    ); /* 深色模式下的懸停效果，完全不透明 */
   }
 
   .custom-cursor.clicking {
