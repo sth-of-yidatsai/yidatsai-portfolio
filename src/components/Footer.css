@@ -1,0 +1,179 @@
+/* Footer 樣式 - 與 Header 風格一致 */
+.footer {
+  background: var(--color-dark);
+  color: var(--color-bg);
+  padding: var(--space-xl) var(--space-lg);
+  margin-top: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-content {
+  max-width: var(--max-width-wide);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-xl);
+}
+
+/* 左側品牌區域 */
+.footer-brand {
+  flex: 1;
+  position: relative;
+}
+
+.brand-line {
+  width: 100%;
+  height: 1px;
+  background: var(--color-bg);
+  opacity: 0.3;
+  margin-bottom: var(--space-md);
+}
+
+.brand-text {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.brand-name {
+  font-size: 3rem;
+  font-weight: var(--font-bold);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: var(--font-stack);
+  transition: color 0.3s ease;
+}
+
+.brand-name:hover {
+  color: var(--color-secondary);
+}
+
+.brand-year {
+  font-size: 1rem;
+  font-weight: var(--font-medium);
+  color: var(--color-light);
+  letter-spacing: 0.1em;
+  font-family: var(--font-stack);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  opacity: 0.8;
+}
+
+/* 右側連結區域 */
+.footer-links {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.links-section {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  font-size: 1rem;
+  font-weight: var(--font-medium);
+  color: var(--color-bg);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: color 0.3s ease, transform 0.3s ease;
+  position: relative;
+  font-family: var(--font-stack);
+}
+
+.footer-link:hover {
+  color: var(--color-secondary);
+  transform: translateY(-2px);
+}
+
+.footer-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 1px;
+  background: var(--color-secondary);
+  transition: width 0.3s ease;
+}
+
+.footer-link:hover::after {
+  width: 100%;
+}
+
+/* 底部資訊 */
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  opacity: 0.7;
+}
+
+.copyright,
+.location {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: var(--font-light);
+  color: var(--color-light);
+  letter-spacing: 0.05em;
+  font-family: var(--font-stack);
+}
+
+.location {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    gap: var(--space-lg);
+    text-align: center;
+  }
+
+  .footer-brand {
+    order: 2;
+  }
+
+  .footer-links {
+    order: 1;
+  }
+
+  .links-section {
+    justify-content: center;
+    gap: var(--space-md);
+  }
+
+  .brand-text {
+    justify-content: center;
+  }
+
+  .brand-name {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .links-section {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .brand-name {
+    font-size: 2rem;
+  }
+}
