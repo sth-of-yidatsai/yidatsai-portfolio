@@ -58,7 +58,7 @@ export default function Header() {
           <div className="brand-info">
             <div className="brand-line"></div>
             <div className="brand-text">
-              <span className="brand-name animated-text">
+              <span className="work-categories animated-text">
                 <div className="marquee-content">
                   <span className="brand-text-item">GRAPHIC</span>
                   <span className="brand-text-item">UIUX</span>
