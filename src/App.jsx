@@ -4,10 +4,12 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Projects from './pages/Projects';
+import CustomCursor from './components/CustomCursor';
 
 function App() {
   return (
     <Router>
+      <CustomCursor />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

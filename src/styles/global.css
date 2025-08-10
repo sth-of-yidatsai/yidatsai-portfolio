@@ -44,6 +44,9 @@ body {
   line-height: 1.6;
   font-weight: var(--font-regular);
 
+  /* 自訂滑鼠游標 - 在桌面設備上隱藏預設游標 */
+  cursor: none;
+
   /* 防止文字選取 */
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -57,6 +60,13 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+/* 在移動設備上恢復預設游標 */
+@media (hover: none) and (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
 }
 
 /* 防止右鍵選單 */
@@ -242,7 +252,7 @@ em {
   border: 2px solid var(--color-primary);
   background: none;
   color: var(--color-primary);
-  cursor: pointer;
+  cursor: none; /* 配合自訂游標 */
   transition: all 0.3s ease;
   border-radius: var(--radius-sm);
   text-decoration: none;
@@ -388,4 +398,38 @@ em {
 }
 .pb-xl {
   padding-bottom: var(--space-xl);
+}
+
+/* 12. 自訂滑鼠游標相關樣式 */
+/* 所有可點擊元素都使用自訂游標 */
+a,
+button,
+input[type="submit"],
+input[type="button"],
+.button,
+.clickable,
+[role="button"] {
+  cursor: none !important;
+}
+
+/* 在移動設備上恢復正常游標 */
+@media (hover: none) and (pointer: coarse) {
+  a,
+  button,
+  input[type="submit"],
+  input[type="button"],
+  .button,
+  .clickable,
+  [role="button"] {
+    cursor: auto !important;
+  }
+}
+
+/* 為可點擊元素添加 clickable 類別 */
+.clickable {
+  transition: transform 0.2s ease;
+}
+
+.clickable:hover {
+  transform: translateY(-1px);
 }

@@ -1,0 +1,94 @@
+/* 自訂滑鼠游標樣式 */
+.custom-cursor {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: all 0.15s ease-out;
+  background-color: var(--color-bg);
+  mix-blend-mode: difference;
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: all 0.1s ease-out;
+  mix-blend-mode: difference;
+}
+
+/* 點擊狀態 */
+.custom-cursor.clicking {
+  transform: translate(-50%, -50%) scale(0.8);
+  border-width: 3px;
+}
+
+.custom-cursor-dot.clicking {
+  transform: translate(-50%, -50%) scale(1.5);
+}
+
+/* 懸停狀態 */
+.custom-cursor.hovering {
+  transform: translate(-50%, -50%) scale(1.5);
+  border-color: var(--color-accent);
+  background-color: rgba(204, 204, 204, 0.2);
+}
+
+/* 針對不同主題的適配 */
+@media (prefers-color-scheme: dark) {
+  .custom-cursor {
+    border-color: var(--color-light);
+    background-color: rgba(245, 245, 245, 0.1);
+  }
+
+  .custom-cursor-dot {
+    background-color: var(--color-light);
+  }
+
+  .custom-cursor.hovering {
+    border-color: var(--color-secondary);
+    background-color: rgba(198, 195, 190, 0.2);
+  }
+}
+
+/* 確保在移動設備上隱藏自訂游標 */
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor,
+  .custom-cursor-dot {
+    display: none !important;
+  }
+}
+
+/* 針對觸控設備的優化 */
+@media (max-width: 768px) {
+  .custom-cursor,
+  .custom-cursor-dot {
+    display: none;
+  }
+}
+
+/* 動畫效果 */
+@keyframes cursorPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* 特殊互動狀態 */
+.custom-cursor.pulse {
+  animation: cursorPulse 0.6s ease-in-out;
+}
