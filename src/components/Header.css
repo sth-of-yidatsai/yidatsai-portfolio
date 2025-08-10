@@ -17,6 +17,7 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   transition: opacity 0.3s ease, transform 0.3s ease;
+  font-family: var(--font-stack);
 }
 
 .overlay.open + .header .logo {
@@ -218,6 +219,7 @@ body.menu-open {
   letter-spacing: 0.1em;
   transition: color 0.3s ease, transform 0.3s ease;
   position: relative;
+  font-family: var(--font-stack);
 }
 
 .navigation a:hover {
@@ -256,12 +258,12 @@ body.menu-open {
 }
 
 .brand-text {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: start;
-  gap: var(--space-sm);
   overflow: hidden;
   max-height: 150px;
+  width: 100%;
 }
 
 .brand-name {
@@ -269,16 +271,84 @@ body.menu-open {
   font-weight: var(--font-bold);
   color: var(--color-accent);
   text-transform: uppercase;
+  font-family: var(--font-stack);
+  flex: 1;
+}
+
+/* 動畫文字容器 */
+.animated-text {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+/* 跑馬燈內容容器 */
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 15s linear infinite;
+  will-change: transform;
+}
+
+.brand-text-item {
+  position: relative;
+  display: inline-block;
+  opacity: 1;
+  pointer-events: none;
+  color: var(--color-accent);
+  font-size: 10rem;
+  font-weight: var(--font-bold);
+  text-transform: uppercase;
+  font-family: var(--font-stack);
+  margin-right: 3rem;
+}
+
+/* 跑馬燈動畫 */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* hover 時暫停跑馬燈動畫 */
+.animated-text:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+/* 暫停動畫當選單關閉時 */
+.overlay:not(.open) .animated-text {
+  animation-play-state: paused;
+}
+
+/* 確保展開時文字可見 */
+.overlay.open .brand-name {
+  opacity: 1;
+  visibility: visible;
+}
+
+.overlay:not(.open) .brand-name {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .brand-year {
+  position: absolute;
+  right: 0;
+  top: 40%;
+  transform: translateY(-50%);
   font-size: 1.2rem;
   font-weight: var(--font-medium);
-  color: var(--color-accent);
+  color: var(--color-light);
   writing-mode: vertical-rl;
   text-orientation: mixed;
   letter-spacing: 0.1em;
-  margin-top: var(--space-lg);
+  font-family: var(--font-stack);
+  /* 添加相反的顏色filter效果 */
+  mix-blend-mode: difference;
 }
 
 /* 右半邊 - 圖片輪播 */
@@ -436,6 +506,7 @@ body.menu-open {
   writing-mode: vertical-rl;
   text-orientation: mixed;
   line-height: 1.2;
+  font-family: var(--font-stack);
 }
 
 .info-value {
@@ -451,6 +522,7 @@ body.menu-open {
   text-overflow: ellipsis;
   white-space: nowrap;
   line-height: 1.2;
+  font-family: var(--font-stack);
 }
 
 .project-button {

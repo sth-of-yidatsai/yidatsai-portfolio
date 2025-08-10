@@ -57,7 +57,16 @@ export default function Header() {
           <div className="brand-info">
             <div className="brand-line"></div>
             <div className="brand-text">
-              <span className="brand-name">YIDA</span>
+              <span className="brand-name animated-text">
+                <div className="marquee-content">
+                  <span className="brand-text-item">GRAPHIC</span>
+                  <span className="brand-text-item">UIUX</span>
+                  <span className="brand-text-item">3DART</span>
+                  <span className="brand-text-item">GRAPHIC</span>
+                  <span className="brand-text-item">UIUX</span>
+                  <span className="brand-text-item">3DART</span>
+                </div>
+              </span>
               <span className="brand-year">©2025</span>
             </div>
           </div>
@@ -97,7 +106,9 @@ export default function Header() {
               </button>
             </div>
           </div>
+
         </div>
+
       </div>
       
       <header className="header">

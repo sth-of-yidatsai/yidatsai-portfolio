@@ -13,17 +13,7 @@
   --color-text-light: #666;
   --color-border: #e0e0e0;
 
-  /* 排版 - Montserrat + Noto Sans TC */
-  --font-sans: "Montserrat", "Noto Sans TC", sans-serif;
-  --font-mono: "Courier New", monospace;
-
-  /* 字重 */
-  --font-light: 300;
-  --font-regular: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
-  --font-black: 900;
+  /* 字重變數已移至 fonts.css 統一管理 */
 
   /* 間距 */
   --space-xs: 4px;
@@ -51,13 +41,10 @@
 
 /* 2. 全局基礎樣式 */
 body {
-  font-family: var(--font-sans);
   background-color: var(--color-bg);
   color: var(--color-text);
   line-height: 1.6;
   font-weight: var(--font-regular);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 
   /* 防止文字選取 */
   -webkit-user-select: none;
@@ -191,7 +178,6 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-sans);
   font-weight: var(--font-bold);
   margin-bottom: var(--space-md);
   color: var(--color-primary);
@@ -250,7 +236,6 @@ em {
 .button {
   display: inline-block;
   padding: var(--space-sm) var(--space-lg);
-  font-family: var(--font-sans);
   font-weight: var(--font-medium);
   font-size: 0.9rem;
   text-transform: uppercase;
