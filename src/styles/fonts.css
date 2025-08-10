@@ -103,17 +103,6 @@ body {
   font-family: var(--font-cjk), var(--font-latin);
 }
 
-/* 標題預設走 Futura PT */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-latin), var(--font-cjk);
-  font-weight: 700;
-}
-
 /* 實用工具類 */
 .font-latin {
   font-family: var(--font-latin), var(--font-cjk) !important;

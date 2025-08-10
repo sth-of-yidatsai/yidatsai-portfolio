@@ -1,1 +1,33 @@
+/* App 層級的樣式 */
+#root {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
 
+/* 確保主要內容區域能夠撐滿剩餘空間 */
+main {
+  flex: 1;
+}
+
+/* 頁面過渡動畫 */
+.page-transition {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease-in-out;
+}
+
+.page-transition.enter {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 響應式容器調整 */
+@media (max-width: 768px) {
+  .container,
+  .container-wide,
+  .container-narrow {
+    padding: 0 var(--space-sm);
+  }
+}

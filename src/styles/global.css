@@ -13,8 +13,6 @@
   --color-text-light: #666;
   --color-border: #e0e0e0;
 
-  /* 字重變數已移至 fonts.css 統一管理 */
-
   /* 間距 */
   --space-xs: 4px;
   --space-sm: 8px;
@@ -178,6 +176,7 @@ h3,
 h4,
 h5,
 h6 {
+  font-family: var(--font-latin), var(--font-cjk);
   font-weight: var(--font-bold);
   margin-bottom: var(--space-md);
   color: var(--color-primary);
