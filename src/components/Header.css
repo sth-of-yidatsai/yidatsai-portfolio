@@ -273,6 +273,7 @@ body.menu-open {
   text-transform: uppercase;
   font-family: var(--font-stack);
   flex: 1;
+  transition: opacity 1.2s ease;
 }
 
 /* 動畫文字容器 */
@@ -314,13 +315,13 @@ body.menu-open {
   }
 }
 
-/* hover 時暫停跑馬燈動畫 */
-.animated-text:hover .marquee-content {
+/* 暫停跑馬燈動畫 */
+.marquee-content.paused {
   animation-play-state: paused;
 }
 
-/* 暫停動畫當選單關閉時 */
-.overlay:not(.open) .animated-text {
+/* hover 時暫停跑馬燈動畫 */
+.animated-text:hover .marquee-content {
   animation-play-state: paused;
 }
 
@@ -332,7 +333,7 @@ body.menu-open {
 
 .overlay:not(.open) .brand-name {
   opacity: 0;
-  visibility: hidden;
+  transition-delay: 0.6s;
 }
 
 .brand-year {
@@ -347,7 +348,6 @@ body.menu-open {
   text-orientation: mixed;
   letter-spacing: 0.1em;
   font-family: var(--font-stack);
-  /* 添加相反的顏色filter效果 */
   mix-blend-mode: difference;
 }
 

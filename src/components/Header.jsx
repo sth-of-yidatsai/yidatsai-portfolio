@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Header.css';
 import projectsData from '../data/projects.json';
 import arrowIcon from '../assets/icons/arrow_outward_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
@@ -17,11 +17,12 @@ export default function Header() {
       document.body.classList.remove('menu-open');
     }
 
-    // 清理函數：組件卸載時移除 class
     return () => {
       document.body.classList.remove('menu-open');
     };
   }, [isOpen]);
+
+
 
   // 使用 JSON 資料 - 從 projectImages 的第一張圖片作為輪播圖片
   const images = projectsData.map(project => project.projectImages[0]);
