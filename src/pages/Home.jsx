@@ -7,7 +7,7 @@ export default function Home() {
       {/* 第一個 100vh 區塊 */}
       <section className="hero-section">
         <div className="hero-content">
-          <h1 className="hero-title">Welcome to My Portfolio</h1>
+          <h1 className="hero-title">Developing...</h1>
           <p className="hero-subtitle">Creative Designer & Developer</p>
           <div className="hero-visual">
             <div className="visual-element"></div>
