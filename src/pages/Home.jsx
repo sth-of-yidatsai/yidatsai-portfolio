@@ -46,6 +46,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* 捲動空間 - 讓 Footer 動畫能夠觸發 */}
+      <div className="scroll-space"></div>
     </div>
   );
 }
