@@ -136,15 +136,26 @@ export default function Projects() {
     );
   };
 
-  const animateTitleOut = () => {
+  const hideTitleImmediately = () => {
     const s = stateRef.current;
-    if (!s.titleSplit) return;
-    gsap.to(s.titleSplit.words, { y: '-100%', opacity: 0, duration: 1, stagger: 0.1, ease: 'power3.out' });
+    if (s.titleDelayTween) {
+      s.titleDelayTween.kill();
+      s.titleDelayTween = null;
+    }
+    if (s.titleSplit) {
+      s.titleSplit.revert();
+      s.titleSplit = null;
+    }
+    if (titleRef.current) {
+      titleRef.current.textContent = '';
+    }
     const backdrop = document.getElementById('gallery-title-backdrop');
     if (backdrop) {
-      gsap.to(backdrop, { opacity: 0, duration: 0.5, ease: 'power2.in' });
+      gsap.set(backdrop, { opacity: 0 });
     }
   };
+
+  // 不再使用漸出動畫（關閉時立即移除）
 
   const animateOverlayIn = () => {
     const settings = settingsRef.current;
@@ -296,6 +307,7 @@ export default function Projects() {
     expanded.appendChild(img);
     // 點擊展開圖：先確保收尾（overlay 與節點移除）再導頁，避免殘留
     expanded.addEventListener('click', () => {
+      hideTitleImmediately();
       const overlay = overlayRef.current;
       if (overlay) {
         gsap.to(overlay, { opacity: 0, duration: 0.2, onComplete: () => overlay.classList.remove('active') });
@@ -361,15 +373,8 @@ export default function Projects() {
     const settings = settingsRef.current;
     const s = stateRef.current;
     if (!s.expandedItem || !s.originalPosition) return;
-    // 延後 2 秒再讓標題消失
-    if (s.titleDelayTween) {
-      s.titleDelayTween.kill();
-      s.titleDelayTween = null;
-    }
-    s.titleDelayTween = gsap.delayedCall(2, () => {
-      animateTitleOut();
-      s.titleDelayTween = null;
-    });
+    // 立即隱藏標題與全版黑底
+    hideTitleImmediately();
     animateOverlayOut();
 
     // 其它卡片淡入

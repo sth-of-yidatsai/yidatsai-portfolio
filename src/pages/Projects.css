@@ -165,23 +165,20 @@ html.projects-no-scroll-html {
   display: inline-block;
   font-family: var(--font-stack);
   font-size: 36px;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   transform: translateY(0%);
   will-change: transform;
 }
 
-/* 文字背後半透明底 */
+/* 文字顯示時的全版半透明底（與文字同步進出） */
 .gallery-title-backdrop {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.45);
-  border-radius: 8px;
-  padding: 8px 12px;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
   opacity: 0;
   z-index: 1;
+  pointer-events: none;
 }
 
 /* caption clone */
