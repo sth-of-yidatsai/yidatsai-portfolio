@@ -69,7 +69,25 @@ export default function Projects() {
     overlayAnimation: null,
     titleSplit: null,
     rafId: 0,
+    titleDelayTween: null,
   });
+
+  // 專案排序：以 id 內的數字降冪（號碼越大越新）
+  const parseProjectOrder = (id) => {
+    if (typeof id !== 'string') return 0;
+    const m = id.match(/(\d+)/g);
+    if (!m || !m.length) return 0;
+    // 取最後一段數字以避免 id 中有其他數字
+    return parseInt(m[m.length - 1], 10) || 0;
+  };
+
+  const getSortedProjects = () => {
+    const arr = Array.isArray(projectsData) ? [...projectsData] : [];
+    arr.sort((a, b) => parseProjectOrder(b?.id) - parseProjectOrder(a?.id));
+    return arr;
+  };
+
+  // 不再干預游標顯示，交由全站 CustomCursor 負責
 
   // 初始化 CSS 變數
   const updateCSSVars = () => {
@@ -105,6 +123,12 @@ export default function Projects() {
     titleRef.current.textContent = title;
     s.titleSplit = new SplitType(titleRef.current, { types: 'words' });
     gsap.set(s.titleSplit.words, { y: '100%' });
+    // 背景底顯示
+    const backdrop = document.getElementById('gallery-title-backdrop');
+    if (backdrop) {
+      backdrop.style.width = `${Math.min(window.innerWidth * 0.9, 800)}px`;
+      gsap.to(backdrop, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+    }
     gsap.fromTo(
       s.titleSplit.words,
       { y: '100%', opacity: 0 },
@@ -116,6 +140,10 @@ export default function Projects() {
     const s = stateRef.current;
     if (!s.titleSplit) return;
     gsap.to(s.titleSplit.words, { y: '-100%', opacity: 0, duration: 1, stagger: 0.1, ease: 'power3.out' });
+    const backdrop = document.getElementById('gallery-title-backdrop');
+    if (backdrop) {
+      gsap.to(backdrop, { opacity: 0, duration: 0.5, ease: 'power2.in' });
+    }
   };
 
   const animateOverlayIn = () => {
@@ -151,7 +179,7 @@ export default function Projects() {
     const currentItems = new Set();
 
     // 若沒有任何專案資料，直接返回
-    const allItems = Array.isArray(projectsData) ? projectsData : [];
+    const allItems = getSortedProjects();
     const total = allItems.length;
     if (total === 0) {
       // 清空既有可見元素
@@ -249,7 +277,7 @@ export default function Projects() {
     const itemHeight = parseInt(item.dataset.height, 10);
 
     // 取得標題（僅使用 projects.json）
-    const allItems = Array.isArray(projectsData) ? projectsData : [];
+    const allItems = getSortedProjects();
     const total = allItems.length;
     const titleIndex = total === 0 ? 0 : (itemIndex % total);
     const title = total > 0 ? (allItems[titleIndex]?.title || '') : '';
@@ -333,8 +361,15 @@ export default function Projects() {
     const settings = settingsRef.current;
     const s = stateRef.current;
     if (!s.expandedItem || !s.originalPosition) return;
-
-    animateTitleOut();
+    // 延後 2 秒再讓標題消失
+    if (s.titleDelayTween) {
+      s.titleDelayTween.kill();
+      s.titleDelayTween = null;
+    }
+    s.titleDelayTween = gsap.delayedCall(2, () => {
+      animateTitleOut();
+      s.titleDelayTween = null;
+    });
     animateOverlayOut();
 
     // 其它卡片淡入
@@ -423,9 +458,12 @@ export default function Projects() {
     updateVisibleItems();
     animateLoop();
 
-    // 本頁：隱藏自訂游標、顯示系統游標、隱藏捲軸
-    document.body.classList.add('hide-cursor', 'projects-no-scroll');
+    // 本頁：僅隱藏捲軸，不干預自訂游標
+    document.body.classList.add('projects-no-scroll');
     document.documentElement.classList.add('projects-no-scroll-html');
+
+    // 監聽 Header 開關（body.menu-open）以切換游標
+    // 不監聽 menu-open，避免干預游標
 
     const onMouseDown = (e) => {
       if (!s.canDrag) return;
@@ -507,6 +545,7 @@ export default function Projects() {
       // 恢復游標與捲軸狀態
       document.body.classList.remove('hide-cursor', 'projects-no-scroll');
       document.documentElement.classList.remove('projects-no-scroll-html');
+      // 無需 observer
     };
   }, [navigate]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -526,6 +565,7 @@ export default function Projects() {
       </div>
 
       <div className="gallery-project-title">
+        <div id="gallery-title-backdrop" className="gallery-title-backdrop" />
         <p ref={titleRef} />
       </div>
 

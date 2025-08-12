@@ -18,6 +18,13 @@ export default function Header() {
       document.body.classList.remove('menu-open');
     }
 
+    // 告知其他頁面（如 Projects）選單狀態已改變
+    try {
+      window.dispatchEvent(new CustomEvent('menu-open-change', { detail: { isOpen } }));
+    } catch (e) {
+      // 忽略舊瀏覽器的自訂事件錯誤
+    }
+
     return () => {
       document.body.classList.remove('menu-open');
     };

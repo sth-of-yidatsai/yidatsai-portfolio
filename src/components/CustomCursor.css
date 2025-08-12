@@ -7,7 +7,7 @@
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  transition: all 0.15s ease-out;
+  transition: transform 0.12s ease-out, background-color 0.12s ease-out;
   background-color: rgba(45, 45, 45, 1);
   mix-blend-mode: difference;
 }
@@ -21,7 +21,7 @@
   pointer-events: none;
   z-index: 10000;
   transform: translate(-50%, -50%);
-  transition: all 0.1s ease-out;
+  transition: transform 0.1s ease-out, background-color 0.1s ease-out;
   mix-blend-mode: difference;
 }
 

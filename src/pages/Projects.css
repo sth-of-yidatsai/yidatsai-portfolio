@@ -7,12 +7,6 @@
   color: #fff;
 }
 
-/* 本頁隱藏自訂游標與滾動條 */
-body.hide-cursor .custom-cursor,
-body.hide-cursor .custom-cursor-dot {
-  display: none !important;
-}
-
 body.projects-no-scroll {
   overflow: hidden !important;
 }
@@ -157,11 +151,13 @@ html.projects-no-scroll-html {
 
 .gallery-project-title p {
   position: relative;
+  display: inline-block;
   height: 42px;
   color: #ffffff;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   overflow: hidden;
   font-family: var(--font-stack);
+  z-index: 2;
 }
 
 .gallery-project-title p .word {
@@ -173,6 +169,19 @@ html.projects-no-scroll-html {
   text-transform: uppercase;
   transform: translateY(0%);
   will-change: transform;
+}
+
+/* 文字背後半透明底 */
+.gallery-title-backdrop {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+  padding: 8px 12px;
+  opacity: 0;
+  z-index: 1;
 }
 
 /* caption clone */
