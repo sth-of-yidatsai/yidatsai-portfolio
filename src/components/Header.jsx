@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 import projectsData from '../data/projects.json';
 import arrowIcon from '../assets/icons/arrow_outward_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
@@ -7,6 +8,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const headerRef = useRef(null);
+  const navigate = useNavigate();
   
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -170,8 +172,8 @@ export default function Header() {
   }, [isOpen]);
 
   const handleProjectClick = () => {
-    // 導向專案頁面
-    window.location.href = '/projects';
+    navigate('/projects');
+    setIsOpen(false);
   };
 
   return (
@@ -181,10 +183,10 @@ export default function Header() {
         <div className="menu-section">
           <nav className="navigation">
             <ul>
-              <li><a href="/" onClick={toggleMenu}>HOME</a></li>
-              <li><a href="/projects" onClick={toggleMenu}>WORK</a></li>
-              <li><a href="/about" onClick={toggleMenu}>ABOUT</a></li>
-              <li><a href="/contact" onClick={toggleMenu}>CONTACT</a></li>
+              <li><Link to="/" onClick={toggleMenu}>HOME</Link></li>
+              <li><Link to="/projects" onClick={toggleMenu}>WORK</Link></li>
+              <li><Link to="/about" onClick={toggleMenu}>ABOUT</Link></li>
+              <li><Link to="/contact" onClick={toggleMenu}>CONTACT</Link></li>
             </ul>
           </nav>
           <div className="brand-info">
