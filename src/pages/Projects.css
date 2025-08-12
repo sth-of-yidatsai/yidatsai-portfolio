@@ -137,49 +137,7 @@ html.projects-no-scroll-html {
   pointer-events: auto;
 }
 
-/* 標題 */
-.gallery-project-title {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  text-align: center;
-  pointer-events: none;
-  z-index: 900; /* 高於 expanded, 低於 header */
-}
-
-.gallery-project-title p {
-  position: relative;
-  display: inline-block;
-  height: 42px;
-  color: #ffffff;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-  overflow: hidden;
-  font-family: var(--font-stack);
-  z-index: 2;
-}
-
-.gallery-project-title p .word {
-  position: relative;
-  display: inline-block;
-  font-family: var(--font-stack);
-  font-size: 36px;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  transform: translateY(0%);
-  will-change: transform;
-}
-
-/* 文字顯示時的全版半透明底（與文字同步進出） */
-.gallery-title-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  z-index: 1;
-  pointer-events: none;
-}
+/* 已移除標題與黑底樣式 */
 
 /* caption clone */
 .gallery-caption-clone {

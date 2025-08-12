@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { CustomEase } from 'gsap/CustomEase';
-import SplitType from 'split-type';
 import { useNavigate } from 'react-router-dom';
 import './Projects.css';
 import projectsData from '../data/projects.json';
@@ -17,7 +16,7 @@ export default function Projects() {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const overlayRef = useRef(null);
-  const titleRef = useRef(null);
+  // 移除標題顯示
 
   // 設定與狀態
   const settingsRef = useRef({
@@ -116,25 +115,7 @@ export default function Projects() {
     return itemSizes[sizeIndex];
   };
 
-  const setAndAnimateTitle = (title) => {
-    const s = stateRef.current;
-    if (s.titleSplit) s.titleSplit.revert();
-    if (!titleRef.current) return;
-    titleRef.current.textContent = title;
-    s.titleSplit = new SplitType(titleRef.current, { types: 'words' });
-    gsap.set(s.titleSplit.words, { y: '100%' });
-    // 背景底顯示
-    const backdrop = document.getElementById('gallery-title-backdrop');
-    if (backdrop) {
-      backdrop.style.width = `${Math.min(window.innerWidth * 0.9, 800)}px`;
-      gsap.to(backdrop, { opacity: 1, duration: 0.3, ease: 'power2.out' });
-    }
-    gsap.fromTo(
-      s.titleSplit.words,
-      { y: '100%', opacity: 0 },
-      { y: '0%', opacity: 1, duration: 1, stagger: 0.1, ease: 'power3.out' },
-    );
-  };
+  // 已移除標題進場顯示
 
   const hideTitleImmediately = () => {
     const s = stateRef.current;
@@ -142,17 +123,7 @@ export default function Projects() {
       s.titleDelayTween.kill();
       s.titleDelayTween = null;
     }
-    if (s.titleSplit) {
-      s.titleSplit.revert();
-      s.titleSplit = null;
-    }
-    if (titleRef.current) {
-      titleRef.current.textContent = '';
-    }
-    const backdrop = document.getElementById('gallery-title-backdrop');
-    if (backdrop) {
-      gsap.set(backdrop, { opacity: 0 });
-    }
+    // 不再處理 SplitType 與黑底
   };
 
   // 不再使用漸出動畫（關閉時立即移除）
@@ -287,12 +258,7 @@ export default function Projects() {
     const itemWidth = parseInt(item.dataset.width, 10);
     const itemHeight = parseInt(item.dataset.height, 10);
 
-    // 取得標題（僅使用 projects.json）
-    const allItems = getSortedProjects();
-    const total = allItems.length;
-    const titleIndex = total === 0 ? 0 : (itemIndex % total);
-    const title = total > 0 ? (allItems[titleIndex]?.title || '') : '';
-    setAndAnimateTitle(title);
+    // 移除標題顯示
 
     // 暗場
     animateOverlayIn();
@@ -569,10 +535,7 @@ export default function Projects() {
         />
       </div>
 
-      <div className="gallery-project-title">
-        <div id="gallery-title-backdrop" className="gallery-title-backdrop" />
-        <p ref={titleRef} />
-      </div>
+      {/* 已移除標題區塊 */}
 
       {/* 可選：全頁暈影層（match CodePen 效果） */}
       <div className="gallery-page-vignette-container" aria-hidden>
