@@ -106,11 +106,15 @@ const CustomCursor = () => {
       <div
         ref={cursorRef}
         className={`custom-cursor ${isClicking ? 'clicking' : ''} ${isHovering ? 'hovering' : ''}`}
-      />
+      >
+        <div className="custom-cursor-shape" />
+      </div>
       <div
         ref={dotRef}
         className={`custom-cursor-dot ${isClicking ? 'clicking' : ''}`}
-      />
+      >
+        <div className="custom-cursor-dot-shape" />
+      </div>
     </>
   );
 };
