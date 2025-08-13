@@ -45,7 +45,7 @@ body {
   font-weight: var(--font-regular);
 
   /* 自訂滑鼠游標 - 在桌面設備上隱藏預設游標 */
-  cursor: none;
+  cursor: none !important;
 
   /* 防止文字選取 */
   -webkit-user-select: none;
@@ -62,10 +62,21 @@ body {
   user-select: none;
 }
 
+/* 全站隱藏預設游標（桌面設備） - 防止局部樣式覆蓋 */
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body,
+  * {
+    cursor: none !important;
+  }
+}
+
 /* 在移動設備上恢復預設游標 */
 @media (hover: none) and (pointer: coarse) {
-  body {
-    cursor: auto;
+  html,
+  body,
+  * {
+    cursor: auto !important;
   }
 }
 

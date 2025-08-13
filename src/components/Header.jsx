@@ -245,7 +245,7 @@ export default function Header() {
                   </div>
                 </div>
               </div>
-              <button className="project-button" onClick={handleProjectClick}>
+              <button className="project-button clickable" onClick={handleProjectClick}>
                 <img src={arrowIcon} alt="View Project" />
               </button>
             </div>
@@ -256,10 +256,10 @@ export default function Header() {
       </div>
       
       <header ref={headerRef} className="header">
-        <div className="menu-icon" onClick={toggleMenu}>
+        <button className="menu-icon clickable" onClick={toggleMenu}>
           <span className={isOpen ? 'line line1 open' : 'line line1'}></span>
           <span className={isOpen ? 'line line2 open' : 'line line2'}></span>
-        </div>
+        </button>
         <div className="logo">YIDA</div>
       </header>
     </>

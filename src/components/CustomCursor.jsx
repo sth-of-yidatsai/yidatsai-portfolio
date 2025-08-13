@@ -19,42 +19,25 @@ const CustomCursor = () => {
   useEffect(() => {
     const isElementClickable = (el) => {
       if (!el || el === document || el === window) return false;
-      let node = el;
-      let depth = 0;
-      while (node && node !== document.body && depth < 12) {
-        // 忽略 disabled
-        if (node.hasAttribute?.('disabled') || node.getAttribute?.('aria-disabled') === 'true') {
-          return false;
-        }
-
-        const tag = (node.tagName || '').toUpperCase();
-        if (tag === 'A') return true;
-        if (tag === 'BUTTON' || tag === 'SUMMARY') return true;
-        if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || tag === 'LABEL') return true;
-
-        const role = node.getAttribute?.('role');
-        if (role === 'button' || role === 'link' || role === 'menuitem') return true;
-
-        // 可聚焦通常也代表可互動
-        const tabindex = node.getAttribute?.('tabindex');
-        if (tabindex !== null && tabindex !== undefined && tabindex !== '-1') return true;
-
-        // 自訂標記
-        if (node.classList?.contains('clickable')) return true;
-        if (node.hasAttribute?.('data-clickable')) return true;
-
-        // CSS 游標
-        try {
-          const style = window.getComputedStyle(node);
-          if (style && style.cursor && style.cursor.includes('pointer')) return true;
-        } catch {
-          // ignore getComputedStyle errors for detached or non-element nodes
-        }
-
-        node = node.parentElement;
-        depth += 1;
-      }
-      return false;
+      const selector = [
+        'a[href]',
+        'button',
+        'input',
+        'select',
+        'textarea',
+        'label',
+        'summary',
+        '[role="button"]',
+        '[role="link"]',
+        '[role="menuitem"]',
+        '[data-clickable]',
+        '.clickable',
+        '[tabindex]:not([tabindex="-1"])',
+      ].join(',');
+      const target = el.closest?.(selector);
+      if (!target) return false;
+      if (target.matches('[disabled], [aria-disabled="true"]')) return false;
+      return true;
     };
 
     const updateHoverState = (clientX, clientY) => {

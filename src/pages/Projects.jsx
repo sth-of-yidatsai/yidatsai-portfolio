@@ -209,7 +209,7 @@ export default function Projects() {
         const pos = getItemPosition(col, row, s.cellWidth, s.cellHeight);
 
         const item = document.createElement('div');
-        item.className = 'gallery-item';
+        item.className = 'gallery-item clickable';
         item.id = itemId;
         item.style.width = `${itemSize.width}px`;
         item.style.height = `${itemSize.height}px`;
@@ -305,6 +305,8 @@ export default function Projects() {
     expanded.style.height = `${itemHeight}px`;
     const img = document.createElement('img');
     img.src = imgSrc;
+    img.classList.add('clickable');
+    img.setAttribute('data-clickable', 'true');
     expanded.appendChild(img);
     // 點擊展開圖：先確保收尾（overlay 與節點移除）再導頁，避免殘留
     img.addEventListener('click', () => {
