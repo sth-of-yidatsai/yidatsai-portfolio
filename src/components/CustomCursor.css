@@ -6,8 +6,11 @@
   border-radius: 50%;
   pointer-events: none;
   z-index: 2147483646;
-  transform: translate(-50%, -50%);
-  transition: transform 0.12s ease-out, background-color 0.12s ease-out;
+  /* 使用 CSS 變數 + transform 進行定位，避免 left/top 造成 layout */
+  transform: translate3d(var(--cursor-x, 0), var(--cursor-y, 0), 0)
+    translate(-50%, -50%) scale(var(--cursor-scale, 1));
+  transition: background-color 0.12s ease-out;
+  will-change: transform;
   background-color: rgba(45, 45, 45, 1);
   mix-blend-mode: difference;
 }
@@ -20,24 +23,26 @@
   border-radius: 50%;
   pointer-events: none;
   z-index: 2147483647;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease-out, background-color 0.1s ease-out;
+  transform: translate3d(var(--cursor-dot-x, 0), var(--cursor-dot-y, 0), 0)
+    translate(-50%, -50%) scale(var(--cursor-dot-scale, 1));
+  transition: background-color 0.1s ease-out;
+  will-change: transform;
   mix-blend-mode: difference;
 }
 
 /* 點擊狀態 */
 .custom-cursor.clicking {
-  transform: translate(-50%, -50%) scale(0.8);
+  --cursor-scale: 0.8;
   background-color: rgba(45, 45, 45, 1);
 }
 
 .custom-cursor-dot.clicking {
-  transform: translate(-50%, -50%) scale(1.5);
+  --cursor-dot-scale: 1.5;
 }
 
 /* 懸停狀態 */
 .custom-cursor.hovering {
-  transform: translate(-50%, -50%) scale(1.5);
+  --cursor-scale: 1.5;
   background-color: rgba(204, 204, 204, 1);
 }
 
