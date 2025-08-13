@@ -326,7 +326,9 @@ export default function Projects() {
         },
       });
     });
-    document.body.appendChild(expanded);
+    // 將展開節點附加在本頁容器內，避免脫離 #root 後建立更高層的堆疊上下文
+    const host = containerRef.current || document.getElementById('gallery-canvas') || document.body;
+    host.appendChild(expanded);
     s.expandedItem = expanded;
 
     // 其它卡片淡出
@@ -398,7 +400,7 @@ export default function Projects() {
       ease: 'hop',
       onComplete: () => {
         if (s.expandedItem && s.expandedItem.parentNode) {
-          document.body.removeChild(s.expandedItem);
+          s.expandedItem.parentNode.removeChild(s.expandedItem);
         }
         s.expandedItem = null;
         s.isExpanded = false;

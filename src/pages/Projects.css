@@ -5,6 +5,7 @@
   overflow: hidden;
   background-color: #000;
   color: #fff;
+  z-index: 1; /* 將整個專案頁設為一個較低層的堆疊上下文，確保 Header(999) 永遠在上層 */
 }
 
 body.projects-no-scroll {
@@ -104,22 +105,33 @@ html.projects-no-scroll-html {
 
 /* 展開視圖 */
 .gallery-expanded-item {
-  position: fixed;
+  position: relative;
   z-index: 850; /* 低於 header(999) */
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #000000;
   overflow: hidden;
-  cursor: pointer;
+  cursor: default;
+  pointer-events: none; /* 容器不攔截事件，避免遮擋 Header / 自訂游標 */
   border-radius: var(--border-radius, 0px);
+}
+
+/* 極輕微暗層，提升 mix-blend 差值游標對比，但不影響畫面觀感 */
+.gallery-expanded-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.04);
+  pointer-events: none;
 }
 
 .gallery-expanded-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  pointer-events: none;
+  pointer-events: auto; /* 僅圖片可點擊導頁 */
+  cursor: pointer;
 }
 
 .gallery-overlay {
@@ -136,6 +148,12 @@ html.projects-no-scroll-html {
 
 .gallery-overlay.active {
   pointer-events: auto;
+}
+
+/* 當 Header 菜單展開時，讓展開圖退到更低層，並讓 Header 完整可點擊 */
+body.menu-open .gallery-expanded-item {
+  z-index: 600;
+  pointer-events: none;
 }
 
 /* 已移除標題與黑底樣式 */
