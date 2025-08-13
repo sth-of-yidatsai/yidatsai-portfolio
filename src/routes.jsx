@@ -5,7 +5,7 @@ import App from './App.jsx';
 import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
 import Projects from './pages/Projects.jsx';
-import ProjectDetail from './pages/ProjectDetail.jsx';
+import ProjectDetailRouter from './pages/ProjectDetailRouter.jsx';
 import NotFound from './pages/NotFound.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'project/:id',
-        element: <ProjectDetail />,
+        element: <ProjectDetailRouter />,
         loader: projectDetailLoader,
         errorElement: <ErrorPage />,
       },
