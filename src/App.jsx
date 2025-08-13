@@ -1,26 +1,18 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Home from './pages/Home';
-import About from './pages/About';
-import Projects from './pages/Projects';
-import ProjectDetail from './pages/ProjectDetail';
 import CustomCursor from './components/CustomCursor';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
-    <Router>
+    <>
       <CustomCursor />
+      <ScrollToTop />
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/project/:id" element={<ProjectDetail />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
+      <Outlet />
       <Footer />
-    </Router>
+    </>
   );
 }
 

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { CustomEase } from 'gsap/CustomEase';
-import { useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import './Projects.css';
-import projectsData from '../data/projects.json';
 
 gsap.registerPlugin(CustomEase);
 CustomEase.create('hop', '0.9, 0, 0.1, 1');
@@ -11,6 +10,8 @@ CustomEase.create('hop', '0.9, 0, 0.1, 1');
 // 僅使用 projects.json 的第一張圖作為封面顯示
 
 export default function Projects() {
+  const loaderData = useLoaderData();
+  const projectsData = Array.isArray(loaderData) ? loaderData : [];
   const navigate = useNavigate();
 
   const containerRef = useRef(null);

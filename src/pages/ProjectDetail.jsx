@@ -1,20 +1,8 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import projects from '../data/projects.json';
+import { Link, useLoaderData } from 'react-router-dom';
 
 export default function ProjectDetail() {
-  const { id } = useParams();
-  const project = projects.find((p) => p.id === id);
-
-  if (!project) {
-    return (
-      <div style={{ padding: '80px 24px' }}>
-        <h1>找不到此專案</h1>
-        <p>ID: {id}</p>
-        <Link to="/projects">返回作品牆</Link>
-      </div>
-    );
-  }
+  const project = useLoaderData();
 
   return (
     <div style={{ padding: '100px 24px', maxWidth: 1200, margin: '0 auto' }}>
