@@ -6,6 +6,7 @@ import arrowIcon from '../assets/icons/arrow_outward_24dp_E3E3E3_FILL0_wght400_G
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [hasOpened, setHasOpened] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const headerRef = useRef(null);
   const navigate = useNavigate();
@@ -23,13 +24,19 @@ export default function Header() {
     // 告知其他頁面（如 Projects）選單狀態已改變
     try {
       window.dispatchEvent(new CustomEvent('menu-open-change', { detail: { isOpen } }));
-    } catch (e) {
+    } catch {
       // 忽略舊瀏覽器的自訂事件錯誤
     }
 
     return () => {
       document.body.classList.remove('menu-open');
     };
+  }, [isOpen]);
+
+
+  // 第一次開啟後標記，讓「關閉動畫」僅在曾開啟過之後才會觸發
+  useEffect(() => {
+    if (isOpen) setHasOpened(true);
   }, [isOpen]);
 
 
@@ -178,7 +185,7 @@ export default function Header() {
 
   return (
     <>
-      <div className={isOpen ? 'overlay open' : 'overlay'}>
+      <div className={`overlay${isOpen ? ' open' : ''}${hasOpened ? ' has-opened' : ''}`}>
         {/* 左半邊 - 導航選單 */}
         <div className="menu-section">
           <nav className="navigation">

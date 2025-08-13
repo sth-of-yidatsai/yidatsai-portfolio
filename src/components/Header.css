@@ -76,11 +76,12 @@
   animation-name: toX2;
 }
 
-.line1:not(.open) {
+/* 僅在曾開啟過選單後，關閉時才播放回復成漢堡的動畫 */
+.overlay.has-opened + .header .line1:not(.open) {
   animation-name: toMenu1;
 }
 
-.line2:not(.open) {
+.overlay.has-opened + .header .line2:not(.open) {
   animation-name: toMenu2;
 }
 
@@ -172,7 +173,7 @@ body.menu-open {
 }
 
 /* 收闔時左半邊的動畫 */
-.overlay:not(.open) .menu-section {
+.overlay.has-opened:not(.open) .menu-section {
   transform: translateX(-100%);
   transition-delay: 0.3s;
 }
@@ -376,7 +377,7 @@ body.menu-open {
 }
 
 /* 收闔時右半邊的動畫 */
-.overlay:not(.open) .carousel-section {
+.overlay.has-opened:not(.open) .carousel-section {
   animation: carouselSlideOut 0.6s ease forwards;
 }
 
