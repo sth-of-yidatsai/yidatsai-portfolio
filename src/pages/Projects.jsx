@@ -307,7 +307,7 @@ export default function Projects() {
     img.src = imgSrc;
     expanded.appendChild(img);
     // 點擊展開圖：先確保收尾（overlay 與節點移除）再導頁，避免殘留
-    expanded.addEventListener('click', () => {
+    img.addEventListener('click', () => {
       hideTitleImmediately();
       const overlay = overlayRef.current;
       if (overlay) {
