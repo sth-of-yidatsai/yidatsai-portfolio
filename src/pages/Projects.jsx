@@ -87,6 +87,13 @@ export default function Projects() {
     return arr;
   };
 
+  // 從圖片網址提取專案編號字串（保留前導零），如 "project-003" → "003"
+  const extractNumberFromImageUrl = (url) => {
+    if (typeof url !== 'string') return null;
+    const m = url.match(/project[-_](\d+)/i);
+    return m && m[1] ? m[1] : null;
+  };
+
   // 不再干預游標顯示，交由全站 CustomCursor 負責
 
   // 初始化 CSS 變數
@@ -174,6 +181,23 @@ export default function Projects() {
       return;
     }
 
+    // 依目前資料 id 中數字段的最大位數決定顯示位數（例如 project-003 → 3 位數）
+    const computePadLen = (items) => {
+      let maxLen = 1;
+      for (let i = 0; i < items.length; i += 1) {
+        const idStr = items[i]?.id;
+        if (typeof idStr === 'string') {
+          const m = idStr.match(/(\d+)/g);
+          if (m && m.length) {
+            const seg = m[m.length - 1];
+            maxLen = Math.max(maxLen, seg.length);
+          }
+        }
+      }
+      return maxLen;
+    };
+    const padLen = computePadLen(allItems);
+
     for (let row = startRow; row <= endRow; row += 1) {
       for (let col = startCol; col <= endCol; col += 1) {
         const itemId = getItemId(col, row);
@@ -197,7 +221,9 @@ export default function Projects() {
         item.dataset.height = String(itemSize.height);
 
         // index 與資料（僅使用 projects.json）
-        const idx = Math.abs(((row * s.columns + col) % total));
+        // 正確的歐幾里得取模，避免 row/col 為負數時索引錯誤
+        const rawIndex = (row * s.columns + col);
+        const idx = ((rawIndex % total) + total) % total;
         const project = allItems[idx];
         const imageUrl = project?.projectImages?.[0] || '';
         const title = project?.title || '';
@@ -219,7 +245,15 @@ export default function Projects() {
         caption.appendChild(nameEl);
         const numberEl = document.createElement('div');
         numberEl.className = 'gallery-item-number';
-        numberEl.textContent = `#${String(idx + 1).padStart(5, '0')}`;
+        // 依圖片網址中的資料夾/檔名提取編號，優先使用該編號（保留前導零）
+        const urlNumber = extractNumberFromImageUrl(imageUrl);
+        if (urlNumber) {
+          numberEl.textContent = `#${urlNumber}`;
+        } else {
+          // 後備：使用 id 的數字長度進行補零，或以位置序號
+          const fallbackNumber = idx + 1;
+          numberEl.textContent = `#${String(fallbackNumber).padStart(padLen, '0')}`;
+        }
         caption.appendChild(numberEl);
         item.appendChild(caption);
 
@@ -483,11 +517,60 @@ export default function Projects() {
       }
     };
 
+    // 觸控事件（行動裝置拖曳）
+    const onTouchStart = (e) => {
+      if (!s.canDrag) return;
+      if (!e.touches || e.touches.length === 0) return;
+      const t = e.touches[0];
+      s.isDragging = true;
+      s.mouseHasMoved = false;
+      s.startX = t.clientX;
+      s.startY = t.clientY;
+      s.lastDragTime = Date.now();
+      if (containerRef.current) containerRef.current.style.cursor = 'grabbing';
+    };
+    const onTouchMove = (e) => {
+      if (!s.isDragging || !s.canDrag) return;
+      if (!e.touches || e.touches.length === 0) return;
+      const t = e.touches[0];
+      const dx = t.clientX - s.startX;
+      const dy = t.clientY - s.startY;
+      if (Math.abs(dx) > 5 || Math.abs(dy) > 5) s.mouseHasMoved = true;
+      const now = Date.now();
+      const dt = Math.max(10, now - s.lastDragTime);
+      s.lastDragTime = now;
+      s.dragVelocityX = dx / dt;
+      s.dragVelocityY = dy / dt;
+      s.targetX += dx;
+      s.targetY += dy;
+      s.startX = t.clientX;
+      s.startY = t.clientY;
+      // 阻止瀏覽器原生滾動/回彈
+      if (e.cancelable) e.preventDefault();
+    };
+    const onTouchEnd = () => {
+      if (!s.isDragging) return;
+      s.isDragging = false;
+      if (s.canDrag && containerRef.current) {
+        containerRef.current.style.cursor = 'grab';
+        if (Math.abs(s.dragVelocityX) > 0.1 || Math.abs(s.dragVelocityY) > 0.1) {
+          s.targetX += s.dragVelocityX * settings.momentumFactor;
+          s.targetY += s.dragVelocityY * settings.momentumFactor;
+        }
+      }
+    };
+
     const containerEl = containerRef.current;
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
+    // 觸控拖曳監聽
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onTouchEnd);
     window.addEventListener('resize', onResize);
-    if (containerEl) containerEl.addEventListener('mousedown', onMouseDown);
+    if (containerEl) {
+      containerEl.addEventListener('mousedown', onMouseDown);
+      containerEl.addEventListener('touchstart', onTouchStart, { passive: false });
+    }
 
     // 禁用滾動（本頁使用拖曳取代滾動）
     const preventScroll = (e) => {
@@ -501,8 +584,13 @@ export default function Projects() {
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
       window.removeEventListener('resize', onResize);
-      if (containerEl) containerEl.removeEventListener('mousedown', onMouseDown);
+      if (containerEl) {
+        containerEl.removeEventListener('mousedown', onMouseDown);
+        containerEl.removeEventListener('touchstart', onTouchStart);
+      }
       window.removeEventListener('wheel', preventScroll);
       window.removeEventListener('touchmove', preventScroll);
 
@@ -535,8 +623,6 @@ export default function Projects() {
           }}
         />
       </div>
-
-      {/* 已移除標題區塊 */}
 
       {/* 可選：全頁暈影層（match CodePen 效果） */}
       <div className="gallery-page-vignette-container" aria-hidden>

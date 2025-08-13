@@ -22,6 +22,7 @@ html.projects-no-scroll-html {
   height: 100vh;
   overflow: hidden;
   cursor: grab;
+  touch-action: none; /* 啟用觸控拖曳，避免瀏覽器預設手勢 */
 }
 
 .gallery-canvas {
