@@ -72,7 +72,7 @@ export default function GlobalScrollbar() {
     }
     const darkUnderlay = isDarkColor(bg);
     const colorPrimary = getCSSVar('--color-primary', '#2d2d2d');
-    const colorSecondary = getCSSVar('--color-secondary', '#c6c3be');
+    const colorSecondary = getCSSVar('--color-secondary', '#e0e0e0');
 
     if (darkUnderlay) {
       // 深色底：交換顏色（track 次色、thumb 主色）    

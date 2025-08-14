@@ -2,7 +2,7 @@
 :root {
   /* 灰色調色板 */
   --color-primary: #2d2d2d; /* 深灰 */
-  --color-secondary: #c6c3be; /* 淺灰 */
+  --color-secondary: #e0e0e0; /* 淺灰 */
   --color-accent: #ccc; /* 中灰 */
   --color-light: #f5f5f5; /* 極淺灰 */
   --color-dark: #1a1a1a; /* 極深灰 */
