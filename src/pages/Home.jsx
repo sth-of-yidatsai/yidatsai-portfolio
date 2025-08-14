@@ -51,8 +51,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 捲動空間 - 讓 Footer 動畫能夠觸發 */}
-      <div className="scroll-space"></div>
+      {/* 已移除額外捲動空間，避免 Footer 上方出現空白區塊 */}
     </div>
   );
 }

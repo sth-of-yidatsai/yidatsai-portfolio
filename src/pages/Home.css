@@ -194,12 +194,7 @@
   }
 }
 
-/* 捲動空間 - 讓 Footer 動畫能夠觸發 */
-.scroll-space {
-  height: 50vh;
-  background-color: var(--color-bg);
-  transition: background-color 0.3s ease;
-}
+/* 移除 .scroll-space 以消除 Footer 上方多餘空白 */
 
 /* 響應式設計 */
 @media (max-width: 768px) {
