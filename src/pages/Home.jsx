@@ -1,9 +1,13 @@
 import React from 'react';
 import './Home.css';
+import HorizontalScroller from '../components/HorizontalScroller';
 
 export default function Home() {
   return (
     <div className="home-container">
+      {/* 第一屏：橫向捲動 */}
+      <HorizontalScroller />
+
       {/* 第一個 100vh 區塊 */}
       <section className="hero-section">
         <div className="hero-content">

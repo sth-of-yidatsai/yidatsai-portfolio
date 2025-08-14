@@ -3,7 +3,8 @@
   background: var(--color-dark);
   color: var(--color-light);
   padding: var(--space-2xl) 0 var(--space-lg);
-  margin-top: var(--space-2xl);
+  margin-top: 0;
+  margin-bottom: 0;
   position: relative;
 }
 
