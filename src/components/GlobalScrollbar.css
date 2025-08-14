@@ -1,0 +1,44 @@
+.global-scrollbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 6px; /* 扁平極細 */
+  height: 100vh;
+  background: var(--gs-track, transparent);
+  z-index: 1200; /* 高於內容，低於全局導航如需調整 */
+  opacity: 0;
+  pointer-events: none; /* 預設不攔截，避免遮擋內容 */
+  transition: opacity 0.2s ease;
+}
+
+.global-scrollbar.active {
+  opacity: 1;
+  pointer-events: auto; /* 當頁面可滾動時才可互動 */
+}
+
+.global-scrollbar-thumb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: var(--gs-thumb, var(--color-primary));
+  cursor: grab;
+  will-change: transform, height;
+}
+
+.global-scrollbar-thumb:active {
+  cursor: grabbing;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  /* 行動裝置可隱藏，避免與原生行為衝突 */
+  .global-scrollbar {
+    display: none;
+  }
+}
+
+/* Header 開啟狀態時隱藏全域滾動條 */
+body.menu-open .global-scrollbar {
+  opacity: 0;
+  pointer-events: none;
+}

@@ -62,6 +62,23 @@ body {
   user-select: none;
 }
 
+/* 自訂全域捲軸：隱藏原生滾動條（以自製 GlobalScrollbar 取代） */
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+*::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* Firefox */
+* {
+  scrollbar-width: none;
+}
+
 /* 全站隱藏預設游標（桌面設備） - 防止局部樣式覆蓋 */
 @media (hover: hover) and (pointer: fine) {
   html,
