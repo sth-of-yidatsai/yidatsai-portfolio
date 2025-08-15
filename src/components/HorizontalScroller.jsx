@@ -69,14 +69,14 @@ export default function HorizontalScroller() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInHorizontalSection, setIsInHorizontalSection] = useState(false);
   const [colors, setColors] = useState({
-    track: "var(--color-primary)",
-    thumb: "var(--color-secondary)",
+    track: getCSSVar("--scrollbar-track", "#ababab"),
+    thumb: getCSSVar("--scrollbar-thumb-light", "#ffffff"),
   });
 
   // 使用導入的 section 配置
   const sections = sectionConfigs;
 
-  // 計算和設置顏色 - 與 GlobalScrollbar 一致
+  // 計算和設置顏色 - track 固定為 #808080，只有 thumb 反色
   const computeAndSetColors = () => {
     const trackEl = scrollbarRef.current;
     if (!trackEl) return;
@@ -112,15 +112,16 @@ export default function HorizontalScroller() {
         getComputedStyle(document.body).backgroundColor || "rgb(255,255,255)";
     }
     const darkUnderlay = isDarkColor(bg);
-    const colorPrimary = getCSSVar("--color-primary", "#2d2d2d");
-    const colorSecondary = getCSSVar("--color-secondary", "#e0e0e0");
+    const trackColor = getCSSVar("--scrollbar-track", "#ababab");
+    const thumbLightColor = getCSSVar("--scrollbar-thumb-light", "#ffffff");
+    const thumbDarkColor = getCSSVar("--scrollbar-thumb-dark", "#000000");
 
     if (darkUnderlay) {
-      // 深色底：交換顏色（track 次色、thumb 主色）
-      setColors({ track: colorPrimary, thumb: colorSecondary });
+      // 深色底：track 固定灰色，thumb 淺色
+      setColors({ track: trackColor, thumb: thumbLightColor });
     } else {
-      // 淺色底：track 主色、thumb 次色
-      setColors({ track: colorSecondary, thumb: colorPrimary });
+      // 淺色底：track 固定灰色，thumb 深色
+      setColors({ track: trackColor, thumb: thumbDarkColor });
     }
   };
 

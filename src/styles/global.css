@@ -35,6 +35,11 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* 滾動條顏色 */
+  --scrollbar-track: #ababab; /* 軌道固定顏色 */
+  --scrollbar-thumb-light: #ffffff; /* 深色背景時的 thumb 顏色 */
+  --scrollbar-thumb-dark: #000000; /* 淺色背景時的 thumb 顏色 */
 }
 
 /* 2. 全局基礎樣式 */
