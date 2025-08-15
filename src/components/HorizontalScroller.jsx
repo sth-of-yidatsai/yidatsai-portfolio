@@ -1,14 +1,14 @@
-import React, {
-  useLayoutEffect,
-  useRef,
-  useState,
-  useEffect,
-  useMemo,
-} from "react";
+import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalScroller.css";
-import projects from "../data/projects.json";
+import {
+  VisionSection,
+  MissionSection,
+  WorksSection,
+  ProjectsSection,
+  sectionConfigs,
+} from "./sections";
 
 // 顏色解析和反色邏輯 - 與 GlobalScrollbar 一致
 function parseRGBA(color) {
@@ -73,44 +73,8 @@ export default function HorizontalScroller() {
     thumb: "var(--color-secondary)",
   });
 
-  // 準備 section 資料
-  const sections = useMemo(
-    () => [
-      {
-        id: "vision",
-        title: "Vision",
-        subtitle: "你中心的世界",
-        content: "從你的視角出發，創造無限可能的未來景象。",
-        bgColor: "#1a1a1a",
-        textColor: "#ffffff",
-      },
-      {
-        id: "mission",
-        title: "Mission",
-        subtitle: "設計思維",
-        content: "以使用者為中心的設計思維，打造更好的體驗。",
-        bgColor: "#2d2d2d",
-        textColor: "#ffffff",
-      },
-      {
-        id: "works",
-        title: "Works",
-        subtitle: "精選作品",
-        content: "展示我們的創作成果與設計理念。",
-        bgColor: "#404040",
-        textColor: "#ffffff",
-      },
-      {
-        id: "projects",
-        title: "Projects",
-        subtitle: "專案展示",
-        content: "深入了解每個專案背後的故事。",
-        bgColor: "#1a1a1a",
-        textColor: "#ffffff",
-      },
-    ],
-    []
-  );
+  // 使用導入的 section 配置
+  const sections = sectionConfigs;
 
   // 計算和設置顏色 - 與 GlobalScrollbar 一致
   const computeAndSetColors = () => {
@@ -341,43 +305,46 @@ export default function HorizontalScroller() {
     <>
       <section ref={containerRef} className="hs-container">
         <div ref={scrollerRef} className="hs-scroller">
-          {sections.map((section, index) => (
-            <div
-              key={section.id}
-              className={`hs-section hs-section-${index} ${
-                index > 0 ? "sticky" : ""
-              }`}
-              style={{
-                backgroundColor: section.bgColor,
-                color: section.textColor,
-              }}
-            >
-              <div className="hs-section-content">
-                <div className="hs-section-number">
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-                <h2 className="hs-section-title">{section.title}</h2>
-                <h3 className="hs-section-subtitle">{section.subtitle}</h3>
-                <p className="hs-section-text">{section.content}</p>
-
-                {/* 如果是 projects section，顯示作品 */}
-                {section.id === "projects" && (
-                  <div className="hs-projects-grid">
-                    {projects.slice(0, 3).map((project, projectIndex) => (
-                      <div key={projectIndex} className="hs-project-item">
-                        <img
-                          src={project.projectImages?.[0]}
-                          alt={project.title}
-                          className="hs-project-img"
-                        />
-                        <div className="hs-project-title">{project.title}</div>
+          {sections.map((section, index) => {
+            // 根據 section.id 渲染對應的組件
+            const renderSection = () => {
+              switch (section.id) {
+                case "vision":
+                  return <VisionSection config={section} index={index} />;
+                case "mission":
+                  return <MissionSection config={section} index={index} />;
+                case "works":
+                  return <WorksSection config={section} index={index} />;
+                case "projects":
+                  return <ProjectsSection config={section} index={index} />;
+                default:
+                  return (
+                    <div
+                      className={`hs-section hs-section-${index} ${
+                        index > 0 ? "sticky" : ""
+                      }`}
+                      style={{
+                        backgroundColor: "#1a1a1a",
+                        color: "#ffffff",
+                      }}
+                    >
+                      <div className="hs-section-content">
+                        <div className="hs-section-number">
+                          {String(index + 1).padStart(2, "0")}
+                        </div>
+                        <h2 className="hs-section-title">{section.title}</h2>
+                        <h3 className="hs-section-subtitle">預設區塊</h3>
+                        <p className="hs-section-text">
+                          這是一個預設的區塊內容。
+                        </p>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
+                    </div>
+                  );
+              }
+            };
+
+            return <div key={section.id}>{renderSection()}</div>;
+          })}
         </div>
       </section>
 

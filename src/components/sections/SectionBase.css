@@ -1,0 +1,217 @@
+/* Section 基礎樣式 */
+.hs-section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hs-section.sticky {
+  position: sticky;
+  left: 0;
+}
+
+.hs-section-content {
+  max-width: 1200px;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.hs-section-number {
+  font-size: 1.2rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+
+.hs-section-title {
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hs-section-subtitle {
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  opacity: 0.8;
+}
+
+.hs-section-text {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  opacity: 0.9;
+}
+
+/* Vision Section 特有樣式 */
+.vision-specific-content {
+  margin-top: 3rem;
+}
+
+.vision-highlight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.vision-icon {
+  font-size: 2rem;
+}
+
+.vision-highlight p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Mission Section 特有樣式 */
+.mission-specific-content {
+  margin-top: 3rem;
+}
+
+.mission-principles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.principle-item {
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.principle-item h4 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.principle-item p {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* Works Section 特有樣式 */
+.works-specific-content {
+  margin-top: 3rem;
+}
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.work-item {
+  text-align: center;
+  padding: 2rem 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.work-item:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.work-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.work-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.work-description {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* Projects Section 特有樣式 */
+.hs-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.hs-project-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hs-project-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.hs-project-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.hs-project-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 1rem 1rem 0.5rem;
+  color: #ffffff;
+}
+
+.hs-project-description {
+  font-size: 1rem;
+  opacity: 0.8;
+  padding: 0 1rem 1rem;
+  line-height: 1.4;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .hs-section-title {
+    font-size: 2.5rem;
+  }
+
+  .hs-section-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .hs-section-text {
+    font-size: 1rem;
+  }
+
+  .mission-principles {
+    grid-template-columns: 1fr;
+  }
+
+  .works-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hs-projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
