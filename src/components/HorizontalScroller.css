@@ -1,75 +1,298 @@
-.hs-section {
-  height: auto;
-  width: 100%;
+/* 隱藏原生滾動條 */
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 主容器 */
+.hs-container {
   position: relative;
-  padding: 0;
-  overflow-x: hidden;
-}
-
-.hs-portfolio {
-  width: 100%;
   height: 100vh;
-  display: flex;
-  flex-wrap: nowrap;
-  background-color: var(--color-dark);
   overflow: hidden;
+  background: #1a1a1a;
 }
 
-.hs-portfolio_title {
-  position: absolute;
-  top: 0;
-  left: -15rem;
-  font-size: 24rem;
-  letter-spacing: 0;
-  -webkit-text-stroke-color: #343A42;
-  display: inline-block;
-  font-family: var(--font-latin), var(--font-cjk);
-}
-
-.hs-text-stroke {
-  -webkit-text-fill-color: transparent;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #343A42;
-}
-
-.hs-panel {
+/* 水平滾動器 */
+.hs-scroller {
   display: flex;
-  flex: 0 0 50%;
-  flex-wrap: wrap;
+  height: 100%;
+  will-change: transform;
+}
+
+/* Section 基本樣式 */
+.hs-section {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  display: flex;
   align-items: center;
-  align-content: center;
   justify-content: center;
-  height: 100%;
-  padding: 10rem 7rem 2rem 7rem;
-  background-color: transparent;
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.hs-panel_item {
-  height: 100%;
-  width: 100%;
-  margin: 0 auto;
+/* Sticky 效果 */
+.hs-section.sticky {
+  position: sticky;
+  left: 0;
 }
 
-.hs-panel_img {
+/* Section 內容容器 */
+.hs-section-content {
+  max-width: 1200px;
+  padding: 0 4rem;
+  text-align: left;
+  position: relative;
+  z-index: 2;
+}
+
+/* Section 編號 */
+.hs-section-number {
+  font-size: 1rem;
+  font-weight: 300;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+  font-family: var(--font-latin);
+}
+
+/* Section 標題 */
+.hs-section-title {
+  font-size: clamp(4rem, 8vw, 12rem);
+  font-weight: 700;
+  line-height: 0.9;
+  margin-bottom: 1rem;
+  font-family: var(--font-latin);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--color-light);
+}
+
+/* Section 副標題 */
+.hs-section-subtitle {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 300;
+  margin-bottom: 2rem;
+  opacity: 0.8;
+  font-family: var(--font-cjk);
+  color: var(--color-light);
+}
+
+/* Section 文字內容 */
+.hs-section-text {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 600px;
+  opacity: 0.9;
+  font-family: var(--font-cjk);
+}
+
+/* Projects 網格 */
+.hs-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.hs-project-item {
+  position: relative;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.hs-project-item:hover {
+  transform: scale(1.02);
+}
+
+.hs-project-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  margin: 0 auto;
+  transition: transform 0.3s ease;
 }
 
+.hs-project-item:hover .hs-project-img {
+  transform: scale(1.05);
+}
+
+.hs-project-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  padding: 2rem 1.5rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-family: var(--font-cjk);
+}
+
+/* 自訂水平滾動條 - 完全參考 GlobalScrollbar 樣式 */
+.hs-horizontal-scrollbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 6px; /* 與 GlobalScrollbar 一致的扁平極細 */
+  background: var(--hs-track, transparent);
+  z-index: 1200; /* 與 GlobalScrollbar 相同的 z-index */
+  opacity: 0;
+  pointer-events: none; /* 預設不攔截，避免遮擋內容 */
+  transition: opacity 0.2s ease;
+}
+
+.hs-horizontal-scrollbar.active {
+  opacity: 1;
+  pointer-events: auto; /* 當在水平滾動區域時才可互動 */
+}
+
+.hs-scrollbar-thumb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--hs-thumb, var(--color-primary));
+  cursor: grab;
+  will-change: transform;
+}
+
+.hs-scrollbar-thumb:active {
+  cursor: grabbing;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  /* 行動裝置可隱藏，避免與原生行為衝突 */
+  .hs-horizontal-scrollbar {
+    display: none;
+  }
+}
+
+/* 響應式設計 */
 @media (max-width: 1200px) {
-  .hs-portfolio_title { font-size: 18rem; }
-}
+  .hs-section-content {
+    padding: 0 3rem;
+  }
 
-@media (max-width: 992px) {
-  .hs-portfolio_title { font-size: 14rem; }
-  .hs-panel { flex: 0 0 70%; padding: 6rem 3rem 2rem 3rem; }
+  .hs-projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
 }
 
 @media (max-width: 768px) {
-  .hs-portfolio_title { font-size: 8rem; left: -8rem; }
-  .hs-panel { flex: 0 0 80%; padding: 4rem 2rem; }
+  .hs-section-content {
+    padding: 0 2rem;
+  }
+
+  .hs-section-title {
+    font-size: clamp(3rem, 12vw, 6rem);
+  }
+
+  .hs-section-subtitle {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+  }
+
+  .hs-section-text {
+    font-size: 1rem;
+  }
+
+  .hs-projects-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .hs-horizontal-scrollbar {
+    width: 80%;
+    bottom: 1rem;
+  }
 }
 
+@media (max-width: 480px) {
+  .hs-section-content {
+    padding: 0 1.5rem;
+  }
 
+  .hs-section-title {
+    font-size: clamp(2.5rem, 15vw, 4rem);
+  }
+}
+
+/* 特殊視覺效果 - 參考 center.land */
+.hs-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.05) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.hs-section:hover::before {
+  opacity: 1;
+}
+
+/* 動畫效果 */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hs-section-content > * {
+  animation: slideIn 0.8s ease-out;
+  animation-fill-mode: both;
+}
+
+.hs-section-number {
+  animation-delay: 0.1s;
+}
+.hs-section-title {
+  animation-delay: 0.2s;
+}
+.hs-section-subtitle {
+  animation-delay: 0.3s;
+}
+.hs-section-text {
+  animation-delay: 0.4s;
+}
+.hs-projects-grid {
+  animation-delay: 0.5s;
+}
+
+/* 漸層背景變化 */
+.hs-section-0 {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.hs-section-1 {
+  background: linear-gradient(135deg, #2d2d2d 0%, #404040 100%);
+}
+
+.hs-section-2 {
+  background: linear-gradient(135deg, #404040 0%, #1a1a1a 100%);
+}
+
+.hs-section-3 {
+  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+}

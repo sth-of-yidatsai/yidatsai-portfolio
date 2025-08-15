@@ -42,3 +42,9 @@ body.menu-open .global-scrollbar {
   opacity: 0;
   pointer-events: none;
 }
+
+/* 水平滾動區域內隱藏全域滾動條 */
+body.horizontal-scrolling .global-scrollbar {
+  opacity: 0;
+  pointer-events: none;
+}
