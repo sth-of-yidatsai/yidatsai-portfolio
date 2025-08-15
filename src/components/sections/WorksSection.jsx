@@ -2,14 +2,6 @@ import React from "react";
 import "./SectionBase.css";
 
 export default function WorksSection({ config, index }) {
-  // 內建配置
-  const sectionConfig = {
-    subtitle: "精選作品",
-    content: "展示我們的創作成果與設計理念。",
-    bgColor: "#404040",
-    textColor: "#ffffff",
-  };
-
   const featuredWorks = [
     {
       title: "UI/UX 設計",
@@ -30,19 +22,17 @@ export default function WorksSection({ config, index }) {
 
   return (
     <div
-      className={`hs-section hs-section-${index} ${index > 0 ? "sticky" : ""}`}
-      style={{
-        backgroundColor: sectionConfig.bgColor,
-        color: sectionConfig.textColor,
-      }}
+      className={`hs-section works-section hs-section-${index} ${
+        index > 0 ? "sticky" : ""
+      }`}
     >
       <div className="hs-section-content">
         <div className="hs-section-number">
           {String(index + 1).padStart(2, "0")}
         </div>
         <h2 className="hs-section-title">{config.title}</h2>
-        <h3 className="hs-section-subtitle">{sectionConfig.subtitle}</h3>
-        <p className="hs-section-text">{sectionConfig.content}</p>
+        <h3 className="hs-section-subtitle">精選作品</h3>
+        <p className="hs-section-text">展示我們的創作成果與設計理念。</p>
 
         {/* Works 特有的內容 */}
         <div className="works-specific-content">

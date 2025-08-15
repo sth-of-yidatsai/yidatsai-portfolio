@@ -8,6 +8,27 @@
   position: relative;
 }
 
+/* 各個 Section 的專用樣式 - 提高優先級 */
+.hs-section.vision-section {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.hs-section.mission-section {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.hs-section.works-section {
+  background-color: #404040 !important;
+  color: #ffffff !important;
+}
+
+.hs-section.projects-section {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
 .hs-section.sticky {
   position: sticky;
   left: 0;

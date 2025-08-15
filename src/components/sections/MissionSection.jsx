@@ -2,29 +2,21 @@ import React from "react";
 import "./SectionBase.css";
 
 export default function MissionSection({ config, index }) {
-  // 內建配置
-  const sectionConfig = {
-    subtitle: "設計思維",
-    content: "以使用者為中心的設計思維，打造更好的體驗。",
-    bgColor: "#2d2d2d",
-    textColor: "#ffffff",
-  };
-
   return (
     <div
-      className={`hs-section hs-section-${index} ${index > 0 ? "sticky" : ""}`}
-      style={{
-        backgroundColor: sectionConfig.bgColor,
-        color: sectionConfig.textColor,
-      }}
+      className={`hs-section mission-section hs-section-${index} ${
+        index > 0 ? "sticky" : ""
+      }`}
     >
       <div className="hs-section-content">
         <div className="hs-section-number">
           {String(index + 1).padStart(2, "0")}
         </div>
         <h2 className="hs-section-title">{config.title}</h2>
-        <h3 className="hs-section-subtitle">{sectionConfig.subtitle}</h3>
-        <p className="hs-section-text">{sectionConfig.content}</p>
+        <h3 className="hs-section-subtitle">設計思維</h3>
+        <p className="hs-section-text">
+          以使用者為中心的設計思維，打造更好的體驗。
+        </p>
 
         {/* Mission 特有的內容 */}
         <div className="mission-specific-content">

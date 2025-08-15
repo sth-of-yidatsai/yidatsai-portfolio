@@ -176,19 +176,4 @@ body.menu-open .hs-horizontal-scrollbar {
   animation-delay: 0.5s;
 }
 
-/* 漸層背景變化 */
-.hs-section-0 {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-}
-
-.hs-section-1 {
-  background: linear-gradient(135deg, #2d2d2d 0%, #404040 100%);
-}
-
-.hs-section-2 {
-  background: linear-gradient(135deg, #404040 0%, #1a1a1a 100%);
-}
-
-.hs-section-3 {
-  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
-}
+/* 漸層背景變化已移至 SectionBase.css 中的各個 section 類別 */

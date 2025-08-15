@@ -3,29 +3,19 @@ import projects from "../../data/projects.json";
 import "./SectionBase.css";
 
 export default function ProjectsSection({ config, index }) {
-  // 內建配置
-  const sectionConfig = {
-    subtitle: "專案展示",
-    content: "深入了解每個專案背後的故事。",
-    bgColor: "#1a1a1a",
-    textColor: "#ffffff",
-  };
-
   return (
     <div
-      className={`hs-section hs-section-${index} ${index > 0 ? "sticky" : ""}`}
-      style={{
-        backgroundColor: sectionConfig.bgColor,
-        color: sectionConfig.textColor,
-      }}
+      className={`hs-section projects-section hs-section-${index} ${
+        index > 0 ? "sticky" : ""
+      }`}
     >
       <div className="hs-section-content">
         <div className="hs-section-number">
           {String(index + 1).padStart(2, "0")}
         </div>
         <h2 className="hs-section-title">{config.title}</h2>
-        <h3 className="hs-section-subtitle">{sectionConfig.subtitle}</h3>
-        <p className="hs-section-text">{sectionConfig.content}</p>
+        <h3 className="hs-section-subtitle">專案展示</h3>
+        <p className="hs-section-text">深入了解每個專案背後的故事。</p>
 
         {/* Projects 特有的內容 - 保持原有的專案展示 */}
         <div className="hs-projects-grid">
