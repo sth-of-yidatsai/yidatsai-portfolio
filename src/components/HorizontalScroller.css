@@ -168,6 +168,12 @@ html {
   cursor: grabbing;
 }
 
+/* Header 開啟狀態時隱藏水平滾動條 */
+body.menu-open .hs-horizontal-scrollbar {
+  opacity: 0;
+  pointer-events: none;
+}
+
 @media (hover: none) and (pointer: coarse) {
   /* 行動裝置可隱藏，避免與原生行為衝突 */
   .hs-horizontal-scrollbar {
