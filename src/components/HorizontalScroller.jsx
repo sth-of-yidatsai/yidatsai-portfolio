@@ -136,25 +136,45 @@ export default function HorizontalScroller() {
       gsap.set(scroller, { width: totalWidth });
 
       // 建立水平滾動動畫
+      // 增加停頓區域 - 相當於一個螢幕寬度的額外滾動距離
+      const pauseZoneHeight = window.innerHeight;
+      const horizontalScrollDistance = totalWidth - window.innerWidth;
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           pin: true,
           scrub: 1,
           start: "top top",
-          end: () => `+=${totalWidth - window.innerWidth}`,
+          end: () => `+=${horizontalScrollDistance + pauseZoneHeight}`,
           onUpdate: (self) => {
-            // self.progress 就是 ScrollTrigger 內部的進度 (0-1)
-            // 這個值不受頁面其他內容影響，只代表這個水平滾動區域的進度
+            // 計算實際的水平滾動進度
+            // 當 self.progress 到達水平滾動完成點時，應該保持在 1.0
+            const horizontalProgressThreshold =
+              horizontalScrollDistance /
+              (horizontalScrollDistance + pauseZoneHeight);
+
+            let horizontalProgress;
+            if (self.progress <= horizontalProgressThreshold) {
+              // 在水平滾動階段
+              horizontalProgress = self.progress / horizontalProgressThreshold;
+            } else {
+              // 在停頓區階段，保持水平滾動完成狀態
+              horizontalProgress = 1.0;
+            }
+
             console.log(
-              "Progress:",
+              "Total Progress:",
               self.progress,
-              "Sections:",
-              sections.length,
-              "Transform:",
-              self.progress * (100 - 100 / sections.length) + "%"
+              "Horizontal Progress:",
+              horizontalProgress,
+              "Threshold:",
+              horizontalProgressThreshold,
+              "In Pause Zone:",
+              self.progress > horizontalProgressThreshold
             );
-            setScrollProgress(self.progress);
+
+            setScrollProgress(horizontalProgress);
             computeAndSetColors();
           },
           onEnter: () => {
@@ -178,11 +198,22 @@ export default function HorizontalScroller() {
         },
       });
 
-      // 水平移動動畫
+      // 水平移動動畫 - 只在水平滾動階段進行
+      // 計算動畫持續時間比例（排除停頓區）
+      const animationDuration =
+        horizontalScrollDistance / (horizontalScrollDistance + pauseZoneHeight);
+
       tl.to(scroller, {
         x: () => -(totalWidth - window.innerWidth),
         ease: "none",
-      });
+        duration: animationDuration,
+      })
+        // 在停頓區階段保持位置不變
+        .to(scroller, {
+          x: () => -(totalWidth - window.innerWidth),
+          ease: "none",
+          duration: 1 - animationDuration,
+        });
 
       // Sticky 效果處理
       sections.forEach((_, index) => {
@@ -324,9 +355,7 @@ export default function HorizontalScroller() {
                       className={`hs-section hs-section-${index} ${
                         index > 0 ? "sticky" : ""
                       }`}
-                    >
-                      {/* 預設區塊 - 每個 section 會個別設計 */}
-                    </div>
+                    ></div>
                   );
               }
             };
