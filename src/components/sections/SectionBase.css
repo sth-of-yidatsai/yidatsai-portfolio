@@ -210,6 +210,145 @@
   line-height: 1.4;
 }
 
+/* 滿版四等分區域樣式 */
+.fullscreen-projects-content {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.fullscreen-project-block {
+  width: 25vw;
+  height: 100vh;
+  position: relative;
+  background-color: var(--color-secondary); /* 使用全域淺灰色變數 */
+  background-image: var(--project-bg-image);
+  background-size: cover;
+  background-position: center;
+  cursor: none;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+/* 區塊 1、2、3 右邊加邊框 */
+.fullscreen-project-block:nth-child(1),
+.fullscreen-project-block:nth-child(2),
+.fullscreen-project-block:nth-child(3) {
+  border-right: 1px solid var(--color-accent);
+}
+
+.project-block-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-secondary); /* 無 hover 時全灰底 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem 2rem;
+  transition: background 0.4s ease;
+}
+
+.fullscreen-project-block:hover .project-block-overlay {
+  background: transparent; /* hover 時完全透明，100% 顯示圖片 */
+}
+
+.project-block-number-large {
+  font-family: var(--font-latin), var(--font-cjk);
+  font-size: 16rem; /* 加大數字 */
+  font-weight: 200; /* 較細字重 */
+  color: var(--color-primary);
+  line-height: 0.8;
+  opacity: 0.15;
+  margin-top: 2rem; /* 往下移 */
+  transition: all 0.4s ease;
+}
+
+.fullscreen-project-block:hover .project-block-number-large {
+  color: var(--color-secondary);
+  opacity: 0.1;
+}
+
+.project-title-corner {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-family: var(--font-latin), var(--font-cjk);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--color-primary);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  line-height: 1.2;
+  transition: color 0.4s ease;
+  max-width: 1.5rem;
+  text-align: center;
+}
+
+.fullscreen-project-block:hover .project-title-corner {
+  color: var(--color-secondary);
+}
+
+.project-block-content-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.project-category-large {
+  font-family: var(--font-latin), var(--font-cjk);
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--color-primary);
+  line-height: 1;
+  transition: color 0.4s ease;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  align-self: flex-start;
+}
+
+.fullscreen-project-block:hover .project-category-large {
+  color: var(--color-secondary);
+}
+
+.project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.project-label {
+  font-family: var(--font-latin), var(--font-cjk);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  text-transform: lowercase;
+  transition: color 0.4s ease;
+}
+
+.fullscreen-project-block:hover .project-label {
+  color: var(--color-secondary);
+}
+
+.project-description-small {
+  font-family: var(--font-latin), var(--font-cjk);
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--color-primary);
+  line-height: 1.4;
+  opacity: 0.8;
+  transition: color 0.4s ease;
+}
+
+.fullscreen-project-block:hover .project-description-small {
+  color: var(--color-secondary);
+}
+
 /* 響應式設計 */
 @media (max-width: 768px) {
   .hs-section-title {
@@ -234,5 +373,52 @@
 
   .hs-projects-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* 滿版設計響應式 */
+  .fullscreen-projects-content {
+    flex-direction: column;
+    height: 400vh; /* 四個區塊垂直排列 */
+  }
+
+  .fullscreen-project-block {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .project-category-large {
+    writing-mode: horizontal-tb;
+    text-orientation: initial;
+    font-size: 2rem;
+  }
+
+  .project-block-number-large {
+    font-size: 8rem;
+  }
+
+  .project-block-overlay {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-category-large {
+    font-size: 1.5rem;
+  }
+
+  .project-block-number-large {
+    font-size: 6rem;
+  }
+
+  .project-label {
+    font-size: 0.9rem;
+  }
+
+  .project-description-small {
+    font-size: 0.8rem;
+  }
+
+  .project-block-overlay {
+    padding: 1.5rem 1rem;
   }
 }

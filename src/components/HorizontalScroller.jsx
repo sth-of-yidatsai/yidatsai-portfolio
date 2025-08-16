@@ -324,21 +324,8 @@ export default function HorizontalScroller() {
                       className={`hs-section hs-section-${index} ${
                         index > 0 ? "sticky" : ""
                       }`}
-                      style={{
-                        backgroundColor: "#1a1a1a",
-                        color: "#ffffff",
-                      }}
                     >
-                      <div className="hs-section-content">
-                        <div className="hs-section-number">
-                          {String(index + 1).padStart(2, "0")}
-                        </div>
-                        <h2 className="hs-section-title">{section.title}</h2>
-                        <h3 className="hs-section-subtitle">預設區塊</h3>
-                        <p className="hs-section-text">
-                          這是一個預設的區塊內容。
-                        </p>
-                      </div>
+                      {/* 預設區塊 - 每個 section 會個別設計 */}
                     </div>
                   );
               }

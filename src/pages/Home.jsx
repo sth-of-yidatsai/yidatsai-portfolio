@@ -1,6 +1,6 @@
-import React from 'react';
-import './Home.css';
-import HorizontalScroller from '../components/HorizontalScroller';
+import React from "react";
+import "./Home.css";
+import HorizontalScroller from "../components/HorizontalScroller";
 
 export default function Home() {
   return (
@@ -50,8 +50,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* 已移除額外捲動空間，避免 Footer 上方出現空白區塊 */}
     </div>
   );
 }
