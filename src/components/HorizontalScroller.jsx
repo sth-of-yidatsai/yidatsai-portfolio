@@ -76,7 +76,7 @@ export default function HorizontalScroller() {
   // 使用導入的 section 配置
   const sections = sectionConfigs;
 
-  // 計算和設置顏色 - track 固定為 #808080，只有 thumb 反色
+  // 計算和設置顏色 - track 固定，只有 thumb 反色
   const computeAndSetColors = () => {
     const trackEl = scrollbarRef.current;
     if (!trackEl) return;
