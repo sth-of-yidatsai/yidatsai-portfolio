@@ -225,19 +225,64 @@
   height: 100vh;
   position: relative;
   background-color: var(--color-secondary); /* 使用全域淺灰色變數 */
+  cursor: none;
+  overflow: hidden;
+}
+
+/* 使用偽元素來處理背景圖片，這樣可以獨立控制圖片的縮放 */
+.fullscreen-project-block::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-image: var(--project-bg-image);
   background-size: cover;
   background-position: center;
-  cursor: none;
-  overflow: hidden;
-  transition: all 0.4s ease;
+  background-repeat: no-repeat;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1);
+  z-index: 0;
 }
 
-/* 區塊 1、2、3 右邊加邊框 */
-.fullscreen-project-block:nth-child(1),
-.fullscreen-project-block:nth-child(2),
-.fullscreen-project-block:nth-child(3) {
-  border-right: 1px solid var(--color-accent);
+.fullscreen-project-block:hover::before {
+  transform: scale(1.1); /* hover 時只放大背景圖片 */
+}
+
+/* 區塊分隔線 - 使用更精確的定位避免重疊 */
+.fullscreen-projects-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 25vw; /* 第1和第2區之間 */
+  width: 1px;
+  height: 100vh;
+  background-color: var(--color-text-light);
+  z-index: 2;
+}
+
+.fullscreen-projects-content::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50vw; /* 第2和第3區之間 */
+  width: 1px;
+  height: 100vh;
+  background-color: var(--color-text-light);
+  z-index: 2;
+}
+
+/* 第3和第4區之間的分隔線 */
+.fullscreen-project-block:nth-child(3)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background-color: var(--color-text-light);
+  z-index: 2;
 }
 
 .project-block-overlay {
@@ -251,32 +296,45 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 3rem 2rem;
-  transition: background 0.4s ease;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backdrop-filter: blur(2px);
+  z-index: 1; /* 確保在背景圖片之上 */
 }
 
 .fullscreen-project-block:hover .project-block-overlay {
-  background: transparent; /* hover 時完全透明，100% 顯示圖片 */
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    /* 上方完全透明，圖片清晰 */ transparent 40%,
+    /* 中間區域保持透明 */ rgba(0, 0, 0, 0.3) 70%,
+    /* 開始出現黑色漸層 */ rgba(0, 0, 0, 0.6) 100%
+      /* 底部較深的黑色，增強文字閱讀性 */
+  );
+  backdrop-filter: blur(0px);
 }
 
 .project-block-number-large {
   font-family: var(--font-latin), var(--font-cjk);
-  font-size: 16rem; /* 加大數字 */
-  font-weight: 200; /* 較細字重 */
+  font-size: 16rem;
+  font-weight: 200;
   color: var(--color-primary);
   line-height: 0.8;
-  opacity: 0.15;
-  margin-top: 2rem; /* 往下移 */
-  transition: all 0.4s ease;
+  opacity: 0.25;
+  margin-top: 2rem;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(0px) scale(1);
 }
 
 .fullscreen-project-block:hover .project-block-number-large {
-  color: var(--color-secondary);
-  opacity: 0.1;
+  color: rgba(255, 255, 255, 0.8); /* hover 時改為白色，但保持較低透明度 */
+  opacity: 0.5; /* 稍微提高透明度，因為在透明區域 */
+  transform: translateY(-10px) scale(1.02); /* hover 時輕微上移和放大 */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 添加輕微陰影 */
 }
 
 .project-title-corner {
   position: absolute;
-  top: 2rem;
+  top: 5.5rem;
   right: 2rem;
   font-family: var(--font-latin), var(--font-cjk);
   font-size: 0.8rem;
@@ -285,41 +343,65 @@
   writing-mode: vertical-rl;
   text-orientation: mixed;
   line-height: 1.2;
-  transition: color 0.4s ease;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   max-width: 1.5rem;
   text-align: center;
+  transform: translateX(0px);
+  opacity: 0.8;
 }
 
 .fullscreen-project-block:hover .project-title-corner {
-  color: var(--color-secondary);
+  color: #ffffff; /* hover 時改為白色 */
+  transform: translateX(-5px); /* hover 時向左移動 */
+  opacity: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* 添加文字陰影 */
 }
 
 .project-block-content-bottom {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(0px);
+}
+
+.fullscreen-project-block:hover .project-block-content-bottom {
+  transform: translateY(-15px); /* hover 時整個底部內容上移 */
 }
 
 .project-category-large {
   font-family: var(--font-latin), var(--font-cjk);
-  font-size: 2.5rem;
-  font-weight: 300;
+  font-size: 3rem;
+  letter-spacing: 0.1rem;
+  font-weight: 400;
   color: var(--color-primary);
   line-height: 1;
-  transition: color 0.4s ease;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* writing-mode: vertical-rl; */
+  /* text-orientation: mixed; */
   align-self: flex-start;
+  transform: scale(1);
 }
 
 .fullscreen-project-block:hover .project-category-large {
-  color: var(--color-secondary);
+  color: #ffffff; /* hover 時改為白色，在黑色漸層上更清晰 */
+  transform: scale(1.05); /* hover 時類別文字放大 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 添加文字陰影增強可讀性 */
 }
 
 .project-info {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(0px);
+  opacity: 0.9;
+  margin-left: 0.25rem;
+}
+
+.fullscreen-project-block:hover .project-info {
+  transform: translateY(-5px); /* hover 時資訊區域向上移動 */
+  opacity: 1;
 }
 
 .project-label {
@@ -328,11 +410,14 @@
   font-weight: 500;
   color: var(--color-primary);
   text-transform: lowercase;
-  transition: color 0.4s ease;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateX(0px);
 }
 
 .fullscreen-project-block:hover .project-label {
-  color: var(--color-secondary);
+  color: #ffffff; /* hover 時改為白色 */
+  transform: translateX(12px); /* hover 時標籤向右移動 */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* 添加文字陰影 */
 }
 
 .project-description-small {
@@ -342,11 +427,15 @@
   color: var(--color-primary);
   line-height: 1.4;
   opacity: 0.8;
-  transition: color 0.4s ease;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateX(0px);
 }
 
 .fullscreen-project-block:hover .project-description-small {
-  color: var(--color-secondary);
+  color: #ffffff; /* hover 時改為白色 */
+  opacity: 1;
+  transform: translateX(12px); /* hover 時描述文字向右移動 */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* 添加文字陰影 */
 }
 
 /* 響應式設計 */
