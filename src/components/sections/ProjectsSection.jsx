@@ -61,7 +61,12 @@ export default function ProjectsSection({ index }) {
               <div className="project-block-overlay">
                 <div className="project-block-number-large">{blockNumber}</div>
 
-                <div className="project-title-corner">{project.title}</div>
+                <div className="project-title-corner">
+                  <span className="project-title-corner-title">Title: </span>
+                  <span className="project-title-corner-text">
+                    {project.title}
+                  </span>
+                </div>
 
                 <div className="project-block-content-bottom">
                   <div className="project-category-large">
