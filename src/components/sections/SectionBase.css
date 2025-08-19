@@ -150,6 +150,24 @@
   .hero-specific-content {
     padding: var(--space-md);
   }
+
+  /* Vision Section 移動設備樣式 */
+  .vision-section {
+    padding: var(--space-lg) var(--space-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vision-text-overlay {
+    text-align: center;
+    width: 100%;
+  }
+
+  .vision-text-overlay-headline {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-md);
+  }
 }
 
 /* Mission Section 特有樣式 */

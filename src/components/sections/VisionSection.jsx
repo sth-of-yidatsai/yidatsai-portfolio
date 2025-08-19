@@ -125,7 +125,11 @@ export default function VisionSection({ index }) {
 
       p.setup = () => {
         const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
-        canvas.parent(canvasRef.current);
+
+        // 安全設置canvas的parent
+        if (canvasRef.current && canvasRef.current.parentNode) {
+          canvas.parent(canvasRef.current);
+        }
 
         gravity = p.createVector(0, 0.15); // 增加重力，加快掉落速度
 
@@ -459,10 +463,35 @@ export default function VisionSection({ index }) {
     // 清理函數
     return () => {
       if (p5Instance.current) {
-        p5Instance.current.remove();
+        try {
+          // 先檢查canvas是否還存在於DOM中
+          const canvas = p5Instance.current.canvas;
+          if (canvas && canvas.parentNode) {
+            p5Instance.current.remove();
+          }
+        } catch (e) {
+          console.warn("p5.js cleanup warning:", e);
+        } finally {
+          p5Instance.current = null;
+        }
       }
     };
   }, [loading]);
+
+  // 組件卸載時的清理
+  useEffect(() => {
+    return () => {
+      if (p5Instance.current) {
+        try {
+          p5Instance.current.remove();
+        } catch (e) {
+          console.warn("Component unmount p5.js cleanup warning:", e);
+        } finally {
+          p5Instance.current = null;
+        }
+      }
+    };
+  }, []);
 
   return (
     <div
@@ -477,6 +506,7 @@ export default function VisionSection({ index }) {
       }}
     >
       <div className="vision-canvas-container" ref={canvasRef} />
+
       <div className="vision-text-overlay" ref={textRef}>
         <div className="vision-text-overlay-headline" data-animate="words">
           Composing Place Through Design

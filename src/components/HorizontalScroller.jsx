@@ -59,6 +59,7 @@ export default function HorizontalScroller() {
   const scrollerRef = useRef(null);
   const scrollbarRef = useRef(null);
   const thumbRef = useRef(null);
+  const gsapContextRef = useRef(null); // 追蹤GSAP context
   const stateRef = useRef({
     isDragging: false,
     dragStartX: 0,
@@ -78,7 +79,7 @@ export default function HorizontalScroller() {
   useEffect(() => {
     const checkMobile = () => {
       const width = window.innerWidth;
-      setIsMobile(width <= 768); // 768px以下視為移動設備
+      setIsMobile(width <= 768); // 僅用於觸控敏感度調整
     };
 
     checkMobile();
@@ -143,11 +144,7 @@ export default function HorizontalScroller() {
     const scroller = scrollerRef.current;
     if (!container || !scroller) return;
 
-    // 移動設備不啟用水平滾動
-    if (isMobile) {
-      gsap.set(scroller, { width: "auto" });
-      return;
-    }
+    // 所有設備都啟用水平滾動，但移動設備有優化的觸控處理
 
     const ctx = gsap.context(() => {
       // 計算總寬度
@@ -249,16 +246,44 @@ export default function HorizontalScroller() {
       });
     }, container);
 
-    return () => {
-      ctx.revert();
-      document.body.classList.remove("horizontal-scrolling");
-    };
-  }, [sections, isMobile]);
+    // 存儲context到ref
+    gsapContextRef.current = ctx;
 
-  // 添加觸控事件處理，只在非移動設備的水平滾動模式下啟用
+    return () => {
+      try {
+        // 先清理ScrollTrigger，再清理context
+        const triggers = ScrollTrigger.getAll();
+        triggers.forEach((trigger) => {
+          if (
+            trigger.trigger === container ||
+            trigger.trigger?.contains(container) ||
+            container.contains(trigger.trigger)
+          ) {
+            trigger.kill(true);
+          }
+        });
+
+        // 清理所有相關的GSAP動畫
+        gsap.killTweensOf(scroller);
+        gsap.killTweensOf(container);
+
+        // 最後清理context
+        if (gsapContextRef.current) {
+          gsapContextRef.current.revert();
+          gsapContextRef.current = null;
+        }
+
+        document.body.classList.remove("horizontal-scrolling");
+      } catch (e) {
+        console.warn("GSAP cleanup warning:", e);
+      }
+    };
+  }, [sections]);
+
+  // 添加觸控事件處理，針對移動設備優化滑動體驗
   useEffect(() => {
     const container = containerRef.current;
-    if (!container || isMobile) return; // 移動設備不需要此處理
+    if (!container) return;
 
     let touchStartX = 0;
     let touchStartY = 0;
@@ -278,14 +303,25 @@ export default function HorizontalScroller() {
       const deltaX = touchX - touchStartX;
       const deltaY = touchY - touchStartY;
 
+      // 針對移動設備優化的滑動檢測
+      const minSwipeDistance = isMobile ? 5 : 10; // 移動設備更敏感
+      const swipeMultiplier = isMobile ? 3 : 2; // 移動設備更高的滑動倍數
+
       // 判斷是否為水平滑動
-      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+      if (
+        Math.abs(deltaX) > Math.abs(deltaY) &&
+        Math.abs(deltaX) > minSwipeDistance
+      ) {
         isHorizontalSwipe = true;
         e.preventDefault(); // 阻止垂直滾動
 
-        // 模擬滾動事件來觸發水平滾動
-        const scrollDelta = -deltaX * 2; // 調整滑動敏感度
+        // 針對移動設備優化的滑動敏感度
+        const scrollDelta = -deltaX * swipeMultiplier;
         window.scrollBy(0, scrollDelta);
+
+        // 更新觸控起始點，實現連續滑動
+        touchStartX = touchX;
+        touchStartY = touchY;
       }
     };
 
@@ -309,7 +345,7 @@ export default function HorizontalScroller() {
       container.removeEventListener("touchmove", handleTouchMove);
       container.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [isInHorizontalSection, isMobile]);
+  }, [isInHorizontalSection, isMobile]); // 保留isMobile依賴用於觸控敏感度
 
   // 自訂滾動條處理 - 修正為只計算水平滾動區域內的進度
   const handlePointerDown = (e) => {
@@ -408,35 +444,7 @@ export default function HorizontalScroller() {
     computeAndSetColors();
   }, [isInHorizontalSection]);
 
-  // 移動設備使用垂直佈局
-  if (isMobile) {
-    return (
-      <div className="mobile-vertical-sections">
-        {sections.map((section, index) => {
-          const renderSection = () => {
-            switch (section.id) {
-              case "hero":
-                return <HeroSection config={section} index={index} />;
-              case "vision":
-                return <VisionSection config={section} index={index} />;
-              case "projects":
-                return <ProjectsSection config={section} index={index} />;
-              default:
-                return (
-                  <div
-                    className={`mobile-section mobile-section-${index}`}
-                  ></div>
-                );
-            }
-          };
-
-          return <div key={section.id}>{renderSection()}</div>;
-        })}
-      </div>
-    );
-  }
-
-  // 桌面設備使用水平滾動
+  // 所有設備都使用水平滾動，但移動設備有優化的觸控體驗
   return (
     <>
       <section ref={containerRef} className="hs-container">

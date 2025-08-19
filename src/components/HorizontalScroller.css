@@ -176,32 +176,16 @@ body.menu-open .hs-horizontal-scrollbar {
   animation-delay: 0.5s;
 }
 
-/* 移動設備垂直佈局樣式 */
-.mobile-vertical-sections {
-  display: flex;
-  flex-direction: column;
-}
-
-.mobile-section {
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 移動設備上的section樣式調整 */
+/* 移動設備觸控優化 */
 @media (max-width: 768px) {
-  .hs-section {
-    min-height: 100vh;
-    width: 100% !important;
-    position: static !important;
-    transform: none !important;
+  .hs-container {
+    /* 改善移動設備的觸控體驗 */
+    touch-action: pan-y; /* 允許垂直滑動來觸發水平滾動 */
   }
 
-  /* 隱藏水平滾動條 */
-  .hs-horizontal-scrollbar {
-    display: none !important;
+  .hs-scroller {
+    /* 確保移動設備上的平滑滾動 */
+    -webkit-overflow-scrolling: touch;
   }
 }
 
