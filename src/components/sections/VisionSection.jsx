@@ -68,18 +68,18 @@ export default function VisionSection({ index }) {
         const screenWidth = p.windowWidth;
         const screenHeight = p.windowHeight;
 
-        // 定義不同螢幕尺寸的基準值
+        // 定義不同螢幕尺寸的基準值 - 稍微加大
         const breakpoints = {
           // 手機 (< 768px width)
-          mobile: { width: 768, baseSize: 8 }, // 8rem
+          mobile: { width: 768, baseSize: 6 }, // 從5rem增加到6rem
           // 平板 (768px - 1024px width)
-          tablet: { width: 1024, baseSize: 12 }, // 12rem
+          tablet: { width: 1024, baseSize: 10 }, // 從8rem增加到10rem
           // 筆記本電腦 (1024px - 1440px width)
-          laptop: { width: 1440, baseSize: 20 }, // 20rem
+          laptop: { width: 1440, baseSize: 15 }, // 從12rem增加到15rem
           // 桌上型電腦 2K (1440px - 2560px width)
-          desktop2k: { width: 2560, baseSize: 32 }, // 32rem
+          desktop2k: { width: 2560, baseSize: 22 }, // 從18rem增加到22rem
           // 桌上型電腦 4K (> 2560px width)
-          desktop4k: { width: Infinity, baseSize: 48 }, // 48rem
+          desktop4k: { width: Infinity, baseSize: 30 }, // 從24rem增加到30rem
         };
 
         let fontSize;
@@ -127,7 +127,7 @@ export default function VisionSection({ index }) {
         const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
         canvas.parent(canvasRef.current);
 
-        gravity = p.createVector(0, 0.1); // 參考 typoTool.js 的重力值
+        gravity = p.createVector(0, 0.15); // 增加重力，加快掉落速度
 
         // 獲取 CSS 變數顏色
         primaryColor = getCSSVariable("--color-primary");
@@ -136,20 +136,41 @@ export default function VisionSection({ index }) {
         // 計算響應式文字大小
         responsiveFontSize = calculateResponsiveFontSize();
 
-        // 初始化文字對象 - 從畫面頂部集中掉落
+        // 初始化文字對象 - 改進分佈避免交疊
         for (let i = 0; i < wordStrings.length; i++) {
           const centerX = p.width / 2;
           // 根據文字大小調整水平範圍
-          const horizontalRange = responsiveFontSize * 0.8;
-          const x = p.random(
-            centerX - horizontalRange,
-            centerX + horizontalRange
-          );
-          // 根據文字大小調整垂直間距
-          const verticalSpacing = responsiveFontSize * 0.25;
-          const y = -50 - i * verticalSpacing;
-          const delay = i * 400; // 減少延遲時間讓文字更快連續掉落
-          const rotation = p.random(-p.PI / 6, p.PI / 6); // 減少旋轉角度
+          const horizontalRange = responsiveFontSize * 1.3; // 調整為1.3，平衡分散與聚集
+
+          // 使用更智慧的位置分配
+          let x, y;
+          let attempts = 0;
+          const maxAttempts = 10;
+
+          do {
+            // 根據索引創建更均勻的分佈
+            const angle =
+              (i / wordStrings.length) * p.TWO_PI + p.random(-0.5, 0.5);
+            const radius = p.random(horizontalRange * 0.3, horizontalRange);
+            x = centerX + p.cos(angle) * radius;
+
+            // 增加垂直間距，避免垂直堆疊
+            const baseVerticalSpacing = responsiveFontSize * 0.4; // 從0.25增加到0.4
+            const verticalVariation = p.random(
+              -baseVerticalSpacing * 0.3,
+              baseVerticalSpacing * 0.3
+            );
+            y = -100 - i * baseVerticalSpacing + verticalVariation; // 起始位置更高
+
+            attempts++;
+          } while (attempts < maxAttempts);
+
+          // 減少延遲時間，加快掉落速度
+          const baseDelay = i * 200; // 從300減少到200
+          const delayVariation = p.random(-50, 100); // 減少隨機變化範圍
+          const delay = Math.max(0, baseDelay + delayVariation);
+
+          const rotation = p.random(-p.PI / 8, p.PI / 8); // 進一步減少旋轉角度
           words.push(
             new Word(
               wordStrings[i],
@@ -252,14 +273,14 @@ export default function VisionSection({ index }) {
           this.velocity = this.p.createVector(0, 0);
           this.acceleration = this.p.createVector(0, 0);
           this.mass = 1; // 標準質量
-          this.restitution = 0.5; // 參考 typoTool.js 的彈跳係數
-          this.friction = 0.99; // 參考 typoTool.js 的阻尼值
-          this.damping = 0.99; // 與 typoTool.js 相同的阻尼
-          this.maxSpeed = 20; // 允許更高速度
-          this.minSpeed = 0.01; // 降低停止閾值
+          this.restitution = 0.4; // 增加彈跳效果，從0.3增加到0.4
+          this.friction = 0.97; // 減少摩擦力，讓動畫更活潑
+          this.damping = 0.97; // 減少阻尼，保持更多動能
+          this.maxSpeed = 18; // 增加最大速度，從15增加到18
+          this.minSpeed = 0.05; // 保持停止閾值
 
-          // 參考 typoTool.js 添加水平速度和拖動狀態
-          this.vx = this.p.random(-1, 1);
+          // 增加初始水平速度，讓碰撞更明顯
+          this.vx = this.p.random(-0.8, 0.8); // 從(-0.5,0.5)增加到(-0.8,0.8)
           this.isDragged = false;
 
           // 延遲相關
@@ -320,53 +341,74 @@ export default function VisionSection({ index }) {
         }
 
         checkEdges() {
-          // 完全按照 typoTool.js 的邊界檢測
-          let halfChar = this.fontSize * 0.4; // typoTool.js: charSize * 0.4
+          // 修復邊界檢測 - 讓文字可以觸碰到邊緣
+          let halfChar = this.fontSize * 0.3; // 減少邊界緩衝區，讓文字更接近邊緣
 
-          // typoTool.js 的底部邊界處理
+          // 底部邊界處理 - 讓文字可以觸碰底部
           if (this.position.y > this.p.height - halfChar) {
             this.position.y = this.p.height - halfChar;
-            this.velocity.y *= -0.5; // typoTool.js: this.speed *= -0.5;
+            this.velocity.y *= -this.restitution; // 使用彈跳係數
+            this.vx *= this.friction; // 添加水平摩擦力
           }
 
-          // typoTool.js 的左右邊界處理
+          // 左右邊界處理 - 讓文字可以觸碰左右邊
           if (this.position.x > this.p.width - halfChar) {
             this.position.x = this.p.width - halfChar;
-            this.vx *= -1; // typoTool.js: this.vx *= -1;
+            this.vx *= -this.restitution; // 使用彈跳係數而不是完全反轉
           } else if (this.position.x < halfChar) {
             this.position.x = halfChar;
-            this.vx *= -1; // typoTool.js: this.vx *= -1;
+            this.vx *= -this.restitution; // 使用彈跳係數而不是完全反轉
           }
+
+          // 限制最大速度
+          this.velocity.y = this.p.constrain(
+            this.velocity.y,
+            -this.maxSpeed,
+            this.maxSpeed
+          );
+          this.vx = this.p.constrain(this.vx, -this.maxSpeed, this.maxSpeed);
         }
 
         checkCollisions(words) {
           for (let other of words) {
             if (other !== this) {
-              // 參考 typoTool.js 的碰撞檢測
+              // 增強碰撞效果，減少交疊
               let dx = other.position.x - this.position.x;
               let dy = other.position.y - this.position.y;
               let distance = this.p.sqrt(dx * dx + dy * dy);
-              let minDist = this.fontSize * 0.3; // 減少碰撞距離讓文字更容易交疊
+              // 增加最小距離，進一步減少交疊
+              let minDist = this.fontSize * 0.7; // 從0.5增加到0.7
 
-              if (distance < minDist) {
-                // 完全按照 typoTool.js 的碰撞處理
+              if (distance < minDist && distance > 0) {
+                // 增強分離力和碰撞效果
                 let angle = this.p.atan2(dy, dx);
                 let targetX = this.position.x + this.p.cos(angle) * minDist;
                 let targetY = this.position.y + this.p.sin(angle) * minDist;
-                let ax = (targetX - other.position.x) * 0.01; // 減少分離力度讓文字更容易交疊
-                let ay = (targetY - other.position.y) * 0.01;
+                let ax = (targetX - other.position.x) * 0.08; // 從0.05增加到0.08
+                let ay = (targetY - other.position.y) * 0.08;
 
-                // typoTool.js 的速度調整
-                this.vx -= ax;
-                this.velocity.y -= ay;
-                other.vx += ax;
-                other.velocity.y += ay;
+                // 增強碰撞效果
+                let collisionForce = (minDist - distance) / minDist;
+                ax *= 1 + collisionForce;
+                ay *= 1 + collisionForce;
 
-                // 減少位置分離讓文字更容易交疊
-                this.position.x -= ax * 0.5;
-                this.position.y -= ay * 0.5;
-                other.position.x += ax * 0.5;
-                other.position.y += ay * 0.5;
+                // 只對活躍的文字應用分離力
+                if (this.active) {
+                  this.vx -= ax;
+                  this.velocity.y -= ay;
+                }
+                if (other.active) {
+                  other.vx += ax;
+                  other.velocity.y += ay;
+                }
+
+                // 增強位置分離力度
+                if (this.active && other.active) {
+                  this.position.x -= ax * 1.5; // 從1.0增加到1.5
+                  this.position.y -= ay * 1.5;
+                  other.position.x += ax * 1.5;
+                  other.position.y += ay * 1.5;
+                }
               }
             }
           }
