@@ -41,8 +41,20 @@
   font-size: 1rem;
   font-weight: var(--font-medium);
   max-width: 42rem;
-  text-align: justify;
   margin-left: var(--space-sm);
+  /* 手機響應式調整 */
+  padding-right: var(--space-sm);
+}
+
+/* 手機裝置的響應式調整 */
+@media (max-width: 768px) {
+  .vision-text-overlay-subtext {
+    max-width: calc(100vw - 2 * var(--space-sm));
+    margin-left: var(--space-sm);
+    margin-right: var(--space-sm);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
 }
 
 /* 文字動畫相關樣式 */

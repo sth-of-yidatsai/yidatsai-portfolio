@@ -235,6 +235,62 @@ export default function HorizontalScroller() {
     };
   }, [sections]);
 
+  // 添加觸控事件處理，解決手機滑動問題
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isHorizontalSwipe = false;
+
+    const handleTouchStart = (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isHorizontalSwipe = false;
+    };
+
+    const handleTouchMove = (e) => {
+      if (!isInHorizontalSection) return;
+
+      const touchX = e.touches[0].clientX;
+      const touchY = e.touches[0].clientY;
+      const deltaX = touchX - touchStartX;
+      const deltaY = touchY - touchStartY;
+
+      // 判斷是否為水平滑動
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+        isHorizontalSwipe = true;
+        e.preventDefault(); // 阻止垂直滾動
+
+        // 模擬滾動事件來觸發水平滾動
+        const scrollDelta = -deltaX * 2; // 調整滑動敏感度
+        window.scrollBy(0, scrollDelta);
+      }
+    };
+
+    const handleTouchEnd = (e) => {
+      if (isHorizontalSwipe) {
+        e.preventDefault();
+      }
+    };
+
+    // 添加觸控事件監聽器
+    container.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
+    container.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
+    container.addEventListener("touchend", handleTouchEnd, { passive: false });
+
+    return () => {
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isInHorizontalSection]);
+
   // 自訂滾動條處理 - 修正為只計算水平滾動區域內的進度
   const handlePointerDown = (e) => {
     const thumbEl = thumbRef.current;
