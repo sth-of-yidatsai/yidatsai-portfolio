@@ -61,6 +61,47 @@ export default function VisionSection({ index }) {
       let draggedWord = null;
       let dragOffset = { x: 0, y: 0 };
       let primaryColor, secondaryColor;
+      let responsiveFontSize;
+
+      // 計算響應式文字大小的函數
+      const calculateResponsiveFontSize = () => {
+        const screenWidth = p.windowWidth;
+        const screenHeight = p.windowHeight;
+
+        // 定義不同螢幕尺寸的基準值
+        const breakpoints = {
+          // 手機 (< 768px width)
+          mobile: { width: 768, baseSize: 8 }, // 8rem
+          // 平板 (768px - 1024px width)
+          tablet: { width: 1024, baseSize: 12 }, // 12rem
+          // 筆記本電腦 (1024px - 1440px width)
+          laptop: { width: 1440, baseSize: 20 }, // 20rem
+          // 桌上型電腦 2K (1440px - 2560px width)
+          desktop2k: { width: 2560, baseSize: 32 }, // 32rem
+          // 桌上型電腦 4K (> 2560px width)
+          desktop4k: { width: Infinity, baseSize: 48 }, // 48rem
+        };
+
+        let fontSize;
+        if (screenWidth < breakpoints.mobile.width) {
+          fontSize = breakpoints.mobile.baseSize;
+        } else if (screenWidth < breakpoints.tablet.width) {
+          fontSize = breakpoints.tablet.baseSize;
+        } else if (screenWidth < breakpoints.laptop.width) {
+          fontSize = breakpoints.laptop.baseSize;
+        } else if (screenWidth < breakpoints.desktop2k.width) {
+          fontSize = breakpoints.desktop2k.baseSize;
+        } else {
+          fontSize = breakpoints.desktop4k.baseSize;
+        }
+
+        // 考慮螢幕高度的調整因子
+        const heightFactor = p.constrain(screenHeight / 800, 0.7, 1.3);
+        fontSize *= heightFactor;
+
+        // 轉換為像素 (假設 1rem = 16px)
+        return fontSize * 16;
+      };
 
       // 文字內容
       const wordStrings = [
@@ -92,15 +133,34 @@ export default function VisionSection({ index }) {
         primaryColor = getCSSVariable("--color-primary");
         secondaryColor = getCSSVariable("--color-secondary");
 
+        // 計算響應式文字大小
+        responsiveFontSize = calculateResponsiveFontSize();
+
         // 初始化文字對象 - 從畫面頂部集中掉落
         for (let i = 0; i < wordStrings.length; i++) {
           const centerX = p.width / 2;
-          const x = p.random(centerX - 300, centerX + 300); // 更集中的水平範圍
-          const y = -50 - i * 80; // 減少垂直間距讓文字更密集
+          // 根據文字大小調整水平範圍
+          const horizontalRange = responsiveFontSize * 0.8;
+          const x = p.random(
+            centerX - horizontalRange,
+            centerX + horizontalRange
+          );
+          // 根據文字大小調整垂直間距
+          const verticalSpacing = responsiveFontSize * 0.25;
+          const y = -50 - i * verticalSpacing;
           const delay = i * 400; // 減少延遲時間讓文字更快連續掉落
           const rotation = p.random(-p.PI / 6, p.PI / 6); // 減少旋轉角度
           words.push(
-            new Word(wordStrings[i], x, y, p, secondaryColor, delay, rotation)
+            new Word(
+              wordStrings[i],
+              x,
+              y,
+              p,
+              secondaryColor,
+              delay,
+              rotation,
+              responsiveFontSize
+            )
           );
         }
       };
@@ -162,6 +222,16 @@ export default function VisionSection({ index }) {
 
       p.windowResized = () => {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
+
+        // 重新計算響應式文字大小
+        const newFontSize = calculateResponsiveFontSize();
+
+        // 更新所有文字物件的大小
+        for (let word of words) {
+          word.updateFontSize(newFontSize);
+        }
+
+        responsiveFontSize = newFontSize;
       };
 
       // Word 類別定義
@@ -173,7 +243,8 @@ export default function VisionSection({ index }) {
           p5Instance,
           textColor,
           delay = 0,
-          rotation = 0
+          rotation = 0,
+          fontSize = null
         ) {
           this.text = text;
           this.p = p5Instance;
@@ -201,9 +272,9 @@ export default function VisionSection({ index }) {
           this.rotationSpeed = this.p.random(-0.02, 0.02);
           this.birthTime = this.p.millis();
 
-          // 設定文字樣式來計算尺寸 - Futura Bold 30rem
+          // 設定文字樣式來計算尺寸 - 使用響應式文字大小
           this.p.textAlign(this.p.CENTER, this.p.CENTER);
-          this.fontSize = 30 * 16; // 30rem 轉換為像素 (假設 1rem = 16px)
+          this.fontSize = fontSize || responsiveFontSize || 20 * 16; // 使用傳入的文字大小或預設值
           this.p.textSize(this.fontSize);
           this.width = this.p.textWidth(this.text);
           this.height = this.fontSize;
@@ -329,6 +400,14 @@ export default function VisionSection({ index }) {
             py < this.position.y + this.height / 2
           );
         }
+
+        updateFontSize(newFontSize) {
+          this.fontSize = newFontSize;
+          // 重新計算文字尺寸
+          this.p.textSize(this.fontSize);
+          this.width = this.p.textWidth(this.text);
+          this.height = this.fontSize;
+        }
       }
     };
 
@@ -361,9 +440,9 @@ export default function VisionSection({ index }) {
           Composing Place Through Design
         </div>
         <div className="vision-text-overlay-subtext" data-animate="sentences">
-          From nature and culture, I develop a visual lexicon that links local
-          knowledge with contemporary life through design, articulating material
-          histories, typographic rhythm, and editorial structures as situated
+          From nature and culture, I develop a visual lexicon linking local
+          knowledge with contemporary life. Through design, I articulate
+          material histories, typographic rhythm, and editorial structures as
           pathways to place.
         </div>
       </div>
