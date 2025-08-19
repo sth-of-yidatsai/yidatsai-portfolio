@@ -1,9 +1,8 @@
 .header {
   position: fixed;
   width: 100vw;
-  top: -30px;
   left: 0;
-  padding: var(--space-lg) var(--space-md);
+  padding: 0 var(--space-md);
   display: flex;
   align-items: center;
   justify-content: space-between;

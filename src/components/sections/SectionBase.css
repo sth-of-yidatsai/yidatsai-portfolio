@@ -10,8 +10,8 @@
 
 /* 各個 Section 的專用樣式 - 提高優先級 */
 .hs-section.vision-section {
-  background-color: #ffffff !important;
-  color: #000000 !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-secondary) !important;
 }
 
 .hs-section.mission-section {
@@ -68,29 +68,41 @@
   opacity: 0.9;
 }
 
-/* Vision Section 特有樣式 */
-.vision-specific-content {
-  margin-top: 3rem;
+/* Vision Section 特有樣式 - p5.js 物理效果 */
+.vision-section .vision-canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
-.vision-highlight {
+.vision-section .vision-text-overlay {
+  position: absolute;
+  top: 15vh;
+  left: var(--space-md);
+  z-index: 2;
+  color: var(--color-bg);
+  font-family: var(--font-latin), var(--font-cjk);
+  opacity: 0.8;
+  pointer-events: none;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
+  flex-direction: column;
+  gap: var(--space-md);
 }
 
-.vision-icon {
-  font-size: 2rem;
+.vision-text-overlay-headline {
+  font-size: 3.2rem;
+  font-weight: var(--font-medium);
 }
 
-.vision-highlight p {
-  font-size: 1.1rem;
-  margin: 0;
+.vision-text-overlay-subtext {
+  font-size: 1rem;
+  font-weight: var(--font-medium);
+  max-width: 42rem;
+  text-align: justify;
+  margin-left: var(--space-sm);
 }
 
 /* Mission Section 特有樣式 */
