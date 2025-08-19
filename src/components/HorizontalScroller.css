@@ -176,4 +176,33 @@ body.menu-open .hs-horizontal-scrollbar {
   animation-delay: 0.5s;
 }
 
+/* 移動設備垂直佈局樣式 */
+.mobile-vertical-sections {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-section {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 移動設備上的section樣式調整 */
+@media (max-width: 768px) {
+  .hs-section {
+    min-height: 100vh;
+    width: 100% !important;
+    position: static !important;
+    transform: none !important;
+  }
+
+  /* 隱藏水平滾動條 */
+  .hs-horizontal-scrollbar {
+    display: none !important;
+  }
+}
+
 /* 漸層背景變化已移至 SectionBase.css 中的各個 section 類別 */

@@ -3,8 +3,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalScroller.css";
 import {
+  HeroSection,
   VisionSection,
-  MissionSection,
   ProjectsSection,
   sectionConfigs,
 } from "./sections";
@@ -72,6 +72,20 @@ export default function HorizontalScroller() {
     thumb: getCSSVar("--scrollbar-thumb-light", "#ffffff"),
   });
 
+  // 檢測是否為移動設備
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const width = window.innerWidth;
+      setIsMobile(width <= 768); // 768px以下視為移動設備
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   // 使用導入的 section 配置
   const sections = sectionConfigs;
 
@@ -128,6 +142,12 @@ export default function HorizontalScroller() {
     const container = containerRef.current;
     const scroller = scrollerRef.current;
     if (!container || !scroller) return;
+
+    // 移動設備不啟用水平滾動
+    if (isMobile) {
+      gsap.set(scroller, { width: "auto" });
+      return;
+    }
 
     const ctx = gsap.context(() => {
       // 計算總寬度
@@ -233,12 +253,12 @@ export default function HorizontalScroller() {
       ctx.revert();
       document.body.classList.remove("horizontal-scrolling");
     };
-  }, [sections]);
+  }, [sections, isMobile]);
 
-  // 添加觸控事件處理，解決手機滑動問題
+  // 添加觸控事件處理，只在非移動設備的水平滾動模式下啟用
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || isMobile) return; // 移動設備不需要此處理
 
     let touchStartX = 0;
     let touchStartY = 0;
@@ -289,7 +309,7 @@ export default function HorizontalScroller() {
       container.removeEventListener("touchmove", handleTouchMove);
       container.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [isInHorizontalSection]);
+  }, [isInHorizontalSection, isMobile]);
 
   // 自訂滾動條處理 - 修正為只計算水平滾動區域內的進度
   const handlePointerDown = (e) => {
@@ -388,6 +408,35 @@ export default function HorizontalScroller() {
     computeAndSetColors();
   }, [isInHorizontalSection]);
 
+  // 移動設備使用垂直佈局
+  if (isMobile) {
+    return (
+      <div className="mobile-vertical-sections">
+        {sections.map((section, index) => {
+          const renderSection = () => {
+            switch (section.id) {
+              case "hero":
+                return <HeroSection config={section} index={index} />;
+              case "vision":
+                return <VisionSection config={section} index={index} />;
+              case "projects":
+                return <ProjectsSection config={section} index={index} />;
+              default:
+                return (
+                  <div
+                    className={`mobile-section mobile-section-${index}`}
+                  ></div>
+                );
+            }
+          };
+
+          return <div key={section.id}>{renderSection()}</div>;
+        })}
+      </div>
+    );
+  }
+
+  // 桌面設備使用水平滾動
   return (
     <>
       <section ref={containerRef} className="hs-container">
@@ -396,11 +445,10 @@ export default function HorizontalScroller() {
             // 根據 section.id 渲染對應的組件
             const renderSection = () => {
               switch (section.id) {
+                case "hero":
+                  return <HeroSection config={section} index={index} />;
                 case "vision":
                   return <VisionSection config={section} index={index} />;
-                case "mission":
-                  return <MissionSection config={section} index={index} />;
-
                 case "projects":
                   return <ProjectsSection config={section} index={index} />;
                 default:

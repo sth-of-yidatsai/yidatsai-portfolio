@@ -1,11 +1,11 @@
 // 導出所有 section 組件
+export { default as HeroSection } from "./HeroSection";
 export { default as VisionSection } from "./VisionSection";
-export { default as MissionSection } from "./MissionSection";
 export { default as ProjectsSection } from "./ProjectsSection";
 
-// 簡化的 Section 配置資料 - 只保留識別用的 id 和 title
+// 簡化的 Section 配置資料 - 調整順序：Hero => Vision => Projects
 export const sectionConfigs = [
+  { id: "hero", title: "Hero" },
   { id: "vision", title: "Vision" },
-  { id: "mission", title: "Mission" },
   { id: "projects", title: "Projects" },
 ];
