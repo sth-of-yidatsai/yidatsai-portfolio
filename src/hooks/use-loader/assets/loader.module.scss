@@ -1,0 +1,212 @@
+/* 預設載入器樣式 */
+.loader-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.loader-bg--show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.loader-bg--hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loader-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  animation: dotPulse 1.5s infinite ease-in-out;
+}
+
+.dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes dotPulse {
+  0%, 60%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  30% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+.loader-text {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* 簡約載入器樣式 */
+.simple-loader-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.simple-loader-bg--show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.simple-loader-bg--hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.simple-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 文字動畫專用載入器樣式 */
+.text-loader-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
+}
+
+.text-loader-bg--show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.text-loader-bg--hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.text-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.text-loader-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.text-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-secondary, #ffffff);
+  opacity: 0.3;
+  animation: textDotPulse 1.5s infinite ease-in-out;
+}
+
+.text-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.text-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.text-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes textDotPulse {
+  0%, 60%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  30% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* 響應式設計 */
+@media screen and (max-width: 480px) {
+  .loader-container {
+    gap: 0.8rem;
+  }
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .loader-text {
+    font-size: 0.9rem;
+  }
+  
+  .simple-spinner {
+    width: 30px;
+    height: 30px;
+    border-width: 3px;
+  }
+}

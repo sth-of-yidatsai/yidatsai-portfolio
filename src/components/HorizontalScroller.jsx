@@ -5,7 +5,6 @@ import "./HorizontalScroller.css";
 import {
   VisionSection,
   MissionSection,
-  WorksSection,
   ProjectsSection,
   sectionConfigs,
 } from "./sections";
@@ -345,8 +344,7 @@ export default function HorizontalScroller() {
                   return <VisionSection config={section} index={index} />;
                 case "mission":
                   return <MissionSection config={section} index={index} />;
-                case "works":
-                  return <WorksSection config={section} index={index} />;
+
                 case "projects":
                   return <ProjectsSection config={section} index={index} />;
                 default:

@@ -8,66 +8,6 @@
   position: relative;
 }
 
-/* 各個 Section 的專用樣式 - 提高優先級 */
-.hs-section.vision-section {
-  background-color: var(--color-primary) !important;
-  color: var(--color-secondary) !important;
-}
-
-.hs-section.mission-section {
-  background-color: #ffffff !important;
-  color: #000000 !important;
-}
-
-.hs-section.works-section {
-  background-color: #404040 !important;
-  color: #ffffff !important;
-}
-
-.hs-section.projects-section {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-}
-
-.hs-section.sticky {
-  position: sticky;
-  left: 0;
-}
-
-.hs-section-content {
-  max-width: 1200px;
-  padding: 0 2rem;
-  text-align: center;
-}
-
-.hs-section-number {
-  font-size: 1.2rem;
-  opacity: 0.6;
-  margin-bottom: 1rem;
-  font-weight: 300;
-}
-
-.hs-section-title {
-  font-size: 4rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  line-height: 1.2;
-}
-
-.hs-section-subtitle {
-  font-size: 1.8rem;
-  font-weight: 400;
-  margin-bottom: 2rem;
-  opacity: 0.8;
-}
-
-.hs-section-text {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  margin-bottom: 3rem;
-  opacity: 0.9;
-}
-
 /* Vision Section 特有樣式 - p5.js 物理效果 */
 .vision-section .vision-canvas-container {
   position: absolute;
@@ -105,6 +45,44 @@
   margin-left: var(--space-sm);
 }
 
+/* 文字動畫相關樣式 */
+.word-animate {
+  display: inline-block;
+  transform-origin: center bottom;
+}
+
+.sentence-animate {
+  display: inline-block;
+}
+
+/* 確保動畫文字的容器有正確的層級和透視效果 */
+.vision-text-overlay {
+  perspective: 1000px;
+}
+
+.vision-text-overlay-headline {
+  transform-style: preserve-3d;
+}
+
+.vision-text-overlay-subtext {
+  transform-style: preserve-3d;
+}
+
+/* 動畫文字的初始狀態 - 預設隱藏直到動畫hook啟動 */
+[data-animate] {
+  opacity: 0;
+}
+
+/* 動畫準備就緒時的狀態 */
+[data-animate].animation-ready {
+  opacity: 1;
+}
+
+/* 動畫完成後的狀態 */
+[data-animate].animation-complete {
+  opacity: 1;
+}
+
 /* Mission Section 特有樣式 */
 .mission-specific-content {
   margin-top: 3rem;
@@ -132,50 +110,6 @@
 }
 
 .principle-item p {
-  font-size: 1rem;
-  opacity: 0.8;
-  margin: 0;
-}
-
-/* Works Section 特有樣式 */
-.works-specific-content {
-  margin-top: 3rem;
-}
-
-.works-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.work-item {
-  text-align: center;
-  padding: 2rem 1rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  transition: transform 0.3s ease, background 0.3s ease;
-}
-
-.work-item:hover {
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.work-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.work-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #ffffff;
-}
-
-.work-description {
   font-size: 1rem;
   opacity: 0.8;
   margin: 0;
@@ -472,10 +406,6 @@
   }
 
   .mission-principles {
-    grid-template-columns: 1fr;
-  }
-
-  .works-grid {
     grid-template-columns: 1fr;
   }
 

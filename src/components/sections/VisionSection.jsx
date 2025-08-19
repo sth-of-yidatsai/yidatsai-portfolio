@@ -1,12 +1,51 @@
 import React, { useEffect, useRef } from "react";
 import p5 from "p5";
+import { useTextAnimation } from "../../hooks/useTextAnimation";
+import { useLoader } from "../../hooks/use-loader/index.jsx";
 import "./SectionBase.css";
 
 export default function VisionSection({ index }) {
   const canvasRef = useRef(null);
   const p5Instance = useRef(null);
+  const { loading } = useLoader();
+
+  // 使用文字動畫 hook
+  const { textRef } = useTextAnimation({
+    delay: 1000,
+    splitType: "both",
+    wordAnimation: {
+      from: {
+        opacity: 0,
+        y: 60,
+      },
+      to: {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        stagger: 0.1,
+      },
+    },
+    sentenceAnimation: {
+      from: {
+        opacity: 0,
+        y: 20,
+      },
+      to: {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.2,
+      },
+      offset: "-=0.3",
+    },
+  });
 
   useEffect(() => {
+    // 等待loading完成後才初始化p5.js
+    if (loading) return;
+
     // 獲取 CSS 變數值的輔助函數
     const getCSSVariable = (variableName) => {
       return getComputedStyle(document.documentElement)
@@ -302,7 +341,7 @@ export default function VisionSection({ index }) {
         p5Instance.current.remove();
       }
     };
-  }, []);
+  }, [loading]);
 
   return (
     <div
@@ -317,11 +356,11 @@ export default function VisionSection({ index }) {
       }}
     >
       <div className="vision-canvas-container" ref={canvasRef} />
-      <div className="vision-text-overlay">
-        <div className="vision-text-overlay-headline">
+      <div className="vision-text-overlay" ref={textRef}>
+        <div className="vision-text-overlay-headline" data-animate="words">
           Composing Place Through Design
         </div>
-        <div className="vision-text-overlay-subtext">
+        <div className="vision-text-overlay-subtext" data-animate="sentences">
           From nature and culture, I develop a visual lexicon that links local
           knowledge with contemporary life through design, articulating material
           histories, typographic rhythm, and editorial structures as situated
