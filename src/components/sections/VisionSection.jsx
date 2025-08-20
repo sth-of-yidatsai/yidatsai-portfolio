@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import p5 from "p5";
 import { useTextAnimation } from "../../hooks/useTextAnimation";
 import { useLoader } from "../../hooks/use-loader/index.jsx";
@@ -7,7 +7,10 @@ import "./SectionBase.css";
 
 export default function VisionSection({ index }) {
   const canvasRef = useRef(null);
+  const sectionRef = useRef(null);
   const p5Instance = useRef(null);
+  const p5ObserverRef = useRef(null);
+  const p5HasInitialized = useRef(false);
   const { loading } = useLoader();
 
   // 使用文字動畫 hook
@@ -43,9 +46,12 @@ export default function VisionSection({ index }) {
     },
   });
 
-  useEffect(() => {
-    // 等待loading完成後才初始化p5.js
-    if (loading) return;
+  // 初始化 p5.js 的函數
+  const initializeP5 = () => {
+    if (p5HasInitialized.current || !canvasRef.current) return;
+
+    console.log("Initializing p5.js animation...");
+    p5HasInitialized.current = true;
 
     // 獲取 CSS 變數值的輔助函數
     const getCSSVariable = (variableName) => {
@@ -465,28 +471,56 @@ export default function VisionSection({ index }) {
 
     // 創建 p5 實例
     p5Instance.current = new p5(sketch);
+  };
 
-    // 清理函數
-    return () => {
-      if (p5Instance.current) {
-        try {
-          // 先檢查canvas是否還存在於DOM中
-          const canvas = p5Instance.current.canvas;
-          if (canvas && canvas.parentNode) {
-            p5Instance.current.remove();
-          }
-        } catch (e) {
-          console.warn("p5.js cleanup warning:", e);
-        } finally {
-          p5Instance.current = null;
-        }
-      }
+  // 設置 p5.js 的 Intersection Observer
+  const setupP5Observer = useCallback(() => {
+    if (!sectionRef.current || p5ObserverRef.current) return;
+
+    const options = {
+      threshold: 0.1, // 當 10% 的區域進入視窗時觸發
+      rootMargin: "0px 0px -10% 0px", // 稍微提前觸發
     };
+
+    p5ObserverRef.current = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !p5HasInitialized.current && !loading) {
+          console.log("Vision section entered viewport, initializing p5.js...");
+          initializeP5();
+          // 觸發後停止觀察
+          if (p5ObserverRef.current) {
+            p5ObserverRef.current.unobserve(entry.target);
+          }
+        }
+      });
+    }, options);
+
+    p5ObserverRef.current.observe(sectionRef.current);
   }, [loading]);
+
+  // 清理 p5.js Observer
+  const cleanupP5Observer = () => {
+    if (p5ObserverRef.current) {
+      p5ObserverRef.current.disconnect();
+      p5ObserverRef.current = null;
+    }
+  };
+
+  // 當 loading 完成後設置觀察器
+  useEffect(() => {
+    if (!loading) {
+      setupP5Observer();
+
+      return () => {
+        cleanupP5Observer();
+      };
+    }
+  }, [loading, setupP5Observer]);
 
   // 組件卸載時的清理
   useEffect(() => {
     return () => {
+      cleanupP5Observer();
       if (p5Instance.current) {
         try {
           p5Instance.current.remove();
@@ -500,7 +534,10 @@ export default function VisionSection({ index }) {
   }, []);
 
   return (
-    <div className={`hs-section vision-section hs-section-${index}`}>
+    <div
+      className={`hs-section vision-section hs-section-${index}`}
+      ref={sectionRef}
+    >
       <div className="vision-canvas-container" ref={canvasRef} />
 
       <div className="vision-text-overlay" ref={textRef}>
