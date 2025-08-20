@@ -6,6 +6,64 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  background: transparent;
+}
+
+/* Hero Section 特有樣式 */
+.hero-specific-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: var(--space-lg);
+}
+
+.hero-text-container {
+  text-align: center;
+  max-width: 60rem;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-md);
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  font-weight: var(--font-medium);
+  margin-bottom: var(--space-lg);
+  opacity: 0.8;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  font-weight: var(--font-regular);
+  line-height: 1.6;
+  max-width: 42rem;
+  margin: 0 auto;
+  opacity: 0.7;
+}
+
+/* Hero Section 手機響應式 */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    max-width: calc(100vw - 2 * var(--space-sm));
+  }
+
+  .hero-specific-content {
+    padding: var(--space-md);
+  }
 }
 
 /* Vision Section 特有樣式 - p5.js 物理效果 */
@@ -14,14 +72,14 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 170px); /* 為底部 Marquee 元件留出空間 */
   z-index: 1;
 }
 
 .vision-section .vision-text-overlay {
   position: absolute;
-  top: 15vh;
-  left: var(--space-md);
+  top: var(--space-lg);
+  left: var(--space-lg);
   z-index: 2;
   color: var(--color-bg);
   font-family: var(--font-latin), var(--font-cjk);
@@ -30,6 +88,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+  max-width: 50rem;
 }
 
 .vision-text-overlay-headline {
@@ -95,73 +154,13 @@
   opacity: 1;
 }
 
-/* Hero Section 特有樣式 */
-.hero-specific-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  padding: var(--space-lg);
-}
-
-.hero-text-container {
-  text-align: center;
-  max-width: 60rem;
-}
-
-.hero-title {
-  font-size: 4rem;
-  font-weight: var(--font-bold);
-  margin-bottom: var(--space-md);
-  line-height: 1.1;
-}
-
-.hero-subtitle {
-  font-size: 1.5rem;
-  font-weight: var(--font-medium);
-  margin-bottom: var(--space-lg);
-  opacity: 0.8;
-}
-
-.hero-description {
-  font-size: 1.1rem;
-  font-weight: var(--font-regular);
-  line-height: 1.6;
-  max-width: 42rem;
-  margin: 0 auto;
-  opacity: 0.7;
-}
-
-/* Hero Section 手機響應式 */
+/* Vision Section 移動設備樣式 */
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1.2rem;
-  }
-
-  .hero-description {
-    font-size: 1rem;
-    max-width: calc(100vw - 2 * var(--space-sm));
-  }
-
-  .hero-specific-content {
-    padding: var(--space-md);
-  }
-
-  /* Vision Section 移動設備樣式 */
-  .vision-section {
-    padding: var(--space-lg) var(--space-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .vision-text-overlay {
-    text-align: center;
-    width: 100%;
+  .vision-section .vision-text-overlay {
+    top: var(--space-md);
+    left: var(--space-md);
+    right: var(--space-md);
+    max-width: none;
   }
 
   .vision-text-overlay-headline {
@@ -170,80 +169,8 @@
   }
 }
 
-/* Mission Section 特有樣式 */
-.mission-specific-content {
-  margin-top: 3rem;
-}
+/* Projects Section -滿版四等分區域- 特有樣式 */
 
-.mission-principles {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.principle-item {
-  padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.principle-item h4 {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
-  color: #ffffff;
-}
-
-.principle-item p {
-  font-size: 1rem;
-  opacity: 0.8;
-  margin: 0;
-}
-
-/* Projects Section 特有樣式 */
-.hs-projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.hs-project-item {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hs-project-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.hs-project-img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.hs-project-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  padding: 1rem 1rem 0.5rem;
-  color: #ffffff;
-}
-
-.hs-project-description {
-  font-size: 1rem;
-  opacity: 0.8;
-  padding: 0 1rem 1rem;
-  line-height: 1.4;
-}
-
-/* 滿版四等分區域樣式 */
 .fullscreen-projects-content {
   display: flex;
   width: 100vw;

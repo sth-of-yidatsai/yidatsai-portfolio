@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import p5 from "p5";
 import { useTextAnimation } from "../../hooks/useTextAnimation";
 import { useLoader } from "../../hooks/use-loader/index.jsx";
+import MarqueeText from "../MarqueeText";
 import "./SectionBase.css";
 
 export default function VisionSection({ index }) {
@@ -124,7 +125,9 @@ export default function VisionSection({ index }) {
       ];
 
       p.setup = () => {
-        const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+        // 減少 canvas 高度，為底部跑馬燈留出空間
+        const canvasHeight = p.windowHeight - 170; // 減去給底部區塊
+        const canvas = p.createCanvas(p.windowWidth, canvasHeight);
 
         // 安全設置canvas的parent
         if (canvasRef.current && canvasRef.current.parentNode) {
@@ -246,7 +249,9 @@ export default function VisionSection({ index }) {
       };
 
       p.windowResized = () => {
-        p.resizeCanvas(p.windowWidth, p.windowHeight);
+        // 同樣在窗口大小變化時調整canvas高度
+        const canvasHeight = p.windowHeight - 170;
+        p.resizeCanvas(p.windowWidth, canvasHeight);
 
         // 重新計算響應式文字大小
         const newFontSize = calculateResponsiveFontSize();
@@ -348,9 +353,10 @@ export default function VisionSection({ index }) {
           // 修復邊界檢測 - 讓文字可以觸碰到邊緣
           let halfChar = this.fontSize * 0.3; // 減少邊界緩衝區，讓文字更接近邊緣
 
-          // 底部邊界處理 - 讓文字可以觸碰底部
-          if (this.position.y > this.p.height - halfChar) {
-            this.position.y = this.p.height - halfChar;
+          // 底部邊界處理 - 確保文字不會掉落到跑馬燈區域
+          const bottomLimit = this.p.height - halfChar;
+          if (this.position.y > bottomLimit) {
+            this.position.y = bottomLimit;
             this.velocity.y *= -this.restitution; // 使用彈跳係數
             this.vx *= this.friction; // 添加水平摩擦力
           }
@@ -381,15 +387,15 @@ export default function VisionSection({ index }) {
               let dy = other.position.y - this.position.y;
               let distance = this.p.sqrt(dx * dx + dy * dy);
               // 增加最小距離，進一步減少交疊
-              let minDist = this.fontSize * 0.7; // 從0.5增加到0.7
+              let minDist = this.fontSize * 0.68; // 從0.5增加到0.7
 
               if (distance < minDist && distance > 0) {
                 // 增強分離力和碰撞效果
                 let angle = this.p.atan2(dy, dx);
                 let targetX = this.position.x + this.p.cos(angle) * minDist;
                 let targetY = this.position.y + this.p.sin(angle) * minDist;
-                let ax = (targetX - other.position.x) * 0.08; // 從0.05增加到0.08
-                let ay = (targetY - other.position.y) * 0.08;
+                let ax = (targetX - other.position.x) * 0.06; // 從0.05增加到0.08
+                let ay = (targetY - other.position.y) * 0.06;
 
                 // 增強碰撞效果
                 let collisionForce = (minDist - distance) / minDist;
@@ -518,6 +524,9 @@ export default function VisionSection({ index }) {
           pathways to place.
         </div>
       </div>
+
+      {/* 底部跑馬燈區塊 */}
+      <MarqueeText textColor="var(--color-light)" lineColor="var(--color-bg)" />
     </div>
   );
 }
