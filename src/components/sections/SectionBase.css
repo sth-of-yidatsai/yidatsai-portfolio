@@ -78,17 +78,17 @@
 
 .vision-section .vision-text-overlay {
   position: absolute;
-  top: var(--space-lg);
+  top: 15vh;
   left: var(--space-lg);
   z-index: 2;
   color: var(--color-bg);
   font-family: var(--font-latin), var(--font-cjk);
-  opacity: 0.8;
   pointer-events: none;
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
   max-width: 50rem;
+  mix-blend-mode: difference;
 }
 
 .vision-text-overlay-headline {

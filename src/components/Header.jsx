@@ -225,7 +225,7 @@ export default function Header() {
             </ul>
           </nav>
           <MarqueeText
-            textColor="var(--color-light)"
+            textColor="var(--color-accent)"
             lineColor="var(--color-bg)"
           />
         </div>

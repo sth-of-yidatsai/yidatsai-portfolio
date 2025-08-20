@@ -8,8 +8,8 @@ export default function HeroSection({ index }) {
         index > 0 ? "sticky" : ""
       }`}
       style={{
-        background: "var(--color-primary)",
-        color: "var(--color-secondary)",
+        background: "var(--color-secondary)",
+        color: "var(--color-primary)",
         position: "relative",
         overflow: "hidden",
       }}

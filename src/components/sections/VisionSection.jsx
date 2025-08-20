@@ -72,15 +72,15 @@ export default function VisionSection({ index }) {
         // 定義不同螢幕尺寸的基準值 - 稍微加大
         const breakpoints = {
           // 手機 (< 768px width)
-          mobile: { width: 768, baseSize: 6 }, // 從5rem增加到6rem
+          mobile: { width: 768, baseSize: 8 }, // 8rem
           // 平板 (768px - 1024px width)
-          tablet: { width: 1024, baseSize: 10 }, // 從8rem增加到10rem
+          tablet: { width: 1024, baseSize: 10 }, //10rem
           // 筆記本電腦 (1024px - 1440px width)
-          laptop: { width: 1440, baseSize: 15 }, // 從12rem增加到15rem
+          laptop: { width: 1440, baseSize: 12 }, // 12rem
           // 桌上型電腦 2K (1440px - 2560px width)
-          desktop2k: { width: 2560, baseSize: 22 }, // 從18rem增加到22rem
+          desktop2k: { width: 2560, baseSize: 22 }, // 22rem
           // 桌上型電腦 4K (> 2560px width)
-          desktop4k: { width: Infinity, baseSize: 30 }, // 從24rem增加到30rem
+          desktop4k: { width: Infinity, baseSize: 30 }, // 30rem
         };
 
         let fontSize;
@@ -138,7 +138,7 @@ export default function VisionSection({ index }) {
 
         // 獲取 CSS 變數顏色
         primaryColor = getCSSVariable("--color-primary");
-        secondaryColor = getCSSVariable("--color-secondary");
+        secondaryColor = getCSSVariable("--color-accent");
 
         // 計算響應式文字大小
         responsiveFontSize = calculateResponsiveFontSize();
@@ -526,7 +526,10 @@ export default function VisionSection({ index }) {
       </div>
 
       {/* 底部跑馬燈區塊 */}
-      <MarqueeText textColor="var(--color-light)" lineColor="var(--color-bg)" />
+      <MarqueeText
+        textColor="var(--color-text-light)"
+        lineColor="var(--color-bg)"
+      />
     </div>
   );
 }
