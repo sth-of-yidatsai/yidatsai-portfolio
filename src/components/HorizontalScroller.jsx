@@ -69,8 +69,11 @@ export default function HorizontalScroller() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInHorizontalSection, setIsInHorizontalSection] = useState(false);
   const [colors, setColors] = useState({
-    track: getCSSVar("--scrollbar-track", "#ababab"),
-    thumb: getCSSVar("--scrollbar-thumb-light", "#ffffff"),
+    track: getCSSVar("--scrollbar-track", getCSSVar("--gray-300", "#a6a6a6")),
+    thumb: getCSSVar(
+      "--scrollbar-thumb-light",
+      getCSSVar("--gray-0", "#ffffff")
+    ),
   });
 
   // 檢測是否為移動設備
@@ -126,9 +129,18 @@ export default function HorizontalScroller() {
         getComputedStyle(document.body).backgroundColor || "rgb(255,255,255)";
     }
     const darkUnderlay = isDarkColor(bg);
-    const trackColor = getCSSVar("--scrollbar-track", "#ababab");
-    const thumbLightColor = getCSSVar("--scrollbar-thumb-light", "#ffffff");
-    const thumbDarkColor = getCSSVar("--scrollbar-thumb-dark", "#000000");
+    const trackColor = getCSSVar(
+      "--scrollbar-track",
+      getCSSVar("--gray-300", "#a6a6a6")
+    );
+    const thumbLightColor = getCSSVar(
+      "--scrollbar-thumb-light",
+      getCSSVar("--gray-0", "#ffffff")
+    );
+    const thumbDarkColor = getCSSVar(
+      "--scrollbar-thumb-dark",
+      getCSSVar("--gray-900", "#0a0a0a")
+    );
 
     if (darkUnderlay) {
       // 深色底：track 固定灰色，thumb 淺色

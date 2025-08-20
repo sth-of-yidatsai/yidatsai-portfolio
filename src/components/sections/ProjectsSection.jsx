@@ -39,11 +39,7 @@ export default function ProjectsSection({ index }) {
   };
 
   return (
-    <div
-      className={`hs-section projects-section hs-section-${index} ${
-        index > 0 ? "sticky" : ""
-      }`}
-    >
+    <div className={`hs-section projects-section hs-section-${index}`}>
       <div className="fullscreen-projects-content">
         {selectedProjects.map(({ blockNumber, projectId }) => {
           const project = projects.find((p) => p.id === projectId);

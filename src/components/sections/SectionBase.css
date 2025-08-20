@@ -9,6 +9,33 @@
   background: transparent;
 }
 
+/* 各 Section 特有背景樣式 */
+.hero-section {
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.vision-section {
+  background: var(--color-primary);
+  color: var(--color-secondary);
+  position: relative;
+  overflow: hidden;
+}
+
+.projects-section {
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-section {
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
 /* Hero Section 特有樣式 */
 .hero-specific-content {
   display: flex;
@@ -87,7 +114,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  max-width: 50rem;
   mix-blend-mode: difference;
 }
 
@@ -99,7 +125,6 @@
 .vision-text-overlay-subtext {
   font-size: 1rem;
   font-weight: var(--font-medium);
-  max-width: 42rem;
   margin-left: var(--space-sm);
   /* 手機響應式調整 */
   padding-right: var(--space-sm);

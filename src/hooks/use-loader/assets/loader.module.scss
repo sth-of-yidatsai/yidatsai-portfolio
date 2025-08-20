@@ -161,7 +161,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--color-secondary, #ffffff);
+  background-color: var(--color-secondary, var(--gray-100, #e0e0e0));
   opacity: 0.3;
   animation: textDotPulse 1.5s infinite ease-in-out;
 }

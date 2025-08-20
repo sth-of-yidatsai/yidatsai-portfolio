@@ -3,17 +3,7 @@ import "./SectionBase.css";
 
 export default function HeroSection({ index }) {
   return (
-    <div
-      className={`hs-section hero-section hs-section-${index} ${
-        index > 0 ? "sticky" : ""
-      }`}
-      style={{
-        background: "var(--color-secondary)",
-        color: "var(--color-primary)",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
+    <div className={`hs-section hero-section hs-section-${index}`}>
       <div className="hero-specific-content">
         <div className="hero-text-container">
           <h1 className="hero-title">Yi-Da Tsai</h1>

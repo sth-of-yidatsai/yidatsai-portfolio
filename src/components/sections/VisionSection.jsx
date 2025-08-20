@@ -137,8 +137,8 @@ export default function VisionSection({ index }) {
         gravity = p.createVector(0, 0.15); // 增加重力，加快掉落速度
 
         // 獲取 CSS 變數顏色
-        primaryColor = getCSSVariable("--color-primary");
-        secondaryColor = getCSSVariable("--color-accent");
+        primaryColor = getCSSVariable("--gray-700");
+        secondaryColor = getCSSVariable("--gray-600");
 
         // 計算響應式文字大小
         responsiveFontSize = calculateResponsiveFontSize();
@@ -500,17 +500,7 @@ export default function VisionSection({ index }) {
   }, []);
 
   return (
-    <div
-      className={`hs-section vision-section hs-section-${index} ${
-        index > 0 ? "sticky" : ""
-      }`}
-      style={{
-        background: "var(--color-primary)",
-        color: "var(--color-secondary)",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
+    <div className={`hs-section vision-section hs-section-${index}`}>
       <div className="vision-canvas-container" ref={canvasRef} />
 
       <div className="vision-text-overlay" ref={textRef}>
@@ -519,17 +509,16 @@ export default function VisionSection({ index }) {
         </div>
         <div className="vision-text-overlay-subtext" data-animate="sentences">
           From nature and culture, I develop a visual lexicon linking local
-          knowledge with contemporary life. Through design, I articulate
-          material histories, typographic rhythm, and editorial structures as
-          pathways to place.
+          knowledge with contemporary life.
+        </div>
+        <div className="vision-text-overlay-subtext" data-animate="sentences">
+          Through design, I articulate material histories, typographic rhythm,
+          and editorial structures as pathways to place.
         </div>
       </div>
 
       {/* 底部跑馬燈區塊 */}
-      <MarqueeText
-        textColor="var(--color-text-light)"
-        lineColor="var(--color-bg)"
-      />
+      <MarqueeText textColor="var(--gray-300)" lineColor="var(--color-bg)" />
     </div>
   );
 }

@@ -3,11 +3,7 @@ import "./SectionBase.css";
 
 export default function MissionSection({ config, index }) {
   return (
-    <div
-      className={`hs-section mission-section hs-section-${index} ${
-        index > 0 ? "sticky" : ""
-      }`}
-    >
+    <div className={`hs-section mission-section hs-section-${index}`}>
       <div className="hs-section-content">
         <div className="hs-section-number">
           {String(index + 1).padStart(2, "0")}

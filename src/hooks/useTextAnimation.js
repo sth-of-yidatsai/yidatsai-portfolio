@@ -9,17 +9,23 @@ import { useLoader } from "./use-loader/index.jsx";
  * @param {string} options.splitType - 分割類型: 'words' | 'sentences' | 'both'
  * @param {Object} options.wordAnimation - 單詞動畫配置
  * @param {Object} options.sentenceAnimation - 句子動畫配置
+ * @param {number} options.threshold - 觸發動畫的可視區域閾值 (0-1)
+ * @param {string} options.rootMargin - 擴展根邊界的邊距
  * @returns {Object} - 包含 textRef 和控制方法的對象
  */
 export function useTextAnimation(options = {}) {
   const textRef = useRef(null);
   const animationRef = useRef(null);
+  const observerRef = useRef(null);
   const isInitialized = useRef(false);
+  const hasTriggered = useRef(false);
   const { loading } = useLoader();
 
   const defaultOptions = {
-    delay: 1000,
+    delay: 300,
     splitType: "both", // 'words', 'sentences', 'both'
+    threshold: 0.1, // 當 10% 的元素進入視窗時觸發
+    rootMargin: "0px 0px -10% 0px", // 稍微提前觸發
     wordAnimation: {
       from: {
         opacity: 0,
@@ -161,6 +167,9 @@ export function useTextAnimation(options = {}) {
 
   // 手動觸發動畫
   const trigger = () => {
+    if (hasTriggered.current) return;
+
+    hasTriggered.current = true;
     const animationTimeout = setTimeout(() => {
       console.log("Starting text animation...");
       animate();
@@ -169,6 +178,39 @@ export function useTextAnimation(options = {}) {
     return () => {
       clearTimeout(animationTimeout);
     };
+  };
+
+  // 設置 Intersection Observer
+  const setupObserver = () => {
+    if (!textRef.current || observerRef.current) return;
+
+    const options = {
+      threshold: config.threshold,
+      rootMargin: config.rootMargin,
+    };
+
+    observerRef.current = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !hasTriggered.current) {
+          console.log("Text element entered viewport, triggering animation...");
+          trigger();
+          // 觸發後可以選擇停止觀察
+          if (observerRef.current) {
+            observerRef.current.unobserve(entry.target);
+          }
+        }
+      });
+    }, options);
+
+    observerRef.current.observe(textRef.current);
+  };
+
+  // 清理 Observer
+  const cleanupObserver = () => {
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+      observerRef.current = null;
+    }
   };
 
   useEffect(() => {
@@ -186,19 +228,32 @@ export function useTextAnimation(options = {}) {
     isInitialized.current = true;
   }, []);
 
-  // 當全域loading完成後才開始文字動畫
+  // 當全域loading完成後設置觀察器
   useEffect(() => {
     if (!loading && isInitialized.current) {
-      const cleanup = trigger();
-      return cleanup;
+      setupObserver();
+
+      // 清理函數
+      return () => {
+        cleanupObserver();
+      };
     }
-  }, [loading, config.delay]);
+  }, [loading, config.threshold, config.rootMargin]);
+
+  // 重置時也要清理觀察器
+  const resetWithCleanup = () => {
+    cleanupObserver();
+    hasTriggered.current = false;
+    reset();
+  };
 
   return {
     textRef,
     animate,
-    reset,
+    reset: resetWithCleanup,
     trigger,
+    setupObserver,
+    cleanupObserver,
   };
 }
 
