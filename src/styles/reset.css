@@ -59,10 +59,13 @@ dd {
 }
 
 /* 8. Create a root stacking context */
+/* 註解掉 isolation: isolate 以允許 mix-blend-mode 正常運作 */
+/*
 #root,
 #__next {
   isolation: isolate;
 }
+*/
 
 /* 9. Remove all animations/transitions for people who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {

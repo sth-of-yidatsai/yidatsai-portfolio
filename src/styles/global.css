@@ -57,6 +57,11 @@
 }
 
 /* 2. 全局基礎樣式 */
+html {
+  /* 確保不會阻斷子元素的 mix-blend-mode */
+  isolation: auto;
+}
+
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
@@ -79,6 +84,9 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  /* 確保不會阻斷子元素的 mix-blend-mode */
+  isolation: auto;
 }
 
 /* 自訂全域捲軸：隱藏原生滾動條（以自製 GlobalScrollbar 取代） */

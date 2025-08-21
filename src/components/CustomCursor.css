@@ -6,17 +6,21 @@
   /* 只負責位置，避免 scale 過渡影響位置追蹤 */
   transform: translate3d(var(--cursor-x, 0), var(--cursor-y, 0), 0);
   will-change: transform;
+  /* 使用 mix-blend-mode 實現反色效果 */
   mix-blend-mode: difference;
+  /* 確保混合模式能正常運作 */
+  isolation: auto;
 }
 
 .custom-cursor-shape {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #ffffff;
+  background-color: white;
   transform: translate(-50%, -50%) scale(var(--cursor-scale, 1));
-  transition: transform 0.15s ease-out, background-color 0.15s ease-out;
-  will-change: transform, background-color;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+  /* 確保形狀本身不會干擾混合模式 */
 }
 
 .custom-cursor-dot {
@@ -25,17 +29,21 @@
   z-index: 2147483647;
   transform: translate3d(var(--cursor-dot-x, 0), var(--cursor-dot-y, 0), 0);
   will-change: transform;
+  /* 使用 mix-blend-mode 實現反色效果 */
   mix-blend-mode: difference;
+  /* 確保混合模式能正常運作 */
+  isolation: auto;
 }
 
 .custom-cursor-dot-shape {
   width: 6px;
   height: 6px;
-  background-color: #ffffff;
+  background-color: white;
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(var(--cursor-dot-scale, 1));
-  transition: transform 0.12s ease-out, background-color 0.12s ease-out;
-  will-change: transform, background-color;
+  transition: transform 0.12s ease-out;
+  will-change: transform;
+  /* 確保形狀本身不會干擾混合模式 */
 }
 
 /* 點擊狀態 */
@@ -57,14 +65,7 @@
 /* hovering 狀態由 scale 控制，不覆寫顏色 */
 
 /* 針對不同主題的適配（固定使用白色搭配 difference 做反色） */
-@media (prefers-color-scheme: dark) {
-  .custom-cursor-shape {
-    background-color: #ffffff;
-  }
-  .custom-cursor-dot-shape {
-    background-color: #ffffff;
-  }
-}
+/* 移除 @media 查詢，統一使用白色背景配合 mix-blend-mode: difference */
 
 /* 確保在移動設備上隱藏自訂游標 */
 @media (hover: none) and (pointer: coarse) {

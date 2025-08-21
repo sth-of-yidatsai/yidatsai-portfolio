@@ -118,16 +118,12 @@ export default function VisionSection({ index }) {
         "P",
         "O",
         "S",
-        "I",
-        "N",
-        "G",
-        "&",
-        "D",
         "E",
-        "S",
-        "I",
-        "G",
-        "N",
+        "P",
+        "L",
+        "A",
+        "C",
+        "E",
       ];
 
       p.setup = () => {
@@ -541,16 +537,26 @@ export default function VisionSection({ index }) {
       <div className="vision-canvas-container" ref={canvasRef} />
 
       <div className="vision-text-overlay" ref={textRef}>
-        <div className="vision-text-overlay-headline" data-animate="words">
-          Composing Place Through Design
+        <div className="headline-group">
+          <div className="vision-text-overlay-headline" data-animate="words">
+            Observe Nature,
+          </div>
+          <div className="vision-text-overlay-headline" data-animate="words">
+            Interpret Culture,
+          </div>
+          <div className="vision-text-overlay-headline" data-animate="words">
+            Compose Place.
+          </div>
         </div>
-        <div className="vision-text-overlay-subtext" data-animate="sentences">
-          From nature and culture, I develop a visual lexicon linking local
-          knowledge with contemporary life.
-        </div>
-        <div className="vision-text-overlay-subtext" data-animate="sentences">
-          Through design, I articulate material histories, typographic rhythm,
-          and editorial structures as pathways to place.
+        <div className="subtext-group">
+          <div className="vision-text-overlay-subtext" data-animate="sentences">
+            From nature and culture, I develop a visual lexicon linking local
+            knowledge with contemporary life.
+          </div>
+          <div className="vision-text-overlay-subtext" data-animate="sentences">
+            Through design, I articulate material histories, typographic rhythm,
+            and editorial structures as pathways to place.
+          </div>
         </div>
       </div>
 

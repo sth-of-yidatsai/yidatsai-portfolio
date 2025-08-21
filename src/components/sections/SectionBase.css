@@ -105,29 +105,27 @@
 
 .vision-section .vision-text-overlay {
   position: absolute;
-  top: 15vh;
-  left: var(--space-lg);
   z-index: 2;
+  top: 15vh;
+  left: 10vw;
   color: var(--color-bg);
   font-family: var(--font-latin), var(--font-cjk);
   pointer-events: none;
   display: flex;
+  gap: var(--space-lg);
   flex-direction: column;
-  gap: var(--space-md);
   mix-blend-mode: difference;
 }
 
 .vision-text-overlay-headline {
-  font-size: 3.2rem;
-  font-weight: var(--font-medium);
+  font-size: 3rem;
+  font-weight: var(--font-regular);
 }
 
 .vision-text-overlay-subtext {
   font-size: 1rem;
   font-weight: var(--font-medium);
-  margin-left: var(--space-sm);
-  /* 手機響應式調整 */
-  padding-right: var(--space-sm);
+  margin-left: 2px;
 }
 
 /* 手機裝置的響應式調整 */

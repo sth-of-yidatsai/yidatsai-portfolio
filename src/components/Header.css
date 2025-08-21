@@ -2,25 +2,38 @@
   position: fixed;
   width: 100vw;
   left: 0;
+  top: var(--space-md);
+  height: 60px;
   padding: 0 var(--space-md);
   display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 999;
-  /* 由 JS 寫入：--header-left-color、--header-right-color */
-  --header-left-color: #2d2d2d;
-  --header-right-color: #2d2d2d;
+  /* 設定基礎顏色為白色 */
+  color: white;
+  /* 關鍵：直接在 Header 上使用 mix-blend-mode */
+  mix-blend-mode: difference;
+  /* 確保背景透明以便混合模式正常運作 */
+  background: transparent;
+  /* 確保 mix-blend-mode 能正常運作的額外屬性 */
+  isolation: auto;
+  /* 強制硬體加速以確保混合模式正常運作 */
+  transform: translateZ(0);
+  /* 確保元素在合成層中 */
+  will-change: transform;
 }
 
 .logo {
   font-size: 4rem;
   font-weight: var(--font-medium);
-  /* LOGO 位於右側，使用右側採樣色 */
-  color: var(--header-right-color);
+  /* 使用 currentColor 繼承父元素的顏色 */
+  color: currentColor;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   transition: opacity 0.3s ease, transform 0.3s ease;
   font-family: var(--font-stack);
+  pointer-events: all;
+  position: relative;
 }
 
 .overlay.open + .header .logo {
@@ -46,6 +59,9 @@
   box-shadow: none;
   outline: none;
   -webkit-tap-highlight-color: transparent;
+  position: relative;
+  /* 確保繼承父元素的顏色 */
+  color: currentColor;
 }
 
 .menu-icon:hover {
@@ -56,18 +72,23 @@
   display: block;
   height: 2px;
   width: 100%;
-  /* 漢堡選單在線左側，使用左側採樣色 */
-  background: var(--header-left-color);
+  /* 使用 currentColor 繼承父元素的顏色 */
+  background-color: currentColor;
   transform-origin: center;
   transition: background-color 0.3s ease, transform 0.3s ease;
+  position: relative;
+  /* 確保繼承父元素的顏色 */
+  color: inherit;
 }
 
-/* 選單展開時：左半區為深色 → 強制使用淺色線條確保對比 */
-.overlay.open + .header .line {
-  background: var(--color-light);
+/* 選單展開時：取消 mix-blend-mode，直接使用淺色確保對比 */
+.overlay.open + .header {
+  mix-blend-mode: normal;
+  color: var(--color-light);
 }
 
-/* 保留動態顏色，不覆寫 */
+/* 使用 mix-blend-mode 的反色效果，無需動態顏色調整 */
+/* 重要：確保所有父容器都不會阻斷 mix-blend-mode */
 
 /* menu-icon 動畫 */
 .line1,

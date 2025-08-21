@@ -4,6 +4,8 @@
   background-color: var(--color-bg);
   display: flex;
   flex-direction: column;
+  /* 確保不會阻斷子元素的 mix-blend-mode */
+  isolation: auto;
 }
 
 /* 確保主要內容區域能夠撐滿剩餘空間 */

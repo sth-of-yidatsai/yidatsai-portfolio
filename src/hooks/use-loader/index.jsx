@@ -93,7 +93,12 @@ export function LoaderProvider({
     <LoaderContext.Provider value={value}>
       {/* 只有在loading完成後才顯示內容 */}
       <div
-        style={{ opacity: loading ? 0 : 1, transition: "opacity 0.5s ease" }}
+        style={{
+          opacity: loading ? 0 : 1,
+          transition: "opacity 0.5s ease",
+          /* 確保不會阻斷子元素的 mix-blend-mode */
+          isolation: "auto",
+        }}
       >
         {children}
       </div>
