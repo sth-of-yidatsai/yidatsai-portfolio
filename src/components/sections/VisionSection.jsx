@@ -681,6 +681,7 @@ export default function VisionSection({ index }) {
                   className="color-wheel"
                   onClick={handlePickColor}
                   aria-label="Pick color for p5 text"
+                  data-clickable="true"
                 />
                 {/* 白色小圓指示器 */}
                 <div
