@@ -116,7 +116,7 @@
   display: flex;
   flex-direction: column;
   background: var(--color-primary);
-  border-right: 1px solid var(--color-text-light);
+  border-right: none;
   z-index: 2;
 }
 
@@ -151,6 +151,7 @@
 }
 .vision-text-overlay-headline {
   font-size: 2.2rem;
+  line-height: 1.2;
   font-weight: var(--font-regular);
 }
 .vision-text-overlay-subtext {
@@ -165,13 +166,16 @@
   height: 1px;
   background-color: var(--color-text-light);
   opacity: 0.6;
+  margin: var(--space-md);
 }
 
-/* 左右欄分隔線（右側再補一道，對齊設計稿感） */
+/* 左右欄分隔線 */
 .vision-divider-vertical {
   width: 1px;
   background-color: var(--color-text-light);
   opacity: 0.6;
+  height: calc(100% - calc(var(--space-md) * 2));
+  margin-block: var(--space-md);
 }
 
 /* 右欄：p5 畫布容器（不再 absolute 吃滿 100%） */
@@ -187,17 +191,36 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  align-items: flex-start;
+  align-items: center;
 }
+
 .color-wheel-container {
+  position: relative;
   display: grid;
   place-items: center;
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 .color-wheel {
+  /* JS 會再設定精確寬高；這裡用 clamp 做保險 */
+  width: clamp(160px, 34vh, 300px);
+  height: clamp(160px, 34vh, 300px);
+  border-radius: 50%;
   cursor: none;
 }
+
+.color-knob {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8), 0 1px 3px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* 不阻擋拖曳 */
+}
+
 .color-meta {
   display: flex;
   align-items: center;
@@ -234,8 +257,8 @@
     padding-top: 12px;
   }
   .color-wheel {
-    width: 220px !important;
-    height: 220px !important;
+    width: clamp(150px, 30vh, 240px);
+    height: clamp(150px, 30vh, 240px);
   }
 }
 

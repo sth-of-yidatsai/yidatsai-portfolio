@@ -10,7 +10,9 @@ export default function VisionSection({ index }) {
   const canvasRef = useRef(null);
   const sectionRef = useRef(null);
   const colorWheelRef = useRef(null);
-
+  const colorWheelContainerRef = useRef(null);
+  const [knobPos, setKnobPos] = useState({ x: 0, y: 0 });
+  const isPickingRef = useRef(false);
   const p5Instance = useRef(null);
   const p5ObserverRef = useRef(null);
   const p5HasInitialized = useRef(false);
@@ -50,74 +52,151 @@ export default function VisionSection({ index }) {
     getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
   /** ========== 色環：繪製與取色 ========== */
-  // 繪製 HSV 色環（在 2x 像素密度下保持銳利）
+  // 依版面與視窗高度計算色環尺寸，避免遮到底部跑馬燈
+  const getWheelSize = () => {
+    const LEFT_PAD = 24 * 2; // .vision-block padding
+    const leftPanel = layoutRef.current?.querySelector(".vision-left-panel");
+    const infoBlock = leftPanel?.querySelector(".vision-info-block");
+
+    // 左欄寬度限制
+    const leftW = (leftPanel?.clientWidth || 360) - LEFT_PAD;
+
+    // 左欄高度（已排除跑馬燈 170px）
+    const panelH = leftPanel
+      ? leftPanel.clientHeight
+      : window.innerHeight - 170;
+    const infoH = infoBlock ? infoBlock.clientHeight : 0;
+
+    // 其他保留：分隔線與色碼區、高度緩衝
+    const reserve =
+      24 /*color 標題行高近似*/ +
+      16 /*gap*/ +
+      44 /*#hex*/ +
+      32; /*divider & 內距緩衝*/
+
+    // 剩餘高度中，色環取「可用高度」的上限
+    const maxByPanel = Math.max(140, Math.floor(panelH - infoH - reserve));
+
+    // 也再以視窗高度做一道保險
+    const maxByVH = Math.max(
+      140,
+      Math.floor((window.innerHeight - 170) * 0.32)
+    );
+
+    const HARD_CAP = 280; // 鎖最大直徑，避免筆電仍壓到跑馬燈
+    return Math.max(140, Math.min(HARD_CAP, leftW, maxByPanel, maxByVH));
+  };
+
   const drawColorWheel = useCallback(() => {
     const cvs = colorWheelRef.current;
     if (!cvs) return;
 
-    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-    const size = 300; // 視覺大小
-    const r = size / 2;
+    const dpr = window.devicePixelRatio || 1;
+    const sizeCss = getWheelSize(); // CSS 像素大小（外框用）
+    const sizeDev = Math.floor(sizeCss * dpr); // 實際畫布像素
+    const rDev = sizeDev / 2;
+    const rCss = sizeCss / 2;
 
-    cvs.style.width = `${size}px`;
-    cvs.style.height = `${size}px`;
-    cvs.width = size * dpr;
-    cvs.height = size * dpr;
+    // CSS 尺寸與實際像素分開設定，避免邊框對不準
+    cvs.style.width = `${sizeCss}px`;
+    cvs.style.height = `${sizeCss}px`;
+    cvs.width = sizeDev;
+    cvs.height = sizeDev;
 
     const ctx = cvs.getContext("2d");
-    ctx.resetTransform?.();
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // putImageData 不吃 transform，保持 1:1
 
-    // 先畫圓形色相-飽和度盤（明度固定 1）
-    const img = ctx.createImageData(size, size);
-    for (let y = 0; y < size; y++) {
-      for (let x = 0; x < size; x++) {
-        const dx = x - r;
-        const dy = y - r;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const idx = (y * size + x) * 4;
-
-        if (dist <= r) {
-          // 角度 => 色相(0~360)，半徑 => 飽和度(0~1)
+    const img = ctx.createImageData(sizeDev, sizeDev);
+    for (let y = 0; y < sizeDev; y++) {
+      for (let x = 0; x < sizeDev; x++) {
+        const dx = x - rDev,
+          dy = y - rDev;
+        const dist = Math.hypot(dx, dy);
+        const idx = (y * sizeDev + x) * 4;
+        if (dist <= rDev) {
           let hue = (Math.atan2(dy, dx) * 180) / Math.PI;
           hue = (hue + 360) % 360;
-          const sat = dist / r;
-          // HSL 轉 RGB（L=0.5 看起來飽和又不刺眼）
-          const { r: R, g: G, b: B } = hslToRgb(hue / 360, 1 * sat, 0.5);
+          const sat = dist / rDev;
+          const { r: R, g: G, b: B } = hslToRgb(hue / 360, sat, 0.5);
           img.data[idx] = R;
           img.data[idx + 1] = G;
           img.data[idx + 2] = B;
           img.data[idx + 3] = 255;
         } else {
-          img.data[idx + 3] = 0; // 圓外透明
+          img.data[idx + 3] = 0;
         }
       }
     }
     ctx.putImageData(img, 0, 0);
-  }, []);
 
-  // 取色處理
-  const handlePickColor = useCallback((e) => {
+    // 初次或縮放後校正旋鈕（使用 CSS 座標）
+    if (knobPos.x === 0 && knobPos.y === 0) {
+      setKnobPos({ x: rCss + rCss * 0.6, y: rCss });
+    } else {
+      const dx = knobPos.x - rCss,
+        dy = knobPos.y - rCss;
+      const dist = Math.hypot(dx, dy);
+      if (dist > rCss - 1) {
+        const k = (rCss - 1) / dist;
+        setKnobPos({ x: rCss + dx * k, y: rCss + dy * k });
+      }
+    }
+  }, [knobPos]);
+
+  // 讀像素 → HEX
+  const readHexAt = (x, y) => {
+    const cvs = colorWheelRef.current;
+    const ctx = cvs.getContext("2d");
+    const scale = window.devicePixelRatio || 1;
+    const pixel = ctx.getImageData(
+      Math.floor(x * scale),
+      Math.floor(y * scale),
+      1,
+      1
+    ).data;
+    return rgbToHex(pixel[0], pixel[1], pixel[2]);
+  };
+
+  // 依指標位置更新顏色與指示圈（自動夾在圓內）
+  const updateColorByPoint = (clientX, clientY) => {
     const cvs = colorWheelRef.current;
     if (!cvs) return;
     const rect = cvs.getBoundingClientRect();
-    const x = Math.floor(e.clientX - rect.left);
-    const y = Math.floor(e.clientY - rect.top);
-    const ctx = cvs.getContext("2d");
-    const pixel = ctx.getImageData(x, y, 1, 1).data;
-    if (pixel[3] === 0) return; // 點到圓外
+    const r = rect.width / 2;
 
-    const hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
-    setPickedColor(hex);
+    let x = clientX - rect.left;
+    let y = clientY - rect.top;
 
-    // 同步改 p5 內所有字的 fill
-    if (
-      p5Instance.current &&
-      typeof p5Instance.current.setTextColor === "function"
-    ) {
-      p5Instance.current.setTextColor(hex);
+    const dx = x - r,
+      dy = y - r;
+    const dist = Math.hypot(dx, dy);
+    if (dist > r - 1) {
+      const k = (r - 1) / dist;
+      x = r + dx * k;
+      y = r + dy * k;
     }
+
+    setKnobPos({ x, y });
+    const hex = readHexAt(x, y);
+    setPickedColor(hex);
+    if (p5Instance.current?.setTextColor) p5Instance.current.setTextColor(hex);
+  };
+
+  // 取色處理
+  const handlePickColor = useCallback((e) => {
+    updateColorByPoint(e.clientX, e.clientY);
   }, []);
+
+  const onPointerDown = (e) => {
+    isPickingRef.current = true;
+    updateColorByPoint(e.clientX, e.clientY);
+  };
+  const onPointerMove = (e) => {
+    if (isPickingRef.current) updateColorByPoint(e.clientX, e.clientY);
+  };
+  const onPointerUp = () => {
+    isPickingRef.current = false;
+  };
 
   useEffect(() => {
     drawColorWheel();
@@ -133,7 +212,6 @@ export default function VisionSection({ index }) {
     const sketch = (p) => {
       let words = [];
       let gravity;
-      let isDragging = false;
       let draggedWord = null;
       let dragOffset = { x: 0, y: 0 };
       let primaryColor, secondaryColor;
@@ -537,16 +615,27 @@ export default function VisionSection({ index }) {
           <div className="vision-block vision-color-block">
             <div className="vision-block-title">color</div>
             <div className="color-wheel-wrap">
-              <div className="color-wheel-container">
-                {" "}
+              <div
+                className="color-wheel-container"
+                ref={colorWheelContainerRef}
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                onPointerLeave={onPointerUp}
+              >
                 <canvas
                   ref={colorWheelRef}
                   className="color-wheel"
                   onClick={handlePickColor}
                   aria-label="Pick color for p5 text"
                 />
+                {/* 白色小圓指示器 */}
+                <div
+                  className="color-knob"
+                  style={{ left: `${knobPos.x}px`, top: `${knobPos.y}px` }}
+                  aria-hidden
+                />
               </div>
-
               <div className="color-meta">
                 <span
                   className="color-chip"
