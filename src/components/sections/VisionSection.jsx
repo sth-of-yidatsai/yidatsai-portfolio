@@ -13,11 +13,36 @@ export default function VisionSection({ index }) {
   const colorWheelContainerRef = useRef(null);
   const [knobPos, setKnobPos] = useState({ x: 0, y: 0 });
   const isPickingRef = useRef(false);
+  // 取得 knob 的視覺半徑（width/2 + borderWidth）
+  const getKnobRadius = () => {
+    const el = colorWheelContainerRef.current?.querySelector(".color-knob");
+    if (!el) return 9; // fallback：14px 寬 + 2px 邊 = 9px 半徑
+    const cs = getComputedStyle(el);
+    const w = parseFloat(cs.width) || 14;
+    const b = parseFloat(cs.borderWidth) || 0;
+    return w / 2 + b;
+  };
+
+  // 取得 canvas 在 container 內的偏移量與半徑
+  const getOffsets = () => {
+    const cvs = colorWheelRef.current;
+    const container = colorWheelContainerRef.current;
+    if (!cvs || !container)
+      return { offX: 0, offY: 0, rCss: 0, rect: null, crect: null };
+
+    const rect = cvs.getBoundingClientRect();
+    const crect = container.getBoundingClientRect();
+    const offX = rect.left - crect.left; // canvas 左上角相對 container 的位移
+    const offY = rect.top - crect.top;
+    const rCss = rect.width / 2;
+    return { offX, offY, rCss, rect, crect };
+  };
+
   const p5Instance = useRef(null);
   const p5ObserverRef = useRef(null);
   const p5HasInitialized = useRef(false);
 
-  const [pickedColor, setPickedColor] = useState("#a6a6a6"); // 初始為 --gray-300
+  const [pickedColor, setPickedColor] = useState("#fafafa"); // 初始顏色
   const { loading } = useLoader();
 
   // 文字動畫
@@ -92,20 +117,20 @@ export default function VisionSection({ index }) {
     if (!cvs) return;
 
     const dpr = window.devicePixelRatio || 1;
-    const sizeCss = getWheelSize(); // CSS 像素大小（外框用）
-    const sizeDev = Math.floor(sizeCss * dpr); // 實際畫布像素
+    const sizeCss = getWheelSize();
+    const sizeDev = Math.floor(sizeCss * dpr);
     const rDev = sizeDev / 2;
-    const rCss = sizeCss / 2;
 
-    // CSS 尺寸與實際像素分開設定，避免邊框對不準
+    // 設定 CSS 尺寸 & 實際像素
     cvs.style.width = `${sizeCss}px`;
     cvs.style.height = `${sizeCss}px`;
     cvs.width = sizeDev;
     cvs.height = sizeDev;
 
     const ctx = cvs.getContext("2d");
-    ctx.setTransform(1, 0, 0, 1, 0, 0); // putImageData 不吃 transform，保持 1:1
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
 
+    // 生成色輪
     const img = ctx.createImageData(sizeDev, sizeDev);
     for (let y = 0; y < sizeDev; y++) {
       for (let x = 0; x < sizeDev; x++) {
@@ -129,16 +154,28 @@ export default function VisionSection({ index }) {
     }
     ctx.putImageData(img, 0, 0);
 
-    // 初次或縮放後校正旋鈕（使用 CSS 座標）
+    // —— 重新計算 knob 的視覺位置（轉成 container 座標）——
+    const { offX, offY, rCss } = getOffsets();
+    const knobR = getKnobRadius();
+    const limit = Math.max(1, rCss - knobR);
+
     if (knobPos.x === 0 && knobPos.y === 0) {
-      setKnobPos({ x: rCss + rCss * 0.6, y: rCss });
+      // 初次放在 0°、半徑 60%（扣掉 knob 半徑）
+      const xC = rCss + limit * 0.6;
+      const yC = rCss;
+      setKnobPos({ x: offX + xC, y: offY + yC });
     } else {
-      const dx = knobPos.x - rCss,
-        dy = knobPos.y - rCss;
+      // 既有 knob：把它轉回 canvas 座標再夾回圓內，最後再加偏移
+      const xC = knobPos.x - offX;
+      const yC = knobPos.y - offY;
+      const dx = xC - rCss,
+        dy = yC - rCss;
       const dist = Math.hypot(dx, dy);
-      if (dist > rCss - 1) {
-        const k = (rCss - 1) / dist;
-        setKnobPos({ x: rCss + dx * k, y: rCss + dy * k });
+      if (dist > limit) {
+        const k = limit / dist;
+        const nx = rCss + dx * k;
+        const ny = rCss + dy * k;
+        setKnobPos({ x: offX + nx, y: offY + ny });
       }
     }
   }, [knobPos]);
@@ -154,32 +191,42 @@ export default function VisionSection({ index }) {
       1,
       1
     ).data;
+
     return rgbToHex(pixel[0], pixel[1], pixel[2]);
   };
 
-  // 依指標位置更新顏色與指示圈（自動夾在圓內）
+  // 拖曳/點擊時定位 knob
   const updateColorByPoint = (clientX, clientY) => {
     const cvs = colorWheelRef.current;
     if (!cvs) return;
-    const rect = cvs.getBoundingClientRect();
-    const r = rect.width / 2;
 
-    let x = clientX - rect.left;
-    let y = clientY - rect.top;
+    // 取得 canvas 與 container 的相對資訊
+    const { offX, offY, rCss, rect } = getOffsets();
 
-    const dx = x - r,
-      dy = y - r;
+    // 先換算成「canvas 內部座標」
+    let xC = clientX - rect.left;
+    let yC = clientY - rect.top;
+
+    // 半徑限制：扣掉 knob 視覺半徑
+    const knobR = getKnobRadius();
+    const dx = xC - rCss;
+    const dy = yC - rCss;
     const dist = Math.hypot(dx, dy);
-    if (dist > r - 1) {
-      const k = (r - 1) / dist;
-      x = r + dx * k;
-      y = r + dy * k;
+    const limit = Math.max(1, rCss - knobR);
+
+    if (dist > limit) {
+      const k = limit / dist;
+      xC = rCss + dx * k;
+      yC = rCss + dy * k;
     }
 
-    setKnobPos({ x, y });
-    const hex = readHexAt(x, y);
+    // 1) 讀色（canvas 座標要乘 DPR）
+    const hex = readHexAt(xC, yC);
     setPickedColor(hex);
     if (p5Instance.current?.setTextColor) p5Instance.current.setTextColor(hex);
+
+    // 2) knob 視覺座標：canvas 內部 + canvas 在 container 的偏移
+    setKnobPos({ x: offX + xC, y: offY + yC });
   };
 
   // 取色處理
@@ -190,12 +237,14 @@ export default function VisionSection({ index }) {
   const onPointerDown = (e) => {
     isPickingRef.current = true;
     updateColorByPoint(e.clientX, e.clientY);
+    e.currentTarget.setPointerCapture?.(e.pointerId);
   };
   const onPointerMove = (e) => {
     if (isPickingRef.current) updateColorByPoint(e.clientX, e.clientY);
   };
-  const onPointerUp = () => {
+  const onPointerUp = (e) => {
     isPickingRef.current = false;
+    e.currentTarget.releasePointerCapture?.(e.pointerId);
   };
 
   useEffect(() => {
@@ -570,6 +619,7 @@ export default function VisionSection({ index }) {
       {/* 主要版面：左側雙矩形＋右側 p5 畫布 */}
       <div className="vision-layout" ref={layoutRef}>
         <aside className="vision-left-panel">
+          <div className="vision-divider-horizontal" />
           {/* 上方：Vision 文案 */}
           <div className="vision-block vision-info-block">
             <div className="vision-block-title">vision</div>

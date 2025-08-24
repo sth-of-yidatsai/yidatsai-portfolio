@@ -2,8 +2,8 @@
 .brand-info {
   position: absolute;
   bottom: var(--space-sm);
-  left: var(--space-lg);
-  right: var(--space-lg);
+  left: var(--space-md);
+  right: var(--space-md);
 }
 
 .brand-line {

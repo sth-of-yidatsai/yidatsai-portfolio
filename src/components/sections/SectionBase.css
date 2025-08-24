@@ -115,6 +115,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: end;
   background: var(--color-primary);
   border-right: none;
   z-index: 2;
@@ -123,25 +124,20 @@
 /* 兩個矩形區塊的共同樣式 */
 .vision-block {
   display: flex;
-  flex-direction: column;
-  justify-content: end;
-  padding: 24px;
-}
-.vision-info-block {
-  flex: 1 1 auto;
-}
-.vision-color-block {
   flex: 0 0 auto;
-  gap: 16px;
+  flex-direction: column;
+  padding: var(--space-md);
 }
 
 /* 左欄區塊小標題 */
 .vision-block-title {
   font-family: var(--font-latin), var(--font-cjk);
-  font-size: 12px;
+  font-size: 0.8rem;
+  font-weight: var(--font-bold);
   letter-spacing: 0.04em;
   color: var(--gray-200);
-  text-transform: lowercase;
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
 }
 
 /* 左欄內文（把原本 overlay 的絕對定位拿掉，改成區塊內排版） */
@@ -157,8 +153,7 @@
 .vision-text-overlay-subtext {
   font-size: 0.95rem;
   opacity: 0.85;
-  text-align: justify;
-  margin-top: 16px;
+  margin-top: var(--space-lg);
 }
 
 /* 左欄內部水平分隔線（在兩個矩形間） */
@@ -214,9 +209,7 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #fff;
-  border: 2px solid rgba(0, 0, 0, 0.35);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8), 0 1px 3px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.75);
   transform: translate(-50%, -50%);
   pointer-events: none; /* 不阻擋拖曳 */
 }
