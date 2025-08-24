@@ -162,7 +162,7 @@
   border-top: 1px solid var(--color-text-light);
   background-color: var(--color-text-light);
   opacity: 0.6;
-  margin: var(--space-md);
+  margin: var(--space-xs) var(--space-md);
 }
 
 /* 左右欄分隔線 */
