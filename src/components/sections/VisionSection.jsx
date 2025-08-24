@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import p5 from "p5";
 import { useTextAnimation } from "../../hooks/useTextAnimation";
 import { useLoader } from "../../hooks/use-loader/index.jsx";
@@ -6,61 +6,130 @@ import MarqueeText from "../MarqueeText";
 import "./SectionBase.css";
 
 export default function VisionSection({ index }) {
+  const layoutRef = useRef(null);
   const canvasRef = useRef(null);
   const sectionRef = useRef(null);
+  const colorWheelRef = useRef(null);
+
   const p5Instance = useRef(null);
   const p5ObserverRef = useRef(null);
   const p5HasInitialized = useRef(false);
+
+  const [pickedColor, setPickedColor] = useState("#a6a6a6"); // 初始為 --gray-300
   const { loading } = useLoader();
 
-  // 使用文字動畫 hook
+  // 文字動畫
   const { textRef } = useTextAnimation({
-    delay: 1000,
+    delay: 400,
     splitType: "both",
     wordAnimation: {
-      from: {
-        opacity: 0,
-        y: 60,
-      },
-      to: {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "back.out(1.7)",
-        stagger: 0.1,
-      },
-    },
-    sentenceAnimation: {
-      from: {
-        opacity: 0,
-        y: 20,
-      },
+      from: { opacity: 0, y: 40 },
       to: {
         opacity: 1,
         y: 0,
         duration: 0.6,
-        ease: "power2.out",
-        stagger: 0.2,
+        ease: "back.out(1.7)",
+        stagger: 0.06,
       },
-      offset: "-=0.3",
+    },
+    sentenceAnimation: {
+      from: { opacity: 0, y: 16 },
+      to: {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: "power2.out",
+        stagger: 0.15,
+      },
+      offset: "-=0.25",
     },
   });
 
-  // 初始化 p5.js 的函數
+  /** 工具：抓 CSS 變數 */
+  const getCSSVar = (name) =>
+    getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+  /** ========== 色環：繪製與取色 ========== */
+  // 繪製 HSV 色環（在 2x 像素密度下保持銳利）
+  const drawColorWheel = useCallback(() => {
+    const cvs = colorWheelRef.current;
+    if (!cvs) return;
+
+    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    const size = 300; // 視覺大小
+    const r = size / 2;
+
+    cvs.style.width = `${size}px`;
+    cvs.style.height = `${size}px`;
+    cvs.width = size * dpr;
+    cvs.height = size * dpr;
+
+    const ctx = cvs.getContext("2d");
+    ctx.resetTransform?.();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // 先畫圓形色相-飽和度盤（明度固定 1）
+    const img = ctx.createImageData(size, size);
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        const dx = x - r;
+        const dy = y - r;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const idx = (y * size + x) * 4;
+
+        if (dist <= r) {
+          // 角度 => 色相(0~360)，半徑 => 飽和度(0~1)
+          let hue = (Math.atan2(dy, dx) * 180) / Math.PI;
+          hue = (hue + 360) % 360;
+          const sat = dist / r;
+          // HSL 轉 RGB（L=0.5 看起來飽和又不刺眼）
+          const { r: R, g: G, b: B } = hslToRgb(hue / 360, 1 * sat, 0.5);
+          img.data[idx] = R;
+          img.data[idx + 1] = G;
+          img.data[idx + 2] = B;
+          img.data[idx + 3] = 255;
+        } else {
+          img.data[idx + 3] = 0; // 圓外透明
+        }
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+  }, []);
+
+  // 取色處理
+  const handlePickColor = useCallback((e) => {
+    const cvs = colorWheelRef.current;
+    if (!cvs) return;
+    const rect = cvs.getBoundingClientRect();
+    const x = Math.floor(e.clientX - rect.left);
+    const y = Math.floor(e.clientY - rect.top);
+    const ctx = cvs.getContext("2d");
+    const pixel = ctx.getImageData(x, y, 1, 1).data;
+    if (pixel[3] === 0) return; // 點到圓外
+
+    const hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
+    setPickedColor(hex);
+
+    // 同步改 p5 內所有字的 fill
+    if (
+      p5Instance.current &&
+      typeof p5Instance.current.setTextColor === "function"
+    ) {
+      p5Instance.current.setTextColor(hex);
+    }
+  }, []);
+
+  useEffect(() => {
+    drawColorWheel();
+    window.addEventListener("resize", drawColorWheel);
+    return () => window.removeEventListener("resize", drawColorWheel);
+  }, [drawColorWheel]);
+
+  /** ========== p5 初始化 ========== */
   const initializeP5 = () => {
     if (p5HasInitialized.current || !canvasRef.current) return;
-
-    console.log("Initializing p5.js animation...");
     p5HasInitialized.current = true;
 
-    // 獲取 CSS 變數值的輔助函數
-    const getCSSVariable = (variableName) => {
-      return getComputedStyle(document.documentElement)
-        .getPropertyValue(variableName)
-        .trim();
-    };
-
-    // p5.js sketch 函數
     const sketch = (p) => {
       let words = [];
       let gravity;
@@ -70,47 +139,37 @@ export default function VisionSection({ index }) {
       let primaryColor, secondaryColor;
       let responsiveFontSize;
 
-      // 計算響應式文字大小的函數
-      const calculateResponsiveFontSize = () => {
-        const screenWidth = p.windowWidth;
-        const screenHeight = p.windowHeight;
-
-        // 定義不同螢幕尺寸的基準值 - 稍微加大
-        const breakpoints = {
-          // 手機 (< 768px width)
-          mobile: { width: 768, baseSize: 8 }, // 8rem
-          // 平板 (768px - 1024px width)
-          tablet: { width: 1024, baseSize: 10 }, //10rem
-          // 筆記本電腦 (1024px - 1440px width)
-          laptop: { width: 1440, baseSize: 12 }, // 12rem
-          // 桌上型電腦 2K (1440px - 2560px width)
-          desktop2k: { width: 2560, baseSize: 22 }, // 22rem
-          // 桌上型電腦 4K (> 2560px width)
-          desktop4k: { width: Infinity, baseSize: 30 }, // 30rem
-        };
-
-        let fontSize;
-        if (screenWidth < breakpoints.mobile.width) {
-          fontSize = breakpoints.mobile.baseSize;
-        } else if (screenWidth < breakpoints.tablet.width) {
-          fontSize = breakpoints.tablet.baseSize;
-        } else if (screenWidth < breakpoints.laptop.width) {
-          fontSize = breakpoints.laptop.baseSize;
-        } else if (screenWidth < breakpoints.desktop2k.width) {
-          fontSize = breakpoints.desktop2k.baseSize;
-        } else {
-          fontSize = breakpoints.desktop4k.baseSize;
-        }
-
-        // 考慮螢幕高度的調整因子
-        const heightFactor = p.constrain(screenHeight / 800, 0.7, 1.3);
-        fontSize *= heightFactor;
-
-        // 轉換為像素 (假設 1rem = 16px)
-        return fontSize * 16;
+      const getCanvasSize = () => {
+        const host = canvasRef.current;
+        const width = host ? host.clientWidth : p.windowWidth;
+        const height = window.innerHeight - 170; // 保留跑馬燈高度
+        return { width, height };
       };
 
-      // 文字內容
+      const calculateResponsiveFontSize = () => {
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const breakpoints = {
+          mobile: { width: 768, baseSize: 8 },
+          tablet: { width: 1024, baseSize: 10 },
+          laptop: { width: 1440, baseSize: 12 },
+          desktop2k: { width: 2560, baseSize: 22 },
+          desktop4k: { width: Infinity, baseSize: 30 },
+        };
+        let fontSize =
+          screenWidth < breakpoints.mobile.width
+            ? breakpoints.mobile.baseSize
+            : screenWidth < breakpoints.tablet.width
+            ? breakpoints.tablet.baseSize
+            : screenWidth < breakpoints.laptop.width
+            ? breakpoints.laptop.baseSize
+            : screenWidth < breakpoints.desktop2k.width
+            ? breakpoints.desktop2k.baseSize
+            : breakpoints.desktop4k.baseSize;
+        const heightFactor = p.constrain(screenHeight / 800, 0.7, 1.3);
+        return fontSize * 16 * heightFactor;
+      };
+
       const wordStrings = [
         "C",
         "O",
@@ -127,59 +186,45 @@ export default function VisionSection({ index }) {
       ];
 
       p.setup = () => {
-        // 減少 canvas 高度，為底部跑馬燈留出空間
-        const canvasHeight = p.windowHeight - 170; // 減去給底部區塊
-        const canvas = p.createCanvas(p.windowWidth, canvasHeight);
-
-        // 安全設置canvas的parent
+        const { width, height } = getCanvasSize();
+        const canvas = p.createCanvas(width, height);
         if (canvasRef.current && canvasRef.current.parentNode) {
           canvas.parent(canvasRef.current);
         }
 
-        gravity = p.createVector(0, 0.15); // 增加重力，加快掉落速度
+        gravity = p.createVector(0, 0.15);
+        primaryColor = getCSSVar("--gray-700");
+        secondaryColor = pickedColor || getCSSVar("--gray-300"); // 初始吃當前色
 
-        // 獲取 CSS 變數顏色
-        primaryColor = getCSSVariable("--gray-700");
-        secondaryColor = getCSSVariable("--gray-600");
-
-        // 計算響應式文字大小
         responsiveFontSize = calculateResponsiveFontSize();
 
-        // 初始化文字對象 - 改進分佈避免交疊
         for (let i = 0; i < wordStrings.length; i++) {
+          // ……（排布與延遲邏輯同原程式）……
           const centerX = p.width / 2;
-          // 根據文字大小調整水平範圍
-          const horizontalRange = responsiveFontSize * 1.3; // 調整為1.3，平衡分散與聚集
-
-          // 使用更智慧的位置分配
-          let x, y;
-          let attempts = 0;
+          const horizontalRange = responsiveFontSize * 1.3;
+          let x,
+            y,
+            attempts = 0;
           const maxAttempts = 10;
-
           do {
-            // 根據索引創建更均勻的分佈
             const angle =
               (i / wordStrings.length) * p.TWO_PI + p.random(-0.5, 0.5);
             const radius = p.random(horizontalRange * 0.3, horizontalRange);
             x = centerX + p.cos(angle) * radius;
-
-            // 增加垂直間距，避免垂直堆疊
-            const baseVerticalSpacing = responsiveFontSize * 0.4; // 從0.25增加到0.4
+            const baseVerticalSpacing = responsiveFontSize * 0.4;
             const verticalVariation = p.random(
               -baseVerticalSpacing * 0.3,
               baseVerticalSpacing * 0.3
             );
-            y = -100 - i * baseVerticalSpacing + verticalVariation; // 起始位置更高
-
+            y = -100 - i * baseVerticalSpacing + verticalVariation;
             attempts++;
           } while (attempts < maxAttempts);
 
-          // 減少延遲時間，加快掉落速度
-          const baseDelay = i * 200; // 從300減少到200
-          const delayVariation = p.random(-50, 100); // 減少隨機變化範圍
+          const baseDelay = i * 200;
+          const delayVariation = p.random(-50, 100);
           const delay = Math.max(0, baseDelay + delayVariation);
+          const rotation = p.random(-p.PI / 8, p.PI / 8);
 
-          const rotation = p.random(-p.PI / 8, p.PI / 8); // 進一步減少旋轉角度
           words.push(
             new Word(
               wordStrings[i],
@@ -193,80 +238,63 @@ export default function VisionSection({ index }) {
             )
           );
         }
+
+        // 暴露 API：外部可改所有字色
+        p.setTextColor = (cssColor) => {
+          words.forEach((w) => (w.color = cssColor));
+        };
       };
 
       p.draw = () => {
-        // 使用 CSS 變數的背景顏色
         p.background(primaryColor);
-
-        // 設置 difference 混合模式
         p.blendMode(p.DIFFERENCE);
-
-        for (let word of words) {
-          if (word !== draggedWord) {
-            word.applyForce(gravity);
-          }
-          word.update();
-          word.checkEdges();
-          word.checkCollisions(words);
-          word.display();
+        for (let w of words) {
+          if (w !== draggedWord) w.applyForce(gravity);
+          w.update();
+          w.checkEdges();
+          w.checkCollisions(words);
+          w.display();
         }
-
-        // 重置混合模式
         p.blendMode(p.BLEND);
       };
 
       p.mousePressed = () => {
         for (let word of words) {
           if (word.contains(p.mouseX, p.mouseY)) {
-            isDragging = true;
             draggedWord = word;
-            word.isDragged = true; // 設置拖動狀態
+            word.isDragged = true;
             dragOffset.x = p.mouseX - word.position.x;
             dragOffset.y = p.mouseY - word.position.y;
-            break;
+            return;
           }
         }
       };
-
       p.mouseDragged = () => {
-        if (isDragging && draggedWord) {
-          // 完全按照 typoTool.js 的拖動邏輯
+        if (draggedWord) {
           draggedWord.position.x = p.mouseX - dragOffset.x;
           draggedWord.position.y = p.mouseY - dragOffset.y;
-          draggedWord.velocity.y = 0; // typoTool.js: this.speed = 0;
-          draggedWord.vx = 0; // typoTool.js: this.vx = 0;
+          draggedWord.velocity.y = 0;
+          draggedWord.vx = 0;
         }
       };
-
       p.mouseReleased = () => {
-        if (isDragging && draggedWord) {
-          // 完全按照 typoTool.js 的釋放邏輯
+        if (draggedWord) {
           draggedWord.isDragged = false;
           draggedWord.vx = (p.mouseX - p.pmouseX) / 10;
           draggedWord.velocity.y = (p.mouseY - p.pmouseY) / 10;
         }
-        isDragging = false;
         draggedWord = null;
       };
 
       p.windowResized = () => {
-        // 同樣在窗口大小變化時調整canvas高度
-        const canvasHeight = p.windowHeight - 170;
-        p.resizeCanvas(p.windowWidth, canvasHeight);
+        const { width, height } = getCanvasSize();
+        p.resizeCanvas(width, height);
 
-        // 重新計算響應式文字大小
-        const newFontSize = calculateResponsiveFontSize();
-
-        // 更新所有文字物件的大小
-        for (let word of words) {
-          word.updateFontSize(newFontSize);
-        }
-
-        responsiveFontSize = newFontSize;
+        const newFont = calculateResponsiveFontSize();
+        words.forEach((w) => w.updateFontSize(newFont));
       };
 
-      // Word 類別定義
+      /** --- Word 類別（內部運動/碰撞/渲染）保持與原檔一致，僅略去 --- */
       class Word {
         constructor(
           text,
@@ -283,96 +311,64 @@ export default function VisionSection({ index }) {
           this.position = this.p.createVector(x, y);
           this.velocity = this.p.createVector(0, 0);
           this.acceleration = this.p.createVector(0, 0);
-          this.mass = 1; // 標準質量
-          this.restitution = 0.4; // 增加彈跳效果，從0.3增加到0.4
-          this.friction = 0.97; // 減少摩擦力，讓動畫更活潑
-          this.damping = 0.97; // 減少阻尼，保持更多動能
-          this.maxSpeed = 18; // 增加最大速度，從15增加到18
-          this.minSpeed = 0.05; // 保持停止閾值
-
-          // 增加初始水平速度，讓碰撞更明顯
-          this.vx = this.p.random(-0.8, 0.8); // 從(-0.5,0.5)增加到(-0.8,0.8)
+          this.mass = 1;
+          this.restitution = 0.4;
+          this.friction = 0.97;
+          this.damping = 0.97;
+          this.maxSpeed = 18;
+          this.minSpeed = 0.05;
+          this.vx = this.p.random(-0.8, 0.8);
           this.isDragged = false;
-
-          // 延遲相關
           this.delay = delay;
           this.startTime = this.p.millis();
           this.active = false;
-          this.rotation = rotation; // 初始旋轉角度
-
-          // 參考 typoTool.js 的旋轉系統
+          this.rotation = rotation;
           this.rotationSpeed = this.p.random(-0.02, 0.02);
           this.birthTime = this.p.millis();
-
-          // 設定文字樣式來計算尺寸 - 使用響應式文字大小
           this.p.textAlign(this.p.CENTER, this.p.CENTER);
-          this.fontSize = fontSize || responsiveFontSize || 20 * 16; // 使用傳入的文字大小或預設值
+          this.fontSize = fontSize || 20 * 16;
           this.p.textSize(this.fontSize);
           this.width = this.p.textWidth(this.text);
           this.height = this.fontSize;
-
-          // 使用 CSS 變數的文字顏色
           this.color = textColor;
         }
-
         applyForce(force) {
           let f = p5.Vector.div(force, this.mass);
           this.acceleration.add(f);
         }
-
         update() {
-          // 檢查是否應該開始下落
           if (!this.active) {
-            if (this.p.millis() - this.startTime > this.delay) {
+            if (this.p.millis() - this.startTime > this.delay)
               this.active = true;
-            } else {
-              return; // 還沒到時間，不更新
-            }
+            else return;
           }
-
-          // 完全按照 typoTool.js 的運動邏輯
           if (!this.isDragged) {
-            // typoTool.js: this.speed += gravity;
-            this.velocity.y += gravity.y;
-            // typoTool.js: this.y += this.speed; this.x += this.vx;
+            this.velocity.y += 0.15;
             this.position.y += this.velocity.y;
             this.position.x += this.vx;
-
-            // typoTool.js 的旋轉邏輯
-            let elapsedTime = (this.p.millis() - this.birthTime) / 1000;
-            let slowdownFactor = this.p.map(elapsedTime, 0, 5, 1, 0, true);
-            this.rotation += this.rotationSpeed * slowdownFactor;
-
-            // typoTool.js: this.speed *= damping; this.vx *= damping;
+            let elapsed = (this.p.millis() - this.birthTime) / 1000;
+            let slow = this.p.map(elapsed, 0, 5, 1, 0, true);
+            this.rotation += this.rotationSpeed * slow;
             this.velocity.y *= this.damping;
             this.vx *= this.damping;
           }
-
           this.acceleration.mult(0);
         }
-
         checkEdges() {
-          // 修復邊界檢測 - 讓文字可以觸碰到邊緣
-          let halfChar = this.fontSize * 0.3; // 減少邊界緩衝區，讓文字更接近邊緣
-
-          // 底部邊界處理 - 確保文字不會掉落到跑馬燈區域
-          const bottomLimit = this.p.height - halfChar;
-          if (this.position.y > bottomLimit) {
-            this.position.y = bottomLimit;
-            this.velocity.y *= -this.restitution; // 使用彈跳係數
-            this.vx *= this.friction; // 添加水平摩擦力
+          let halfChar = this.fontSize * 0.3;
+          const bottom = this.p.height - halfChar;
+          if (this.position.y > bottom) {
+            this.position.y = bottom;
+            this.velocity.y *= -this.restitution;
+            this.vx *= this.friction;
           }
-
-          // 左右邊界處理 - 讓文字可以觸碰左右邊
           if (this.position.x > this.p.width - halfChar) {
             this.position.x = this.p.width - halfChar;
-            this.vx *= -this.restitution; // 使用彈跳係數而不是完全反轉
+            this.vx *= -this.restitution;
           } else if (this.position.x < halfChar) {
             this.position.x = halfChar;
-            this.vx *= -this.restitution; // 使用彈跳係數而不是完全反轉
+            this.vx *= -this.restitution;
           }
-
-          // 限制最大速度
           this.velocity.y = this.p.constrain(
             this.velocity.y,
             -this.maxSpeed,
@@ -380,72 +376,53 @@ export default function VisionSection({ index }) {
           );
           this.vx = this.p.constrain(this.vx, -this.maxSpeed, this.maxSpeed);
         }
-
         checkCollisions(words) {
           for (let other of words) {
-            if (other !== this) {
-              // 增強碰撞效果，減少交疊
-              let dx = other.position.x - this.position.x;
-              let dy = other.position.y - this.position.y;
-              let distance = this.p.sqrt(dx * dx + dy * dy);
-              // 增加最小距離，進一步減少交疊
-              let minDist = this.fontSize * 0.68; // 從0.5增加到0.7
-
-              if (distance < minDist && distance > 0) {
-                // 增強分離力和碰撞效果
-                let angle = this.p.atan2(dy, dx);
-                let targetX = this.position.x + this.p.cos(angle) * minDist;
-                let targetY = this.position.y + this.p.sin(angle) * minDist;
-                let ax = (targetX - other.position.x) * 0.06; // 從0.05增加到0.08
-                let ay = (targetY - other.position.y) * 0.06;
-
-                // 增強碰撞效果
-                let collisionForce = (minDist - distance) / minDist;
-                ax *= 1 + collisionForce;
-                ay *= 1 + collisionForce;
-
-                // 只對活躍的文字應用分離力
-                if (this.active) {
-                  this.vx -= ax;
-                  this.velocity.y -= ay;
-                }
-                if (other.active) {
-                  other.vx += ax;
-                  other.velocity.y += ay;
-                }
-
-                // 增強位置分離力度
-                if (this.active && other.active) {
-                  this.position.x -= ax * 1.5; // 從1.0增加到1.5
-                  this.position.y -= ay * 1.5;
-                  other.position.x += ax * 1.5;
-                  other.position.y += ay * 1.5;
-                }
+            if (other === this) continue;
+            const dx = other.position.x - this.position.x;
+            const dy = other.position.y - this.position.y;
+            const dist = this.p.sqrt(dx * dx + dy * dy);
+            const minDist = this.fontSize * 0.68;
+            if (dist < minDist && dist > 0) {
+              const angle = this.p.atan2(dy, dx);
+              const targetX = this.position.x + this.p.cos(angle) * minDist;
+              const targetY = this.position.y + this.p.sin(angle) * minDist;
+              let ax = (targetX - other.position.x) * 0.06;
+              let ay = (targetY - other.position.y) * 0.06;
+              const c = (minDist - dist) / minDist;
+              ax *= 1 + c;
+              ay *= 1 + c;
+              if (this.active) {
+                this.vx -= ax;
+                this.velocity.y -= ay;
+              }
+              if (other.active) {
+                other.vx += ax;
+                other.velocity.y += ay;
+              }
+              if (this.active && other.active) {
+                this.position.x -= ax * 1.5;
+                this.position.y -= ay * 1.5;
+                other.position.x += ax * 1.5;
+                other.position.y += ay * 1.5;
               }
             }
           }
         }
-
         display() {
-          // 總是顯示文字，但只有啟動時才會下落
           this.p.push();
           this.p.translate(this.position.x, this.position.y);
-          this.p.rotate(this.rotation); // 應用旋轉角度
-
+          this.p.rotate(this.rotation);
           this.p.fill(this.color);
           this.p.textAlign(this.p.CENTER, this.p.CENTER);
           this.p.textSize(this.fontSize);
-
-          // 使用 Futura PT 字體
           this.p.textFont(
             "futura-pt, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
           );
           this.p.textStyle(this.p.MEDIUM);
-
-          this.p.text(this.text, 0, 0); // 相對於旋轉中心繪製
+          this.p.text(this.text, 0, 0);
           this.p.pop();
         }
-
         contains(px, py) {
           return (
             px > this.position.x - this.width / 2 &&
@@ -454,10 +431,8 @@ export default function VisionSection({ index }) {
             py < this.position.y + this.height / 2
           );
         }
-
-        updateFontSize(newFontSize) {
-          this.fontSize = newFontSize;
-          // 重新計算文字尺寸
+        updateFontSize(n) {
+          this.fontSize = n;
           this.p.textSize(this.fontSize);
           this.width = this.p.textWidth(this.text);
           this.height = this.fontSize;
@@ -465,36 +440,24 @@ export default function VisionSection({ index }) {
       }
     };
 
-    // 創建 p5 實例
     p5Instance.current = new p5(sketch);
   };
 
-  // 設置 p5.js 的 Intersection Observer
+  /** 觀察進場後才啟動 p5（沿用原本作法） */
   const setupP5Observer = useCallback(() => {
     if (!sectionRef.current || p5ObserverRef.current) return;
-
-    const options = {
-      threshold: 0.1, // 當 10% 的區域進入視窗時觸發
-      rootMargin: "0px 0px -10% 0px", // 稍微提前觸發
-    };
-
+    const options = { threshold: 0.1, rootMargin: "0px 0px -10% 0px" };
     p5ObserverRef.current = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !p5HasInitialized.current && !loading) {
-          console.log("Vision section entered viewport, initializing p5.js...");
           initializeP5();
-          // 觸發後停止觀察
-          if (p5ObserverRef.current) {
-            p5ObserverRef.current.unobserve(entry.target);
-          }
+          p5ObserverRef.current?.unobserve(entry.target);
         }
       });
     }, options);
-
     p5ObserverRef.current.observe(sectionRef.current);
   }, [loading]);
 
-  // 清理 p5.js Observer
   const cleanupP5Observer = () => {
     if (p5ObserverRef.current) {
       p5ObserverRef.current.disconnect();
@@ -502,29 +465,21 @@ export default function VisionSection({ index }) {
     }
   };
 
-  // 當 loading 完成後設置觀察器
   useEffect(() => {
     if (!loading) {
       setupP5Observer();
-
-      return () => {
-        cleanupP5Observer();
-      };
+      return cleanupP5Observer;
     }
   }, [loading, setupP5Observer]);
 
-  // 組件卸載時的清理
   useEffect(() => {
     return () => {
       cleanupP5Observer();
       if (p5Instance.current) {
         try {
           p5Instance.current.remove();
-        } catch (e) {
-          console.warn("Component unmount p5.js cleanup warning:", e);
-        } finally {
-          p5Instance.current = null;
-        }
+        } catch (_) {}
+        p5Instance.current = null;
       }
     };
   }, []);
@@ -534,34 +489,100 @@ export default function VisionSection({ index }) {
       className={`hs-section vision-section hs-section-${index}`}
       ref={sectionRef}
     >
-      <div className="vision-canvas-container" ref={canvasRef} />
+      {/* 主要版面：左側雙矩形＋右側 p5 畫布 */}
+      <div className="vision-layout" ref={layoutRef}>
+        <aside className="vision-left-panel">
+          {/* 上方：Vision 文案 */}
+          <div className="vision-block vision-info-block">
+            <div className="vision-block-title">vision</div>
+            <div className="vision-text-overlay" ref={textRef}>
+              <div className="headline-group">
+                <div
+                  className="vision-text-overlay-headline"
+                  data-animate="words"
+                >
+                  Observe Nature,
+                </div>
+                <div
+                  className="vision-text-overlay-headline"
+                  data-animate="words"
+                >
+                  Interpret Culture,
+                </div>
+                <div
+                  className="vision-text-overlay-headline"
+                  data-animate="words"
+                >
+                  Compose Place.
+                </div>
+              </div>
+              <div className="subtext-group">
+                <div
+                  className="vision-text-overlay-subtext"
+                  data-animate="words"
+                >
+                  From nature and culture, I develop a visual lexicon linking
+                  local knowledge with contemporary life. Through design, I
+                  articulate material histories, typographic rhythm, and
+                  editorial structures as pathways to place.
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <div className="vision-text-overlay" ref={textRef}>
-        <div className="headline-group">
-          <div className="vision-text-overlay-headline" data-animate="words">
-            Observe Nature,
+          {/* 細線分隔 */}
+          <div className="vision-divider-horizontal" />
+
+          {/* 下方：色環挑色器 */}
+          <div className="vision-block vision-color-block">
+            <div className="vision-block-title">color</div>
+            <div className="color-wheel-wrap">
+              <div className="color-wheel-container">
+                {" "}
+                <canvas
+                  ref={colorWheelRef}
+                  className="color-wheel"
+                  onClick={handlePickColor}
+                  aria-label="Pick color for p5 text"
+                />
+              </div>
+
+              <div className="color-meta">
+                <span
+                  className="color-chip"
+                  style={{ background: pickedColor }}
+                />
+                <span className="color-hex">{pickedColor}</span>
+              </div>
+            </div>
           </div>
-          <div className="vision-text-overlay-headline" data-animate="words">
-            Interpret Culture,
-          </div>
-          <div className="vision-text-overlay-headline" data-animate="words">
-            Compose Place.
-          </div>
-        </div>
-        <div className="subtext-group">
-          <div className="vision-text-overlay-subtext" data-animate="sentences">
-            From nature and culture, I develop a visual lexicon linking local
-            knowledge with contemporary life.
-          </div>
-          <div className="vision-text-overlay-subtext" data-animate="sentences">
-            Through design, I articulate material histories, typographic rhythm,
-            and editorial structures as pathways to place.
-          </div>
-        </div>
+        </aside>
+
+        {/* 垂直分隔線 */}
+        <div className="vision-divider-vertical" />
+
+        {/* 右側 p5 畫布容器（寬度依右欄計算） */}
+        <div className="vision-canvas-container" ref={canvasRef} />
       </div>
 
-      {/* 底部跑馬燈區塊 */}
+      {/* 底部跑馬燈（位置與樣式維持原樣） */}
       <MarqueeText textColor="var(--gray-300)" lineColor="var(--color-bg)" />
     </div>
   );
+}
+
+/** 小工具：HSL→RGB、RGB→HEX */
+function hslToRgb(h, s, l) {
+  const k = (n) => (n + h * 12) % 12;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n) =>
+    l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+  return {
+    r: Math.round(255 * f(0)),
+    g: Math.round(255 * f(8)),
+    b: Math.round(255 * f(4)),
+  };
+}
+function rgbToHex(r, g, b) {
+  return "#" + [r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("");
 }

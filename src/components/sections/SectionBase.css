@@ -94,48 +94,148 @@
 }
 
 /* Vision Section 特有樣式 - p5.js 物理效果 */
-.vision-section .vision-canvas-container {
+.vision-section {
+  background: var(--color-primary);
+  color: var(--color-secondary);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 主要版面：上留空給 Marquee（170px），其餘滿高 */
+.vision-layout {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: calc(100% - 170px); /* 為底部 Marquee 元件留出空間 */
+  inset: 0 0 170px 0; /* bottom 為跑馬燈預留 */
+  display: flex;
+}
+
+/* 左欄：兩個矩形區塊垂直排列 */
+.vision-left-panel {
+  width: 360px;
+  min-width: 360px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-primary);
+  border-right: 1px solid var(--color-text-light);
+  z-index: 2;
+}
+
+/* 兩個矩形區塊的共同樣式 */
+.vision-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 24px;
+}
+.vision-info-block {
+  flex: 1 1 auto;
+}
+.vision-color-block {
+  flex: 0 0 auto;
+  gap: 16px;
+}
+
+/* 左欄區塊小標題 */
+.vision-block-title {
+  font-family: var(--font-latin), var(--font-cjk);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--gray-200);
+  text-transform: lowercase;
+}
+
+/* 左欄內文（把原本 overlay 的絕對定位拿掉，改成區塊內排版） */
+.vision-text-overlay {
+  color: var(--gray-0);
+  pointer-events: none;
+}
+.vision-text-overlay-headline {
+  font-size: 2.2rem;
+  font-weight: var(--font-regular);
+}
+.vision-text-overlay-subtext {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  text-align: justify;
+  margin-top: 16px;
+}
+
+/* 左欄內部水平分隔線（在兩個矩形間） */
+.vision-divider-horizontal {
+  height: 1px;
+  background-color: var(--color-text-light);
+  opacity: 0.6;
+}
+
+/* 左右欄分隔線（右側再補一道，對齊設計稿感） */
+.vision-divider-vertical {
+  width: 1px;
+  background-color: var(--color-text-light);
+  opacity: 0.6;
+}
+
+/* 右欄：p5 畫布容器（不再 absolute 吃滿 100%） */
+.vision-section .vision-canvas-container {
+  position: relative;
+  flex: 1 1 auto; /* 吃掉右側所有剩餘寬度 */
+  height: 100%;
   z-index: 1;
 }
 
-.vision-section .vision-text-overlay {
-  position: absolute;
-  z-index: 2;
-  top: 15vh;
-  left: 10vw;
-  color: var(--color-bg);
-  font-family: var(--font-latin), var(--font-cjk);
-  pointer-events: none;
+/* 色環 */
+.color-wheel-wrap {
   display: flex;
-  gap: var(--space-lg);
   flex-direction: column;
-  mix-blend-mode: difference;
+  gap: 10px;
+  align-items: flex-start;
+}
+.color-wheel-container {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+.color-wheel {
+  cursor: none;
+}
+.color-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray-200);
+  font-size: 12px;
+}
+.color-chip {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-800);
 }
 
-.vision-text-overlay-headline {
-  font-size: 3rem;
-  font-weight: var(--font-regular);
-}
-
-.vision-text-overlay-subtext {
-  font-size: 1rem;
-  font-weight: var(--font-medium);
-  margin-left: 2px;
-}
-
-/* 手機裝置的響應式調整 */
-@media (max-width: 768px) {
-  .vision-text-overlay-subtext {
-    max-width: calc(100vw - 2 * var(--space-sm));
-    margin-left: var(--space-sm);
-    margin-right: var(--space-sm);
-    font-size: 0.9rem;
-    line-height: 1.5;
+/* 手機（或窄螢幕）時，左欄改成上方整列、色環縮小 */
+@media (max-width: 900px) {
+  .vision-layout {
+    inset: 0 0 170px 0;
+    flex-direction: column;
+  }
+  .vision-left-panel {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--color-text-light);
+  }
+  .vision-divider-vertical {
+    display: none;
+  }
+  .vision-info-block {
+    padding-bottom: 12px;
+  }
+  .vision-color-block {
+    padding-top: 12px;
+  }
+  .color-wheel {
+    width: 220px !important;
+    height: 220px !important;
   }
 }
 
@@ -175,21 +275,6 @@
 /* 動畫完成後的狀態 */
 [data-animate].animation-complete {
   opacity: 1;
-}
-
-/* Vision Section 移動設備樣式 */
-@media (max-width: 768px) {
-  .vision-section .vision-text-overlay {
-    top: var(--space-md);
-    left: var(--space-md);
-    right: var(--space-md);
-    max-width: none;
-  }
-
-  .vision-text-overlay-headline {
-    font-size: 2.5rem;
-    margin-bottom: var(--space-md);
-  }
 }
 
 /* Projects Section -滿版四等分區域- 特有樣式 */
