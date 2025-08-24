@@ -605,8 +605,11 @@ export default function VisionSection({ index }) {
       if (p5Instance.current) {
         try {
           p5Instance.current.remove();
-        } catch (_) {}
-        p5Instance.current = null;
+        } catch {
+          /* noop */
+        } finally {
+          p5Instance.current = null;
+        }
       }
     };
   }, []);

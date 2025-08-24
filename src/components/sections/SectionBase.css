@@ -158,7 +158,8 @@
 
 /* 左欄內部水平分隔線（在兩個矩形間） */
 .vision-divider-horizontal {
-  height: 1px;
+  height: 0; /* 不用高度，用邊框畫 */
+  border-top: 1px solid var(--color-text-light);
   background-color: var(--color-text-light);
   opacity: 0.6;
   margin: var(--space-md);
