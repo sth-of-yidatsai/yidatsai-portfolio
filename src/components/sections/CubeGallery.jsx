@@ -76,15 +76,15 @@ export default function CubeGallery({
           let newX = prevAngle.x;
           let newY = prevAngle.y + 0.15;
 
-          // 確保 X 軸角度始終有輕微偏移，避免完全正視圖
+          // 簡單檢查：如果 X 軸接近正視角度，輕微調整
           const normalizedX = ((newX % 360) + 360) % 360;
           const snapAngles = [0, 90, 180, 270];
-          const tolerance = 5; // 5度容差
 
           for (const snapAngle of snapAngles) {
-            if (Math.abs(normalizedX - snapAngle) < tolerance) {
-              newX =
-                snapAngle + (snapAngle === 0 || snapAngle === 180 ? 8 : -8);
+            const diff = Math.abs(normalizedX - snapAngle);
+            if (diff < 2) {
+              // 只在非常接近時（2度內）才調整
+              newX += 0.5; // 每次只調整 0.5 度，保持平滑
               break;
             }
           }
@@ -154,28 +154,10 @@ export default function CubeGallery({
       const dy = e.clientY - lastPosRef.current.y;
       lastPosRef.current = { x: e.clientX, y: e.clientY };
 
-      setAngle((prevAngle) => {
-        let newX = prevAngle.x + dy * 0.3;
-        let newY = prevAngle.y + dx * 0.3;
-
-        // 避免 X 軸角度過於接近正視圖
-        const normalizedX = ((newX % 360) + 360) % 360;
-        const criticalAngles = [0, 90, 180, 270];
-        const minOffset = 3; // 最小偏移角度
-
-        for (const criticalAngle of criticalAngles) {
-          const diff = Math.abs(normalizedX - criticalAngle);
-          if (diff < minOffset) {
-            // 如果太接近關鍵角度，強制添加偏移
-            const offset = diff < minOffset / 2 ? minOffset : minOffset / 2;
-            newX =
-              criticalAngle + (normalizedX > criticalAngle ? offset : -offset);
-            break;
-          }
-        }
-
-        return { x: newX, y: newY };
-      });
+      setAngle((prevAngle) => ({
+        x: prevAngle.x + dy * 0.3,
+        y: prevAngle.y + dx * 0.3,
+      }));
     };
 
     const onPointerUp = (e) => {
@@ -216,11 +198,11 @@ export default function CubeGallery({
         // 第二階段：恢復到初始角度並放大
         cube.style.transition = `transform ${expandDuration}ms ease-out, scale ${expandDuration}ms ease-out`;
         cube.style.scale = "1";
-        // 確保重置角度有輕微 3D 偏移
-        setAngle({
-          x: initial.x + (Math.random() - 0.5) * 6, // 隨機 ±3度偏移
-          y: initial.y + (Math.random() - 0.5) * 6,
-        });
+
+        // 簡單的隨機偏移，確保不會完全正視
+        const randomX = initial.x + (Math.random() - 0.5) * 8;
+        const randomY = initial.y + (Math.random() - 0.5) * 8;
+        setAngle({ x: randomX, y: randomY });
 
         setTimeout(() => {
           // 重置 transition
@@ -284,6 +266,7 @@ export default function CubeGallery({
               width: `${cubeSize}px`,
               height: `${cubeSize}px`,
             }}
+            data-clickable="true"
           >
             {faces.map((f) => {
               const mapping = faceMap[f.key];
