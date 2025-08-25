@@ -1,6 +1,7 @@
 import React from "react";
 import "./Home.css";
 import HorizontalScroller from "../components/HorizontalScroller";
+import CubeGallery from "../components/sections/CubeGallery";
 
 export default function Home() {
   return (
@@ -18,7 +19,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      <CubeGallery />
       {/* 第二個 100vh 區塊 */}
       <section className="content-section">
         <div className="content-wrapper">

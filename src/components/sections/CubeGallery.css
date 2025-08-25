@@ -1,0 +1,211 @@
+.cube-gallery {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: var(--color-text, #111);
+  background: var(--color-bg, #fff);
+  transform-style: preserve-3d;
+  overflow: visible;
+}
+.cube-layout {
+  width: min(1200px, 86vw);
+  height: min(680px, 74vh);
+  display: grid;
+  grid-template-columns: 180px 1fr 300px;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+}
+.cube-side-left {
+  align-self: start;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+.cube-reload {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  padding: 8px 0;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+.cube-reload .reload-circle {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  user-select: none;
+}
+.cube-reload .reload-text {
+  letter-spacing: 0.08em;
+  font-size: 12px;
+}
+
+.cube-stage {
+  perspective: 1500px;
+  perspective-origin: center center;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+  overflow: visible;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+:root {
+  --cube-size: clamp(340px, 48vw, 520px);
+  --cube-half: calc(var(--cube-size) / 2);
+}
+.cube {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 80ms linear;
+  will-change: transform;
+  transform-origin: center center;
+  pointer-events: auto;
+}
+.cube-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.25s ease;
+  opacity: 1;
+  background-color: #f0f0f0;
+  transform-origin: center center;
+}
+
+.cube-face.is-front {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+.cube-side-right {
+  align-self: start;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+.meta-eyebrow {
+  font-size: 14px;
+  opacity: 0.7;
+  letter-spacing: 0.08em;
+  margin: 0 0 6px;
+}
+.meta-line {
+  height: 2px;
+  width: 40px;
+  background: currentColor;
+  opacity: 0.2;
+  margin-bottom: 14px;
+}
+.meta-title {
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 1.15;
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+.meta-sub {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+.meta-sub .dot {
+  padding: 0 0.5ch;
+}
+.meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.tag {
+  font-size: 12px;
+  padding: 6px 10px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  opacity: 0.7;
+}
+.meta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #fff;
+  background: #111;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.meta-link .arrow {
+  transform: translateY(-1px);
+}
+
+/* 響應式佈局優化 */
+@media (max-width: 1366px) {
+  .cube-layout {
+    width: min(1000px, 90vw);
+    grid-template-columns: 140px 1fr 280px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .cube-layout {
+    width: min(900px, 92vw);
+    grid-template-columns: 120px 1fr 260px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 860px) {
+  .cube-layout {
+    width: min(800px, 95vw);
+    grid-template-columns: 1fr;
+    grid-auto-rows: max-content;
+    height: auto;
+    gap: 24px;
+  }
+  .cube-side-left {
+    order: 3;
+    justify-self: start;
+  }
+  .cube-side-right {
+    order: 2;
+    justify-self: start;
+  }
+  .cube-stage {
+    order: 1;
+    height: min(60vh, 500px);
+  }
+}
+
+@media (max-width: 640px) {
+  .cube-layout {
+    width: 95vw;
+    gap: 20px;
+  }
+  .cube-stage {
+    height: min(50vh, 400px);
+  }
+}
