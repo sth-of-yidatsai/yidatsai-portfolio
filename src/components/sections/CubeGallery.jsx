@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./CubeGallery.css";
 import projects from "../../data/projects.json";
+import reloadIcon from "../../assets/icons/replay_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
+import arrowIcon from "../../assets/icons/arrow_outward_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
+import illustrationSvg from "../../assets/images/common/text_ILLUSTRATION.svg";
 
 export default function CubeGallery({
   faceMap: faceMapProp,
@@ -246,17 +249,18 @@ export default function CubeGallery({
       ref={sectionRef}
       aria-label="Featured Projects Cube"
     >
-      <div className="cube-layout">
-        <div className="cube-side-left">
-          <button
-            className="cube-reload"
-            onClick={resetAngles}
-            aria-label="Reset cube"
-          >
-            <span className="reload-circle">↻</span>
-            <span className="reload-text">RELOAD BOX</span>
-          </button>
-        </div>
+      {/* Background ILLUSTRATION SVG */}
+      <div className="cube-illustration-bg">
+        <img
+          src={illustrationSvg}
+          alt="ILLUSTRATION"
+          className="illustration-svg"
+        />
+      </div>
+
+      {/* Main layout */}
+      <div className="cube-main-layout">
+        {/* 3D Cube Stage */}
         <div className="cube-stage">
           <div
             ref={cubeRef}
@@ -293,32 +297,108 @@ export default function CubeGallery({
             })}
           </div>
         </div>
-        <div className="cube-side-right">
-          <div className="meta">
-            <h3 className="meta-eyebrow">Creator</h3>
-            <div className="meta-line" />
-            {activeProject ? (
-              <>
-                <h2 className="meta-title">{activeProject.title}</h2>
-                <div className="meta-sub">
-                  <span className="meta-year">{activeProject.year}</span>
-                  <span className="dot">•</span>
-                  <span className="meta-cat">{activeProject.category}</span>
+
+        {/* Info Panel - Grid Layout */}
+        <div className="cube-info-panel">
+          {/* Top Row */}
+          <div className="cube-info-top-row">
+            {/* Reload Box */}
+            <div className="cube-info-cell reload-cell">
+              <div className="cell-label">Reload Box:</div>
+              <button
+                className="cube-reload-new"
+                onClick={resetAngles}
+                aria-label="Reset cube"
+              >
+                <img src={reloadIcon} alt="Reload" className="reload-icon" />
+              </button>
+            </div>
+
+            {/* Vertical Divider */}
+            <div className="cube-info-divider-v" />
+
+            {/* Title & Year */}
+            <div className="cube-info-cell title-cell">
+              <div className="title-year-grid">
+                <div className="title-section">
+                  <div className="cell-label">Title:</div>
+                  <div className="cell-value title-value">
+                    {activeProject?.title || "The Notebook Design"}
+                  </div>
                 </div>
-                <div className="meta-tags">
-                  {(activeProject.tags || []).map((t) => (
-                    <span key={t} className="tag">
-                      {t}
-                    </span>
-                  ))}
+                <div className="title-year-divider" />
+                <div className="year-section">
+                  <div className="cell-label">Year:</div>
+                  <div className="cell-value year-value">
+                    {activeProject?.year || "2024"}
+                  </div>
                 </div>
-                <a className="meta-link" href={activeHref}>
-                  VIEW MORE <span className="arrow">↗</span>
-                </a>
-              </>
-            ) : (
-              <p className="meta-empty">—</p>
-            )}
+              </div>
+            </div>
+          </div>
+
+          {/* Horizontal Divider */}
+          <div className="cube-info-divider-h" />
+
+          {/* Bottom Row */}
+          <div className="cube-info-bottom-row">
+            {/* Tag */}
+            <div className="cube-info-cell tag-cell">
+              <div className="cell-label">Tag:</div>
+              <div className="tag-list">
+                {activeProject?.tags?.map((tag) => (
+                  <span key={tag} className="tag-item">
+                    {tag}
+                  </span>
+                )) || [
+                  <span key="graphic" className="tag-item">
+                    Graphic
+                  </span>,
+                  <span key="graphic2" className="tag-item">
+                    Graphic
+                  </span>,
+                  <span key="graphic3" className="tag-item">
+                    Graphic
+                  </span>,
+                  <span key="graphic4" className="tag-item">
+                    Graphic
+                  </span>,
+                  <span key="graphic5" className="tag-item">
+                    Graphic
+                  </span>,
+                ]}
+              </div>
+            </div>
+
+            {/* Vertical Divider */}
+            <div className="cube-info-divider-v" />
+
+            {/* Description */}
+            <div className="cube-info-cell description-cell">
+              <div className="cell-label">Description:</div>
+              <div className="cell-value description-value">
+                {activeProject
+                  ? activeProject.description.length > 150
+                    ? `${activeProject.description.substring(0, 150)}...`
+                    : activeProject.description
+                  : "The notebook design comprises of three components: an outer box, a notebook, and a bookmark."}
+              </div>
+            </div>
+
+            {/* Vertical Divider */}
+            <div className="cube-info-divider-v" />
+
+            {/* View More */}
+            <div className="cube-info-cell viewmore-cell">
+              <div className="cell-label">View More:</div>
+              <a
+                className="view-more-link"
+                href={activeHref}
+                aria-label="View project details"
+              >
+                <img src={arrowIcon} alt="View More" className="arrow-icon" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
