@@ -43,7 +43,15 @@ select {
   font: inherit;
 }
 
-/* 7. Avoid text overflows */
+/* 7. Remove default button borders */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  border: none;
+}
+
+/* 8. Avoid text overflows */
 p,
 h1,
 h2,
@@ -58,7 +66,7 @@ dd {
   overflow-wrap: break-word;
 }
 
-/* 8. Create a root stacking context */
+/* 9. Create a root stacking context */
 /* 註解掉 isolation: isolate 以允許 mix-blend-mode 正常運作 */
 /*
 #root,
@@ -67,7 +75,7 @@ dd {
 }
 */
 
-/* 9. Remove all animations/transitions for people who prefer reduced motion */
+/* 10. Remove all animations/transitions for people who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {
     scroll-behavior: auto;

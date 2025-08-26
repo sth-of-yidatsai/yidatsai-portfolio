@@ -304,7 +304,7 @@ em {
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border: 2px solid var(--color-primary);
+  border: none;
   background: none;
   color: var(--color-primary);
   cursor: none; /* 配合自訂游標 */
@@ -321,7 +321,7 @@ em {
 }
 
 .button-secondary {
-  border-color: var(--color-accent);
+  border: none;
   color: var(--color-accent);
 }
 
