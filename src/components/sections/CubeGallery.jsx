@@ -301,13 +301,13 @@ export default function CubeGallery({
           </div>
         </div>
 
-        {/* Info Panel - Grid Layout */}
+        {/* Info Panel - Single Row Layout */}
         <div className="cube-info-panel">
-          {/* Top Row */}
-          <div className="cube-info-top-row">
+          <div className="cube-info-divider-h" />
+          <div className="cube-info-row">
             {/* Reload Box */}
             <div className="cube-info-cell reload-cell">
-              <div className="cell-label">Reload Box:</div>
+              <div className="cell-label">Reload:</div>
               <button
                 className="cube-reload-new"
                 onClick={resetAngles}
@@ -320,31 +320,28 @@ export default function CubeGallery({
             {/* Vertical Divider */}
             <div className="cube-info-divider-v" />
 
-            {/* Title & Year */}
+            {/* Title */}
             <div className="cube-info-cell title-cell">
-              <div className="title-year-grid">
-                <div className="title-section">
-                  <div className="cell-label">Title:</div>
-                  <div className="cell-value title-value">
-                    {activeProject?.title || "The Notebook Design"}
-                  </div>
-                </div>
-                <div className="title-year-divider" />
-                <div className="year-section">
-                  <div className="cell-label">Year:</div>
-                  <div className="cell-value year-value">
-                    {activeProject?.year || "2024"}
-                  </div>
-                </div>
+              <div className="cell-label">Title:</div>
+              <div className="cell-value title-value">
+                {activeProject?.title || "The Notebook Design"}
               </div>
             </div>
-          </div>
 
-          {/* Horizontal Divider */}
-          <div className="cube-info-divider-h" />
+            {/* Vertical Divider */}
+            <div className="cube-info-divider-v" />
 
-          {/* Bottom Row */}
-          <div className="cube-info-bottom-row">
+            {/* Year */}
+            <div className="cube-info-cell year-cell">
+              <div className="cell-label">Year:</div>
+              <div className="cell-value year-value">
+                {activeProject?.year || "2024"}
+              </div>
+            </div>
+
+            {/* Vertical Divider */}
+            <div className="cube-info-divider-v" />
+
             {/* Tag */}
             <div className="cube-info-cell tag-cell">
               <div className="cell-label">Tag:</div>
@@ -376,24 +373,9 @@ export default function CubeGallery({
             {/* Vertical Divider */}
             <div className="cube-info-divider-v" />
 
-            {/* Description */}
-            <div className="cube-info-cell description-cell">
-              <div className="cell-label">Description:</div>
-              <div className="cell-value description-value">
-                {activeProject
-                  ? activeProject.description.length > 150
-                    ? `${activeProject.description.substring(0, 150)}...`
-                    : activeProject.description
-                  : "The notebook design comprises of three components: an outer box, a notebook, and a bookmark."}
-              </div>
-            </div>
-
-            {/* Vertical Divider */}
-            <div className="cube-info-divider-v" />
-
             {/* View More */}
             <div className="cube-info-cell viewmore-cell">
-              <div className="cell-label">View More:</div>
+              <div className="cell-label">Project:</div>
               <a
                 className="view-more-link"
                 href={activeHref}
