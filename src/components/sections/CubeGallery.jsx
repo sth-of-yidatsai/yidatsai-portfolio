@@ -17,6 +17,13 @@ export default function CubeGallery({
   const lastPosRef = useRef({ x: 0, y: 0 });
   const [angle, setAngle] = useState({ x: initial.x, y: initial.y });
   const [isResetting, setIsResetting] = useState(false);
+  const [gradientColors, setGradientColors] = useState([
+    "#F7F7F7",
+    "#E6E6E6",
+    "#CCCCCC",
+    "#B3B3B3",
+    "#999999",
+  ]);
   const angleRef = useRef(angle);
   angleRef.current = angle;
 
@@ -61,10 +68,15 @@ export default function CubeGallery({
     if (x > 45 && x < 135) return "bottom";
     if (x > 225 && x < 315) return "top";
     if (y >= 315 || y < 45) return "front";
-    if (y >= 45 && y < 135) return "right";
+    if (y >= 45 && y < 135) return "left"; // 修正：改為 left
     if (y >= 135 && y < 225) return "back";
-    return "left";
+    return "right"; // 修正：改為 right
   }, [angle]);
+
+  // 在控制台顯示當前的 activeFace
+  useEffect(() => {
+    console.log("當前 activeFace:", activeFace);
+  }, [activeFace]);
 
   const activeProject = projectById.get(faceMap[activeFace].projectId);
   const activeHref = activeProject
@@ -100,6 +112,153 @@ export default function CubeGallery({
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
   }, [autoplay]);
+
+  // 從圖片中提取主要顏色的函數
+  const extractColorsFromImage = (imageSrc) => {
+    return new Promise((resolve) => {
+      console.log("開始提取顏色，圖片路徑:", imageSrc);
+
+      if (!imageSrc) {
+        console.log("沒有圖片路徑，使用默認顏色");
+        resolve(["#F7F7F7", "#E6E6E6", "#CCCCCC", "#B3B3B3", "#999999"]);
+        return;
+      }
+
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+
+      img.onload = () => {
+        console.log("圖片載入成功，尺寸:", img.width, "x", img.height);
+        try {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          // 設置 canvas 尺寸
+          canvas.width = 100;
+          canvas.height = 100;
+
+          // 繪製圖片到 canvas
+          ctx.drawImage(img, 0, 0, 100, 100);
+
+          // 獲取圖片數據
+          const imageData = ctx.getImageData(0, 0, 100, 100);
+          const data = imageData.data;
+
+          // 採樣顏色（每10個像素採樣一次）
+          const colorMap = new Map();
+
+          for (let i = 0; i < data.length; i += 40) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+
+            // 跳過透明或接近白色/黑色的像素
+            if (r > 250 && g > 250 && b > 250) continue;
+            if (r < 5 && g < 5 && b < 5) continue;
+
+            // 計算顏色的飽和度和亮度
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            const saturation = max === 0 ? 0 : (max - min) / max;
+            const brightness = (r + g + b) / 3;
+
+            // 跳過過於飽和或過於暗淡的顏色
+            if (saturation < 0.1 || brightness < 30 || brightness > 220)
+              continue;
+
+            const color = `#${r.toString(16).padStart(2, "0")}${g
+              .toString(16)
+              .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+
+            if (colorMap.has(color)) {
+              colorMap.set(color, colorMap.get(color) + 1);
+            } else {
+              colorMap.set(color, 1);
+            }
+          }
+
+          console.log("顏色採樣完成，找到", colorMap.size, "種顏色");
+
+          // 選擇出現頻率最高的顏色作為主色
+          let mainColor = "#999999"; // 默認顏色
+          if (colorMap.size > 0) {
+            const sortedColors = Array.from(colorMap.entries()).sort(
+              (a, b) => b[1] - a[1]
+            );
+            mainColor = sortedColors[0][0];
+            console.log("主色:", mainColor);
+          }
+
+          // 基於主色創建漸層
+          const rgb = parseInt(mainColor.slice(1), 16);
+          const r = (rgb >> 16) & 255;
+          const g = (rgb >> 8) & 255;
+          const b = rgb & 255;
+
+          // 創建從深到淺的漸層
+          const gradientColors = [
+            mainColor, // 主色
+            `#${Math.max(0, r - 30)
+              .toString(16)
+              .padStart(2, "0")}${Math.max(0, g - 30)
+              .toString(16)
+              .padStart(2, "0")}${Math.max(0, b - 30)
+              .toString(16)
+              .padStart(2, "0")}`, // 深一點
+            `#${Math.min(255, r + 20)
+              .toString(16)
+              .padStart(2, "0")}${Math.min(255, g + 20)
+              .toString(16)
+              .padStart(2, "0")}${Math.min(255, b + 20)
+              .toString(16)
+              .padStart(2, "0")}`, // 淺一點
+            `#${Math.min(255, r + 40)
+              .toString(16)
+              .padStart(2, "0")}${Math.min(255, g + 40)
+              .toString(16)
+              .padStart(2, "0")}${Math.min(255, b + 40)
+              .toString(16)
+              .padStart(2, "0")}`, // 更淺
+            `#${Math.min(255, r + 60)
+              .toString(16)
+              .padStart(2, "0")}${Math.min(255, g + 60)
+              .toString(16)
+              .padStart(2, "0")}${Math.min(255, b + 60)
+              .toString(16)
+              .padStart(2, "0")}`, // 最淺
+          ];
+
+          console.log("生成的漸層顏色:", gradientColors);
+          resolve(gradientColors);
+        } catch (error) {
+          console.warn("Failed to extract colors from image:", error);
+          resolve(["#F7F7F7", "#E6E6E6", "#CCCCCC", "#B3B3B3", "#999999"]);
+        }
+      };
+
+      img.onerror = (error) => {
+        console.error("圖片載入失敗:", error);
+        console.error("圖片路徑:", imageSrc);
+        resolve(["#F7F7F7", "#E6E6E6", "#CCCCCC", "#B3B3B3", "#999999"]);
+      };
+
+      img.src = imageSrc;
+    });
+  };
+
+  // 當 activeFace 改變時，更新漸層顏色
+  useEffect(() => {
+    const currentMapping = faceMap[activeFace];
+    if (currentMapping) {
+      const imageSrc = getImageSrc(
+        currentMapping.projectId,
+        currentMapping.imageIndex
+      );
+      extractColorsFromImage(imageSrc).then((colors) => {
+        setGradientColors(colors);
+      });
+    }
+  }, [activeFace, faceMap]);
 
   // 計算立方體大小和半徑 - 改善響應式
   const getCubeSize = () => {
@@ -252,7 +411,7 @@ export default function CubeGallery({
       {/* Background ILLUSTRATION TEXT */}
       <div className="cube-illustration-bg">
         <GradientText
-          colors={["#F7F7F7", "#E6E6E6", "#CCCCCC", "#B3B3B3", "#999999"]}
+          colors={gradientColors}
           animationSpeed={3}
           showBorder={false}
           className="gradient-text"
@@ -304,6 +463,7 @@ export default function CubeGallery({
         {/* Info Panel - Single Row Layout */}
         <div className="cube-info-panel">
           <div className="cube-info-divider-h" />
+
           <div className="cube-info-row">
             {/* Reload Box */}
             <div className="cube-info-cell reload-cell">

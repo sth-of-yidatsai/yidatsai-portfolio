@@ -201,6 +201,11 @@
   text-decoration: none;
 }
 
+/* 移除底線動畫效果 */
+.view-more-link::after {
+  display: none;
+}
+
 .view-more-link:hover {
   text-decoration: none;
 }
