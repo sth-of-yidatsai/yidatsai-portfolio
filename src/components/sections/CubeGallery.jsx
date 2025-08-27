@@ -3,7 +3,7 @@ import "./CubeGallery.css";
 import projects from "../../data/projects.json";
 import reloadIcon from "../../assets/icons/replay_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
 import arrowIcon from "../../assets/icons/arrow_outward_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
-import illustrationSvg from "../../assets/images/common/text_ILLUSTRATION.svg";
+import GradientText from "../../reactbits/TextAnimations/GradientText/GradientText";
 
 export default function CubeGallery({
   faceMap: faceMapProp,
@@ -249,13 +249,16 @@ export default function CubeGallery({
       ref={sectionRef}
       aria-label="Featured Projects Cube"
     >
-      {/* Background ILLUSTRATION SVG */}
+      {/* Background ILLUSTRATION TEXT */}
       <div className="cube-illustration-bg">
-        <img
-          src={illustrationSvg}
-          alt="ILLUSTRATION"
-          className="illustration-svg"
-        />
+        <GradientText
+          colors={["#F7F7F7", "#E6E6E6", "#CCCCCC", "#B3B3B3", "#999999"]}
+          animationSpeed={3}
+          showBorder={false}
+          className="gradient-text"
+        >
+          ILLUSTRATION
+        </GradientText>
       </div>
 
       {/* Main layout */}

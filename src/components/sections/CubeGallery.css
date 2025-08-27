@@ -9,32 +9,31 @@
   transform-style: preserve-3d;
   overflow: visible;
 }
-/* Background ILLUSTRATION SVG */
+
+/* Background ILLUSTRATION */
 .cube-illustration-bg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 5;
+  display: grid;
+  place-items: center;
+  z-index: 1;
   pointer-events: none;
   user-select: none;
   overflow: hidden;
 }
 
-.illustration-svg {
+.cube-illustration-bg .gradient-text {
+  font-size: clamp(16vw, 18vw, 20vw);
+  font-weight: var(--font-light);
   position: absolute;
-  top: var(--space-md);
-  left: calc(50% - 3px);
+  top: calc(-1 * clamp(8%, 10%, 12%));
+  left: 50%;
   transform: translateX(-50%);
-  width: 98vw;
-  height: auto;
-  opacity: 0.15;
-  object-fit: contain;
-  z-index: 6;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
 }
 
 /* Main layout container */
@@ -46,6 +45,7 @@
   position: relative;
   z-index: 1;
 }
+
 /* Cube stage - absolute positioned at center */
 .cube-stage {
   position: absolute;
@@ -64,11 +64,11 @@
   height: 80vh;
 }
 
-/* Info panel at bottom */
+/* Info panel at bottom - 比照 Header 左側輪播區樣式 */
 .cube-info-panel {
   width: 100%;
   height: auto;
-  background: var(--color-bg, #fff);
+  background: transparent;
   border-top: none;
   position: absolute;
   bottom: 0;
@@ -76,11 +76,224 @@
   z-index: 10;
   display: flex;
   flex-direction: column;
+  padding: var(--space-lg);
 }
+
+/* Grid layout for info panel */
+.cube-info-top-row,
+.cube-info-bottom-row {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  gap: var(--space-lg);
+}
+
+.cube-info-top-row {
+  margin-bottom: var(--space-md);
+}
+
+.cube-info-bottom-row {
+  margin-bottom: var(--space-lg);
+}
+
+/* Info cells */
+.cube-info-cell {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md);
+  background: transparent;
+  position: relative;
+  flex: 1;
+}
+
+/* Cell labels - 比照 Header 樣式 */
+.cell-label {
+  font-family: var(--font-latin), var(--font-cjk);
+  font-size: 0.5rem;
+  font-weight: var(--font-light);
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  line-height: 1.2;
+  opacity: 0.7;
+}
+
+/* Cell values */
+.cell-value {
+  font-family: var(--font-latin), var(--font-cjk);
+  color: var(--color-text, #111);
+  font-size: 0.7rem;
+  font-weight: var(--font-medium);
+  letter-spacing: 0.03rem;
+  line-height: 1.2;
+}
+
+/* Reload cell */
+.reload-cell {
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 80px;
+}
+
+.cube-reload-new {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.cube-reload-new:hover {
+  border-color: rgba(0, 0, 0, 0.4);
+  transform: scale(1.05);
+}
+
+.reload-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+}
+
+/* Title cell */
+.title-cell {
+  padding: var(--space-md);
+  flex: 2;
+}
+
+.title-year-grid {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: var(--space-md);
+  height: 100%;
+  align-items: start;
+}
+
+.title-section,
+.year-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-year-divider {
+  width: 1px;
+  background-color: rgba(0, 0, 0, 0.2);
+  opacity: 0.6;
+  align-self: stretch;
+  margin-top: calc(0.5rem + var(--space-sm));
+}
+
+.title-value {
+  font-size: 0.7rem;
+  font-weight: var(--font-medium);
+  line-height: 1.2;
+}
+
+.year-value {
+  font-size: 0.7rem;
+  font-weight: var(--font-medium);
+}
+
+/* Tag cell */
+.tag-cell {
+  padding: var(--space-md);
+  flex: 1;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag-item {
+  font-size: 0.5rem;
+  padding: 4px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 999px;
+  opacity: 0.7;
+  background: transparent;
+  font-weight: var(--font-light);
+  letter-spacing: 0.05em;
+}
+
+/* Description cell */
+.description-cell {
+  padding: var(--space-md);
+  flex: 2;
+}
+
+.description-value {
+  font-size: 0.7rem;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+/* View more cell */
+.viewmore-cell {
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 80px;
+}
+
+.view-more-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+}
+
+.view-more-link:hover {
+  opacity: 1;
+  transform: scale(1.05);
+  border-color: rgba(0, 0, 0, 0.4);
+}
+
+.arrow-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+}
+
+/* Dividers */
+.cube-info-divider-h {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.2);
+  opacity: 0.6;
+  margin: 0;
+}
+
+.cube-info-divider-v {
+  width: 1px;
+  background-color: rgba(0, 0, 0, 0.2);
+  opacity: 0.6;
+  align-self: stretch;
+  margin: var(--space-md) 0;
+}
+
+/* Cube styles */
 :root {
   --cube-size: clamp(280px, 35vw, 420px);
   --cube-half: calc(var(--cube-size) / 2);
 }
+
 .cube {
   position: relative;
   transform-style: preserve-3d;
@@ -91,6 +304,7 @@
   z-index: 101;
   margin: auto;
 }
+
 .cube-face {
   position: absolute;
   top: 0;
@@ -110,192 +324,6 @@
 .cube-face.is-front {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
 }
-/* Grid layout for info panel */
-.cube-info-top-row,
-.cube-info-bottom-row {
-  display: grid;
-  width: 100%;
-  align-items: stretch;
-}
-
-.cube-info-top-row {
-  grid-template-columns: 1fr var(--space-md) 2fr;
-  height: auto;
-  min-height: 120px;
-}
-
-.cube-info-bottom-row {
-  grid-template-columns: 2fr var(--space-md) 4fr var(--space-md) 1fr;
-  height: auto;
-  min-height: 120px;
-}
-
-/* Info cells */
-.cube-info-cell {
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-md);
-  background: transparent;
-  position: relative;
-}
-
-/* Cell labels - matching VisionSection style */
-.cell-label {
-  font-family: var(--font-latin), var(--font-cjk);
-  font-size: 0.8rem;
-  font-weight: var(--font-bold);
-  letter-spacing: 0.08em;
-  color: var(--gray-200);
-  margin-bottom: var(--space-sm);
-  text-transform: uppercase;
-  opacity: 0.7;
-}
-
-/* Cell values */
-.cell-value {
-  font-family: var(--font-latin), var(--font-cjk);
-  color: var(--color-text, #111);
-}
-
-/* Reload cell */
-.reload-cell {
-  align-items: center;
-  justify-content: center;
-}
-
-.cube-reload-new {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  background: transparent;
-  cursor: pointer;
-}
-
-.reload-icon {
-  width: 24px;
-  height: 24px;
-  opacity: 0.8;
-}
-
-/* Title cell */
-.title-cell {
-  padding: var(--space-md);
-}
-
-.title-year-grid {
-  display: grid;
-  grid-template-columns: 1fr 1px 2fr;
-  gap: var(--space-md);
-  height: 100%;
-  align-items: start;
-}
-
-.title-section,
-.year-section {
-  display: flex;
-  flex-direction: column;
-}
-
-.title-year-divider {
-  width: 1px;
-  background-color: var(--color-text-light);
-  opacity: 0.6;
-  align-self: stretch;
-  margin-top: calc(0.8rem + var(--space-sm));
-}
-
-.title-value {
-  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-  font-weight: var(--font-medium);
-  line-height: 1.2;
-}
-
-.year-value {
-  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-  font-weight: var(--font-medium);
-}
-
-/* Tag cell */
-.tag-cell {
-  padding: var(--space-md);
-}
-
-.tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag-item {
-  font-size: 12px;
-  padding: 6px 10px;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  opacity: 0.7;
-  background: transparent;
-}
-
-/* Description cell */
-.description-cell {
-  padding: var(--space-md);
-  flex: 1;
-}
-
-.description-value {
-  font-size: 0.95rem;
-  line-height: 1.4;
-  opacity: 0.85;
-}
-
-/* View more cell */
-.viewmore-cell {
-  align-items: center;
-  justify-content: center;
-}
-
-.view-more-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  background: transparent;
-  border: 1px solid var(--color-text-light);
-  border-radius: 4px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  opacity: 0.6;
-}
-
-.view-more-link:hover {
-  opacity: 1;
-  transform: scale(1.05);
-}
-
-.arrow-icon {
-  width: 24px;
-  height: 24px;
-  opacity: 0.8;
-}
-
-/* Dividers */
-.cube-info-divider-h {
-  width: 100%;
-  height: 1px;
-  background-color: var(--color-text-light);
-  opacity: 0.6;
-  margin: 0;
-}
-
-.cube-info-divider-v {
-  width: 1px;
-  background-color: var(--color-text-light);
-  opacity: 0.6;
-  align-self: stretch;
-  margin: var(--space-md) 0;
-}
 
 /* 響應式佈局優化 */
 @media (max-width: 1024px) {
@@ -304,8 +332,9 @@
     height: 75vh;
   }
 
-  .illustration-svg {
-    width: 95vw;
+  .cube-illustration-bg .gradient-text {
+    font-size: clamp(18vw, 24vw, 30vw);
+    top: calc(-1 * clamp(9%, 11%, 13%));
   }
 
   .cube-info-top-row {
@@ -314,11 +343,6 @@
 
   .cube-info-bottom-row {
     min-height: 100px;
-  }
-
-  .title-value,
-  .year-value {
-    font-size: clamp(1rem, 2.2vw, 1.2rem);
   }
 }
 
@@ -332,20 +356,19 @@
     height: 70vh;
   }
 
-  .illustration-svg {
-    width: 90vw;
+  .cube-illustration-bg .gradient-text {
+    font-size: clamp(20vw, 26vw, 32vw);
+    top: calc(-1 * clamp(10%, 12%, 14%));
   }
 
   .cube-info-top-row {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
+    flex-direction: column;
     gap: var(--space-sm);
     min-height: auto;
   }
 
   .cube-info-bottom-row {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
+    flex-direction: column;
     gap: var(--space-sm);
     min-height: auto;
   }
@@ -381,8 +404,9 @@
     height: 65vh;
   }
 
-  .illustration-svg {
-    width: 85vw;
+  .cube-illustration-bg .gradient-text {
+    font-size: clamp(22vw, 28vw, 34vw);
+    top: calc(-1 * clamp(11%, 13%, 15%));
   }
 
   .title-year-grid {
@@ -396,6 +420,6 @@
   }
 
   .description-value {
-    font-size: 0.85rem;
+    font-size: 0.65rem;
   }
 }
