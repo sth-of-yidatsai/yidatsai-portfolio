@@ -387,19 +387,55 @@ export default function CubeGallery({
       // ILLUSTRATION 有12個字母，最後一個字母延遲0.6s開始，動畫持續0.6s
       // 所以需要等待 0.6s + 0.6s = 1.2s
       setTimeout(() => {
-        setPreviousProject(currentProject);
-        setAnimationPhase("enter");
+        // 在文字完全消失後，更新色彩
+        const currentMapping = faceMap[activeFace];
+        if (currentMapping) {
+          const imageSrc = getImageSrc(
+            currentMapping.projectId,
+            currentMapping.imageIndex
+          );
+          extractHarmonicGradientFromImage(imageSrc, "monotone").then(
+            (result) => {
+              setGradientColors(result.paletteHex);
+              // 色彩更新完成後，開始文字進場動畫
+              setPreviousProject(currentProject);
+              setAnimationPhase("enter");
 
-        // 第二階段：文字向上浮起 (同樣需要1.2s完成所有字母)
-        setTimeout(() => {
-          setAnimationPhase("idle");
-        }, 1200);
+              // 第二階段：文字向上浮起 (同樣需要1.2s完成所有字母)
+              setTimeout(() => {
+                setAnimationPhase("idle");
+              }, 1200);
+            }
+          );
+        } else {
+          // 如果沒有映射，直接進入下一階段
+          setPreviousProject(currentProject);
+          setAnimationPhase("enter");
+          setTimeout(() => {
+            setAnimationPhase("idle");
+          }, 1200);
+        }
       }, 1200);
     } else {
       // 初次載入或相同項目，不需要動畫
       setPreviousProject(currentProject);
+      // 初次載入時立即更新色彩
+      if (!previousProject) {
+        const currentMapping = faceMap[activeFace];
+        if (currentMapping) {
+          const imageSrc = getImageSrc(
+            currentMapping.projectId,
+            currentMapping.imageIndex
+          );
+          extractHarmonicGradientFromImage(imageSrc, "monotone").then(
+            (result) => {
+              setGradientColors(result.paletteHex);
+            }
+          );
+        }
+      }
     }
-  }, [activeProject, previousProject]);
+  }, [activeProject, previousProject, activeFace, faceMap, getImageSrc]);
 
   useEffect(() => {
     if (!autoplay) return;
@@ -430,20 +466,6 @@ export default function CubeGallery({
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
   }, [autoplay]);
-
-  // 當 activeFace 改變時，更新漸層顏色
-  useEffect(() => {
-    const currentMapping = faceMap[activeFace];
-    if (currentMapping) {
-      const imageSrc = getImageSrc(
-        currentMapping.projectId,
-        currentMapping.imageIndex
-      );
-      extractHarmonicGradientFromImage(imageSrc, "monotone").then((result) => {
-        setGradientColors(result.paletteHex);
-      });
-    }
-  }, [activeFace, faceMap, getImageSrc]);
 
   // 計算立方體大小和半徑 - 改善響應式
   const getCubeSize = () => {
