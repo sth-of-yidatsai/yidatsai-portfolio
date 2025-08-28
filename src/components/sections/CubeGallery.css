@@ -114,6 +114,32 @@
   font-weight: var(--font-regular);
   letter-spacing: 0.02rem;
   line-height: 1.2;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Text animation classes */
+.cell-value.animate-exit {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.cell-value.animate-enter {
+  transform: translateY(-100%);
+  opacity: 0;
+  animation: slideInFromTop 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Reload cell */
@@ -171,6 +197,57 @@
   flex-wrap: wrap;
   gap: var(--space-sm);
   margin-top: var(--space-sm);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tag list animation classes */
+.tag-list.animate-exit {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.tag-list.animate-exit .tag-item {
+  transform: translateY(100%) scale(0.8);
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: var(--animation-delay, 0s);
+}
+
+.tag-list.animate-enter {
+  transform: translateY(-100%);
+  opacity: 0;
+  animation: slideTagsInFromTop 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.tag-list.animate-enter .tag-item {
+  transform: translateY(-100%) scale(0.8);
+  opacity: 0;
+  animation: slideTagItemInFromTop 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: var(--animation-delay, 0s);
+}
+
+@keyframes slideTagsInFromTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideTagItemInFromTop {
+  from {
+    transform: translateY(-100%) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }
 
 .tag-item {
@@ -181,6 +258,10 @@
   background: var(--gray-600);
   font-weight: var(--font-light);
   letter-spacing: 0.05em;
+  position: relative;
+  display: inline-block;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
 }
 
 /* View more cell */

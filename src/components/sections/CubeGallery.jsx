@@ -24,6 +24,8 @@ export default function CubeGallery({
     "#B3B3B3",
     "#999999",
   ]);
+  const [animationPhase, setAnimationPhase] = useState("idle"); // 'idle', 'exit', 'enter'
+  const [previousProject, setPreviousProject] = useState(null);
   const angleRef = useRef(angle);
   angleRef.current = angle;
 
@@ -47,20 +49,23 @@ export default function CubeGallery({
 
   const faceMap = faceMapProp || defaultFaceMap;
 
-  const getImageSrc = (pid, idx) => {
-    const p = projectById.get(pid);
-    if (!p) {
-      console.warn(`Project not found: ${pid}`);
-      return "";
-    }
-    const images = p.projectImages || [];
-    const safeIdx = Math.max(0, Math.min(idx || 0, images.length - 1));
-    const imageSrc = images[safeIdx] || "";
-    if (!imageSrc) {
-      console.warn(`No image found for project ${pid} at index ${idx}`);
-    }
-    return imageSrc;
-  };
+  const getImageSrc = React.useCallback(
+    (pid, idx) => {
+      const p = projectById.get(pid);
+      if (!p) {
+        console.warn(`Project not found: ${pid}`);
+        return "";
+      }
+      const images = p.projectImages || [];
+      const safeIdx = Math.max(0, Math.min(idx || 0, images.length - 1));
+      const imageSrc = images[safeIdx] || "";
+      if (!imageSrc) {
+        console.warn(`No image found for project ${pid} at index ${idx}`);
+      }
+      return imageSrc;
+    },
+    [projectById]
+  );
 
   const activeFace = React.useMemo(() => {
     const x = ((angle.x % 360) + 360) % 360;
@@ -82,6 +87,34 @@ export default function CubeGallery({
   const activeHref = activeProject
     ? `https://www.yidatsai.com/project/${activeProject.id}`
     : "#";
+
+  // 處理文字動畫轉場
+  useEffect(() => {
+    const currentProject = activeProject;
+
+    if (
+      previousProject &&
+      currentProject &&
+      previousProject.id !== currentProject.id
+    ) {
+      // 開始動畫序列
+      setAnimationPhase("exit");
+
+      // 第一階段：文字向下消失 (600ms)
+      setTimeout(() => {
+        setPreviousProject(currentProject);
+        setAnimationPhase("enter");
+
+        // 第二階段：文字向上浮起 (600ms)
+        setTimeout(() => {
+          setAnimationPhase("idle");
+        }, 600);
+      }, 600);
+    } else {
+      // 初次載入或相同項目，不需要動畫
+      setPreviousProject(currentProject);
+    }
+  }, [activeProject, previousProject]);
 
   useEffect(() => {
     if (!autoplay) return;
@@ -258,7 +291,7 @@ export default function CubeGallery({
         setGradientColors(colors);
       });
     }
-  }, [activeFace, faceMap]);
+  }, [activeFace, faceMap, getImageSrc]);
 
   // 計算立方體大小和半徑 - 改善響應式
   const getCubeSize = () => {
@@ -483,7 +516,11 @@ export default function CubeGallery({
             {/* Title */}
             <div className="cube-info-cell title-cell">
               <div className="cell-label">Title:</div>
-              <div className="cell-value title-value">
+              <div
+                className={`cell-value title-value ${
+                  animationPhase !== "idle" ? `animate-${animationPhase}` : ""
+                }`}
+              >
                 {activeProject?.title || "The Notebook Design"}
               </div>
             </div>
@@ -494,7 +531,11 @@ export default function CubeGallery({
             {/* Year */}
             <div className="cube-info-cell year-cell">
               <div className="cell-label">Year:</div>
-              <div className="cell-value year-value">
+              <div
+                className={`cell-value year-value ${
+                  animationPhase !== "idle" ? `animate-${animationPhase}` : ""
+                }`}
+              >
                 {activeProject?.year || "2024"}
               </div>
             </div>
@@ -505,25 +546,55 @@ export default function CubeGallery({
             {/* Tag */}
             <div className="cube-info-cell tag-cell">
               <div className="cell-label">Tag:</div>
-              <div className="tag-list">
-                {activeProject?.tags?.map((tag) => (
-                  <span key={tag} className="tag-item">
+              <div
+                className={`tag-list ${
+                  animationPhase !== "idle" ? `animate-${animationPhase}` : ""
+                }`}
+              >
+                {activeProject?.tags?.map((tag, index) => (
+                  <span
+                    key={tag}
+                    className="tag-item"
+                    style={{
+                      "--animation-delay": `${(index + 1) * 0.05}s`,
+                    }}
+                  >
                     {tag}
                   </span>
                 )) || [
-                  <span key="graphic" className="tag-item">
+                  <span
+                    key="graphic"
+                    className="tag-item"
+                    style={{ "--animation-delay": "0.05s" }}
+                  >
                     Graphic
                   </span>,
-                  <span key="graphic2" className="tag-item">
+                  <span
+                    key="graphic2"
+                    className="tag-item"
+                    style={{ "--animation-delay": "0.1s" }}
+                  >
                     Graphic
                   </span>,
-                  <span key="graphic3" className="tag-item">
+                  <span
+                    key="graphic3"
+                    className="tag-item"
+                    style={{ "--animation-delay": "0.15s" }}
+                  >
                     Graphic
                   </span>,
-                  <span key="graphic4" className="tag-item">
+                  <span
+                    key="graphic4"
+                    className="tag-item"
+                    style={{ "--animation-delay": "0.2s" }}
+                  >
                     Graphic
                   </span>,
-                  <span key="graphic5" className="tag-item">
+                  <span
+                    key="graphic5"
+                    className="tag-item"
+                    style={{ "--animation-delay": "0.25s" }}
+                  >
                     Graphic
                   </span>,
                 ]}
