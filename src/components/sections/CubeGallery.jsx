@@ -3,7 +3,290 @@ import "./CubeGallery.css";
 import projects from "../../data/projects.json";
 import reloadIcon from "../../assets/icons/replay_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
 import arrowIcon from "../../assets/icons/arrow_outward_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
-import GradientText from "../../reactbits/TextAnimations/GradientText/GradientText";
+
+// ============ OKLab / OKLCH utilities ============
+const clamp01 = (x) => Math.min(1, Math.max(0, x));
+const srgbToLinear = (c) =>
+  c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+const linearToSrgb = (c) =>
+  c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055;
+
+const rgbToOklab = (r, g, b) => {
+  // r,g,b: 0~255
+  const R = srgbToLinear(r / 255),
+    G = srgbToLinear(g / 255),
+    B = srgbToLinear(b / 255);
+  const l = 0.4122214708 * R + 0.5363325363 * G + 0.0514459929 * B;
+  const m = 0.2119034982 * R + 0.6806995451 * G + 0.1073969566 * B;
+  const s = 0.0883024619 * R + 0.2817188376 * G + 0.6299787005 * B;
+  const l_ = Math.cbrt(l),
+    m_ = Math.cbrt(m),
+    s_ = Math.cbrt(s);
+  const L = 0.2104542553 * l_ + 0.793617785 * m_ - 0.0040720468 * s_;
+  const a = 1.9779984951 * l_ - 2.428592205 * m_ + 0.4505937099 * s_;
+  const b2 = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.808675766 * s_;
+  return { L, a, b: b2 };
+};
+
+const oklabToRgb = (L, a, b) => {
+  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
+  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
+  const s_ = L - 0.0894841775 * a - 1.291485548 * b;
+  const l = l_ ** 3,
+    m = m_ ** 3,
+    s = s_ ** 3;
+  let R = +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
+  let G = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
+  let B = -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s;
+  R = linearToSrgb(R);
+  G = linearToSrgb(G);
+  B = linearToSrgb(B);
+  return {
+    r: Math.round(clamp01(R) * 255),
+    g: Math.round(clamp01(G) * 255),
+    b: Math.round(clamp01(B) * 255),
+  };
+};
+
+const oklabToOklch = ({ L, a, b }) => {
+  const C = Math.hypot(a, b);
+  let h = (Math.atan2(b, a) * 180) / Math.PI;
+  if (h < 0) h += 360;
+  return { L, C, h };
+};
+const oklchToOklab = ({ L, C, h }) => {
+  const rad = (h * Math.PI) / 180;
+  return { L, a: C * Math.cos(rad), b: C * Math.sin(rad) };
+};
+
+const rgbToHex = (r, g, b) =>
+  `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b
+    .toString(16)
+    .padStart(2, "0")}`;
+
+const oklchToHex = (L, C, h) => {
+  const { a, b } = oklchToOklab({ L, C, h });
+  const { r, g, b: bb } = oklabToRgb(L, a, b);
+  return rgbToHex(r, g, bb);
+};
+
+// ============ K-Means in OKLab ============
+const kmeansOklab = (points, k = 5, iters = 8) => {
+  if (points.length === 0) return [];
+  // init by sampling spread
+  const centers = [];
+  centers.push(points[Math.floor(Math.random() * points.length)]);
+  while (centers.length < k) {
+    // farthest-point init
+    let best = null,
+      bestD = -1;
+    for (let i = 0; i < 64 && i < points.length; i++) {
+      const p = points[Math.floor(Math.random() * points.length)];
+      const d = centers.reduce((minD, c) => {
+        const dl = p.L - c.L,
+          da = p.a - c.a,
+          db = p.b - c.b;
+        const dist = dl * dl + da * da + db * db;
+        return Math.min(minD, dist);
+      }, Infinity);
+      if (d > bestD) {
+        bestD = d;
+        best = p;
+      }
+    }
+    centers.push(best || points[Math.floor(Math.random() * points.length)]);
+  }
+
+  let labels = new Array(points.length).fill(0);
+  for (let t = 0; t < iters; t++) {
+    // assign
+    for (let i = 0; i < points.length; i++) {
+      let bi = 0,
+        bd = Infinity;
+      for (let c = 0; c < centers.length; c++) {
+        const dl = points[i].L - centers[c].L;
+        const da = points[i].a - centers[c].a;
+        const db = points[i].b - centers[c].b;
+        const d = dl * dl + da * da + db * db;
+        if (d < bd) {
+          bd = d;
+          bi = c;
+        }
+      }
+      labels[i] = bi;
+    }
+    // update
+    const sum = centers.map(() => ({ L: 0, a: 0, b: 0, w: 0 }));
+    for (let i = 0; i < points.length; i++) {
+      const s = sum[labels[i]];
+      s.L += points[i].L;
+      s.a += points[i].a;
+      s.b += points[i].b;
+      s.w++;
+    }
+    for (let c = 0; c < centers.length; c++) {
+      if (sum[c].w > 0) {
+        centers[c] = {
+          L: sum[c].L / sum[c].w,
+          a: sum[c].a / sum[c].w,
+          b: sum[c].b / sum[c].w,
+          w: sum[c].w,
+        };
+      }
+    }
+  }
+  return centers;
+};
+
+// ============ Main: extract palette & gradient ============
+const extractHarmonicGradientFromImage = (imageSrc, mode = "monotone") => {
+  return new Promise((resolve) => {
+    console.log("開始提取和諧色彩，圖片路徑:", imageSrc);
+
+    if (!imageSrc) {
+      console.log("沒有圖片路徑，使用默認顏色");
+      resolve({
+        paletteHex: ["#F7F7F7", "#E6E6E6", "#CCCCCC", "#B3B3B3", "#999999"],
+        css: "linear-gradient(135deg, #e6e6e6, #ffffff)",
+      });
+      return;
+    }
+
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.referrerPolicy = "no-referrer";
+
+    img.onload = () => {
+      console.log("圖片載入成功，開始 OKLab 色彩分析");
+      try {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        const S = 64; // 小尺寸抽樣，夠快且代表性高
+        canvas.width = S;
+        canvas.height = S;
+        ctx.drawImage(img, 0, 0, S, S);
+
+        const { data } = ctx.getImageData(0, 0, S, S);
+
+        // 收集樣本：濾掉近白/近黑/近灰，保留一定彩度 & 合理亮度
+        const pts = [];
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i],
+            g = data[i + 1],
+            b = data[i + 2],
+            a = data[i + 3];
+          if (a < 250) continue; // 跳過透明
+          if ((r > 245 && g > 245 && b > 245) || (r < 10 && g < 10 && b < 10))
+            continue;
+
+          const lab = rgbToOklab(r, g, b);
+          const { L, a: A, b: B } = lab;
+          const C = Math.hypot(A, B);
+
+          if (L < 0.18 || L > 0.98) continue; // 過暗/過亮
+          if (C < 0.02) continue; // 幾乎沒彩度（容易髒）
+          pts.push({ ...lab });
+        }
+
+        // 如果過濾太狠，放寬條件一次
+        if (pts.length < 100) {
+          for (let i = 0; i < data.length; i += 8) {
+            const r = data[i],
+              g = data[i + 1],
+              b = data[i + 2],
+              a = data[i + 3];
+            if (a < 200) continue;
+            const lab = rgbToOklab(r, g, b);
+            pts.push(lab);
+            if (pts.length > 1500) break;
+          }
+        }
+
+        console.log("OKLab 樣本收集完成，樣本數:", pts.length);
+
+        const clusters = kmeansOklab(pts, 5, 8).map((c) => {
+          const lch = oklabToOklch(c);
+          return { ...c, ...lch };
+        });
+
+        // 以「權重 * C^1.2」挑 accent，避免低彩偏灰
+        const accent = clusters.reduce((best, c) => {
+          const score = (c.w || 1) * Math.pow(Math.max(0.0001, c.C), 1.2);
+          return !best || score > best._score ? { ...c, _score: score } : best;
+        }, null) || { L: 0.7, C: 0.08, h: 30 };
+
+        console.log("主色調:", accent);
+
+        // 安全夾取（避免螢幕外色域與髒區）
+        const clampL = (L) => Math.min(0.95, Math.max(0.25, L));
+        const clampC = (C) => Math.min(0.18, Math.max(0.04, C)); // 建議把 C 控在 0.04~0.18
+
+        const L0 = clampL(accent.L);
+        const C0 = clampC(accent.C);
+        const H0 = accent.h;
+
+        // 生成 OKLCH 漸層停駐點
+        let stops;
+        if (mode === "analogous") {
+          const H1 = (H0 + 18) % 360;
+          stops = [
+            { L: clampL(L0 - 0.04), C: clampC(C0 * 0.9), h: H0 },
+            { L: L0, C: C0, h: H0 },
+            { L: clampL(L0 + 0.08), C: clampC(C0 * 0.85), h: H1 },
+          ];
+        } else {
+          // monotone：單色系，最不易髒
+          stops = [
+            { L: clampL(L0 - 0.05), C: clampC(C0 * 0.95), h: H0 },
+            { L: L0, C: C0, h: H0 },
+            { L: clampL(L0 + 0.1), C: clampC(C0 * 0.7), h: H0 },
+          ];
+        }
+
+        // 同步輸出一組乾淨的 palette（accent + tint/shade）
+        const paletteHex = [
+          oklchToHex(clampL(L0 - 0.1), clampC(C0 * 0.85), H0),
+          oklchToHex(clampL(L0 - 0.04), clampC(C0 * 0.95), H0),
+          oklchToHex(L0, C0, H0),
+          oklchToHex(clampL(L0 + 0.08), clampC(C0 * 0.8), H0),
+          oklchToHex(clampL(L0 + 0.14), clampC(C0 * 0.65), H0),
+        ];
+
+        console.log("生成的和諧調色盤:", paletteHex);
+
+        resolve({
+          paletteHex,
+          css: `linear-gradient(135deg, ${stops
+            .map(
+              (s) =>
+                `oklch(${(s.L * 100).toFixed(1)}% ${s.C.toFixed(
+                  3
+                )} ${s.h.toFixed(1)})`
+            )
+            .join(", ")})`,
+          accent: { L: L0, C: C0, h: H0 },
+          stops,
+        });
+      } catch (err) {
+        console.warn("OKLab 色彩提取失敗:", err);
+        resolve({
+          paletteHex: ["#F7F7F7", "#E6E6E6", "#CCCCCC", "#B3B3B3", "#999999"],
+          css: "linear-gradient(135deg, #e6e6e6, #ffffff)",
+        });
+      }
+    };
+
+    img.onerror = (error) => {
+      console.error("圖片載入失敗:", error);
+      resolve({
+        paletteHex: ["#F7F7F7", "#E6E6E6", "#CCCCCC", "#B3B3B3", "#999999"],
+        css: "linear-gradient(135deg, #e6e6e6, #ffffff)",
+      });
+    };
+
+    img.src = imageSrc;
+  });
+};
 
 export default function CubeGallery({
   faceMap: faceMapProp,
@@ -100,16 +383,18 @@ export default function CubeGallery({
       // 開始動畫序列
       setAnimationPhase("exit");
 
-      // 第一階段：文字向下消失 (600ms)
+      // 第一階段：文字向下消失 (需要等待所有字母完成退出動畫)
+      // ILLUSTRATION 有12個字母，最後一個字母延遲0.6s開始，動畫持續0.6s
+      // 所以需要等待 0.6s + 0.6s = 1.2s
       setTimeout(() => {
         setPreviousProject(currentProject);
         setAnimationPhase("enter");
 
-        // 第二階段：文字向上浮起 (600ms)
+        // 第二階段：文字向上浮起 (同樣需要1.2s完成所有字母)
         setTimeout(() => {
           setAnimationPhase("idle");
-        }, 600);
-      }, 600);
+        }, 1200);
+      }, 1200);
     } else {
       // 初次載入或相同項目，不需要動畫
       setPreviousProject(currentProject);
@@ -146,139 +431,6 @@ export default function CubeGallery({
     return () => cancelAnimationFrame(rafRef.current);
   }, [autoplay]);
 
-  // 從圖片中提取主要顏色的函數
-  const extractColorsFromImage = (imageSrc) => {
-    return new Promise((resolve) => {
-      console.log("開始提取顏色，圖片路徑:", imageSrc);
-
-      if (!imageSrc) {
-        console.log("沒有圖片路徑，使用默認顏色");
-        resolve(["#F7F7F7", "#E6E6E6", "#CCCCCC", "#B3B3B3", "#999999"]);
-        return;
-      }
-
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-
-      img.onload = () => {
-        console.log("圖片載入成功，尺寸:", img.width, "x", img.height);
-        try {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-
-          // 設置 canvas 尺寸
-          canvas.width = 100;
-          canvas.height = 100;
-
-          // 繪製圖片到 canvas
-          ctx.drawImage(img, 0, 0, 100, 100);
-
-          // 獲取圖片數據
-          const imageData = ctx.getImageData(0, 0, 100, 100);
-          const data = imageData.data;
-
-          // 採樣顏色（每10個像素採樣一次）
-          const colorMap = new Map();
-
-          for (let i = 0; i < data.length; i += 40) {
-            const r = data[i];
-            const g = data[i + 1];
-            const b = data[i + 2];
-
-            // 跳過透明或接近白色/黑色的像素
-            if (r > 250 && g > 250 && b > 250) continue;
-            if (r < 5 && g < 5 && b < 5) continue;
-
-            // 計算顏色的飽和度和亮度
-            const max = Math.max(r, g, b);
-            const min = Math.min(r, g, b);
-            const saturation = max === 0 ? 0 : (max - min) / max;
-            const brightness = (r + g + b) / 3;
-
-            // 跳過過於飽和或過於暗淡的顏色
-            if (saturation < 0.1 || brightness < 30 || brightness > 220)
-              continue;
-
-            const color = `#${r.toString(16).padStart(2, "0")}${g
-              .toString(16)
-              .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
-
-            if (colorMap.has(color)) {
-              colorMap.set(color, colorMap.get(color) + 1);
-            } else {
-              colorMap.set(color, 1);
-            }
-          }
-
-          console.log("顏色採樣完成，找到", colorMap.size, "種顏色");
-
-          // 選擇出現頻率最高的顏色作為主色
-          let mainColor = "#999999"; // 默認顏色
-          if (colorMap.size > 0) {
-            const sortedColors = Array.from(colorMap.entries()).sort(
-              (a, b) => b[1] - a[1]
-            );
-            mainColor = sortedColors[0][0];
-            console.log("主色:", mainColor);
-          }
-
-          // 基於主色創建漸層
-          const rgb = parseInt(mainColor.slice(1), 16);
-          const r = (rgb >> 16) & 255;
-          const g = (rgb >> 8) & 255;
-          const b = rgb & 255;
-
-          // 創建從深到淺的漸層
-          const gradientColors = [
-            mainColor, // 主色
-            `#${Math.max(0, r - 30)
-              .toString(16)
-              .padStart(2, "0")}${Math.max(0, g - 30)
-              .toString(16)
-              .padStart(2, "0")}${Math.max(0, b - 30)
-              .toString(16)
-              .padStart(2, "0")}`, // 深一點
-            `#${Math.min(255, r + 20)
-              .toString(16)
-              .padStart(2, "0")}${Math.min(255, g + 20)
-              .toString(16)
-              .padStart(2, "0")}${Math.min(255, b + 20)
-              .toString(16)
-              .padStart(2, "0")}`, // 淺一點
-            `#${Math.min(255, r + 40)
-              .toString(16)
-              .padStart(2, "0")}${Math.min(255, g + 40)
-              .toString(16)
-              .padStart(2, "0")}${Math.min(255, b + 40)
-              .toString(16)
-              .padStart(2, "0")}`, // 更淺
-            `#${Math.min(255, r + 60)
-              .toString(16)
-              .padStart(2, "0")}${Math.min(255, g + 60)
-              .toString(16)
-              .padStart(2, "0")}${Math.min(255, b + 60)
-              .toString(16)
-              .padStart(2, "0")}`, // 最淺
-          ];
-
-          console.log("生成的漸層顏色:", gradientColors);
-          resolve(gradientColors);
-        } catch (error) {
-          console.warn("Failed to extract colors from image:", error);
-          resolve(["#F7F7F7", "#E6E6E6", "#CCCCCC", "#B3B3B3", "#999999"]);
-        }
-      };
-
-      img.onerror = (error) => {
-        console.error("圖片載入失敗:", error);
-        console.error("圖片路徑:", imageSrc);
-        resolve(["#F7F7F7", "#E6E6E6", "#CCCCCC", "#B3B3B3", "#999999"]);
-      };
-
-      img.src = imageSrc;
-    });
-  };
-
   // 當 activeFace 改變時，更新漸層顏色
   useEffect(() => {
     const currentMapping = faceMap[activeFace];
@@ -287,8 +439,8 @@ export default function CubeGallery({
         currentMapping.projectId,
         currentMapping.imageIndex
       );
-      extractColorsFromImage(imageSrc).then((colors) => {
-        setGradientColors(colors);
+      extractHarmonicGradientFromImage(imageSrc, "monotone").then((result) => {
+        setGradientColors(result.paletteHex);
       });
     }
   }, [activeFace, faceMap, getImageSrc]);
@@ -443,14 +595,26 @@ export default function CubeGallery({
     >
       {/* Background ILLUSTRATION TEXT */}
       <div className="cube-illustration-bg">
-        <GradientText
-          colors={gradientColors}
-          animationSpeed={3}
-          showBorder={false}
-          className="gradient-text"
+        <div
+          className={`illustration-text ${
+            animationPhase !== "idle" ? `animate-${animationPhase}` : ""
+          }`}
         >
-          ILLUSTRATION
-        </GradientText>
+          {"ILLUSTRATION".split("").map((letter, index) => (
+            <span
+              key={index}
+              className="illustration-letter"
+              style={{
+                "--letter-delay": `${index * 0.05}s`,
+                backgroundImage: `linear-gradient(to right, ${gradientColors.join(
+                  ", "
+                )})`,
+              }}
+            >
+              {letter}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Main layout */}

@@ -25,7 +25,8 @@
   overflow: hidden;
 }
 
-.cube-illustration-bg .gradient-text {
+/* ILLUSTRATION text styles */
+.illustration-text {
   font-size: clamp(16vw, 18vw, 20vw);
   font-weight: var(--font-light);
   position: absolute;
@@ -34,6 +35,54 @@
   transform: translateX(-50%);
   white-space: nowrap;
   letter-spacing: -0.02em;
+  display: flex;
+}
+
+.illustration-letter {
+  display: inline-block;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-size: 200% 100%;
+  animation: gradientShift 3s ease-in-out infinite;
+  position: relative;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ILLUSTRATION animation states */
+.illustration-text.animate-exit .illustration-letter {
+  transform: translateY(30%) scale(0.9);
+  opacity: 0;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: var(--letter-delay, 0s);
+}
+
+.illustration-text.animate-enter .illustration-letter {
+  transform: translateY(-30%) scale(0.9);
+  opacity: 0;
+  animation: slideLetterInFromTop 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: var(--letter-delay, 0s);
+}
+
+@keyframes slideLetterInFromTop {
+  from {
+    transform: translateY(-30%) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }
 
 /* Main layout container */
@@ -366,7 +415,7 @@
     height: 75vh;
   }
 
-  .cube-illustration-bg .gradient-text {
+  .illustration-text {
     font-size: clamp(18vw, 24vw, 30vw);
     top: calc(-1 * clamp(9%, 11%, 13%));
   }
@@ -386,7 +435,7 @@
     height: 70vh;
   }
 
-  .cube-illustration-bg .gradient-text {
+  .illustration-text {
     font-size: clamp(20vw, 26vw, 32vw);
     top: calc(-1 * clamp(10%, 12%, 14%));
   }
@@ -424,7 +473,7 @@
     height: 65vh;
   }
 
-  .cube-illustration-bg .gradient-text {
+  .illustration-text {
     font-size: clamp(22vw, 28vw, 34vw);
     top: calc(-1 * clamp(11%, 13%, 15%));
   }
