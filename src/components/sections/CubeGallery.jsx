@@ -309,6 +309,7 @@ export default function CubeGallery({
   ]);
   const [animationPhase, setAnimationPhase] = useState("idle"); // 'idle', 'exit', 'enter'
   const [previousProject, setPreviousProject] = useState(null);
+  const [displayProject, setDisplayProject] = useState(null); // 用於顯示的項目資訊
   const angleRef = useRef(angle);
   angleRef.current = angle;
 
@@ -367,8 +368,8 @@ export default function CubeGallery({
   }, [activeFace]);
 
   const activeProject = projectById.get(faceMap[activeFace].projectId);
-  const activeHref = activeProject
-    ? `https://www.yidatsai.com/project/${activeProject.id}`
+  const activeHref = displayProject
+    ? `https://www.yidatsai.com/project/${displayProject.id}`
     : "#";
 
   // 處理文字動畫轉場
@@ -397,7 +398,8 @@ export default function CubeGallery({
           extractHarmonicGradientFromImage(imageSrc, "monotone").then(
             (result) => {
               setGradientColors(result.paletteHex);
-              // 色彩更新完成後，開始文字進場動畫
+              // 色彩和項目資訊同時更新
+              setDisplayProject(currentProject);
               setPreviousProject(currentProject);
               setAnimationPhase("enter");
 
@@ -409,6 +411,7 @@ export default function CubeGallery({
           );
         } else {
           // 如果沒有映射，直接進入下一階段
+          setDisplayProject(currentProject);
           setPreviousProject(currentProject);
           setAnimationPhase("enter");
           setTimeout(() => {
@@ -419,6 +422,7 @@ export default function CubeGallery({
     } else {
       // 初次載入或相同項目，不需要動畫
       setPreviousProject(currentProject);
+      setDisplayProject(currentProject); // 立即更新顯示項目
       // 初次載入時立即更新色彩
       if (!previousProject) {
         const currentMapping = faceMap[activeFace];
@@ -707,7 +711,7 @@ export default function CubeGallery({
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
                 }`}
               >
-                {activeProject?.title || "The Notebook Design"}
+                {displayProject?.title || "The Notebook Design"}
               </div>
             </div>
 
@@ -722,7 +726,7 @@ export default function CubeGallery({
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
                 }`}
               >
-                {activeProject?.year || "2024"}
+                {displayProject?.year || "2024"}
               </div>
             </div>
 
@@ -737,7 +741,7 @@ export default function CubeGallery({
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
                 }`}
               >
-                {activeProject?.tags?.map((tag, index) => (
+                {displayProject?.tags?.map((tag, index) => (
                   <span
                     key={tag}
                     className="tag-item"
