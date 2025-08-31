@@ -41,15 +41,45 @@ export default function Header() {
     if (isOpen) setHasOpened(true);
   }, [isOpen]);
 
-  // 使用 JSON 資料 - 從 projectImages 的第一張圖片作為輪播圖片
-  const images = projectsData.map((project) => project.projectImages[0]);
+  // 輪播配置 - 指定專案ID和圖片索引
+  const carouselConfig = React.useMemo(
+    () => [
+      { projectId: "project-001", imageIndex: 0 },
+      { projectId: "project-002", imageIndex: 0 },
+      { projectId: "project-003", imageIndex: 0 },
+      { projectId: "project-004", imageIndex: 0 },
+      { projectId: "project-002", imageIndex: 1 },
+    ],
+    []
+  );
+
+  // 根據配置獲取圖片和專案資訊
+  const carouselData = React.useMemo(() => {
+    return carouselConfig
+      .map((config) => {
+        const project = projectsData.find((p) => p.id === config.projectId);
+        if (!project) return null;
+
+        return {
+          image:
+            project.projectImages[config.imageIndex] ||
+            project.projectImages[0],
+          title: project.title,
+          year: project.year,
+          projectId: config.projectId,
+        };
+      })
+      .filter(Boolean);
+  }, [carouselConfig]);
+
+  const images = carouselData.map((item) => item.image);
 
   // 自動輪播
   useEffect(() => {
     if (isOpen) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prev) => (prev + 1) % images.length);
-      }, 4500);
+      }, 5000);
       return () => clearInterval(interval);
     }
   }, [isOpen, images.length]);
@@ -120,7 +150,7 @@ export default function Header() {
                   <div className="info-item">
                     <span className="info-label">Year:</span>
                     <span className="info-value">
-                      {projectsData[currentImageIndex]?.year}
+                      {carouselData[currentImageIndex]?.year}
                     </span>
                   </div>
                 </div>
@@ -128,7 +158,7 @@ export default function Header() {
                   <div className="info-item">
                     <span className="info-label">Title:</span>
                     <span className="info-value">
-                      {projectsData[currentImageIndex]?.title}
+                      {carouselData[currentImageIndex]?.title}
                     </span>
                   </div>
                 </div>
