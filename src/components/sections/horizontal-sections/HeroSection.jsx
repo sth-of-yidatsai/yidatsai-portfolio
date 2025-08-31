@@ -92,7 +92,7 @@ export default function HeroSection({ index }) {
       // 1秒後切換底層圖片（百葉窗開始淡出時）
       setTimeout(() => {
         setCurrentImageIndex(newIndex);
-      }, 1000);
+      }, 900);
 
       // 1.3秒後結束動畫狀態（給予足夠的淡出時間）
       setTimeout(() => {
@@ -179,7 +179,7 @@ export default function HeroSection({ index }) {
           >
             <img src={leftArrowIcon} alt="Previous" />
           </button>
-
+          <div className="hero-nav-button-divider" />
           {/* 右箭頭 */}
           <button
             className="hero-nav-button hero-next-button clickable"

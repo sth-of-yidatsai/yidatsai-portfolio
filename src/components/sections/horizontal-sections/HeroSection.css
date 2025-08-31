@@ -108,9 +108,9 @@
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0 var(--space-md);
+  margin-bottom: var(--space-sm);
+  padding: var(--space-sm) 0;
   position: relative;
-  gap: var(--space-md);
 }
 
 .hero-info-content::before {
@@ -129,15 +129,13 @@
   pointer-events: none;
 }
 
-/* 移除不再需要的導航區域包裝器 */
-
 .hero-nav-button {
-  width: 64px;
-  height: 64px;
-  min-width: 64px;
-  min-height: 64px;
+  width: 72px;
+  height: 100%;
+  min-width: 72px;
+  min-height: 72px;
   background: none;
-  border: none;
+  bottom: none;
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -150,7 +148,7 @@
   box-shadow: none;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  flex: 0 0 64px; /* 固定64px寬度，不伸縮 */
+  flex: 0 0 72px; /* 固定64px寬度，不伸縮 */
 }
 
 .hero-nav-button img {
@@ -165,22 +163,35 @@
 }
 
 .hero-prev-button:hover img {
-  transform: translateX(-2px);
+  transform: translateX(-4px) scale(1.1);
   opacity: 1;
 }
 
 .hero-next-button:hover img {
-  transform: translateX(2px);
+  transform: translateX(4px) scale(1.1);
   opacity: 1;
 }
 
-/* 移除不再需要的文字區域包裝器 */
+.hero-nav-button-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--color-light);
+}
+
+.hero-title-section,
+.hero-year-section,
+.hero-tag-section {
+  height: 100%;
+  border-right: 1px solid var(--color-light);
+  padding: 0 var(--space-md);
+}
 
 .hero-title-section {
   display: flex;
   align-items: center;
   flex: 1; /* Title佔剩餘空間的1/2 */
   min-width: 0; /* 允許縮小 */
+  border-left: 1px solid var(--color-light);
 }
 
 .hero-year-section {
@@ -329,10 +340,10 @@
 }
 
 .hero-project-button {
-  width: 64px;
-  height: 64px;
-  min-width: 64px;
-  min-height: 64px;
+  width: 72px;
+  height: 100%;
+  min-width: 72px;
+  min-height: 72px;
   background: none;
   border: none;
   cursor: pointer;
@@ -347,7 +358,7 @@
   box-shadow: none;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  flex: 0 0 64px; /* 專案按鈕固定64px寬度 */
+  flex: 0 0 72px; /* 專案按鈕固定64px寬度 */
 }
 
 .hero-project-button img {
