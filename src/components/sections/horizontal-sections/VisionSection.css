@@ -1,0 +1,211 @@
+/* Vision Section 樣式 */
+.hs-section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: transparent;
+}
+
+.hs-section.vision-section {
+  background: var(--color-primary) !important;
+  color: var(--color-secondary);
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* 主要版面：上留空給 Marquee（170px），其餘滿高 */
+.vision-layout {
+  position: absolute;
+  inset: 0 0 170px 0; /* bottom 為跑馬燈預留 */
+  display: flex;
+}
+
+/* 左欄：兩個矩形區塊垂直排列 */
+.vision-left-panel {
+  width: 360px;
+  min-width: 360px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  background: var(--color-primary);
+  border-right: none;
+  z-index: 2;
+}
+
+/* 兩個矩形區塊的共同樣式 */
+.vision-block {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  padding: var(--space-md);
+}
+
+/* 左欄區塊小標題 */
+.vision-block-title {
+  font-family: var(--font-latin), var(--font-cjk);
+  font-size: 0.8rem;
+  font-weight: var(--font-bold);
+  letter-spacing: 0.04em;
+  color: var(--gray-200);
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+}
+
+/* 左欄內文（把原本 overlay 的絕對定位拿掉，改成區塊內排版） */
+.vision-text-overlay {
+  color: var(--gray-0);
+  pointer-events: none;
+}
+.vision-text-overlay-headline {
+  font-size: 2.2rem;
+  line-height: 1.2;
+  font-weight: var(--font-regular);
+}
+.vision-text-overlay-subtext {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin-top: var(--space-lg);
+}
+
+/* 左欄內部水平分隔線（在兩個矩形間） */
+.vision-divider-horizontal {
+  height: 0; /* 不用高度，用邊框畫 */
+  border-top: 1px solid var(--color-text-light);
+  background-color: var(--color-text-light);
+  opacity: 0.6;
+  margin: var(--space-xs) var(--space-md);
+}
+
+/* 左右欄分隔線 */
+.vision-divider-vertical {
+  width: 1px;
+  background-color: var(--color-text-light);
+  opacity: 0.6;
+  height: calc(100% - calc(var(--space-md) * 2));
+  margin-block: var(--space-md);
+}
+
+/* 右欄：p5 畫布容器（不再 absolute 吃滿 100%） */
+.vision-section .vision-canvas-container {
+  position: relative;
+  flex: 1 1 auto; /* 吃掉右側所有剩餘寬度 */
+  height: 100%;
+  z-index: 1;
+}
+
+/* 色環 */
+.color-wheel-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.color-wheel-container {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: auto;
+}
+.color-wheel {
+  /* JS 會再設定精確寬高；這裡用 clamp 做保險 */
+  width: clamp(160px, 34vh, 300px);
+  height: clamp(160px, 34vh, 300px);
+  border-radius: 50%;
+  cursor: none;
+}
+
+.color-knob {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* 不阻擋拖曳 */
+}
+
+.color-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray-200);
+  font-size: 12px;
+}
+.color-chip {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-800);
+}
+
+/* 手機（或窄螢幕）時，左欄改成上方整列、色環縮小 */
+@media (max-width: 900px) {
+  .vision-layout {
+    inset: 0 0 170px 0;
+    flex-direction: column;
+  }
+  .vision-left-panel {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--color-text-light);
+  }
+  .vision-divider-vertical {
+    display: none;
+  }
+  .vision-info-block {
+    padding-bottom: 12px;
+  }
+  .vision-color-block {
+    padding-top: 12px;
+  }
+  .color-wheel {
+    width: clamp(150px, 30vh, 240px);
+    height: clamp(150px, 30vh, 240px);
+  }
+}
+
+/* 文字動畫相關樣式 */
+.word-animate {
+  display: inline-block;
+  transform-origin: center bottom;
+}
+
+.sentence-animate {
+  display: inline-block;
+}
+
+/* 確保動畫文字的容器有正確的層級和透視效果 */
+.vision-text-overlay {
+  perspective: 1000px;
+}
+
+.vision-text-overlay-headline {
+  transform-style: preserve-3d;
+}
+
+.vision-text-overlay-subtext {
+  transform-style: preserve-3d;
+}
+
+/* 動畫文字的初始狀態 - 預設隱藏直到動畫hook啟動 */
+[data-animate] {
+  opacity: 0;
+}
+
+/* 動畫準備就緒時的狀態 */
+[data-animate].animation-ready {
+  opacity: 1;
+}
+
+/* 動畫完成後的狀態 */
+[data-animate].animation-complete {
+  opacity: 1;
+}

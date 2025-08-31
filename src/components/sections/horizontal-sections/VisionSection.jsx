@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useCallback, useState } from "react";
 import p5 from "p5";
-import { useTextAnimation } from "../../hooks/useTextAnimation";
-import { useLoader } from "../../hooks/use-loader/index.jsx";
-import MarqueeText from "../MarqueeText";
-import "./SectionBase.css";
+import { useTextAnimation } from "../../../hooks/useTextAnimation";
+import { useLoader } from "../../../hooks/use-loader/index.jsx";
+import MarqueeText from "../../MarqueeText";
+import "./VisionSection.css";
 
 export default function VisionSection({ index }) {
   const layoutRef = useRef(null);

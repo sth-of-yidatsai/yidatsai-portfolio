@@ -7,7 +7,7 @@ import {
   VisionSection,
   ProjectsSection,
   sectionConfigs,
-} from "./sections/HorizontalSectionIndex";
+} from "./sections/horizontal-sections";
 
 // 顏色解析和反色邏輯 - 與 GlobalScrollbar 一致
 function parseRGBA(color) {

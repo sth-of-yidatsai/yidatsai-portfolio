@@ -1,5 +1,5 @@
 import React from "react";
-import "./SectionBase.css";
+import "./MissionSection.css";
 
 export default function MissionSection({ config, index }) {
   return (

@@ -1,25 +1,14 @@
 import React from "react";
 import "./Home.css";
 import HorizontalScroller from "../components/HorizontalScroller";
-import CubeGallery from "../components/sections/CubeGallery";
+import { CubeGallery } from "../components/sections/vertical-sections";
 
 export default function Home() {
   return (
     <div className="home-container">
-      {/* 第一屏：橫向捲動 */}
       <HorizontalScroller />
-
-      {/* 第一個 100vh 區塊 */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <h1 className="hero-title">Developing...</h1>
-          <p className="hero-subtitle">Creative Designer & Developer</p>
-          <div className="hero-visual">
-            <div className="visual-element"></div>
-          </div>
-        </div>
-      </section>
       <CubeGallery />
+
       {/* 第二個 100vh 區塊 */}
       <section className="content-section">
         <div className="content-wrapper">

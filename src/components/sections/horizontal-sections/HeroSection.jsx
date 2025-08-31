@@ -1,5 +1,5 @@
 import React from "react";
-import "./SectionBase.css";
+import "./HeroSection.css";
 
 export default function HeroSection({ index }) {
   return (

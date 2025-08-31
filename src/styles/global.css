@@ -63,7 +63,7 @@ html {
 }
 
 body {
-  background-color: var(--color-bg);
+  background-color: transparent;
   color: var(--color-text);
   line-height: 1.6;
   font-weight: var(--font-regular);

@@ -1,0 +1,74 @@
+/* Hero Section 樣式 */
+.hs-section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: transparent;
+}
+
+.hs-section.hero-section {
+  background: var(--color-secondary) !important;
+  color: var(--color-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hero Section 特有樣式 */
+.hero-specific-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: var(--space-lg);
+}
+
+.hero-text-container {
+  text-align: center;
+  max-width: 60rem;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: var(--font-bold);
+  margin-bottom: var(--space-md);
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  font-weight: var(--font-medium);
+  margin-bottom: var(--space-lg);
+  opacity: 0.8;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  font-weight: var(--font-regular);
+  line-height: 1.6;
+  max-width: 42rem;
+  margin: 0 auto;
+  opacity: 0.7;
+}
+
+/* Hero Section 手機響應式 */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    max-width: calc(100vw - 2 * var(--space-sm));
+  }
+
+  .hero-specific-content {
+    padding: var(--space-md);
+  }
+}

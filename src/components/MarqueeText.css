@@ -4,6 +4,7 @@
   bottom: var(--space-sm);
   left: var(--space-md);
   right: var(--space-md);
+  background-color: transparent;
 }
 
 .brand-line {

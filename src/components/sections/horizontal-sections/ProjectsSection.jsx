@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import projects from "../../data/projects.json";
-import "./SectionBase.css";
+import projects from "../../../data/projects.json";
+import "./ProjectsSection.css";
 
 export default function ProjectsSection({ index }) {
   const navigate = useNavigate();

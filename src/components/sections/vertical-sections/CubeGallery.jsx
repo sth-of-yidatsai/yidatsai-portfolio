@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./CubeGallery.css";
-import projects from "../../data/projects.json";
-import reloadIcon from "../../assets/icons/replay_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
-import arrowIcon from "../../assets/icons/arrow_outward_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
+import projects from "../../../data/projects.json";
+import reloadIcon from "../../../assets/icons/replay_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
+import arrowIcon from "../../../assets/icons/arrow_outward_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
 
 // ============ OKLab / OKLCH utilities ============
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
@@ -384,9 +384,10 @@ export default function CubeGallery({
       // 開始動畫序列
       setAnimationPhase("exit");
 
-      // 第一階段：文字向下消失 (需要等待所有字母完成退出動畫)
-      // ILLUSTRATION 有12個字母，最後一個字母延遲0.6s開始，動畫持續0.6s
-      // 所以需要等待 0.6s + 0.6s = 1.2s
+      // 第一階段：文字向下消失 (需要等待所有元素完成退出動畫)
+      // ILLUSTRATION: 12個字母，最後一個字母延遲0.55s開始，動畫持續0.6s = 1.15s
+      // Tags: 最後一個tag延遲1.2s開始，動畫持續0.6s = 1.8s
+      // 所以需要等待 1.8s 才能確保所有元素都消失
       setTimeout(() => {
         // 在文字完全消失後，更新色彩
         const currentMapping = faceMap[activeFace];
@@ -418,7 +419,7 @@ export default function CubeGallery({
             setAnimationPhase("idle");
           }, 1200);
         }
-      }, 1200);
+      }, 1800);
     } else {
       // 初次載入或相同項目，不需要動畫
       setPreviousProject(currentProject);
