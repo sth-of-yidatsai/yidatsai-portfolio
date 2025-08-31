@@ -11,6 +11,9 @@ export default function HeroSection({ index }) {
   const [animationPhase, setAnimationPhase] = useState("idle"); // 'idle', 'exit', 'enter'
   const [previousIndex, setPreviousIndex] = useState(0);
   const [displayData, setDisplayData] = useState(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [nextImageIndex, setNextImageIndex] = useState(0);
+  const [isFadingOut, setIsFadingOut] = useState(false);
   const navigate = useNavigate();
 
   // 輪播配置 - 指定專案ID和圖片索引
@@ -72,21 +75,59 @@ export default function HeroSection({ index }) {
     }
   }, [currentImageIndex, carouselData, previousIndex, displayData]);
 
+  // 圖片切換動畫處理
+  const triggerImageTransition = React.useCallback(
+    (newIndex) => {
+      if (isTransitioning) return; // 防止重複觸發
+
+      setIsTransitioning(true);
+      setNextImageIndex(newIndex);
+      setIsFadingOut(false);
+
+      // 0.8秒後開始淡出百葉窗
+      setTimeout(() => {
+        setIsFadingOut(true);
+      }, 800);
+
+      // 1秒後切換底層圖片（百葉窗開始淡出時）
+      setTimeout(() => {
+        setCurrentImageIndex(newIndex);
+      }, 1000);
+
+      // 1.3秒後結束動畫狀態（給予足夠的淡出時間）
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setIsFadingOut(false);
+      }, 1500);
+    },
+    [isTransitioning]
+  );
+
   // 自動輪播
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      if (!isTransitioning) {
+        const newIndex = (currentImageIndex + 1) % images.length;
+        triggerImageTransition(newIndex);
+      }
     }, 5000);
     return () => clearInterval(interval);
-  }, [images.length, currentImageIndex]); // 添加currentImageIndex依賴，手動切換時會重設
+  }, [
+    images.length,
+    currentImageIndex,
+    isTransitioning,
+    triggerImageTransition,
+  ]); // 添加triggerImageTransition依賴
 
   // 手動切換功能
   const handlePrevious = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+    const newIndex = (currentImageIndex - 1 + images.length) % images.length;
+    triggerImageTransition(newIndex);
   };
 
   const handleNext = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    const newIndex = (currentImageIndex + 1) % images.length;
+    triggerImageTransition(newIndex);
   };
 
   const handleProjectClick = () => {
@@ -106,6 +147,25 @@ export default function HeroSection({ index }) {
             style={{ backgroundImage: `url(${image})` }}
           />
         ))}
+
+        {/* 百葉窗動畫層 */}
+        {isTransitioning && (
+          <div
+            className={`hero-blinds-container ${isFadingOut ? "fade-out" : ""}`}
+          >
+            {Array.from({ length: 12 }, (_, i) => (
+              <div
+                key={i}
+                className="hero-blind-strip"
+                style={{
+                  backgroundImage: `url(${images[nextImageIndex]})`,
+                  backgroundPosition: `${(i / 11) * 100}% center`,
+                  animationDelay: `${i * 0.08}s`,
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* 底部專案資訊欄 */}
