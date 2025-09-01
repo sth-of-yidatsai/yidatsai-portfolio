@@ -14,6 +14,7 @@ export default function HeroSection({ index }) {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [nextImageIndex, setNextImageIndex] = useState(0);
   const [isFadingOut, setIsFadingOut] = useState(false);
+  const [blindsCount, setBlindsCount] = useState(12);
   const navigate = useNavigate();
 
   // 輪播配置 - 指定專案ID和圖片索引
@@ -50,6 +51,26 @@ export default function HeroSection({ index }) {
 
   const images = carouselData.map((item) => item.image);
 
+  // 根據螢幕寬度設定百葉窗直欄數量
+  useEffect(() => {
+    const updateBlindsCount = () => {
+      const width = window.innerWidth;
+      if (width <= 480) {
+        setBlindsCount(6); // 手機：6欄
+      } else if (width <= 768) {
+        setBlindsCount(8); // 平板：8欄
+      } else if (width <= 1024) {
+        setBlindsCount(10); // 小桌面：10欄
+      } else {
+        setBlindsCount(12); // 大桌面：12欄
+      }
+    };
+
+    updateBlindsCount();
+    window.addEventListener("resize", updateBlindsCount);
+    return () => window.removeEventListener("resize", updateBlindsCount);
+  }, []);
+
   // 處理文字動畫轉場
   useEffect(() => {
     if (previousIndex !== currentImageIndex && displayData) {
@@ -84,23 +105,31 @@ export default function HeroSection({ index }) {
       setNextImageIndex(newIndex);
       setIsFadingOut(false);
 
-      // 0.8秒後開始淡出百葉窗
+      // 根據直欄數量計算動畫時間
+      const baseTime = 800; // 基礎時間（12欄）
+      const baseBlinds = 12;
+      const animationDuration = (baseTime * blindsCount) / baseBlinds;
+      const fadeOutDelay = animationDuration;
+      const imageSwapDelay = animationDuration + 100;
+      const completeDelay = animationDuration + 700;
+
+      // 開始淡出百葉窗
       setTimeout(() => {
         setIsFadingOut(true);
-      }, 800);
+      }, fadeOutDelay);
 
-      // 1秒後切換底層圖片（百葉窗開始淡出時）
+      // 切換底層圖片
       setTimeout(() => {
         setCurrentImageIndex(newIndex);
-      }, 900);
+      }, imageSwapDelay);
 
-      // 1.3秒後結束動畫狀態（給予足夠的淡出時間）
+      // 結束動畫狀態
       setTimeout(() => {
         setIsTransitioning(false);
         setIsFadingOut(false);
-      }, 1500);
+      }, completeDelay);
     },
-    [isTransitioning]
+    [isTransitioning, blindsCount]
   );
 
   // 自動輪播
@@ -152,15 +181,22 @@ export default function HeroSection({ index }) {
         {isTransitioning && (
           <div
             className={`hero-blinds-container ${isFadingOut ? "fade-out" : ""}`}
+            style={{
+              "--blinds-count": blindsCount,
+              "--animation-duration": `${(800 * blindsCount) / 12}ms`,
+            }}
           >
-            {Array.from({ length: 12 }, (_, i) => (
+            {Array.from({ length: blindsCount }, (_, i) => (
               <div
                 key={i}
                 className="hero-blind-strip"
                 style={{
                   backgroundImage: `url(${images[nextImageIndex]})`,
-                  backgroundPosition: `${(i / 11) * 100}% center`,
-                  animationDelay: `${i * 0.08}s`,
+                  backgroundPosition: `${
+                    (i / (blindsCount - 1)) * 100
+                  }% center`,
+                  backgroundSize: `${blindsCount * 100}% auto`,
+                  animationDelay: `${i * (0.8 / blindsCount)}s`,
                 }}
               />
             ))}
