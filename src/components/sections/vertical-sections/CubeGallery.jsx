@@ -378,13 +378,6 @@ export default function CubeGallery({
     "#B3B3B3",
     "#999999",
   ]);
-  const [infoGradientColors, setInfoGradientColors] = useState([
-    "#2A2A2A",
-    "#1A1A1A",
-    "#0F0F0F",
-    "#080808",
-    "#000000",
-  ]);
 
   const [animationPhase, setAnimationPhase] = useState("idle"); // 'idle', 'exit', 'enter'
   const [previousProject, setPreviousProject] = useState(null);
@@ -398,16 +391,6 @@ export default function CubeGallery({
       lightness: 1.0, // 亮度倍數 (1.0 = 不變)
       saturation: 1.35, // 飽和度倍數 (1.0 = 不變)
       hue: 0, // 色相偏移 (0 = 不變，正數順時針，負數逆時針)
-    }),
-    []
-  );
-
-  // INFO 底圖漸層色 HSL 調整參數
-  const infoHSLAdjustments = React.useMemo(
-    () => ({
-      lightness: 0.6,
-      saturation: 0.8,
-      hue: 0,
     }),
     []
   );
@@ -445,14 +428,6 @@ export default function CubeGallery({
       return adjustHSL(originalColors, illustrationHSLAdjustments);
     },
     [adjustHSL, illustrationHSLAdjustments]
-  );
-
-  // INFO 底圖漸層色調整函數
-  const createInfoGradientColors = React.useCallback(
-    (originalColors) => {
-      return adjustHSL(originalColors, infoHSLAdjustments);
-    },
-    [adjustHSL, infoHSLAdjustments]
   );
 
   const projectById = React.useMemo(() => {
@@ -548,9 +523,7 @@ export default function CubeGallery({
                 setGradientColors(
                   createIllustrationGradientColors(result.paletteHex)
                 );
-                setInfoGradientColors(
-                  createInfoGradientColors(result.paletteHex)
-                );
+
                 setDisplayProject(currentProject);
                 setPreviousProject(currentProject);
 
@@ -597,9 +570,6 @@ export default function CubeGallery({
               setGradientColors(
                 createIllustrationGradientColors(result.paletteHex)
               );
-              setInfoGradientColors(
-                createInfoGradientColors(result.paletteHex)
-              );
             }
           );
         }
@@ -612,7 +582,6 @@ export default function CubeGallery({
     faceMap,
     getImageSrc,
     createIllustrationGradientColors,
-    createInfoGradientColors,
   ]);
 
   useEffect(() => {
@@ -859,15 +828,7 @@ export default function CubeGallery({
 
         {/* Info Panel - Hero Style Layout */}
         <div className="cube-info-panel">
-          <div
-            className="cube-info-content"
-            style={{
-              backgroundImage: `linear-gradient(to right, ${infoGradientColors.join(
-                ", "
-              )})`,
-              transition: "background-image 1.2s cubic-bezier(0.4, 0, 0.2, 1)",
-            }}
-          >
+          <div className="cube-info-content">
             {/* Reload Button */}
             <button
               className="cube-nav-button cube-reload-button clickable"

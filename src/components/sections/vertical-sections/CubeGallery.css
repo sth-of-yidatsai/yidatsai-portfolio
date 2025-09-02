@@ -130,11 +130,10 @@
   height: 100%;
   display: flex;
   align-items: center;
-  background-size: 200% 100%;
-  animation: gradientShift 3s ease-in-out infinite;
+  background: transparent;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--gray-200);
   padding: var(--space-sm) 0;
   position: relative;
 }
@@ -183,7 +182,7 @@
   min-width: 24px;
   min-height: 24px;
   transition: transform 0.6s ease;
-  filter: brightness(0) invert(1);
+  filter: brightness(0);
   opacity: 0.8;
   flex-shrink: 0;
 }
@@ -203,7 +202,7 @@
 .cube-year-section,
 .cube-tag-section {
   height: 100%;
-  border-right: 1px solid var(--color-light);
+  border-right: 1px solid var(--gray-200);
   padding: 0 var(--space-md);
 }
 
@@ -212,7 +211,7 @@
   align-items: center;
   flex: 1; /* Title佔剩餘空間的1/2 */
   min-width: 0; /* 允許縮小 */
-  border-left: 1px solid var(--color-light);
+  border-left: 1px solid var(--gray-200);
 }
 
 .cube-year-section {
@@ -240,7 +239,7 @@
 .cube-info-label {
   font-size: 0.7rem;
   font-weight: var(--font-light);
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(0, 0, 0, 0.7);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   font-family: var(--font-stack);
@@ -250,7 +249,7 @@
 .cube-info-value {
   font-size: 0.9rem;
   font-weight: var(--font-medium);
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(0, 0, 0, 0.9);
   letter-spacing: 0.03rem;
   font-family: var(--font-stack);
   white-space: nowrap;
@@ -345,11 +344,11 @@
 }
 
 .cube-tag-item {
-  color: var(--color-light);
+  color: rgba(0, 0, 0, 0.8);
   font-size: 0.7rem;
   padding: var(--space-xs) var(--space-sm);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.1);
   font-weight: var(--font-light);
   letter-spacing: 0.05em;
   position: relative;
@@ -401,7 +400,7 @@
   min-width: 24px;
   min-height: 24px;
   transition: transform 0.3s ease;
-  filter: brightness(0) invert(1);
+  filter: brightness(0);
   opacity: 0.8;
   flex-shrink: 0;
 }
@@ -505,6 +504,7 @@
     height: 18px;
     min-width: 18px;
     min-height: 18px;
+    filter: brightness(0);
   }
 
   .cube-info-label {
@@ -533,6 +533,7 @@
     height: 18px;
     min-width: 18px;
     min-height: 18px;
+    filter: brightness(0);
   }
 }
 
