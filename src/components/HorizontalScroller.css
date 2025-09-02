@@ -72,108 +72,11 @@ body.menu-open .hs-horizontal-scrollbar {
 }
 
 /* 響應式設計 */
-@media (max-width: 1200px) {
-  .hs-section-content {
-    padding: 0 3rem;
-  }
-
-  .hs-projects-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-  }
-}
-
 @media (max-width: 768px) {
-  .hs-section-content {
-    padding: 0 2rem;
-  }
-
-  .hs-section-title {
-    font-size: clamp(3rem, 12vw, 6rem);
-  }
-
-  .hs-section-subtitle {
-    font-size: clamp(1.2rem, 4vw, 1.8rem);
-  }
-
-  .hs-section-text {
-    font-size: 1rem;
-  }
-
-  .hs-projects-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
   .hs-horizontal-scrollbar {
     width: 80%;
     bottom: 1rem;
   }
-}
-
-@media (max-width: 480px) {
-  .hs-section-content {
-    padding: 0 1.5rem;
-  }
-
-  .hs-section-title {
-    font-size: clamp(2.5rem, 15vw, 4rem);
-  }
-}
-
-/* 特殊視覺效果 - 參考 center.land */
-.hs-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(255, 255, 255, 0.05) 0%,
-    transparent 70%
-  );
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-}
-
-.hs-section:hover::before {
-  opacity: 1;
-}
-
-/* 動畫效果 */
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.hs-section-content > * {
-  animation: slideIn 0.8s ease-out;
-  animation-fill-mode: both;
-}
-
-.hs-section-number {
-  animation-delay: 0.1s;
-}
-.hs-section-title {
-  animation-delay: 0.2s;
-}
-.hs-section-subtitle {
-  animation-delay: 0.3s;
-}
-.hs-section-text {
-  animation-delay: 0.4s;
-}
-.hs-projects-grid {
-  animation-delay: 0.5s;
 }
 
 /* 移動設備觸控優化 */
@@ -188,5 +91,3 @@ body.menu-open .hs-horizontal-scrollbar {
     -webkit-overflow-scrolling: touch;
   }
 }
-
-/* 漸層背景變化已移至 SectionBase.css 中的各個 section 類別 */
