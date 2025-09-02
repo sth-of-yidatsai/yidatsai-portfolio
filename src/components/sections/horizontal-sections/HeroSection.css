@@ -372,6 +372,19 @@
   flex: 0 0 72px; /* 專案按鈕固定64px寬度 */
 }
 
+/* 移除底線動畫效果 */
+.hero-project-button::after {
+  display: none;
+}
+
+.hero-project-button:hover {
+  text-decoration: none;
+}
+
+.hero-project-button:focus {
+  text-decoration: none;
+}
+
 .hero-project-button img {
   width: 24px;
   height: 24px;

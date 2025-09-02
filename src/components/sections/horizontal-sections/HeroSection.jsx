@@ -160,7 +160,9 @@ export default function HeroSection({ index }) {
   };
 
   const handleProjectClick = () => {
-    navigate("/projects");
+    if (displayData?.projectId) {
+      navigate(`/project/${displayData.projectId}`);
+    }
   };
 
   return (

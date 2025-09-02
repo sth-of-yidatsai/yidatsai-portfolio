@@ -1,13 +1,84 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./CubeGallery.css";
 import projects from "../../../data/projects.json";
-import reloadIcon from "../../../assets/icons/replay_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
-import arrowIcon from "../../../assets/icons/arrow_outward_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.svg";
+import reloadIcon from "../../../assets/icons/replay_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
+import arrowIcon from "../../../assets/icons/arrow_outward_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 
 // ============ OKLab / OKLCH utilities ============
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
 const srgbToLinear = (c) =>
   c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+
+// RGB 轉 HSL 輔助函數
+const rgbToHsl = (r, g, b) => {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h,
+    s,
+    l = (max + min) / 2;
+
+  if (max === min) {
+    h = s = 0;
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+    h /= 6;
+  }
+
+  return {
+    h: h * 360,
+    s: s * 100,
+    l: l * 100,
+  };
+};
+
+// HSL 轉 RGB 輔助函數
+const hslToRgb = (h, s, l) => {
+  h /= 360;
+  s /= 100;
+  l /= 100;
+
+  const hue2rgb = (p, q, t) => {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  };
+
+  let r, g, b;
+
+  if (s === 0) {
+    r = g = b = l;
+  } else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
+
+  return {
+    r: Math.round(r * 255),
+    g: Math.round(g * 255),
+    b: Math.round(b * 255),
+  };
+};
 const linearToSrgb = (c) =>
   c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055;
 
@@ -307,11 +378,45 @@ export default function CubeGallery({
     "#B3B3B3",
     "#999999",
   ]);
+  const [infoGradientColors, setInfoGradientColors] = useState([
+    "#2A2A2A",
+    "#1A1A1A",
+    "#0F0F0F",
+    "#080808",
+    "#000000",
+  ]);
+
   const [animationPhase, setAnimationPhase] = useState("idle"); // 'idle', 'exit', 'enter'
   const [previousProject, setPreviousProject] = useState(null);
   const [displayProject, setDisplayProject] = useState(null); // 用於顯示的項目資訊
   const angleRef = useRef(angle);
   angleRef.current = angle;
+
+  // 將 ILLUSTRATION 漸層色轉換為更暗且飽和度更高的版本
+  const createInfoGradientColors = React.useCallback((originalColors) => {
+    return originalColors.map((color) => {
+      // 將 hex 轉換為 RGB
+      const hex = color.replace("#", "");
+      const r = parseInt(hex.substr(0, 2), 16);
+      const g = parseInt(hex.substr(2, 2), 16);
+      const b = parseInt(hex.substr(4, 2), 16);
+
+      // 轉換為 HSL 以便調整亮度和飽和度
+      const hsl = rgbToHsl(r, g, b);
+
+      // 降低亮度 (乘以 0.3) 並增加飽和度 (乘以 1.5，最大 100)
+      const newL = Math.max(0, Math.min(100, hsl.l * 0.8));
+      const newS = Math.max(0, Math.min(100, hsl.s * 1.05));
+
+      // 轉換回 RGB
+      const newRgb = hslToRgb(hsl.h, newS, newL);
+
+      // 轉換回 hex
+      return `#${newRgb.r.toString(16).padStart(2, "0")}${newRgb.g
+        .toString(16)
+        .padStart(2, "0")}${newRgb.b.toString(16).padStart(2, "0")}`;
+    });
+  }, []);
 
   const projectById = React.useMemo(() => {
     const map = new Map();
@@ -398,26 +503,41 @@ export default function CubeGallery({
           );
           extractHarmonicGradientFromImage(imageSrc, "monotone").then(
             (result) => {
-              setGradientColors(result.paletteHex);
-              // 色彩和項目資訊同時更新
-              setDisplayProject(currentProject);
-              setPreviousProject(currentProject);
-              setAnimationPhase("enter");
+              // 第一階段：開始文字動畫 (0.6s)
+              setAnimationPhase("exit");
 
-              // 第二階段：文字向上浮起 (同樣需要1.2s完成所有字母)
               setTimeout(() => {
-                setAnimationPhase("idle");
-              }, 1200);
+                // 更新漸層色和項目資訊
+                setGradientColors(result.paletteHex);
+                setInfoGradientColors(
+                  createInfoGradientColors(result.paletteHex)
+                );
+                setDisplayProject(currentProject);
+                setPreviousProject(currentProject);
+
+                // 第二階段：開始文字動畫 (0.6s)
+                setAnimationPhase("enter");
+
+                // 第三階段：完成動畫 (1.2s完成所有字母)
+                setTimeout(() => {
+                  setAnimationPhase("idle");
+                }, 1200);
+              }, 600);
             }
           );
         } else {
-          // 如果沒有映射，直接進入下一階段
-          setDisplayProject(currentProject);
-          setPreviousProject(currentProject);
-          setAnimationPhase("enter");
+          // 如果沒有映射，直接更新項目資訊
+          setAnimationPhase("exit");
+
           setTimeout(() => {
-            setAnimationPhase("idle");
-          }, 1200);
+            setDisplayProject(currentProject);
+            setPreviousProject(currentProject);
+            setAnimationPhase("enter");
+
+            setTimeout(() => {
+              setAnimationPhase("idle");
+            }, 1200);
+          }, 600);
         }
       }, 1800);
     } else {
@@ -434,13 +554,24 @@ export default function CubeGallery({
           );
           extractHarmonicGradientFromImage(imageSrc, "monotone").then(
             (result) => {
+              // 直接更新漸層色
               setGradientColors(result.paletteHex);
+              setInfoGradientColors(
+                createInfoGradientColors(result.paletteHex)
+              );
             }
           );
         }
       }
     }
-  }, [activeProject, previousProject, activeFace, faceMap, getImageSrc]);
+  }, [
+    activeProject,
+    previousProject,
+    activeFace,
+    faceMap,
+    getImageSrc,
+    createInfoGradientColors,
+  ]);
 
   useEffect(() => {
     if (!autoplay) return;
@@ -684,128 +815,122 @@ export default function CubeGallery({
           </div>
         </div>
 
-        {/* Info Panel - Single Row Layout */}
+        {/* Info Panel - Hero Style Layout */}
         <div className="cube-info-panel">
-          <div className="cube-info-divider-h" />
+          <div
+            className="cube-info-content"
+            style={{
+              backgroundImage: `linear-gradient(to right, ${infoGradientColors.join(
+                ", "
+              )})`,
+              transition: "background-image 1.2s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+          >
+            {/* Reload Button */}
+            <button
+              className="cube-nav-button cube-reload-button clickable"
+              onClick={resetAngles}
+              aria-label="Reset cube"
+            >
+              <img src={reloadIcon} alt="Reload" />
+            </button>
 
-          <div className="cube-info-row">
-            {/* Reload Box */}
-            <div className="cube-info-cell reload-cell">
-              <div className="cell-label">Reload:</div>
-              <button
-                className="cube-reload-new"
-                onClick={resetAngles}
-                aria-label="Reset cube"
-              >
-                <img src={reloadIcon} alt="Reload" className="reload-icon" />
-              </button>
-            </div>
-
-            {/* Vertical Divider */}
-            <div className="cube-info-divider-v" />
-
-            {/* Title */}
-            <div className="cube-info-cell title-cell">
-              <div className="cell-label">Title:</div>
-              <div
-                className={`cell-value title-value ${
-                  animationPhase !== "idle" ? `animate-${animationPhase}` : ""
-                }`}
-              >
-                {displayProject?.title || "The Notebook Design"}
+            {/* Title區域 */}
+            <div className="cube-title-section">
+              <div className="cube-info-item">
+                <span className="cube-info-label">Title:</span>
+                <span
+                  className={`cube-info-value ${
+                    animationPhase !== "idle" ? `animate-${animationPhase}` : ""
+                  }`}
+                >
+                  {displayProject?.title || "The Notebook Design"}
+                </span>
               </div>
             </div>
 
-            {/* Vertical Divider */}
-            <div className="cube-info-divider-v" />
-
-            {/* Year */}
-            <div className="cube-info-cell year-cell">
-              <div className="cell-label">Year:</div>
-              <div
-                className={`cell-value year-value ${
-                  animationPhase !== "idle" ? `animate-${animationPhase}` : ""
-                }`}
-              >
-                {displayProject?.year || "2024"}
+            {/* Year區域 */}
+            <div className="cube-year-section">
+              <div className="cube-info-item">
+                <span className="cube-info-label">Year:</span>
+                <span
+                  className={`cube-info-value ${
+                    animationPhase !== "idle" ? `animate-${animationPhase}` : ""
+                  }`}
+                >
+                  {displayProject?.year || "2024"}
+                </span>
               </div>
             </div>
 
-            {/* Vertical Divider */}
-            <div className="cube-info-divider-v" />
-
-            {/* Tag */}
-            <div className="cube-info-cell tag-cell">
-              <div className="cell-label">Tag:</div>
-              <div
-                className={`tag-list ${
-                  animationPhase !== "idle" ? `animate-${animationPhase}` : ""
-                }`}
-              >
-                {displayProject?.tags?.map((tag, index) => (
-                  <span
-                    key={tag}
-                    className="tag-item"
-                    style={{
-                      "--animation-delay": `${(index + 1) * 0.05}s`,
-                    }}
-                  >
-                    {tag}
-                  </span>
-                )) || [
-                  <span
-                    key="graphic"
-                    className="tag-item"
-                    style={{ "--animation-delay": "0.05s" }}
-                  >
-                    Graphic
-                  </span>,
-                  <span
-                    key="graphic2"
-                    className="tag-item"
-                    style={{ "--animation-delay": "0.1s" }}
-                  >
-                    Graphic
-                  </span>,
-                  <span
-                    key="graphic3"
-                    className="tag-item"
-                    style={{ "--animation-delay": "0.15s" }}
-                  >
-                    Graphic
-                  </span>,
-                  <span
-                    key="graphic4"
-                    className="tag-item"
-                    style={{ "--animation-delay": "0.2s" }}
-                  >
-                    Graphic
-                  </span>,
-                  <span
-                    key="graphic5"
-                    className="tag-item"
-                    style={{ "--animation-delay": "0.25s" }}
-                  >
-                    Graphic
-                  </span>,
-                ]}
+            {/* TAG區域 */}
+            <div className="cube-tag-section">
+              <div className="cube-info-item">
+                <span className="cube-info-label">Tag:</span>
+                <div
+                  className={`cube-tag-list ${
+                    animationPhase !== "idle" ? `animate-${animationPhase}` : ""
+                  }`}
+                >
+                  {displayProject?.tags?.map((tag, index) => (
+                    <span
+                      key={`${tag}-${index}`}
+                      className="cube-tag-item"
+                      style={{
+                        "--animation-delay": `${(index + 1) * 0.05}s`,
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  )) || [
+                    <span
+                      key="graphic"
+                      className="cube-tag-item"
+                      style={{ "--animation-delay": "0.05s" }}
+                    >
+                      Graphic
+                    </span>,
+                    <span
+                      key="graphic2"
+                      className="cube-tag-item"
+                      style={{ "--animation-delay": "0.1s" }}
+                    >
+                      Graphic
+                    </span>,
+                    <span
+                      key="graphic3"
+                      className="cube-tag-item"
+                      style={{ "--animation-delay": "0.15s" }}
+                    >
+                      Graphic
+                    </span>,
+                    <span
+                      key="graphic4"
+                      className="cube-tag-item"
+                      style={{ "--animation-delay": "0.2s" }}
+                    >
+                      Graphic
+                    </span>,
+                    <span
+                      key="graphic5"
+                      className="cube-tag-item"
+                      style={{ "--animation-delay": "0.25s" }}
+                    >
+                      Graphic
+                    </span>,
+                  ]}
+                </div>
               </div>
             </div>
 
-            {/* Vertical Divider */}
-            <div className="cube-info-divider-v" />
-
-            {/* View More */}
-            <div className="cube-info-cell viewmore-cell">
-              <div className="cell-label">Project:</div>
-              <a
-                className="view-more-link"
-                href={activeHref}
-                aria-label="View project details"
-              >
-                <img src={arrowIcon} alt="View More" className="arrow-icon" />
-              </a>
-            </div>
+            {/* 前往專案按鈕 */}
+            <a
+              href={activeHref}
+              className="cube-project-button clickable"
+              aria-label="View project details"
+            >
+              <img src={arrowIcon} alt="View Projects" />
+            </a>
           </div>
         </div>
       </div>
