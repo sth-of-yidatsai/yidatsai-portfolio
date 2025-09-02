@@ -319,7 +319,7 @@ export default function PracticesSection() {
         <div className="practices-canvas-area" ref={canvasRef}>
           {Array.from({ length: 6 }, (_, i) => {
             const id = `item-${(i + 1).toString().padStart(2, "0")}`;
-            const imageSrc = `/src/assets/images/items/${id}.png`;
+            const imageSrc = `/images/items/${id}.png`;
 
             return (
               <DraggableItem
