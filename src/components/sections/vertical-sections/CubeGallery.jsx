@@ -392,8 +392,28 @@ export default function CubeGallery({
   const angleRef = useRef(angle);
   angleRef.current = angle;
 
-  // 將 ILLUSTRATION 漸層色轉換為更暗且飽和度更高的版本
-  const createInfoGradientColors = React.useCallback((originalColors) => {
+  // ILLUSTRATION 漸層色 HSL 調整參數
+  const illustrationHSLAdjustments = React.useMemo(
+    () => ({
+      lightness: 1.0, // 亮度倍數 (1.0 = 不變)
+      saturation: 1.35, // 飽和度倍數 (1.0 = 不變)
+      hue: 0, // 色相偏移 (0 = 不變，正數順時針，負數逆時針)
+    }),
+    []
+  );
+
+  // INFO 底圖漸層色 HSL 調整參數
+  const infoHSLAdjustments = React.useMemo(
+    () => ({
+      lightness: 0.6,
+      saturation: 0.8,
+      hue: 0,
+    }),
+    []
+  );
+
+  // 通用的 HSL 調整函數
+  const adjustHSL = React.useCallback((originalColors, adjustments) => {
     return originalColors.map((color) => {
       // 將 hex 轉換為 RGB
       const hex = color.replace("#", "");
@@ -401,15 +421,16 @@ export default function CubeGallery({
       const g = parseInt(hex.substr(2, 2), 16);
       const b = parseInt(hex.substr(4, 2), 16);
 
-      // 轉換為 HSL 以便調整亮度和飽和度
+      // 轉換為 HSL
       const hsl = rgbToHsl(r, g, b);
 
-      // 降低亮度 (乘以 0.3) 並增加飽和度 (乘以 1.5，最大 100)
-      const newL = Math.max(0, Math.min(100, hsl.l * 0.8));
-      const newS = Math.max(0, Math.min(100, hsl.s * 1.05));
+      // 應用調整參數
+      const newH = (hsl.h + adjustments.hue + 360) % 360; // 色相偏移
+      const newS = Math.max(0, Math.min(100, hsl.s * adjustments.saturation)); // 飽和度調整
+      const newL = Math.max(0, Math.min(100, hsl.l * adjustments.lightness)); // 亮度調整
 
       // 轉換回 RGB
-      const newRgb = hslToRgb(hsl.h, newS, newL);
+      const newRgb = hslToRgb(newH, newS, newL);
 
       // 轉換回 hex
       return `#${newRgb.r.toString(16).padStart(2, "0")}${newRgb.g
@@ -417,6 +438,22 @@ export default function CubeGallery({
         .padStart(2, "0")}${newRgb.b.toString(16).padStart(2, "0")}`;
     });
   }, []);
+
+  // ILLUSTRATION 漸層色調整函數
+  const createIllustrationGradientColors = React.useCallback(
+    (originalColors) => {
+      return adjustHSL(originalColors, illustrationHSLAdjustments);
+    },
+    [adjustHSL, illustrationHSLAdjustments]
+  );
+
+  // INFO 底圖漸層色調整函數
+  const createInfoGradientColors = React.useCallback(
+    (originalColors) => {
+      return adjustHSL(originalColors, infoHSLAdjustments);
+    },
+    [adjustHSL, infoHSLAdjustments]
+  );
 
   const projectById = React.useMemo(() => {
     const map = new Map();
@@ -508,7 +545,9 @@ export default function CubeGallery({
 
               setTimeout(() => {
                 // 更新漸層色和項目資訊
-                setGradientColors(result.paletteHex);
+                setGradientColors(
+                  createIllustrationGradientColors(result.paletteHex)
+                );
                 setInfoGradientColors(
                   createInfoGradientColors(result.paletteHex)
                 );
@@ -555,7 +594,9 @@ export default function CubeGallery({
           extractHarmonicGradientFromImage(imageSrc, "monotone").then(
             (result) => {
               // 直接更新漸層色
-              setGradientColors(result.paletteHex);
+              setGradientColors(
+                createIllustrationGradientColors(result.paletteHex)
+              );
               setInfoGradientColors(
                 createInfoGradientColors(result.paletteHex)
               );
@@ -570,6 +611,7 @@ export default function CubeGallery({
     activeFace,
     faceMap,
     getImageSrc,
+    createIllustrationGradientColors,
     createInfoGradientColors,
   ]);
 
