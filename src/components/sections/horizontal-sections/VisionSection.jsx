@@ -320,7 +320,7 @@ export default function VisionSection({ index }) {
         }
 
         gravity = p.createVector(0, 0.15);
-        primaryColor = getCSSVar("--gray-700");
+        primaryColor = getCSSVar("--sand-100");
         secondaryColor = pickedColor || getCSSVar("--gray-300"); // 初始吃當前色
 
         responsiveFontSize = calculateResponsiveFontSize();

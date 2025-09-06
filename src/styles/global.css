@@ -14,6 +14,65 @@
   --gray-25: #fafafa; /* 微淺灰 */
   --gray-0: #ffffff; /* 白色 */
 
+  /* ——— Morandi · 暖中性（米沙/亞麻/土） ——— */
+  --sand-100: #f1e8d7;
+  --sand-300: #dcc8a9;
+  --sand-500: #b99c79;
+  --sand-700: #8d7458;
+  --sand-900: #6f5c46;
+
+  --clay-100: #f0e2d9;
+  --clay-300: #d7b9a8;
+  --clay-500: #b38f7d;
+  --clay-700: #8b6d5e;
+  --clay-900: #6d5245;
+
+  --ochre-100: #f1e8d5;
+  --ochre-300: #d9c6a7;
+  --ochre-500: #b89c74;
+  --ochre-700: #8e7550;
+  --ochre-900: #6f5a3c;
+
+  /* ——— Morandi · 冷中性（藍灰/石板/淡紫） ——— */
+  --slate-100: #e7edf0;
+  --slate-300: #beccd1;
+  --slate-500: #8fa0a8;
+  --slate-700: #6b7880;
+  --slate-900: #4f5b60;
+
+  --mauve-100: #eae5ea;
+  --mauve-300: #cdbfcc;
+  --mauve-500: #a297a7;
+  --mauve-700: #7a7280;
+  --mauve-900: #5e5863;
+
+  /* ——— Morandi · 綠灰系（鼠尾草/橄欖） ——— */
+  --sage-100: #e4e7e2;
+  --sage-300: #c0c7bc;
+  --sage-500: #99a192;
+  --sage-700: #737c6c;
+  --sage-900: #586052;
+
+  --olive-100: #e6e5d0;
+  --olive-300: #c0bfa0;
+  --olive-500: #9a9775;
+  --olive-700: #757257;
+  --olive-900: #5a5745;
+
+  /* ——— Morandi · 粉棕/玫瑰灰 ——— */
+  --blush-100: #f0e6e7;
+  --blush-300: #d7bdbf;
+  --blush-500: #b89698;
+  --blush-700: #8f6f71;
+  --blush-900: #6e5557;
+
+  /* ——— 溫潤底色（亞麻白系） ——— */
+  --linen-100: #f6f1ea;
+  --linen-300: #e7e0d5;
+  --linen-500: #d9cfbf;
+  --linen-700: #beb3a0;
+  --linen-900: #a0937e;
+
   /* 語義化顏色別名（向下兼容） */
   --color-primary: var(--gray-700); /* 深灰 */
   --color-secondary: var(--gray-100); /* 淺灰 */

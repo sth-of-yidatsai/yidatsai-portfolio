@@ -35,6 +35,23 @@
   overflow: hidden;
 }
 
+/* 四個區塊的不同背景顏色 */
+.fullscreen-project-block:nth-child(1) {
+  background-color: var(--sand-100); /* 米沙色 - 區塊1 */
+}
+
+.fullscreen-project-block:nth-child(2) {
+  background-color: var(--olive-700); /* 深橄欖色 - 區塊2 */
+}
+
+.fullscreen-project-block:nth-child(3) {
+  background-color: var(--olive-300); /* 淺橄欖色 - 區塊3 */
+}
+
+.fullscreen-project-block:nth-child(4) {
+  background-color: var(--sand-700); /* 深米沙色 - 區塊4 */
+}
+
 /* 使用偽元素來處理背景圖片，這樣可以獨立控制圖片的縮放 */
 .fullscreen-project-block::before {
   content: "";
@@ -107,6 +124,58 @@
   z-index: 1; /* 確保在背景圖片之上 */
 }
 
+/* 四個區塊 overlay 的不同背景顏色 */
+.fullscreen-project-block:nth-child(1) .project-block-overlay {
+  background: var(--sand-700); /* 區塊1 */
+}
+
+.fullscreen-project-block:nth-child(2) .project-block-overlay {
+  background: var(--sand-300); /* 區塊2 */
+}
+
+.fullscreen-project-block:nth-child(3) .project-block-overlay {
+  background: var(--olive-700); /* 區塊3 */
+}
+
+.fullscreen-project-block:nth-child(4) .project-block-overlay {
+  background: var(--olive-300); /* 區塊4 */
+}
+
+/* 四個區塊的不同文字顏色 */
+/* 區塊1和3：深色文字 (--gray-700) */
+.fullscreen-project-block:nth-child(1) .project-block-number-large,
+.fullscreen-project-block:nth-child(1) .project-title-corner,
+.fullscreen-project-block:nth-child(1) .project-category-large,
+.fullscreen-project-block:nth-child(1) .project-label,
+.fullscreen-project-block:nth-child(1) .project-description-small {
+  color: var(--gray-50);
+}
+
+.fullscreen-project-block:nth-child(3) .project-block-number-large,
+.fullscreen-project-block:nth-child(3) .project-title-corner,
+.fullscreen-project-block:nth-child(3) .project-category-large,
+.fullscreen-project-block:nth-child(3) .project-label,
+.fullscreen-project-block:nth-child(3) .project-description-small {
+  color: var(--gray-50);
+}
+
+/* 區塊2和4：淺色文字 (--gray-50) */
+.fullscreen-project-block:nth-child(2) .project-block-number-large,
+.fullscreen-project-block:nth-child(2) .project-title-corner,
+.fullscreen-project-block:nth-child(2) .project-category-large,
+.fullscreen-project-block:nth-child(2) .project-label,
+.fullscreen-project-block:nth-child(2) .project-description-small {
+  color: var(--gray-700);
+}
+
+.fullscreen-project-block:nth-child(4) .project-block-number-large,
+.fullscreen-project-block:nth-child(4) .project-title-corner,
+.fullscreen-project-block:nth-child(4) .project-category-large,
+.fullscreen-project-block:nth-child(4) .project-label,
+.fullscreen-project-block:nth-child(4) .project-description-small {
+  color: var(--gray-700);
+}
+
 .fullscreen-project-block:hover .project-block-overlay {
   background: linear-gradient(
     to bottom,
@@ -125,17 +194,15 @@
   font-weight: 200;
   color: var(--color-primary);
   line-height: 0.8;
-  opacity: 0.25;
+  opacity: 0.8;
   margin-top: 2rem;
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateY(0px) scale(1);
 }
 
 .fullscreen-project-block:hover .project-block-number-large {
-  color: rgba(255, 255, 255, 0.8); /* hover 時改為白色，但保持較低透明度 */
-  opacity: 0.5; /* 稍微提高透明度，因為在透明區域 */
+  opacity: 0;
   transform: translateY(-10px) scale(1.02); /* hover 時輕微上移和放大 */
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 添加輕微陰影 */
 }
 
 .project-title-corner {
