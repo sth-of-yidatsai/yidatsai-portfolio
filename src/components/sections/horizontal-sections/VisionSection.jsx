@@ -84,7 +84,8 @@ export default function VisionSection({ index }) {
     const infoBlock = leftPanel?.querySelector(".vision-info-block");
 
     // 左欄寬度限制
-    const leftW = (leftPanel?.clientWidth || 360) - LEFT_PAD;
+    const leftW =
+      (leftPanel?.clientWidth || window.innerWidth * 0.2) - LEFT_PAD;
 
     // 左欄高度（已排除跑馬燈 170px）
     const panelH = leftPanel
@@ -320,7 +321,7 @@ export default function VisionSection({ index }) {
         }
 
         gravity = p.createVector(0, 0.15);
-        primaryColor = getCSSVar("--sand-100");
+        primaryColor = getCSSVar("--gray-700");
         secondaryColor = pickedColor || getCSSVar("--gray-300"); // 初始吃當前色
 
         responsiveFontSize = calculateResponsiveFontSize();

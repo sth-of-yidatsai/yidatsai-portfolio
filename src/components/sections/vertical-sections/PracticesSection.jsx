@@ -195,8 +195,8 @@ export default function PracticesSection() {
       { width: 130, height: 130 }, // item-06: 中小
     ];
 
-    // 計算畫布尺寸（右側區域，扣除左側文字欄位 360px）
-    const textAreaWidth = 360; // 左側文字欄位寬度
+    // 計算畫布尺寸（右側區域，扣除左側文字欄位 20vw）
+    const textAreaWidth = window.innerWidth * 0.2; // 左側文字欄位寬度 (20vw)
     const canvasHeight = window.innerHeight; // 畫布高度
 
     // 響應式網格布局參數

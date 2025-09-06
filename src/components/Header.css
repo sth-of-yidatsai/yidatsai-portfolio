@@ -24,7 +24,7 @@
 }
 
 .logo {
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: var(--font-medium);
   /* 使用 currentColor 繼承父元素的顏色 */
   color: currentColor;
@@ -43,7 +43,7 @@
 }
 
 .menu-icon {
-  width: 72px;
+  width: 64px;
   height: 24px;
   display: flex;
   flex-direction: column;
@@ -53,6 +53,7 @@
   background: transparent;
   border: none;
   padding: 0;
+  margin-bottom: var(--space-xs);
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -70,7 +71,7 @@
 
 .line {
   display: block;
-  height: 2px;
+  border: 1px solid currentColor;
   width: 100%;
   /* 使用 currentColor 繼承父元素的顏色 */
   background-color: currentColor;

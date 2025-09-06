@@ -30,26 +30,8 @@
   width: 25vw;
   height: 100vh;
   position: relative;
-  background-color: var(--color-secondary); /* 使用全域淺灰色變數 */
   cursor: none;
   overflow: hidden;
-}
-
-/* 四個區塊的不同背景顏色 */
-.fullscreen-project-block:nth-child(1) {
-  background-color: var(--sand-100); /* 米沙色 - 區塊1 */
-}
-
-.fullscreen-project-block:nth-child(2) {
-  background-color: var(--olive-700); /* 深橄欖色 - 區塊2 */
-}
-
-.fullscreen-project-block:nth-child(3) {
-  background-color: var(--olive-300); /* 淺橄欖色 - 區塊3 */
-}
-
-.fullscreen-project-block:nth-child(4) {
-  background-color: var(--sand-700); /* 深米沙色 - 區塊4 */
 }
 
 /* 使用偽元素來處理背景圖片，這樣可以獨立控制圖片的縮放 */
@@ -126,19 +108,19 @@
 
 /* 四個區塊 overlay 的不同背景顏色 */
 .fullscreen-project-block:nth-child(1) .project-block-overlay {
-  background: var(--sand-700); /* 區塊1 */
+  background: var(--linen-300); /* 區塊1 */
 }
 
 .fullscreen-project-block:nth-child(2) .project-block-overlay {
-  background: var(--sand-300); /* 區塊2 */
+  background: var(--gray-700); /* 區塊2 */
 }
 
 .fullscreen-project-block:nth-child(3) .project-block-overlay {
-  background: var(--olive-700); /* 區塊3 */
+  background: var(--linen-300); /* 區塊3 */
 }
 
 .fullscreen-project-block:nth-child(4) .project-block-overlay {
-  background: var(--olive-300); /* 區塊4 */
+  background: var(--gray-700); /* 區塊4 */
 }
 
 /* 四個區塊的不同文字顏色 */
@@ -148,7 +130,7 @@
 .fullscreen-project-block:nth-child(1) .project-category-large,
 .fullscreen-project-block:nth-child(1) .project-label,
 .fullscreen-project-block:nth-child(1) .project-description-small {
-  color: var(--gray-50);
+  color: var(--gray-700);
 }
 
 .fullscreen-project-block:nth-child(3) .project-block-number-large,
@@ -156,16 +138,16 @@
 .fullscreen-project-block:nth-child(3) .project-category-large,
 .fullscreen-project-block:nth-child(3) .project-label,
 .fullscreen-project-block:nth-child(3) .project-description-small {
-  color: var(--gray-50);
+  color: var(--gray-700);
 }
 
-/* 區塊2和4：淺色文字 (--gray-50) */
+/* 區塊2和4：淺色文字 (--gray-200) */
 .fullscreen-project-block:nth-child(2) .project-block-number-large,
 .fullscreen-project-block:nth-child(2) .project-title-corner,
 .fullscreen-project-block:nth-child(2) .project-category-large,
 .fullscreen-project-block:nth-child(2) .project-label,
 .fullscreen-project-block:nth-child(2) .project-description-small {
-  color: var(--gray-700);
+  color: var(--gray-200);
 }
 
 .fullscreen-project-block:nth-child(4) .project-block-number-large,
@@ -173,7 +155,7 @@
 .fullscreen-project-block:nth-child(4) .project-category-large,
 .fullscreen-project-block:nth-child(4) .project-label,
 .fullscreen-project-block:nth-child(4) .project-description-small {
-  color: var(--gray-700);
+  color: var(--gray-200);
 }
 
 .fullscreen-project-block:hover .project-block-overlay {
@@ -223,7 +205,7 @@
   max-width: 1.5rem;
   text-align: center;
   transform: translateX(0px);
-  opacity: 0.8;
+  opacity: 1;
 }
 
 .project-title-corner-title {
@@ -231,10 +213,9 @@
 }
 
 .fullscreen-project-block:hover .project-title-corner {
-  color: #ffffff; /* hover 時改為白色 */
-  transform: translateX(-5px); /* hover 時向左移動 */
-  opacity: 1;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* 添加文字陰影 */
+  color: var(--gray-25); /* hover 時改為白色 */
+  transform: translateX(25px); /* hover 時向右移動 */
+  opacity: 0;
 }
 
 .project-block-content-bottom {
@@ -264,9 +245,8 @@
 }
 
 .fullscreen-project-block:hover .project-category-large {
-  color: #ffffff; /* hover 時改為白色，在黑色漸層上更清晰 */
+  color: var(--gray-25); /* hover 時改為白色，在黑色漸層上更清晰 */
   transform: scale(1.05); /* hover 時類別文字放大 */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 添加文字陰影增強可讀性 */
 }
 
 .project-info {
@@ -295,9 +275,8 @@
 }
 
 .fullscreen-project-block:hover .project-label {
-  color: #ffffff; /* hover 時改為白色 */
+  color: var(--gray-25); /* hover 時改為白色 */
   transform: translateX(12px); /* hover 時標籤向右移動 */
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* 添加文字陰影 */
 }
 
 .project-description-small {
@@ -312,10 +291,9 @@
 }
 
 .fullscreen-project-block:hover .project-description-small {
-  color: #ffffff; /* hover 時改為白色 */
+  color: var(--gray-25); /* hover 時改為白色 */
   opacity: 1;
   transform: translateX(12px); /* hover 時描述文字向右移動 */
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* 添加文字陰影 */
 }
 
 /* 響應式設計 */

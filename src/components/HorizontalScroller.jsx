@@ -6,6 +6,7 @@ import {
   HeroSection,
   VisionSection,
   ProjectsSection,
+  PracticesSection,
   sectionConfigs,
 } from "./sections/horizontal-sections";
 
@@ -467,8 +468,8 @@ export default function HorizontalScroller() {
               switch (section.id) {
                 case "hero":
                   return <HeroSection config={section} index={index} />;
-                case "vision":
-                  return <VisionSection config={section} index={index} />;
+                case "practices":
+                  return <PracticesSection config={section} index={index} />;
                 case "projects":
                   return <ProjectsSection config={section} index={index} />;
                 default:

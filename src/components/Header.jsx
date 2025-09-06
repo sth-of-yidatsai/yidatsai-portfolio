@@ -179,7 +179,7 @@ export default function Header() {
           <span className={isOpen ? "line line1 open" : "line line1"}></span>
           <span className={isOpen ? "line line2 open" : "line line2"}></span>
         </button>
-        <div className="logo">YIDA</div>
+        <div className="logo">YIDA TSAI</div>
       </header>
     </>
   );
