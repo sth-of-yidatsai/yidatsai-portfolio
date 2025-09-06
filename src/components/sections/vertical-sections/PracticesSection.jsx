@@ -176,6 +176,8 @@ export default function PracticesSection() {
   const [itemZIndexes, setItemZIndexes] = useState({});
   const canvasRef = useRef(null);
   const zCounterRef = useRef(10); // 全域 z-index 計數器，起始值隨意 > 初始層級
+  const sectionRef = useRef(null);
+  const textRef = useRef(null);
 
   // 計算平均分布位置的函數
   const calculatePositions = useCallback(() => {
@@ -284,6 +286,73 @@ export default function PracticesSection() {
     return () => window.removeEventListener("resize", handleResize);
   }, [calculatePositions]);
 
+  // 區塊進入畫面時的動畫觸發
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    // 將文字分割成單詞並包裝在 span 中
+    const wrapWords = (element) => {
+      if (!element) return;
+
+      const text = element.textContent;
+      const words = text.split(" ");
+
+      element.innerHTML = words
+        .map(
+          (word) =>
+            `<span class="word-animate" style="display: inline-block; opacity: 0; transform: translateY(40px);">${word}</span>`
+        )
+        .join(" ");
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // 觸發初始文字動畫
+            if (textRef.current) {
+              const titleElement =
+                textRef.current.querySelector(".practice-title");
+              const descriptionElement = textRef.current.querySelector(
+                ".practice-description"
+              );
+
+              if (titleElement && descriptionElement) {
+                // 包裝文字為單詞
+                wrapWords(titleElement);
+                wrapWords(descriptionElement);
+
+                // 設定初始狀態
+                gsap.set([titleElement, descriptionElement], { opacity: 1 });
+
+                // 執行動畫
+                setTimeout(() => {
+                  const titleWords =
+                    titleElement.querySelectorAll(".word-animate");
+                  const descriptionWords =
+                    descriptionElement.querySelectorAll(".word-animate");
+
+                  gsap.to([...titleWords, ...descriptionWords], {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    ease: "back.out(1.7)",
+                    stagger: 0.06,
+                  });
+                }, 100);
+              }
+            }
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -10% 0px" }
+    );
+
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const bringItemToFront = useCallback((id) => {
     const nextZ = zCounterRef.current + 1;
     zCounterRef.current = nextZ;
@@ -291,27 +360,97 @@ export default function PracticesSection() {
     return nextZ; // 回傳給子元件，確保當下也立即套用
   }, []);
 
-  const handleItemSelect = useCallback((id) => {
-    // 根據 item 尾數對應文字索引 (item-01 -> 0, item-02 -> 1, ...)
-    const itemNumber = parseInt(id.split("-")[1]);
-    setSelectedArea(itemNumber - 1);
+  // 文字切換動畫函數
+  const animateTextChange = useCallback(() => {
+    const titleElement = textRef.current?.querySelector(".practice-title");
+    const descriptionElement = textRef.current?.querySelector(
+      ".practice-description"
+    );
+
+    if (titleElement && descriptionElement) {
+      // 將文字分割成單詞並包裝在 span 中
+      const wrapWords = (element) => {
+        if (!element) return;
+
+        const text = element.textContent;
+        const words = text.split(" ");
+
+        element.innerHTML = words
+          .map(
+            (word) =>
+              `<span class="word-animate" style="display: inline-block; opacity: 0; transform: translateY(40px);">${word}</span>`
+          )
+          .join(" ");
+      };
+
+      // 先淡出
+      gsap.to([titleElement, descriptionElement], {
+        opacity: 0,
+        y: -20,
+        duration: 0.3,
+        ease: "power2.inOut",
+        onComplete: () => {
+          // 重新包裝文字
+          wrapWords(titleElement);
+          wrapWords(descriptionElement);
+
+          // 設定新內容的初始狀態
+          gsap.set([titleElement, descriptionElement], { opacity: 1 });
+
+          // 使用 setTimeout 確保內容更新後再執行動畫
+          setTimeout(() => {
+            const titleWords = titleElement.querySelectorAll(".word-animate");
+            const descriptionWords =
+              descriptionElement.querySelectorAll(".word-animate");
+
+            gsap.to([...titleWords, ...descriptionWords], {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: "back.out(1.7)",
+              stagger: 0.06,
+            });
+          }, 50);
+        },
+      });
+    }
   }, []);
 
+  const handleItemSelect = useCallback(
+    (id) => {
+      // 根據 item 尾數對應文字索引 (item-01 -> 0, item-02 -> 1, ...)
+      const itemNumber = parseInt(id.split("-")[1]);
+      setSelectedArea(itemNumber - 1);
+      // 觸發文字切換動畫
+      animateTextChange();
+    },
+    [animateTextChange]
+  );
+
   return (
-    <section className="practices-section">
+    <section className="practices-section" ref={sectionRef}>
       <div className="practices-container">
         {/* 左側文字區 */}
         <div className="practices-text-area">
           <h2 className="practices-title">Practice Areas</h2>
-          <div className="practices-content">
+          <div className="practices-content" ref={textRef}>
             <div className="practice-area">
-              <h3 className="practice-title">
+              <h3 className="practice-title" data-animate="words">
                 {practiceAreas[selectedArea]?.title}
               </h3>
-              <p className="practice-description">
+              <p className="practice-description" data-animate="words">
                 {practiceAreas[selectedArea]?.description}
               </p>
             </div>
+          </div>
+          <div className="practices-divider" />
+          <div className="practices-current-item">
+            <img
+              src={`/images/items/item-${(selectedArea + 1)
+                .toString()
+                .padStart(2, "0")}.png`}
+              alt={`Practice item ${selectedArea + 1}`}
+            />
           </div>
         </div>
 
