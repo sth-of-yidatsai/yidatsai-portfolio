@@ -1,6 +1,8 @@
 .gallery-page {
+  margin: 0 !important;
+  padding: 0 !important;
   position: relative;
-  width: calc(100vw - 64px);
+  width: 100vw;
   height: 100vh;
   margin-left: 64px;
   overflow: hidden;
