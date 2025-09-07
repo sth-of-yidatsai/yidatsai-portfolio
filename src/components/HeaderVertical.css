@@ -268,7 +268,7 @@ body.menu-open {
   font-weight: var(--font-medium);
   color: var(--gray-700);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.2rem;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 

@@ -66,7 +66,7 @@
   color: var(--text-color, inherit);
   margin-right: 3rem;
   font-size: 10rem;
-  font-weight: var(--font-medium);
+  font-weight: var(--font-semibold);
   text-transform: uppercase;
   font-family: var(--font-latin), var(--font-cjk);
   flex: 1;
