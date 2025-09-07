@@ -19,16 +19,16 @@
 
 .logo {
   font-size: 3rem;
-  font-weight: var(--font-medium);
+  font-weight: var(--font-semibold);
   writing-mode: vertical-rl;
   text-orientation: mixed;
   color: var(--gray-700);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  font-family: var(--font-stack);
+  font-family: var(--font-latin), var(--font-cjk);
   pointer-events: all;
   position: relative;
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-sm);
 }
 
 .menu-icon {
@@ -106,10 +106,10 @@
     transform: translateY(0) rotate(0deg);
   }
   50% {
-    transform: translateY(10px) rotate(0deg);
+    transform: translateY(11px) rotate(0deg);
   }
   100% {
-    transform: translateY(10px) rotate(-45deg);
+    transform: translateY(11px) rotate(-45deg);
   }
 }
 
@@ -118,19 +118,19 @@
     transform: translateY(0) rotate(0deg);
   }
   50% {
-    transform: translateY(-10px) rotate(0deg);
+    transform: translateY(-11px) rotate(0deg);
   }
   100% {
-    transform: translateY(-10px) rotate(45deg);
+    transform: translateY(-11px) rotate(45deg);
   }
 }
 
 @keyframes toMenu1 {
   0% {
-    transform: translateY(10px) rotate(-45deg);
+    transform: translateY(11px) rotate(-45deg);
   }
   50% {
-    transform: translateY(10px) rotate(0deg);
+    transform: translateY(11px) rotate(0deg);
   }
   100% {
     transform: translateY(0) rotate(0deg);
@@ -139,10 +139,10 @@
 
 @keyframes toMenu2 {
   0% {
-    transform: translateY(-10px) rotate(45deg);
+    transform: translateY(-11px) rotate(45deg);
   }
   50% {
-    transform: translateY(-10px) rotate(0deg);
+    transform: translateY(-11px) rotate(0deg);
   }
   100% {
     transform: translateY(0) rotate(0deg);
@@ -177,7 +177,10 @@ body.menu-open {
   background: var(--linen-500);
   display: flex;
   flex-direction: column;
-  padding: var(--space-lg);
+  gap: var(--space-md);
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
   position: relative;
   transform: translateX(-100%);
   z-index: 999;
@@ -198,33 +201,44 @@ body.menu-open {
   flex: 1;
   display: flex;
   align-items: start;
-  justify-content: start;
-  padding-top: var(--space-xl);
+  justify-content: center;
+  width: 100%;
+  height: calc(100% - 120px);
+  gap: var(--space-md);
 }
 
 .navigation ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
+  height: calc(100% - 120px);
+  display: flex;
+  flex-direction: column;
 }
 
-.navigation li {
-  margin: var(--space-lg) 0;
+.nav-item {
+  margin: 0;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.6s ease forwards;
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.navigation li:nth-child(1) {
+.nav-item:nth-child(1) {
   animation-delay: 0.3s;
 }
-.navigation li:nth-child(2) {
+.nav-item:nth-child(2) {
   animation-delay: 0.4s;
 }
-.navigation li:nth-child(3) {
+.nav-item:nth-child(3) {
   animation-delay: 0.5s;
 }
-.navigation li:nth-child(4) {
+.nav-item:nth-child(4) {
   animation-delay: 0.6s;
 }
 
@@ -235,37 +249,67 @@ body.menu-open {
   }
 }
 
-.navigation a {
-  font-size: 3.2rem;
-  font-family: var(--font-kudryashev-contrast-sans);
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: var(--space-md);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.nav-text {
+  font-size: 4rem;
+  font-family: var(--font-latin), var(--font-cjk);
   font-weight: var(--font-medium);
   color: var(--gray-700);
-  text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   transition: color 0.3s ease, transform 0.3s ease;
-  position: relative;
 }
 
-.navigation a:hover {
+.nav-number {
+  width: 6rem;
+  height: 6rem;
+  opacity: 0.8;
+  transition: transform 0.3s ease;
+  filter: brightness(0);
+}
+
+.nav-link:hover .nav-text {
   color: var(--gray-700);
   transform: translateX(10px);
 }
 
-.navigation a::after {
+.nav-link:hover .nav-number {
+  transform: scale(1.1);
+}
+
+.nav-link::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: 2px;
+  bottom: 0;
   width: 0;
-  /* height: 2px; */
-  border-top: 2px solid var(--gray-700);
+  border-top: 1px solid var(--gray-700);
   background: var(--gray-700);
   transition: width 0.3s ease;
 }
 
-.navigation a:hover::after {
+.nav-link:hover::after {
   width: 100%;
+}
+
+.nav-divider {
+  width: 100%;
+  border-top: 1px solid var(--gray-700);
+  background-color: var(--gray-700);
+  margin: 0;
+  opacity: 0.3;
 }
 
 /* 右半邊 - 圖片輪播 */
@@ -419,18 +463,19 @@ body.menu-open {
   color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  font-family: var(--font-latin);
+  font-family: var(--font-latin), var(--font-cjk);
   white-space: nowrap;
   writing-mode: vertical-rl;
   text-orientation: mixed;
 }
 
 .info-value {
-  font-size: 0.95rem;
-  font-weight: var(--font-medium);
+  font-family: var(--font-latin), var(--font-cjk);
+  font-size: 0.9rem;
+  font-weight: var(--font-regular);
   color: var(--gray-50);
   background-blend-mode: difference;
-  letter-spacing: 0.08rem;
+  letter-spacing: 0.03rem;
   text-align: center;
   writing-mode: vertical-rl;
   text-orientation: mixed;
@@ -438,8 +483,6 @@ body.menu-open {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  line-height: 1.2;
-  font-family: var(--font-kudryashev-contrast-sans);
 }
 
 .project-button {

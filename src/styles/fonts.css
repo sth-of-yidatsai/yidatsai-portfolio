@@ -7,10 +7,6 @@
   --font-cjk: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC",
     sans-serif;
 
-  /* Kudryashev Display 字型系列 */
-  --font-kudryashev-contrast-sans: "kudryashev-d-contrast-sans", sans-serif;
-  --font-kudryashev-excontrast-sans: "kudryashev-d-excontrast-sans", sans-serif;
-
   /* 字重變數 - 統一管理 */
   --font-light: 300;
   --font-regular: 400;
@@ -126,19 +122,6 @@
   font-family: var(--font-cjk);
   font-optical-sizing: auto;
   font-weight: var(--font-bold);
-  font-style: normal;
-}
-
-/* Kudryashev Display 字型類別 */
-.kudryashev-contrast-sans {
-  font-family: var(--font-kudryashev-contrast-sans);
-  font-weight: var(--font-regular);
-  font-style: normal;
-}
-
-.kudryashev-excontrast-sans {
-  font-family: var(--font-kudryashev-excontrast-sans);
-  font-weight: var(--font-light);
   font-style: normal;
 }
 
