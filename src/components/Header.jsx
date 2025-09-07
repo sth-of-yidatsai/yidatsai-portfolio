@@ -123,8 +123,8 @@ export default function Header() {
             </ul>
           </nav>
           <MarqueeText
-            textColor="var(--color-accent)"
-            lineColor="var(--color-bg)"
+            textColor="var(--linen-900)"
+            lineColor="var(--gray-700)"
           />
         </div>
 

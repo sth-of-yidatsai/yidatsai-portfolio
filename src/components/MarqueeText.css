@@ -10,7 +10,7 @@
 .brand-line {
   width: 100%;
   height: 0; /* 不用高度，用邊框畫 */
-  border-top: 1px solid var(--color-text-light);
+  border-top: 2px solid var(--color-text-light);
   margin-bottom: var(--space-sm);
 }
 
@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  max-height: 150px;
+  max-height: 140px;
   width: 100%;
 }
 
@@ -35,7 +35,7 @@
   transform: translateY(-50%);
   font-size: 1.2rem;
   font-weight: var(--font-medium);
-  color: var(--color-light);
+  color: var(--gray-50);
   writing-mode: vertical-rl;
   text-orientation: mixed;
   letter-spacing: 0.1em;
@@ -61,14 +61,15 @@
 
 .marquee-item {
   position: relative;
+  top: var(--space-md);
   display: inline-block;
   color: var(--text-color, inherit);
   margin-right: 3rem;
+
   font-size: 10rem;
-  font-weight: var(--font-bold);
-  /* color: var(--color-accent); */
+  font-weight: var(--font-medium);
   text-transform: uppercase;
-  font-family: var(--font-stack);
+  font-family: var(--font-kudryashev-contrast-sans);
   flex: 1;
   transition: opacity 1.2s ease;
 }

@@ -71,7 +71,8 @@
 
 .line {
   display: block;
-  border: 1px solid currentColor;
+  height: 2px;
+  border: none;
   width: 100%;
   /* 使用 currentColor 繼承父元素的顏色 */
   background-color: currentColor;
@@ -85,7 +86,7 @@
 /* 選單展開時：取消 mix-blend-mode，直接使用淺色確保對比 */
 .overlay.open + .header {
   mix-blend-mode: normal;
-  color: var(--color-light);
+  color: var(--gray-700);
 }
 
 /* 使用 mix-blend-mode 的反色效果，無需動態顏色調整 */
@@ -188,7 +189,7 @@ body.menu-open {
 .menu-section {
   width: 50vw;
   height: 100vh;
-  background: var(--color-dark);
+  background: var(--linen-500);
   display: flex;
   flex-direction: column;
   padding: var(--space-lg);
@@ -250,19 +251,19 @@ body.menu-open {
 }
 
 .navigation a {
-  font-size: 2rem;
-  font-weight: var(--font-semibold);
-  color: var(--color-light);
+  font-size: 3.2rem;
+  font-family: var(--font-kudryashev-contrast-sans);
+  font-weight: var(--font-medium);
+  color: var(--gray-700);
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   transition: color 0.3s ease, transform 0.3s ease;
   position: relative;
-  font-family: var(--font-stack);
 }
 
 .navigation a:hover {
-  color: var(--color-secondary);
+  color: var(--gray-700);
   transform: translateX(10px);
 }
 
@@ -270,10 +271,11 @@ body.menu-open {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -5px;
+  bottom: 2px;
   width: 0;
-  height: 2px;
-  background: var(--color-secondary);
+  /* height: 2px; */
+  border-top: 2px solid var(--gray-700);
+  background: var(--gray-700);
   transition: width 0.3s ease;
 }
 
@@ -285,7 +287,7 @@ body.menu-open {
 .carousel-section {
   width: 50vw;
   height: 100vh;
-  background: var(--color-dark);
+  background: var(--gray-700);
   position: relative;
   overflow: hidden;
   transform: translateX(-200%);
@@ -366,11 +368,10 @@ body.menu-open {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgb(45, 45, 45, 0.6);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-right: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
   position: relative;
 }
 
@@ -428,22 +429,23 @@ body.menu-open {
 }
 
 .info-label {
-  font-size: 0.5rem;
-  font-weight: var(--font-light);
+  font-size: 0.7rem;
+  font-weight: var(--font-bold);
   color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
   letter-spacing: 0.15em;
+  font-family: var(--font-latin);
+  white-space: nowrap;
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  line-height: 1.2;
-  font-family: var(--font-stack);
 }
 
 .info-value {
-  font-size: 0.7rem;
+  font-size: 0.95rem;
   font-weight: var(--font-medium);
-  color: rgba(255, 255, 255, 0.9);
-  letter-spacing: 0.03rem;
+  color: var(--gray-50);
+  background-blend-mode: difference;
+  letter-spacing: 0.08rem;
   text-align: center;
   writing-mode: vertical-rl;
   text-orientation: mixed;
@@ -452,7 +454,7 @@ body.menu-open {
   text-overflow: ellipsis;
   white-space: nowrap;
   line-height: 1.2;
-  font-family: var(--font-stack);
+  font-family: var(--font-kudryashev-contrast-sans);
 }
 
 .project-button {

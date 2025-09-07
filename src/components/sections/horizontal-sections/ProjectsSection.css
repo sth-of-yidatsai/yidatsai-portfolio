@@ -196,7 +196,7 @@
   right: 2rem;
   font-family: var(--font-latin), var(--font-cjk);
   font-size: 0.8rem;
-  font-weight: 400;
+  font-weight: var(--font-regular);
   color: var(--color-primary);
   writing-mode: vertical-rl;
   text-orientation: mixed;
@@ -209,7 +209,7 @@
 }
 
 .project-title-corner-title {
-  font-weight: 700;
+  font-weight: var(--font-bold);
 }
 
 .fullscreen-project-block:hover .project-title-corner {
@@ -234,7 +234,7 @@
   font-family: var(--font-kudryashev-contrast-sans), var(--font-cjk);
   font-size: 3rem;
   letter-spacing: 0.1rem;
-  font-weight: 400;
+  font-weight: var(--font-regular);
   color: var(--color-primary);
   line-height: 1;
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -267,7 +267,7 @@
 .project-label {
   font-family: var(--font-latin), var(--font-cjk);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: var(--font-medium);
   color: var(--color-primary);
   text-transform: lowercase;
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -281,18 +281,16 @@
 
 .project-description-small {
   font-family: var(--font-latin), var(--font-cjk);
-  font-size: 0.85rem;
-  font-weight: 300;
+  font-size: 0.95rem;
+  font-weight: var(--font-regular);
   color: var(--color-primary);
   line-height: 1.4;
-  opacity: 0.8;
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateX(0px);
 }
 
 .fullscreen-project-block:hover .project-description-small {
   color: var(--gray-25); /* hover 時改為白色 */
-  opacity: 1;
   transform: translateX(12px); /* hover 時描述文字向右移動 */
 }
 
