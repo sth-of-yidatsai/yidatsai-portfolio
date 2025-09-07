@@ -18,7 +18,6 @@
   justify-content: center;
   overflow: hidden;
 }
-
 .practices-container {
   width: 100%;
   height: 100%;
@@ -27,16 +26,24 @@
 }
 
 /* 左側文字區 */
-.practices-text-area {
-  width: 20vw;
-  min-width: 20vw;
+.practices-grid-wrapper {
+  width: 25vw;
+  min-width: 25vw;
   height: 100%;
-  background: var(--gray-200);
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
+  display: grid;
+  place-items: center;
+  background: var(--linen-300);
+}
+
+.practices-text-area {
+  height: calc(100% - var(--space-lg) * 2);
+  margin: var(--space-lg) var(--space-lg) calc(var(--space-lg) + 6px)
+    var(--space-lg);
+  padding: var(--space-lg) var(--space-md);
+  background: transparent;
+  color: var(--linen-100);
   box-sizing: border-box;
-  padding: var(--space-md);
+  border: 1px solid var(--gray-700);
 }
 
 .practices-title {
@@ -44,7 +51,7 @@
   font-size: 0.8rem;
   font-weight: var(--font-bold);
   letter-spacing: 0.04em;
-  color: var(--gray-200);
+  color: var(--gray-700);
   margin: 0 0 var(--space-sm) 0;
   text-transform: uppercase;
 }
@@ -65,14 +72,14 @@
   font-size: 2.2rem;
   line-height: 1.2;
   font-weight: var(--font-regular);
-  color: var(--gray-0);
+  color: var(--gray-700);
   margin: 0 0 var(--space-lg) 0;
 }
 
 .practice-description {
   font-size: 0.95rem;
   opacity: 0.85;
-  color: var(--gray-0);
+  color: var(--gray-700);
   margin: 0;
   flex: 1;
 }
@@ -126,26 +133,29 @@
   transform-style: preserve-3d;
 }
 
-/* 動畫文字的初始狀態 - 預設隱藏直到動畫hook啟動 */
+/* 動畫文字的初始狀態 - 容器可見，但單詞隱藏直到動畫hook啟動 */
 [data-animate] {
-  opacity: 0;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* 動畫準備就緒時的狀態 */
 [data-animate].animation-ready {
   opacity: 1;
+  transform: translateY(0);
 }
 
 /* 動畫完成後的狀態 */
 [data-animate].animation-complete {
   opacity: 1;
+  transform: translateY(0);
 }
 
 /* 右側畫布區 */
 .practices-canvas-area {
   width: 80vw;
   height: 100%;
-  background: var(--gray-600);
+  background: var(--linen-700);
   position: relative;
   overflow: hidden;
   cursor: default;

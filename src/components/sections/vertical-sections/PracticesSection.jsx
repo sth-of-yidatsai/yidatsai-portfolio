@@ -318,28 +318,29 @@ export default function PracticesSection() {
               );
 
               if (titleElement && descriptionElement) {
-                // 包裝文字為單詞
+                // 先包裝文字為單詞
                 wrapWords(titleElement);
                 wrapWords(descriptionElement);
 
-                // 設定初始狀態
-                gsap.set([titleElement, descriptionElement], { opacity: 1 });
+                // 設定容器的初始狀態 - 確保容器是可見的
+                gsap.set([titleElement, descriptionElement], {
+                  opacity: 1,
+                  y: 0,
+                });
 
-                // 執行動畫
-                setTimeout(() => {
-                  const titleWords =
-                    titleElement.querySelectorAll(".word-animate");
-                  const descriptionWords =
-                    descriptionElement.querySelectorAll(".word-animate");
+                // 立即執行動畫，不需要 setTimeout
+                const titleWords =
+                  titleElement.querySelectorAll(".word-animate");
+                const descriptionWords =
+                  descriptionElement.querySelectorAll(".word-animate");
 
-                  gsap.to([...titleWords, ...descriptionWords], {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.6,
-                    ease: "back.out(1.7)",
-                    stagger: 0.06,
-                  });
-                }, 100);
+                gsap.to([...titleWords, ...descriptionWords], {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.6,
+                  ease: "back.out(1.7)",
+                  stagger: 0.06,
+                });
               }
             }
             observer.unobserve(entry.target);
@@ -361,7 +362,7 @@ export default function PracticesSection() {
   }, []);
 
   // 文字切換動畫函數
-  const animateTextChange = useCallback(() => {
+  const animateTextChange = useCallback((onComplete) => {
     const titleElement = textRef.current?.querySelector(".practice-title");
     const descriptionElement = textRef.current?.querySelector(
       ".practice-description"
@@ -390,15 +391,24 @@ export default function PracticesSection() {
         duration: 0.3,
         ease: "power2.inOut",
         onComplete: () => {
-          // 重新包裝文字
-          wrapWords(titleElement);
-          wrapWords(descriptionElement);
+          // 執行回調函數（更新文字內容）
+          if (onComplete) {
+            onComplete();
+          }
 
-          // 設定新內容的初始狀態
-          gsap.set([titleElement, descriptionElement], { opacity: 1 });
+          // 等待 React 更新 DOM 後再包裝文字
+          requestAnimationFrame(() => {
+            // 重新包裝文字並設定初始狀態
+            wrapWords(titleElement);
+            wrapWords(descriptionElement);
 
-          // 使用 setTimeout 確保內容更新後再執行動畫
-          setTimeout(() => {
+            // 確保容器是可見的，但單詞是隱藏的
+            gsap.set([titleElement, descriptionElement], {
+              opacity: 1,
+              y: 0,
+            });
+
+            // 立即開始動畫
             const titleWords = titleElement.querySelectorAll(".word-animate");
             const descriptionWords =
               descriptionElement.querySelectorAll(".word-animate");
@@ -410,7 +420,7 @@ export default function PracticesSection() {
               ease: "back.out(1.7)",
               stagger: 0.06,
             });
-          }, 50);
+          });
         },
       });
     }
@@ -420,9 +430,11 @@ export default function PracticesSection() {
     (id) => {
       // 根據 item 尾數對應文字索引 (item-01 -> 0, item-02 -> 1, ...)
       const itemNumber = parseInt(id.split("-")[1]);
-      setSelectedArea(itemNumber - 1);
-      // 觸發文字切換動畫
-      animateTextChange();
+
+      // 先觸發文字切換動畫，在動畫完成後再更新狀態
+      animateTextChange(() => {
+        setSelectedArea(itemNumber - 1);
+      });
     },
     [animateTextChange]
   );
@@ -431,26 +443,28 @@ export default function PracticesSection() {
     <section className="practices-section" ref={sectionRef}>
       <div className="practices-container">
         {/* 左側文字區 */}
-        <div className="practices-text-area">
-          <h2 className="practices-title">Practice Areas</h2>
-          <div className="practices-content" ref={textRef}>
-            <div className="practice-area">
-              <h3 className="practice-title" data-animate="words">
-                {practiceAreas[selectedArea]?.title}
-              </h3>
-              <p className="practice-description" data-animate="words">
-                {practiceAreas[selectedArea]?.description}
-              </p>
+        <div className="practices-grid-wrapper">
+          <div className="practices-text-area">
+            <h2 className="practices-title">Practice Areas</h2>
+            <div className="practices-content" ref={textRef}>
+              <div className="practice-area">
+                <h3 className="practice-title" data-animate="words">
+                  {practiceAreas[selectedArea]?.title}
+                </h3>
+                <p className="practice-description" data-animate="words">
+                  {practiceAreas[selectedArea]?.description}
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="practices-divider" />
-          <div className="practices-current-item">
-            <img
-              src={`/images/items/item-${(selectedArea + 1)
-                .toString()
-                .padStart(2, "0")}.png`}
-              alt={`Practice item ${selectedArea + 1}`}
-            />
+            <div className="practices-divider" />
+            <div className="practices-current-item">
+              <img
+                src={`/images/items/item-${(selectedArea + 1)
+                  .toString()
+                  .padStart(2, "0")}.png`}
+                alt={`Practice item ${selectedArea + 1}`}
+              />
+            </div>
           </div>
         </div>
 

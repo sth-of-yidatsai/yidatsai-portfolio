@@ -8,9 +8,7 @@
     sans-serif;
 
   /* Kudryashev Display 字型系列 */
-  --font-kudryashev-contrast: "kudryashev-d-contrast", sans-serif;
   --font-kudryashev-contrast-sans: "kudryashev-d-contrast-sans", sans-serif;
-  --font-kudryashev-excontrast: "kudryashev-d-excontrast", sans-serif;
   --font-kudryashev-excontrast-sans: "kudryashev-d-excontrast-sans", sans-serif;
 
   /* 字重變數 - 統一管理 */
@@ -84,18 +82,6 @@
   font-style: italic;
 }
 
-.futura-pt-extrabold {
-  font-family: var(--font-latin);
-  font-weight: var(--font-extrabold);
-  font-style: normal;
-}
-
-.futura-pt-extrabold-oblique {
-  font-family: var(--font-latin);
-  font-weight: var(--font-extrabold);
-  font-style: italic;
-}
-
 .futura-pt-bold {
   font-family: var(--font-latin-bold);
   font-weight: var(--font-bold);
@@ -144,21 +130,9 @@
 }
 
 /* Kudryashev Display 字型類別 */
-.kudryashev-contrast {
-  font-family: var(--font-kudryashev-contrast);
-  font-weight: var(--font-regular);
-  font-style: normal;
-}
-
 .kudryashev-contrast-sans {
   font-family: var(--font-kudryashev-contrast-sans);
   font-weight: var(--font-regular);
-  font-style: normal;
-}
-
-.kudryashev-excontrast {
-  font-family: var(--font-kudryashev-excontrast);
-  font-weight: var(--font-light);
   font-style: normal;
 }
 
