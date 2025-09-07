@@ -1,6 +1,8 @@
 /* 自訂滑鼠游標樣式 */
 .custom-cursor {
   position: fixed;
+  top: 0;
+  left: 0;
   pointer-events: none;
   z-index: 2147483646;
   /* 只負責位置，避免 scale 過渡影響位置追蹤 */
@@ -25,6 +27,8 @@
 
 .custom-cursor-dot {
   position: fixed;
+  top: 0;
+  left: 0;
   pointer-events: none;
   z-index: 2147483647;
   transform: translate3d(var(--cursor-dot-x, 0), var(--cursor-dot-y, 0), 0);

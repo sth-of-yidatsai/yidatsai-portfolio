@@ -1,6 +1,6 @@
 /* Vision Section 樣式 */
 .hs-section {
-  width: 100vw;
+  width: calc(100vw - 64px);
   height: 100vh;
   display: flex;
   align-items: center;
@@ -11,7 +11,7 @@
 
 /* 垂直滾動樣式 */
 .vision-section {
-  width: 100vw;
+  width: calc(100vw - 64px);
   height: 100vh;
   display: flex;
   align-items: center;

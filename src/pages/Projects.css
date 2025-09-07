@@ -1,7 +1,8 @@
 .gallery-page {
   position: relative;
-  width: 100vw;
+  width: calc(100vw - 64px);
   height: 100vh;
+  margin-left: 64px;
   overflow: hidden;
   background-color: #000;
   color: #fff;
@@ -19,7 +20,7 @@ html.projects-no-scroll-html {
 /* 容器與畫布 */
 .gallery-container {
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   overflow: hidden;
   cursor: grab;

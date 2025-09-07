@@ -1,8 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
-import Header from "./components/Header";
+import HeaderVertical from "./components/HeaderVertical";
 import Footer from "./components/Footer";
 import CustomCursor from "./components/CustomCursor";
-import ScrollToTop from "./components/ScrollToTop";
 import GlobalScrollbar from "./components/GlobalScrollbar";
 import { Providers } from "./providers";
 
@@ -12,9 +11,8 @@ function App() {
   return (
     <Providers>
       <CustomCursor />
-      <ScrollToTop />
       {!hideGlobalScrollbar && <GlobalScrollbar />}
-      <Header />
+      <HeaderVertical />
       <Outlet />
       <Footer />
     </Providers>

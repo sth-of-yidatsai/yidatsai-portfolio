@@ -1,6 +1,6 @@
 /* Hero Section 樣式 */
 .hs-section {
-  width: 100vw;
+  width: calc(100vw - 64px);
   height: 100vh;
   display: flex;
   align-items: center;
@@ -48,7 +48,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw; /* 確保完全覆蓋視窗寬度 */
+  width: calc(100vw - 64px); /* 確保完全覆蓋視窗寬度 */
   height: 100vh; /* 確保完全覆蓋視窗高度 */
   display: flex;
   z-index: 2;
@@ -103,7 +103,7 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100vw;
+  width: calc(100vw - 64px);
   height: 80px;
   z-index: 3;
   display: flex;

@@ -29,8 +29,8 @@ html {
 .hs-horizontal-scrollbar {
   position: fixed;
   bottom: 0;
-  left: 0;
-  width: 100vw;
+  left: 64px; /* 從 Header 右側開始 */
+  width: calc(100vw - 64px); /* 減去 Header 寬度 */
   height: 6px; /* 與 GlobalScrollbar 一致的扁平極細 */
   background: var(--hs-track, transparent);
   z-index: 1200; /* 與 GlobalScrollbar 相同的 z-index */

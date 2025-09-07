@@ -1,0 +1,565 @@
+.header {
+  position: fixed;
+  width: 64px;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 999;
+  background: var(--linen-500);
+  color: var(--gray-700);
+  border-right: 1px solid var(--gray-700);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.logo {
+  font-size: 3rem;
+  font-weight: var(--font-medium);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  color: var(--gray-700);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: var(--font-stack);
+  pointer-events: all;
+  position: relative;
+  margin-bottom: var(--space-md);
+}
+
+.menu-icon {
+  width: 48px;
+  height: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-top: 11px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-shadow: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  /* 確保繼承父元素的顏色 */
+  color: currentColor;
+}
+
+.menu-icon:hover {
+  transform: scale(1.05);
+}
+
+.line {
+  display: block;
+  height: 2px;
+  border: none;
+  width: 100%;
+  /* 使用 currentColor 繼承父元素的顏色 */
+  background-color: currentColor;
+  transform-origin: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  position: relative;
+  /* 確保繼承父元素的顏色 */
+  color: inherit;
+}
+
+/* 選單展開時：使用固定顏色確保對比 */
+.overlay.open + .header {
+  color: var(--gray-700);
+}
+
+/* menu-icon 動畫 */
+.line1,
+.line2 {
+  animation-duration: 0.8s;
+  animation-fill-mode: forwards;
+}
+
+.line1.open {
+  animation-name: toX1;
+}
+
+.line2.open {
+  animation-name: toX2;
+}
+
+/* 僅在曾開啟過選單後，關閉時才播放回復成漢堡的動畫 */
+.overlay.has-opened + .header .line1:not(.open) {
+  animation-name: toMenu1;
+}
+
+.overlay.has-opened + .header .line2:not(.open) {
+  animation-name: toMenu2;
+}
+
+@keyframes toX1 {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(10px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(10px) rotate(-45deg);
+  }
+}
+
+@keyframes toX2 {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-10px) rotate(45deg);
+  }
+}
+
+@keyframes toMenu1 {
+  0% {
+    transform: translateY(10px) rotate(-45deg);
+  }
+  50% {
+    transform: translateY(10px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes toMenu2 {
+  0% {
+    transform: translateY(-10px) rotate(45deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* 全版覆蓋選單 */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 64px;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  z-index: 998;
+  pointer-events: none;
+}
+
+.overlay.open {
+  pointer-events: all;
+}
+
+/* 當選單開啟時隱藏滾動條 */
+body.menu-open {
+  overflow: hidden;
+}
+
+/* 左半邊 - 導航選單 */
+.menu-section {
+  width: calc((100vw - 64px) / 2);
+  height: 100vh;
+  background: var(--linen-500);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-lg);
+  position: relative;
+  transform: translateX(-100%);
+  z-index: 999;
+  transition: transform 0.6s ease;
+}
+
+.overlay.open .menu-section {
+  transform: translateX(0);
+}
+
+/* 收闔時左半邊的動畫 */
+.overlay.has-opened:not(.open) .menu-section {
+  transform: translateX(-100%);
+  transition-delay: 0.3s;
+}
+
+.navigation {
+  flex: 1;
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  padding-top: var(--space-xl);
+}
+
+.navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navigation li {
+  margin: var(--space-lg) 0;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.navigation li:nth-child(1) {
+  animation-delay: 0.3s;
+}
+.navigation li:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.navigation li:nth-child(3) {
+  animation-delay: 0.5s;
+}
+.navigation li:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navigation a {
+  font-size: 3.2rem;
+  font-family: var(--font-kudryashev-contrast-sans);
+  font-weight: var(--font-medium);
+  color: var(--gray-700);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: color 0.3s ease, transform 0.3s ease;
+  position: relative;
+}
+
+.navigation a:hover {
+  color: var(--gray-700);
+  transform: translateX(10px);
+}
+
+.navigation a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  width: 0;
+  /* height: 2px; */
+  border-top: 2px solid var(--gray-700);
+  background: var(--gray-700);
+  transition: width 0.3s ease;
+}
+
+.navigation a:hover::after {
+  width: 100%;
+}
+
+/* 右半邊 - 圖片輪播 */
+.carousel-section {
+  width: calc((100vw - 64px) / 2);
+  height: 100vh;
+  background: var(--gray-700);
+  position: relative;
+  overflow: hidden;
+  transform: translateX(-200%);
+  z-index: 998;
+}
+
+.overlay.open .carousel-section {
+  animation: carouselSlide 1.2s ease forwards;
+}
+
+/* 收闔時右半邊的動畫 */
+.overlay.has-opened:not(.open) .carousel-section {
+  animation: carouselSlideOut 0.6s ease forwards;
+}
+
+@keyframes carouselSlide {
+  0% {
+    transform: translateX(-200%);
+  }
+  50% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes carouselSlideOut {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(-200%);
+  }
+}
+
+.carousel-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+}
+
+/* 專案資訊區塊 */
+.project-info-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 64px;
+  height: 100vh;
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+}
+
+.info-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: rgb(45, 45, 45, 0.6);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  position: relative;
+}
+
+.info-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  pointer-events: none;
+}
+
+.info-text-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-md);
+}
+
+.title-section {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.year-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  padding-bottom: var(--space-sm);
+}
+
+.info-item {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: start;
+  gap: 0.5rem;
+}
+
+.info-label {
+  font-size: 0.7rem;
+  font-weight: var(--font-bold);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-family: var(--font-latin);
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  font-weight: var(--font-medium);
+  color: var(--gray-50);
+  background-blend-mode: difference;
+  letter-spacing: 0.08rem;
+  text-align: center;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  max-width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+  font-family: var(--font-kudryashev-contrast-sans);
+}
+
+.project-button {
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  align-self: flex-end;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-shadow: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.project-button img {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  transition: transform 0.3s ease;
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+.project-button:hover img {
+  transform: translateX(2px) translateY(-2px);
+  opacity: 1;
+}
+
+/* Windows 高對比模式：避免被系統強制套用背景/邊框 */
+@media (forced-colors: active) {
+  .menu-icon,
+  .project-button {
+    forced-color-adjust: none;
+    background: transparent;
+    border: 0;
+  }
+}
+
+/* Remove default focus rings/borders for header interactive elements */
+.menu-icon:focus,
+.menu-icon:focus-visible,
+.project-button:focus,
+.project-button:focus-visible,
+.navigation a:focus,
+.navigation a:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Firefox inner focus border */
+.menu-icon::-moz-focus-inner,
+.project-button::-moz-focus-inner {
+  border: 0;
+}
+
+.logo-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--space-sm) + 6px);
+}
+
+/* Header 分隔線 */
+.header-divider {
+  width: 48px;
+  border-top: 1px solid var(--gray-700);
+  align-self: center;
+}
+
+/* ScrollToTop 按鈕 */
+.scroll-to-top-btn {
+  width: 48px;
+  height: 48px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  opacity: 1;
+  pointer-events: all;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-shadow: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.scroll-to-top-btn img {
+  width: 48px;
+  height: 48px;
+  transition: transform 0.3s ease;
+  filter: brightness(0);
+}
+
+.scroll-to-top-btn:hover img {
+  transform: translateY(-6px);
+}
+
+.scroll-to-top-btn:focus {
+  outline: none;
+}

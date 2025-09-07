@@ -1,5 +1,21 @@
+.hs-section {
+  width: calc(100vw - 64px);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: transparent;
+}
+
+.hs-section.practices-section {
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
 .practices-section {
-  width: 100vw;
+  width: calc(100vw - 64px);
   height: 100vh;
   background: transparent;
   display: flex;
@@ -8,16 +24,6 @@
   overflow: hidden;
 }
 
-/* 水平滾動樣式 */
-.hs-section.practices-section {
-  width: 100vw;
-  height: 100vh;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
 .practices-container {
   width: 100%;
   height: 100%;

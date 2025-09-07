@@ -160,14 +160,15 @@ export default function HorizontalScroller() {
     // 所有設備都啟用水平滾動，但移動設備有優化的觸控處理
 
     const ctx = gsap.context(() => {
-      // 計算總寬度
-      const totalWidth = sections.length * window.innerWidth;
+      // 計算總寬度 - 考慮 Header 的 64px 寬度
+      const availableWidth = window.innerWidth - 64;
+      const totalWidth = sections.length * availableWidth;
       gsap.set(scroller, { width: totalWidth });
 
       // 建立水平滾動動畫
       // 增加停頓區域 - 相當於一個螢幕寬度的額外滾動距離
       const pauseZoneHeight = window.innerHeight;
-      const horizontalScrollDistance = totalWidth - window.innerWidth;
+      const horizontalScrollDistance = totalWidth - availableWidth;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -233,13 +234,13 @@ export default function HorizontalScroller() {
         horizontalScrollDistance / (horizontalScrollDistance + pauseZoneHeight);
 
       tl.to(scroller, {
-        x: () => -(totalWidth - window.innerWidth),
+        x: () => -(totalWidth - availableWidth),
         ease: "none",
         duration: animationDuration,
       })
         // 在停頓區階段保持位置不變
         .to(scroller, {
-          x: () => -(totalWidth - window.innerWidth),
+          x: () => -(totalWidth - availableWidth),
           ease: "none",
           duration: 1 - animationDuration,
         });

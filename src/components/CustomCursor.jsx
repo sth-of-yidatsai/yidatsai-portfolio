@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import './CustomCursor.css';
+import { useEffect, useRef, useState } from "react";
+import "./CustomCursor.css";
 
 const easeClamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -20,20 +20,20 @@ const CustomCursor = () => {
     const isElementClickable = (el) => {
       if (!el || el === document || el === window) return false;
       const selector = [
-        'a[href]',
-        'button',
-        'input',
-        'select',
-        'textarea',
-        'label',
-        'summary',
+        "a[href]",
+        "button",
+        "input",
+        "select",
+        "textarea",
+        "label",
+        "summary",
         '[role="button"]',
         '[role="link"]',
         '[role="menuitem"]',
-        '[data-clickable]',
-        '.clickable',
+        "[data-clickable]",
+        ".clickable",
         '[tabindex]:not([tabindex="-1"])',
-      ].join(',');
+      ].join(",");
       const target = el.closest?.(selector);
       if (!target) return false;
       if (target.matches('[disabled], [aria-disabled="true"]')) return false;
@@ -50,6 +50,7 @@ const CustomCursor = () => {
     };
 
     const updateTarget = (e) => {
+      // 使用 clientX/Y 直接定位，不受 body margin 影響
       targetRef.current.x = e.clientX;
       targetRef.current.y = e.clientY;
       updateHoverState(e.clientX, e.clientY);
@@ -87,26 +88,26 @@ const CustomCursor = () => {
       const dx = easeClamp(dotCurrent.x, -10000, 10000);
       const dy = easeClamp(dotCurrent.y, -10000, 10000);
 
-      cursorEl.style.setProperty('--cursor-x', `${cx}px`);
-      cursorEl.style.setProperty('--cursor-y', `${cy}px`);
-      dotEl.style.setProperty('--cursor-dot-x', `${dx}px`);
-      dotEl.style.setProperty('--cursor-dot-y', `${dy}px`);
+      cursorEl.style.setProperty("--cursor-x", `${cx}px`);
+      cursorEl.style.setProperty("--cursor-y", `${cy}px`);
+      dotEl.style.setProperty("--cursor-dot-x", `${dx}px`);
+      dotEl.style.setProperty("--cursor-dot-y", `${dy}px`);
 
       rafRef.current = requestAnimationFrame(animate);
     };
 
     // 綁定事件（使用 pointer 事件以整合滑鼠/觸控筆）
-    window.addEventListener('pointermove', updateTarget);
-    window.addEventListener('pointerdown', handlePointerDown);
-    window.addEventListener('pointerup', handlePointerUp);
+    window.addEventListener("pointermove", updateTarget);
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("pointerup", handlePointerUp);
     // 不再使用 pointerover/pointerout 判斷可點擊
 
     rafRef.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener('pointermove', updateTarget);
-      window.removeEventListener('pointerdown', handlePointerDown);
-      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener("pointermove", updateTarget);
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointerup", handlePointerUp);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
@@ -115,13 +116,15 @@ const CustomCursor = () => {
     <>
       <div
         ref={cursorRef}
-        className={`custom-cursor ${isClicking ? 'clicking' : ''} ${isHovering ? 'hovering' : ''}`}
+        className={`custom-cursor ${isClicking ? "clicking" : ""} ${
+          isHovering ? "hovering" : ""
+        }`}
       >
         <div className="custom-cursor-shape" />
       </div>
       <div
         ref={dotRef}
-        className={`custom-cursor-dot ${isClicking ? 'clicking' : ''}`}
+        className={`custom-cursor-dot ${isClicking ? "clicking" : ""}`}
       >
         <div className="custom-cursor-dot-shape" />
       </div>

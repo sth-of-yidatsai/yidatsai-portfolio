@@ -1,6 +1,5 @@
-/* Projects Section 樣式 */
 .hs-section {
-  width: 100vw;
+  width: calc(100vw - 64px);
   height: 100vh;
   display: flex;
   align-items: center;
@@ -19,7 +18,7 @@
 
 .fullscreen-projects-content {
   display: flex;
-  width: 100vw;
+  width: calc(100vw - 64px);
   height: 100vh;
   position: absolute;
   top: 0;
@@ -27,7 +26,7 @@
 }
 
 .fullscreen-project-block {
-  width: 25vw;
+  width: calc((100vw - 64px) / 4);
   height: 100vh;
   position: relative;
   cursor: none;
@@ -60,21 +59,30 @@
   content: "";
   position: absolute;
   top: 0;
-  left: 25vw; /* 第1和第2區之間 */
-  width: 1px;
+  left: calc((100vw - 64px) / 4); /* 第1和第2區之間 */
+  border-left: 1px solid var(--gray-700);
   height: 100vh;
-  background-color: var(--color-text-light);
   z-index: 2;
 }
+
+/* 區塊1最左邊的分隔線 */
+/* .fullscreen-project-block:nth-child(1)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-left: 1px solid var(--gray-700);
+  height: 100%;
+  z-index: 2;
+} */
 
 .fullscreen-projects-content::after {
   content: "";
   position: absolute;
   top: 0;
-  left: 50vw; /* 第2和第3區之間 */
-  width: 1px;
+  left: calc((100vw - 64px) / 2); /* 第2和第3區之間 */
+  border-left: 1px solid var(--gray-700);
   height: 100vh;
-  background-color: var(--color-text-light);
   z-index: 2;
 }
 
@@ -84,9 +92,8 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 1px;
+  border-left: 1px solid var(--gray-700);
   height: 100%;
-  background-color: var(--color-text-light);
   z-index: 2;
 }
 
@@ -303,7 +310,7 @@
   }
 
   .fullscreen-project-block {
-    width: 100vw;
+    width: calc(100vw - 64px);
     height: 100vh;
   }
 

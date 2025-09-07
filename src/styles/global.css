@@ -144,6 +144,8 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   font-weight: var(--font-regular);
+  /* 為垂直 Header 預留空間 */
+  margin-left: 64px;
 
   /* 自訂滑鼠游標 - 在桌面設備上隱藏預設游標 */
   cursor: none !important;
