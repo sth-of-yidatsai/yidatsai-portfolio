@@ -1,11 +1,22 @@
+/* PPHatton 字型引入 */
+@font-face {
+  font-family: "PPHatton";
+  src: url("/images/fonts/PPHatton-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  /* 英文與數字 → Futura PT；中文 → Noto Sans TC */
+  /* 英文與數字 → Futura PT；中文 → Noto Sans TC；特殊字型 → PPHatton */
   --font-latin: "futura-pt", system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   --font-latin-bold: "futura-pt-bold", system-ui, -apple-system, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-cjk: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC",
     sans-serif;
+  --font-pphatton: "PPHatton", "futura-pt", system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* 字重變數 - 統一管理 */
   --font-light: 300;
@@ -90,6 +101,19 @@
   font-style: italic;
 }
 
+/* PPHatton 字型類別 */
+.pphatton {
+  font-family: var(--font-pphatton);
+  font-weight: var(--font-regular);
+  font-style: normal;
+}
+
+.pphatton-regular {
+  font-family: var(--font-pphatton);
+  font-weight: var(--font-regular);
+  font-style: normal;
+}
+
 /* Noto Sans TC 字型類別 - 使用統一的字重變數 */
 .noto-sans-tc {
   font-family: var(--font-cjk);
@@ -148,6 +172,9 @@ body {
 }
 .font-cjk {
   font-family: var(--font-cjk), var(--font-latin) !important;
+}
+.font-pphatton {
+  font-family: var(--font-pphatton) !important;
 }
 .font-stack {
   font-family: var(--font-latin), var(--font-cjk);

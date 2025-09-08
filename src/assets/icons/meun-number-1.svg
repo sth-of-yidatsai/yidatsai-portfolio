@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="_圖層_2" data-name="圖層 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+<svg id="_圖層_2" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 96 96">
+  <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
   <defs>
     <style>
-      .cls-1 {
-        fill: #2d2d2d;
+      .st0 {
+        fill: #a0937e;
       }
     </style>
   </defs>
-  <g id="_圖層_1-2" data-name="圖層 1">
+  <g id="_圖層_1-2">
     <g>
-      <path class="cls-1" d="M48,0C21.49,0,0,21.49,0,48s21.49,48,48,48,48-21.49,48-48S74.51,0,48,0ZM48,92c-24.26,0-44-19.74-44-44S23.74,4,48,4s44,19.74,44,44-19.74,44-44,44Z"/>
-      <polygon class="cls-1" points="37.58 27.45 46.32 27.45 46.32 74.01 52.09 74.01 52.09 21.99 40.62 21.99 37.58 27.45"/>
+      <path class="st0" d="M48,0C21.5,0,0,21.5,0,48s21.5,48,48,48,48-21.5,48-48S74.5,0,48,0ZM48,92c-24.3,0-44-19.7-44-44S23.7,4,48,4s44,19.7,44,44-19.7,44-44,44Z"/>
+      <polygon class="st0" points="37.7 27.5 46.5 27.5 46.5 74 52.2 74 52.2 22 40.8 22 37.7 27.5"/>
     </g>
   </g>
 </svg>

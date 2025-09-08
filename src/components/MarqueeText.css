@@ -31,7 +31,7 @@
 .brand-year {
   position: absolute;
   right: 0;
-  top: 40%;
+  top: calc(50% - 15px);
   transform: translateY(-50%);
   font-size: 1.2rem;
   font-weight: var(--font-medium);
@@ -61,14 +61,14 @@
 
 .marquee-item {
   position: relative;
-  top: 2px;
+  top: 15px;
   display: inline-block;
   color: var(--text-color, inherit);
   margin-right: 3rem;
-  font-size: 10rem;
-  font-weight: var(--font-semibold);
+  font-size: 8rem;
+  font-weight: var(--font-regular);
   text-transform: uppercase;
-  font-family: var(--font-latin), var(--font-cjk);
+  font-family: var(--font-pphatton), var(--font-cjk);
   flex: 1;
   transition: opacity 1.2s ease;
 }
