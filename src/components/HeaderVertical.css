@@ -25,10 +25,11 @@
   color: var(--gray-700);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  font-family: var(--font-latin), var(--font-cjk);
+  font-family: var(--font-latin-display), var(--font-cjk);
   pointer-events: all;
   position: relative;
   margin-bottom: var(--space-sm);
+  margin-right: var(--space-xs);
 }
 
 .menu-icon {
@@ -264,12 +265,12 @@ body.menu-open {
 }
 
 .nav-text {
-  font-size: 4rem;
-  font-family: var(--font-latin), var(--font-cjk);
+  font-size: 5rem;
+  font-family: var(--font-latin-display), var(--font-cjk);
   font-weight: var(--font-medium);
   color: var(--gray-700);
   text-transform: uppercase;
-  letter-spacing: 0.2rem;
+  letter-spacing: 0.25rem;
   transition: transform 0.3s ease;
   will-change: transform;
   backface-visibility: hidden;

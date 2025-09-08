@@ -8,17 +8,19 @@
 }
 
 :root {
-  /* 英文與數字 → Futura PT；中文 → Noto Sans TC；特殊字型 → PPHatton */
-  --font-latin: "futura-pt", system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
-  --font-latin-bold: "futura-pt-bold", system-ui, -apple-system, "Segoe UI",
+  /* 英文與數字 → Neue Haas Grotesk；中文 → Noto Sans TC；特殊字型 → PPHatton */
+  --font-latin: "neue-haas-grotesk-text", system-ui, -apple-system, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-latin-display: "neue-haas-grotesk-display", system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-cjk: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC",
     sans-serif;
-  --font-pphatton: "PPHatton", "futura-pt", system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-pphatton: "PPHatton", "neue-haas-grotesk-display", system-ui,
+    -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* 字重變數 - 統一管理 */
+  --font-ultra-thin: 100;
+  --font-thin: 200;
   --font-light: 300;
   --font-regular: 400;
   --font-medium: 500;
@@ -28,75 +30,136 @@
   --font-black: 900;
 }
 
-/* Futura PT 字型類別 - 使用統一的字重變數 */
-.futura-pt-light {
-  font-family: var(--font-latin);
+/* Neue Haas Grotesk Display 字型類別 - 使用統一的字重變數 */
+.neue-haas-display-ultra-thin {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-ultra-thin);
+  font-style: normal;
+}
+
+.neue-haas-display-ultra-thin-italic {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-ultra-thin);
+  font-style: italic;
+}
+
+.neue-haas-display-thin {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-thin);
+  font-style: normal;
+}
+
+.neue-haas-display-thin-italic {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-thin);
+  font-style: italic;
+}
+
+.neue-haas-display-extra-light {
+  font-family: var(--font-latin-display);
   font-weight: var(--font-light);
   font-style: normal;
 }
 
-.futura-pt-light-oblique {
-  font-family: var(--font-latin);
+.neue-haas-display-extra-light-italic {
+  font-family: var(--font-latin-display);
   font-weight: var(--font-light);
   font-style: italic;
 }
 
-.futura-pt-book {
+.neue-haas-display-light {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-regular);
+  font-style: normal;
+}
+
+.neue-haas-display-light-italic {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-regular);
+  font-style: italic;
+}
+
+.neue-haas-display-roman {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-medium);
+  font-style: normal;
+}
+
+.neue-haas-display-roman-italic {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-medium);
+  font-style: italic;
+}
+
+.neue-haas-display-medium {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-semibold);
+  font-style: normal;
+}
+
+.neue-haas-display-medium-italic {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-semibold);
+  font-style: italic;
+}
+
+.neue-haas-display-bold {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-bold);
+  font-style: normal;
+}
+
+.neue-haas-display-bold-italic {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-bold);
+  font-style: italic;
+}
+
+.neue-haas-display-black {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-black);
+  font-style: normal;
+}
+
+.neue-haas-display-black-italic {
+  font-family: var(--font-latin-display);
+  font-weight: var(--font-black);
+  font-style: italic;
+}
+
+/* Neue Haas Grotesk Text 字型類別 */
+.neue-haas-text-roman {
   font-family: var(--font-latin);
   font-weight: var(--font-regular);
   font-style: normal;
 }
 
-.futura-pt-book-oblique {
+.neue-haas-text-roman-italic {
   font-family: var(--font-latin);
   font-weight: var(--font-regular);
   font-style: italic;
 }
 
-.futura-pt-medium {
+.neue-haas-text-medium {
   font-family: var(--font-latin);
   font-weight: var(--font-medium);
   font-style: normal;
 }
 
-.futura-pt-medium-oblique {
+.neue-haas-text-medium-italic {
   font-family: var(--font-latin);
   font-weight: var(--font-medium);
   font-style: italic;
 }
 
-.futura-pt-demi {
-  font-family: var(--font-latin);
-  font-weight: var(--font-semibold);
-  font-style: normal;
-}
-
-.futura-pt-demi-oblique {
-  font-family: var(--font-latin);
-  font-weight: var(--font-semibold);
-  font-style: italic;
-}
-
-.futura-pt-heavy {
+.neue-haas-text-bold {
   font-family: var(--font-latin);
   font-weight: var(--font-bold);
   font-style: normal;
 }
 
-.futura-pt-heavy-oblique {
+.neue-haas-text-bold-italic {
   font-family: var(--font-latin);
-  font-weight: var(--font-bold);
-  font-style: italic;
-}
-
-.futura-pt-bold {
-  font-family: var(--font-latin-bold);
-  font-weight: var(--font-bold);
-  font-style: normal;
-}
-
-.futura-pt-bold-oblique {
-  font-family: var(--font-latin-bold);
   font-weight: var(--font-bold);
   font-style: italic;
 }
