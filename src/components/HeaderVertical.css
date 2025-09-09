@@ -285,8 +285,8 @@ body.menu-open {
 }
 
 .nav-number {
-  width: 7rem;
-  height: 7rem;
+  width: 8rem;
+  height: 8rem;
   transition: transform 0.3s ease;
   transform-origin: center;
   will-change: transform;
@@ -455,7 +455,7 @@ body.menu-open {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: var(--space-md);
+  padding: var(--space-md) var(--space-sm);
 }
 
 .title-section {
@@ -464,6 +464,7 @@ body.menu-open {
   flex-direction: column;
   align-items: center;
   justify-content: start;
+  width: 100%;
 }
 
 .year-section {
@@ -472,6 +473,7 @@ body.menu-open {
   flex-direction: column;
   align-items: center;
   justify-content: start;
+  width: 100%;
 }
 
 .info-item {
@@ -480,6 +482,7 @@ body.menu-open {
   align-items: center;
   justify-content: center;
   gap: var(--space-md);
+  width: 100%;
 }
 
 .info-value-container {
@@ -490,7 +493,7 @@ body.menu-open {
 }
 
 .info-label {
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-weight: var(--font-bold);
   color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
@@ -500,25 +503,30 @@ body.menu-open {
   padding: var(--space-sm) 0;
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  width: 100%;
+  text-align: center;
 }
 
 .info-value {
   font-family: var(--font-latin), var(--font-cjk);
-  font-size: 1rem;
-  font-weight: var(--font-regular);
+  font-size: 0.95rem;
+  font-weight: var(--font-ultra-thin);
   color: var(--gray-50);
   background-blend-mode: difference;
-  letter-spacing: 0.06rem;
+  letter-spacing: 0.07rem;
   text-align: center;
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  max-width: 50px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   transition: transform 0.3s ease, opacity 0.3s ease;
   position: relative;
-  left: var(--space-sm);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 /* 文字動畫效果 - 參考 HeroSection 但方向為水平 */
