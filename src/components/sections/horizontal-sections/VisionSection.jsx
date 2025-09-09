@@ -5,7 +5,7 @@ import { useLoader } from "../../../hooks/use-loader/index.jsx";
 import MarqueeText from "../../MarqueeText";
 import "./VisionSection.css";
 
-export default function VisionSection({ index }) {
+export default function VisionSection({ index = 0 }) {
   const layoutRef = useRef(null);
   const canvasRef = useRef(null);
   const sectionRef = useRef(null);

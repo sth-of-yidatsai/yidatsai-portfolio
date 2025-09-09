@@ -195,6 +195,13 @@ body.menu-open {
   transition-delay: 0.3s;
 }
 
+/* 收闔時隱藏導航項目 */
+.overlay.has-opened:not(.open) .nav-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
 .navigation {
   flex: 1;
   display: flex;
@@ -448,7 +455,6 @@ body.menu-open {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: var(--space-lg);
   padding: var(--space-md);
 }
 
@@ -458,9 +464,6 @@ body.menu-open {
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  padding-top: var(--space-md);
-  padding-bottom: var(--space-sm);
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .year-section {
@@ -469,14 +472,21 @@ body.menu-open {
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  padding-bottom: var(--space-sm);
 }
 
 .info-item {
   display: flex;
-  flex-direction: row-reverse;
-  align-items: start;
-  gap: 0.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+}
+
+.info-value-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
 }
 
 .info-label {
@@ -487,17 +497,18 @@ body.menu-open {
   letter-spacing: 0.15em;
   font-family: var(--font-latin), var(--font-cjk);
   white-space: nowrap;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
+  padding: var(--space-sm) 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .info-value {
   font-family: var(--font-latin), var(--font-cjk);
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: var(--font-regular);
   color: var(--gray-50);
   background-blend-mode: difference;
-  letter-spacing: 0.03rem;
+  letter-spacing: 0.06rem;
   text-align: center;
   writing-mode: vertical-rl;
   text-orientation: mixed;
@@ -505,6 +516,32 @@ body.menu-open {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  position: relative;
+  left: var(--space-sm);
+}
+
+/* 文字動畫效果 - 參考 HeroSection 但方向為水平 */
+.info-value.animate-exit {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.info-value.animate-enter {
+  transform: translateX(-100%);
+  opacity: 0;
+  animation: headerSlideInFromLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes headerSlideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .project-button {
@@ -580,13 +617,13 @@ body.menu-open {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: calc(var(--space-sm) + 6px);
+  gap: var(--space-sm);
 }
 
 /* Header 分隔線 */
 .header-divider {
   width: 48px;
-  border-top: 1px solid var(--gray-700);
+  border-bottom: 1px solid var(--gray-700);
   align-self: center;
 }
 
@@ -597,9 +634,8 @@ body.menu-open {
   background: none;
   border: none;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   transition: all 0.3s ease;
   position: relative;
   opacity: 1;
@@ -627,4 +663,80 @@ body.menu-open {
 
 .scroll-to-top-btn:focus {
   outline: none;
+}
+
+/* 手機版響應式設計 */
+@media (max-width: 768px) {
+  /* 確保在手機版上選單收合時完全隱藏 */
+  .overlay:not(.open) .menu-section {
+    transform: translateX(-100%);
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .overlay:not(.open) .nav-item {
+    opacity: 0 !important;
+    transform: translateY(20px) !important;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .overlay:not(.open) .nav-text {
+    opacity: 0 !important;
+    transform: translateY(20px) !important;
+    visibility: hidden;
+  }
+
+  .overlay:not(.open) .nav-number {
+    opacity: 0 !important;
+    transform: translateY(20px) !important;
+    visibility: hidden;
+  }
+
+  /* 手機版選單開啟時的動畫 */
+  .overlay.open .menu-section {
+    visibility: visible;
+  }
+
+  .overlay.open .nav-item {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    pointer-events: all;
+    visibility: visible;
+  }
+
+  .overlay.open .nav-text {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    visibility: visible;
+  }
+
+  .overlay.open .nav-number {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    visibility: visible;
+  }
+
+  /* 手機版選單收合時的動畫 */
+  .overlay.has-opened:not(.open) .nav-item {
+    opacity: 0 !important;
+    transform: translateY(20px) !important;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  }
+
+  .overlay.has-opened:not(.open) .nav-text {
+    opacity: 0 !important;
+    transform: translateY(20px) !important;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  }
+
+  .overlay.has-opened:not(.open) .nav-number {
+    opacity: 0 !important;
+    transform: translateY(20px) !important;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  }
 }

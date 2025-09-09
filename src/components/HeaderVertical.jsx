@@ -15,6 +15,9 @@ export default function Header() {
   const [hasOpened, setHasOpened] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isScrollToTopVisible, setIsScrollToTopVisible] = useState(true);
+  const [animationPhase, setAnimationPhase] = useState("idle"); // 'idle', 'exit', 'enter'
+  const [displayedData, setDisplayedData] = useState(null);
+  const [nextData, setNextData] = useState(null);
   const headerRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -81,15 +84,50 @@ export default function Header() {
 
   const images = carouselData.map((item) => item.image);
 
-  // 自動輪播
+  // 初始化顯示的資料
+  useEffect(() => {
+    if (carouselData.length > 0 && !displayedData) {
+      setDisplayedData(carouselData[0]);
+    }
+  }, [carouselData, displayedData]);
+
+  // 處理文字動畫轉場 - 參考 HeroSection
+  useEffect(() => {
+    if (displayedData && nextData) {
+      // 開始動畫序列
+      setAnimationPhase("exit");
+
+      // 第一階段：文字向右消失
+      setTimeout(() => {
+        // 在文字完全消失後，更新顯示資料
+        setDisplayedData(nextData);
+        setNextData(null);
+        setAnimationPhase("enter");
+
+        // 第二階段：文字從左滑入
+        setTimeout(() => {
+          setAnimationPhase("idle");
+        }, 600);
+      }, 600);
+    }
+  }, [nextData, displayedData]);
+
+  // 自動輪播與動畫處理
   useEffect(() => {
     if (isOpen) {
       const interval = setInterval(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % images.length);
+        setCurrentImageIndex((prev) => {
+          const nextIndex = (prev + 1) % images.length;
+
+          // 準備下一個資料
+          setNextData(carouselData[nextIndex]);
+
+          return nextIndex;
+        });
       }, 5000);
       return () => clearInterval(interval);
     }
-  }, [isOpen, images.length]);
+  }, [isOpen, images.length, carouselData]);
 
   const handleProjectClick = () => {
     navigate("/projects");
@@ -207,18 +245,34 @@ export default function Header() {
               <div className="info-text-section">
                 <div className="year-section">
                   <div className="info-item">
-                    <span className="info-label">Year:</span>
-                    <span className="info-value">
-                      {carouselData[currentImageIndex]?.year}
-                    </span>
+                    <span className="info-label">Year</span>
+                    <div className="info-value-container">
+                      <span
+                        className={`info-value ${
+                          animationPhase !== "idle"
+                            ? `animate-${animationPhase}`
+                            : ""
+                        }`}
+                      >
+                        {displayedData?.year || carouselData[0]?.year}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="title-section">
                   <div className="info-item">
-                    <span className="info-label">Title:</span>
-                    <span className="info-value">
-                      {carouselData[currentImageIndex]?.title}
-                    </span>
+                    <span className="info-label">Title</span>
+                    <div className="info-value-container">
+                      <span
+                        className={`info-value ${
+                          animationPhase !== "idle"
+                            ? `animate-${animationPhase}`
+                            : ""
+                        }`}
+                      >
+                        {displayedData?.title || carouselData[0]?.title}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

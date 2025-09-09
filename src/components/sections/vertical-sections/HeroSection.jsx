@@ -230,7 +230,9 @@ export default function HeroSection({ index }) {
           {/* Title區域 */}
           <div className="hero-title-section">
             <div className="hero-info-item">
-              <span className="hero-info-label">Title:</span>
+              <div className="hero-info-label-wrapper">
+                <span className="hero-info-label">Title</span>
+              </div>
               <span
                 className={`hero-info-value ${
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
@@ -244,7 +246,9 @@ export default function HeroSection({ index }) {
           {/* Year區域 */}
           <div className="hero-year-section">
             <div className="hero-info-item">
-              <span className="hero-info-label">Year:</span>
+              <div className="hero-info-label-wrapper">
+                <span className="hero-info-label">Year</span>
+              </div>
               <span
                 className={`hero-info-value ${
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
@@ -258,7 +262,9 @@ export default function HeroSection({ index }) {
           {/* TAG區域 */}
           <div className="hero-tag-section">
             <div className="hero-info-item">
-              <span className="hero-info-label">Tag:</span>
+              <div className="hero-info-label-wrapper">
+                <span className="hero-info-label">Tag</span>
+              </div>
               <div
                 className={`hero-tag-list ${
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
