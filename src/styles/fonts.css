@@ -219,7 +219,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-variant-numeric: lining-nums;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "case" 1;
 }
 
 /* 中文內容強制走 Noto Sans TC */

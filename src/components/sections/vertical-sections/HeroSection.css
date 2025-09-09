@@ -250,7 +250,7 @@
 }
 
 .hero-info-value {
-  font-size: 1.15em;
+  font-size: 1.05rem;
   font-weight: var(--font-light);
   color: rgba(255, 255, 255, 0.9);
   letter-spacing: 0.08rem;
@@ -264,6 +264,7 @@
   min-width: 0;
   display: flex;
   justify-content: center;
+  /* text-transform: uppercase; */
 }
 
 /* 文字動畫效果 - 參考CubeGallery */
