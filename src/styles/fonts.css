@@ -7,6 +7,22 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "PPHatton";
+  src: url("/images/fonts/PPHatton-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PPHatton";
+  src: url("/images/fonts/PPHatton-LightItalic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   /* 英文與數字 → Neue Haas Grotesk；中文 → Noto Sans TC；特殊字型 → PPHatton */
   --font-latin: "neue-haas-grotesk-text", system-ui, -apple-system, "Segoe UI",
@@ -16,6 +32,8 @@
   --font-cjk: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC",
     sans-serif;
   --font-pphatton: "PPHatton", "neue-haas-grotesk-display", system-ui,
+    -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-pphatton-light: "PPHatton", "neue-haas-grotesk-display", system-ui,
     -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* 字重變數 - 統一管理 */
@@ -177,6 +195,18 @@
   font-style: normal;
 }
 
+.pphatton-light {
+  font-family: var(--font-pphatton-light);
+  font-weight: var(--font-light);
+  font-style: normal;
+}
+
+.pphatton-light-italic {
+  font-family: var(--font-pphatton-light);
+  font-weight: var(--font-light);
+  font-style: italic;
+}
+
 /* Noto Sans TC 字型類別 - 使用統一的字重變數 */
 .noto-sans-tc {
   font-family: var(--font-cjk);
@@ -239,6 +269,10 @@ body {
 }
 .font-pphatton {
   font-family: var(--font-pphatton) !important;
+}
+.font-pphatton-light {
+  font-family: var(--font-pphatton-light) !important;
+  font-weight: var(--font-light) !important;
 }
 .font-stack {
   font-family: var(--font-latin), var(--font-cjk);

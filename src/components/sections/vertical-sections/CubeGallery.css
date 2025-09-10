@@ -27,7 +27,8 @@
 
 /* ILLUSTRATION text styles */
 .illustration-text {
-  font-size: clamp(16vw, 18vw, 20vw);
+  font-family: var(--font-pphatton), var(--font-cjk);
+  font-size: clamp(12vw, 16vw, 20vw);
   font-weight: var(--font-light);
   position: absolute;
   top: calc(-1 * clamp(8%, 10%, 12%));

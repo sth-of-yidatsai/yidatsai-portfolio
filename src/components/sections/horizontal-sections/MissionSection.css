@@ -1,4 +1,3 @@
-/* Mission Section 樣式 */
 .hs-section {
   width: calc(100vw - 64px);
   height: 100vh;
@@ -15,90 +14,8 @@
   overflow: hidden;
 }
 
-/* Section 內容樣式 */
-.hs-section-content {
-  max-width: 80rem;
-  padding: var(--space-lg);
-  text-align: center;
-}
+/* Mission Section 樣式 */
 
-.hs-section-number {
-  font-size: 1rem;
-  font-weight: var(--font-bold);
-  color: var(--color-accent);
-  margin-bottom: var(--space-sm);
-}
-
-.hs-section-title {
-  font-size: 3rem;
-  font-weight: var(--font-bold);
-  margin-bottom: var(--space-md);
-  line-height: 1.2;
-}
-
-.hs-section-subtitle {
-  font-size: 1.8rem;
-  font-weight: var(--font-medium);
-  margin-bottom: var(--space-lg);
-  opacity: 0.9;
-}
-
-.hs-section-text {
-  font-size: 1.2rem;
-  font-weight: var(--font-regular);
-  line-height: 1.6;
-  margin-bottom: var(--space-xl);
-  opacity: 0.8;
-}
-
-/* Mission 特有的內容 */
-.mission-specific-content {
-  margin-top: var(--space-xl);
-}
-
-.mission-principles {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  gap: var(--space-lg);
-  margin-top: var(--space-xl);
-}
-
-.principle-item {
-  text-align: left;
-  padding: var(--space-lg);
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-}
-
-.principle-item h4 {
-  font-size: 1.3rem;
-  font-weight: var(--font-semibold);
-  margin-bottom: var(--space-sm);
-  color: var(--color-accent);
-}
-
-.principle-item p {
-  font-size: 1rem;
-  line-height: 1.5;
-  opacity: 0.8;
-}
-
-/* 響應式設計 */
-@media (max-width: 768px) {
-  .hs-section-title {
-    font-size: 2.5rem;
-  }
-
-  .hs-section-subtitle {
-    font-size: 1.3rem;
-  }
-
-  .hs-section-text {
-    font-size: 1rem;
-  }
-
-  .mission-principles {
-    grid-template-columns: 1fr;
-  }
+p {
+  font-size: 10rem;
 }
