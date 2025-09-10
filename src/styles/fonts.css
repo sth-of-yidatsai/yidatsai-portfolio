@@ -33,8 +33,6 @@
     sans-serif;
   --font-pphatton: "PPHatton", "neue-haas-grotesk-display", system-ui,
     -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-pphatton-light: "PPHatton", "neue-haas-grotesk-display", system-ui,
-    -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* 字重變數 - 統一管理 */
   --font-ultra-thin: 100;
@@ -196,13 +194,13 @@
 }
 
 .pphatton-light {
-  font-family: var(--font-pphatton-light);
+  font-family: var(--font-pphatton);
   font-weight: var(--font-light);
   font-style: normal;
 }
 
 .pphatton-light-italic {
-  font-family: var(--font-pphatton-light);
+  font-family: var(--font-pphatton);
   font-weight: var(--font-light);
   font-style: italic;
 }
@@ -271,7 +269,7 @@ body {
   font-family: var(--font-pphatton) !important;
 }
 .font-pphatton-light {
-  font-family: var(--font-pphatton-light) !important;
+  font-family: var(--font-pphatton) !important;
   font-weight: var(--font-light) !important;
 }
 .font-stack {

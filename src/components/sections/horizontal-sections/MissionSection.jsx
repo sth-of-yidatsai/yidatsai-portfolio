@@ -3,8 +3,6 @@ import "./MissionSection.css";
 
 export default function MissionSection({ index }) {
   return (
-    <div className={`hs-section mission-section hs-section-${index}`}>
-      <p className="font-pphatton">123</p>
-    </div>
+    <div className={`hs-section mission-section hs-section-${index}`}></div>
   );
 }
