@@ -3,11 +3,10 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalScroller.css";
 import {
-  VisionSection,
   ProjectsSection,
-  PracticesSection,
   sectionConfigs,
 } from "./sections/horizontal-sections";
+import { VisionSection, PracticesSection } from "./sections/vertical-sections";
 
 // 顏色解析和反色邏輯 - 與 GlobalScrollbar 一致
 function parseRGBA(color) {

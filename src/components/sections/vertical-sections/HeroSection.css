@@ -250,8 +250,8 @@
 }
 
 .hero-info-value {
-  font-size: 1.15rem;
-  font-weight: var(--font-regular);
+  font-size: 1rem;
+  font-weight: var(--font-medium);
   color: rgba(255, 255, 255, 0.9);
   letter-spacing: 0.125rem;
   font-family: var(--font-latin-display), var(--font-cjk);

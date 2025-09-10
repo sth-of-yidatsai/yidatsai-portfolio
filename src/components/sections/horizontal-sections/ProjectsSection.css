@@ -55,35 +55,37 @@
 }
 
 /* 區塊分隔線 - 使用更精確的定位避免重疊 */
-.fullscreen-projects-content::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: calc((100vw - 64px) / 4); /* 第1和第2區之間 */
-  border-left: 1px solid var(--gray-700);
-  height: 100vh;
-  z-index: 2;
-}
-
 /* 區塊1最左邊的分隔線 */
-/* .fullscreen-project-block:nth-child(1)::after {
+.fullscreen-project-block:nth-child(1)::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   border-left: 1px solid var(--gray-700);
   height: 100%;
-  z-index: 2;
-} */
+  z-index: 5;
+}
 
+/* 第1和第2區之間的分隔線 */
+.fullscreen-projects-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc((100vw - 64px) / 4);
+  border-left: 1px solid var(--gray-700);
+  height: 100vh;
+  z-index: 5;
+}
+
+/* 第2和第3區之間的分隔線 */
 .fullscreen-projects-content::after {
   content: "";
   position: absolute;
   top: 0;
-  left: calc((100vw - 64px) / 2); /* 第2和第3區之間 */
+  left: calc((100vw - 64px) / 2);
   border-left: 1px solid var(--gray-700);
   height: 100vh;
-  z-index: 2;
+  z-index: 5;
 }
 
 /* 第3和第4區之間的分隔線 */
@@ -94,7 +96,7 @@
   right: 0;
   border-left: 1px solid var(--gray-700);
   height: 100%;
-  z-index: 2;
+  z-index: 5;
 }
 
 .project-block-overlay {
