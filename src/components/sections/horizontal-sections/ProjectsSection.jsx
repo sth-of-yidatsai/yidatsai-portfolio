@@ -35,7 +35,7 @@ export default function ProjectsSection({ index }) {
   };
 
   const handleProjectClick = (projectId) => {
-    navigate(`/project/${projectId}`);
+    navigate(`/projects/${projectId}`);
   };
 
   return (

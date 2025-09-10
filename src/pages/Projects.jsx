@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { CustomEase } from 'gsap/CustomEase';
-import { useLoaderData, useNavigate } from 'react-router-dom';
-import './Projects.css';
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { CustomEase } from "gsap/CustomEase";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import "./Projects.css";
 
 gsap.registerPlugin(CustomEase);
-CustomEase.create('hop', '0.9, 0, 0.1, 1');
+CustomEase.create("hop", "0.9, 0, 0.1, 1");
 
 // 僅使用 projects.json 的第一張圖作為封面顯示
 
@@ -74,7 +74,7 @@ export default function Projects() {
 
   // 專案排序：以 id 內的數字降冪（號碼越大越新）
   const parseProjectOrder = (id) => {
-    if (typeof id !== 'string') return 0;
+    if (typeof id !== "string") return 0;
     const m = id.match(/(\d+)/g);
     if (!m || !m.length) return 0;
     // 取最後一段數字以避免 id 中有其他數字
@@ -89,7 +89,7 @@ export default function Projects() {
 
   // 從圖片網址提取專案編號字串（保留前導零），如 "project-003" → "003"
   const extractNumberFromImageUrl = (url) => {
-    if (typeof url !== 'string') return null;
+    if (typeof url !== "string") return null;
     const m = url.match(/project[-_](\d+)/i);
     return m && m[1] ? m[1] : null;
   };
@@ -100,26 +100,38 @@ export default function Projects() {
   const updateCSSVars = () => {
     const settings = settingsRef.current;
     const root = document.documentElement;
-    root.style.setProperty('--border-radius', `${settings.borderRadius}px`);
-    root.style.setProperty('--vignette-size', `${settings.vignetteSize}px`);
-    root.style.setProperty('--hover-scale', settings.hoverScale);
+    root.style.setProperty("--border-radius", `${settings.borderRadius}px`);
+    root.style.setProperty("--vignette-size", `${settings.vignetteSize}px`);
+    root.style.setProperty("--hover-scale", settings.hoverScale);
     const strength = settings.vignetteStrength;
     const size = settings.vignettePageSize;
-    root.style.setProperty('--page-vignette-size', `${size * 1.5}px`);
-    root.style.setProperty('--page-vignette-color', `rgba(0,0,0,${strength * 0.7})`);
-    root.style.setProperty('--page-vignette-strong-size', `${size * 0.75}px`);
-    root.style.setProperty('--page-vignette-strong-color', `rgba(0,0,0,${strength * 0.85})`);
-    root.style.setProperty('--page-vignette-extreme-size', `${size * 0.4}px`);
-    root.style.setProperty('--page-vignette-extreme-color', `rgba(0,0,0,${strength})`);
+    root.style.setProperty("--page-vignette-size", `${size * 1.5}px`);
+    root.style.setProperty(
+      "--page-vignette-color",
+      `rgba(0,0,0,${strength * 0.7})`
+    );
+    root.style.setProperty("--page-vignette-strong-size", `${size * 0.75}px`);
+    root.style.setProperty(
+      "--page-vignette-strong-color",
+      `rgba(0,0,0,${strength * 0.85})`
+    );
+    root.style.setProperty("--page-vignette-extreme-size", `${size * 0.4}px`);
+    root.style.setProperty(
+      "--page-vignette-extreme-color",
+      `rgba(0,0,0,${strength})`
+    );
   };
 
   // 工具
   const getItemId = (col, row) => `${col},${row}`;
-  const getItemPosition = (col, row, cellWidth, cellHeight) => ({ x: col * cellWidth, y: row * cellHeight });
+  const getItemPosition = (col, row, cellWidth, cellHeight) => ({
+    x: col * cellWidth,
+    y: row * cellHeight,
+  });
 
   const getItemSize = (row, col) => {
     const { itemSizes, columns } = stateRef.current;
-    const sizeIndex = Math.abs(((row * columns + col) % itemSizes.length));
+    const sizeIndex = Math.abs((row * columns + col) % itemSizes.length);
     return itemSizes[sizeIndex];
   };
 
@@ -140,16 +152,24 @@ export default function Projects() {
     const settings = settingsRef.current;
     const overlay = overlayRef.current;
     if (!overlay) return;
-    gsap.to(overlay, { opacity: settings.overlayOpacity, duration: settings.overlayEaseDuration, ease: 'power2.inOut' });
-    overlay.classList.add('active');
+    gsap.to(overlay, {
+      opacity: settings.overlayOpacity,
+      duration: settings.overlayEaseDuration,
+      ease: "power2.inOut",
+    });
+    overlay.classList.add("active");
   };
 
   const animateOverlayOut = () => {
     const settings = settingsRef.current;
     const overlay = overlayRef.current;
     if (!overlay) return;
-    gsap.to(overlay, { opacity: 0, duration: settings.overlayEaseDuration, ease: 'power2.inOut' });
-    overlay.classList.remove('active');
+    gsap.to(overlay, {
+      opacity: 0,
+      duration: settings.overlayEaseDuration,
+      ease: "power2.inOut",
+    });
+    overlay.classList.remove("active");
   };
 
   // 產生與回收 item
@@ -186,7 +206,7 @@ export default function Projects() {
       let maxLen = 1;
       for (let i = 0; i < items.length; i += 1) {
         const idStr = items[i]?.id;
-        if (typeof idStr === 'string') {
+        if (typeof idStr === "string") {
           const m = idStr.match(/(\d+)/g);
           if (m && m.length) {
             const seg = m[m.length - 1];
@@ -208,8 +228,8 @@ export default function Projects() {
         const itemSize = getItemSize(row, col);
         const pos = getItemPosition(col, row, s.cellWidth, s.cellHeight);
 
-        const item = document.createElement('div');
-        item.className = 'gallery-item clickable';
+        const item = document.createElement("div");
+        item.className = "gallery-item clickable";
         item.id = itemId;
         item.style.width = `${itemSize.width}px`;
         item.style.height = `${itemSize.height}px`;
@@ -222,29 +242,29 @@ export default function Projects() {
 
         // index 與資料（僅使用 projects.json）
         // 正確的歐幾里得取模，避免 row/col 為負數時索引錯誤
-        const rawIndex = (row * s.columns + col);
+        const rawIndex = row * s.columns + col;
         const idx = ((rawIndex % total) + total) % total;
         const project = allItems[idx];
-        const imageUrl = project?.projectImages?.[0] || '';
-        const title = project?.title || '';
-        const projectId = project?.id || '';
+        const imageUrl = project?.projectImages?.[0] || "";
+        const title = project?.title || "";
+        const projectId = project?.id || "";
 
-        const imageContainer = document.createElement('div');
-        imageContainer.className = 'gallery-item-image-container';
-        const img = document.createElement('img');
+        const imageContainer = document.createElement("div");
+        imageContainer.className = "gallery-item-image-container";
+        const img = document.createElement("img");
         img.src = imageUrl;
         img.alt = title;
         imageContainer.appendChild(img);
         item.appendChild(imageContainer);
 
-        const caption = document.createElement('div');
-        caption.className = 'gallery-item-caption';
-        const nameEl = document.createElement('div');
-        nameEl.className = 'gallery-item-name';
+        const caption = document.createElement("div");
+        caption.className = "gallery-item-caption";
+        const nameEl = document.createElement("div");
+        nameEl.className = "gallery-item-name";
         nameEl.textContent = title;
         caption.appendChild(nameEl);
-        const numberEl = document.createElement('div');
-        numberEl.className = 'gallery-item-number';
+        const numberEl = document.createElement("div");
+        numberEl.className = "gallery-item-number";
         // 依圖片網址中的資料夾/檔名提取編號，優先使用該編號（保留前導零）
         const urlNumber = extractNumberFromImageUrl(imageUrl);
         if (urlNumber) {
@@ -252,12 +272,15 @@ export default function Projects() {
         } else {
           // 後備：使用 id 的數字長度進行補零，或以位置序號
           const fallbackNumber = idx + 1;
-          numberEl.textContent = `#${String(fallbackNumber).padStart(padLen, '0')}`;
+          numberEl.textContent = `#${String(fallbackNumber).padStart(
+            padLen,
+            "0"
+          )}`;
         }
         caption.appendChild(numberEl);
         item.appendChild(caption);
 
-        item.addEventListener('click', () => {
+        item.addEventListener("click", () => {
           if (s.mouseHasMoved || s.isDragging) return;
           handleItemClick(item, idx, projectId);
         });
@@ -287,9 +310,9 @@ export default function Projects() {
     s.activeItem = item;
     s.activeItemId = item.id;
     s.canDrag = false;
-    if (containerRef.current) containerRef.current.style.cursor = 'auto';
+    if (containerRef.current) containerRef.current.style.cursor = "auto";
 
-    const imgSrc = item.querySelector('img')?.src || '';
+    const imgSrc = item.querySelector("img")?.src || "";
     const itemWidth = parseInt(item.dataset.width, 10);
     const itemHeight = parseInt(item.dataset.height, 10);
 
@@ -299,21 +322,25 @@ export default function Projects() {
     animateOverlayIn();
 
     // 建立展開元件
-    const expanded = document.createElement('div');
-    expanded.className = 'gallery-expanded-item';
+    const expanded = document.createElement("div");
+    expanded.className = "gallery-expanded-item";
     expanded.style.width = `${itemWidth}px`;
     expanded.style.height = `${itemHeight}px`;
-    const img = document.createElement('img');
+    const img = document.createElement("img");
     img.src = imgSrc;
-    img.classList.add('clickable');
-    img.setAttribute('data-clickable', 'true');
+    img.classList.add("clickable");
+    img.setAttribute("data-clickable", "true");
     expanded.appendChild(img);
     // 點擊展開圖：先確保收尾（overlay 與節點移除）再導頁，避免殘留
-    img.addEventListener('click', () => {
+    img.addEventListener("click", () => {
       hideTitleImmediately();
       const overlay = overlayRef.current;
       if (overlay) {
-        gsap.to(overlay, { opacity: 0, duration: 0.2, onComplete: () => overlay.classList.remove('active') });
+        gsap.to(overlay, {
+          opacity: 0,
+          duration: 0.2,
+          onComplete: () => overlay.classList.remove("active"),
+        });
       }
       gsap.to(expanded, {
         opacity: 0,
@@ -324,19 +351,26 @@ export default function Projects() {
           }
           s.expandedItem = null;
           s.isExpanded = false;
-          navigate(`/project/${projectId}`);
+          navigate(`/projects/${projectId}`);
         },
       });
     });
     // 將展開節點附加在本頁容器內，避免脫離 #root 後建立更高層的堆疊上下文
-    const host = containerRef.current || document.getElementById('gallery-canvas') || document.body;
+    const host =
+      containerRef.current ||
+      document.getElementById("gallery-canvas") ||
+      document.body;
     host.appendChild(expanded);
     s.expandedItem = expanded;
 
     // 其它卡片淡出
-    document.querySelectorAll('.gallery-item').forEach((el) => {
+    document.querySelectorAll(".gallery-item").forEach((el) => {
       if (el !== s.activeItem) {
-        gsap.to(el, { opacity: 0, duration: settings.overlayEaseDuration, ease: 'power2.inOut' });
+        gsap.to(el, {
+          opacity: 0,
+          duration: settings.overlayEaseDuration,
+          ease: "power2.inOut",
+        });
       }
     });
 
@@ -369,8 +403,8 @@ export default function Projects() {
         x: 0,
         y: 0,
         duration: settings.zoomDuration,
-        ease: 'hop',
-      },
+        ease: "hop",
+      }
     );
   };
 
@@ -383,9 +417,14 @@ export default function Projects() {
     animateOverlayOut();
 
     // 其它卡片淡入
-    document.querySelectorAll('.gallery-item').forEach((el) => {
+    document.querySelectorAll(".gallery-item").forEach((el) => {
       if (el.id !== s.activeItemId) {
-        gsap.to(el, { opacity: 1, duration: settings.overlayEaseDuration, delay: 0.3, ease: 'power2.inOut' });
+        gsap.to(el, {
+          opacity: 1,
+          duration: settings.overlayEaseDuration,
+          delay: 0.3,
+          ease: "power2.inOut",
+        });
       }
     });
 
@@ -399,7 +438,7 @@ export default function Projects() {
       x: originalRect.left + originalWidth / 2 - window.innerWidth / 2,
       y: originalRect.top + originalHeight / 2 - window.innerHeight / 2,
       duration: settings.zoomDuration,
-      ease: 'hop',
+      ease: "hop",
       onComplete: () => {
         if (s.expandedItem && s.expandedItem.parentNode) {
           s.expandedItem.parentNode.removeChild(s.expandedItem);
@@ -410,7 +449,7 @@ export default function Projects() {
         s.originalPosition = null;
         s.activeItemId = null;
         s.canDrag = true;
-        if (containerRef.current) containerRef.current.style.cursor = 'grab';
+        if (containerRef.current) containerRef.current.style.cursor = "grab";
         s.dragVelocityX = 0;
         s.dragVelocityY = 0;
       },
@@ -462,15 +501,16 @@ export default function Projects() {
     s.itemGap = settings.itemGap;
     s.columns = 4;
     s.cellWidth = settings.baseWidth + settings.itemGap;
-    s.cellHeight = Math.max(settings.smallHeight, settings.largeHeight) + settings.itemGap;
+    s.cellHeight =
+      Math.max(settings.smallHeight, settings.largeHeight) + settings.itemGap;
 
     // 初次渲染
     updateVisibleItems();
     animateLoop();
 
     // 本頁：僅隱藏捲軸，不干預自訂游標
-    document.body.classList.add('projects-no-scroll');
-    document.documentElement.classList.add('projects-no-scroll-html');
+    document.body.classList.add("projects-no-scroll");
+    document.documentElement.classList.add("projects-no-scroll-html");
 
     // 監聽 Header 開關（body.menu-open）以切換游標
     // 不監聽 menu-open，避免干預游標
@@ -481,7 +521,7 @@ export default function Projects() {
       s.mouseHasMoved = false;
       s.startX = e.clientX;
       s.startY = e.clientY;
-      if (containerRef.current) containerRef.current.style.cursor = 'grabbing';
+      if (containerRef.current) containerRef.current.style.cursor = "grabbing";
     };
     const onMouseMove = (e) => {
       if (!s.isDragging || !s.canDrag) return;
@@ -502,8 +542,11 @@ export default function Projects() {
       if (!s.isDragging) return;
       s.isDragging = false;
       if (s.canDrag && containerRef.current) {
-        containerRef.current.style.cursor = 'grab';
-        if (Math.abs(s.dragVelocityX) > 0.1 || Math.abs(s.dragVelocityY) > 0.1) {
+        containerRef.current.style.cursor = "grab";
+        if (
+          Math.abs(s.dragVelocityX) > 0.1 ||
+          Math.abs(s.dragVelocityY) > 0.1
+        ) {
           s.targetX += s.dragVelocityX * settings.momentumFactor;
           s.targetY += s.dragVelocityY * settings.momentumFactor;
         }
@@ -513,9 +556,15 @@ export default function Projects() {
       if (s.isExpanded && s.expandedItem && s.originalPosition) {
         const viewportWidth = window.innerWidth;
         const targetWidth = viewportWidth * settings.expandedScale;
-        const aspectRatio = s.originalPosition.height / s.originalPosition.width;
+        const aspectRatio =
+          s.originalPosition.height / s.originalPosition.width;
         const targetHeight = targetWidth * aspectRatio;
-        gsap.to(s.expandedItem, { width: targetWidth, height: targetHeight, duration: 0.3, ease: 'power2.out' });
+        gsap.to(s.expandedItem, {
+          width: targetWidth,
+          height: targetHeight,
+          duration: 0.3,
+          ease: "power2.out",
+        });
       } else {
         updateVisibleItems();
       }
@@ -531,7 +580,7 @@ export default function Projects() {
       s.startX = t.clientX;
       s.startY = t.clientY;
       s.lastDragTime = Date.now();
-      if (containerRef.current) containerRef.current.style.cursor = 'grabbing';
+      if (containerRef.current) containerRef.current.style.cursor = "grabbing";
     };
     const onTouchMove = (e) => {
       if (!s.isDragging || !s.canDrag) return;
@@ -556,8 +605,11 @@ export default function Projects() {
       if (!s.isDragging) return;
       s.isDragging = false;
       if (s.canDrag && containerRef.current) {
-        containerRef.current.style.cursor = 'grab';
-        if (Math.abs(s.dragVelocityX) > 0.1 || Math.abs(s.dragVelocityY) > 0.1) {
+        containerRef.current.style.cursor = "grab";
+        if (
+          Math.abs(s.dragVelocityX) > 0.1 ||
+          Math.abs(s.dragVelocityY) > 0.1
+        ) {
           s.targetX += s.dragVelocityX * settings.momentumFactor;
           s.targetY += s.dragVelocityY * settings.momentumFactor;
         }
@@ -565,38 +617,40 @@ export default function Projects() {
     };
 
     const containerEl = containerRef.current;
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
     // 觸控拖曳監聽
-    window.addEventListener('touchmove', onTouchMove, { passive: false });
-    window.addEventListener('touchend', onTouchEnd);
-    window.addEventListener('resize', onResize);
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd);
+    window.addEventListener("resize", onResize);
     if (containerEl) {
-      containerEl.addEventListener('mousedown', onMouseDown);
-      containerEl.addEventListener('touchstart', onTouchStart, { passive: false });
+      containerEl.addEventListener("mousedown", onMouseDown);
+      containerEl.addEventListener("touchstart", onTouchStart, {
+        passive: false,
+      });
     }
 
     // 禁用滾動（本頁使用拖曳取代滾動）
     const preventScroll = (e) => {
       e.preventDefault();
     };
-    window.addEventListener('wheel', preventScroll, { passive: false });
-    window.addEventListener('touchmove', preventScroll, { passive: false });
+    window.addEventListener("wheel", preventScroll, { passive: false });
+    window.addEventListener("touchmove", preventScroll, { passive: false });
 
     const overlayEl = overlayRef.current;
 
     return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-      window.removeEventListener('touchmove', onTouchMove);
-      window.removeEventListener('touchend', onTouchEnd);
-      window.removeEventListener('resize', onResize);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("resize", onResize);
       if (containerEl) {
-        containerEl.removeEventListener('mousedown', onMouseDown);
-        containerEl.removeEventListener('touchstart', onTouchStart);
+        containerEl.removeEventListener("mousedown", onMouseDown);
+        containerEl.removeEventListener("touchstart", onTouchStart);
       }
-      window.removeEventListener('wheel', preventScroll);
-      window.removeEventListener('touchmove', preventScroll);
+      window.removeEventListener("wheel", preventScroll);
+      window.removeEventListener("touchmove", preventScroll);
 
       // 清理 rAF 與任何殘留節點（如展開圖）
       if (s.rafId) cancelAnimationFrame(s.rafId);
@@ -604,11 +658,11 @@ export default function Projects() {
         s.expandedItem.parentNode.removeChild(s.expandedItem);
         s.expandedItem = null;
       }
-      if (overlayEl) overlayEl.classList.remove('active');
+      if (overlayEl) overlayEl.classList.remove("active");
 
       // 恢復游標與捲軸狀態
-      document.body.classList.remove('hide-cursor', 'projects-no-scroll');
-      document.documentElement.classList.remove('projects-no-scroll-html');
+      document.body.classList.remove("hide-cursor", "projects-no-scroll");
+      document.documentElement.classList.remove("projects-no-scroll-html");
       // 無需 observer
     };
   }, [navigate]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -637,5 +691,3 @@ export default function Projects() {
     </div>
   );
 }
-
-

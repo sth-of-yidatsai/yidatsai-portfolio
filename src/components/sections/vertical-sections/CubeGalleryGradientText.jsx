@@ -486,7 +486,7 @@ export default function CubeGallery({
 
   const activeProject = projectById.get(faceMap[activeFace].projectId);
   const activeHref = displayProject
-    ? `https://www.yidatsai.com/project/${displayProject.id}`
+    ? `https://www.yidatsai.com/projects/${displayProject.id}`
     : "#";
 
   // 處理文字動畫轉場
