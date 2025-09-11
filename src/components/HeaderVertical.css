@@ -509,11 +509,11 @@ body.menu-open {
 
 .info-value {
   font-family: var(--font-latin-display), var(--font-cjk);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: var(--font-medium);
   color: var(--gray-50);
   background-blend-mode: difference;
-  letter-spacing: 0.125rem;
+  letter-spacing: 0.1rem;
   text-align: center;
   writing-mode: vertical-rl;
   text-orientation: mixed;
