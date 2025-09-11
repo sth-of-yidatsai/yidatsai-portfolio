@@ -4,7 +4,7 @@
   right: 0;
   width: 6px; /* 扁平極細 */
   height: 100vh;
-  background: var(--gs-track, transparent);
+  background: var(--gray-100);
   z-index: 1200; /* 高於內容，低於全局導航如需調整 */
   opacity: 0;
   pointer-events: none; /* 預設不攔截，避免遮擋內容 */
@@ -21,7 +21,7 @@
   left: 0;
   top: 0;
   width: 100%;
-  background: var(--gs-thumb, var(--color-primary));
+  background: var(--gray-800);
   cursor: grab;
   will-change: transform, height;
 }

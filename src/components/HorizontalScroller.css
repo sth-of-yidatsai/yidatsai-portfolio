@@ -32,7 +32,7 @@ html {
   left: 64px; /* 從 Header 右側開始 */
   width: calc(100vw - 64px); /* 減去 Header 寬度 */
   height: 6px; /* 與 GlobalScrollbar 一致的扁平極細 */
-  background: var(--hs-track, transparent);
+  background: var(--gray-100);
   z-index: 1200; /* 與 GlobalScrollbar 相同的 z-index */
   opacity: 0;
   pointer-events: none; /* 預設不攔截，避免遮擋內容 */
@@ -49,7 +49,7 @@ html {
   left: 0;
   top: 0;
   height: 100%;
-  background: var(--hs-thumb, var(--color-primary));
+  background: var(--gray-800);
   cursor: grab;
   will-change: transform;
 }

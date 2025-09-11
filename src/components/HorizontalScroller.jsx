@@ -10,42 +10,6 @@ import {
 } from "./sections/horizontal-sections";
 import { VisionSection, PracticesSection } from "./sections/vertical-sections";
 
-// 顏色解析和反色邏輯 - 與 GlobalScrollbar 一致
-function parseRGBA(color) {
-  if (!color) return { r: 255, g: 255, b: 255, a: 1 };
-  const ctx = color.trim().toLowerCase();
-  if (ctx.startsWith("#")) {
-    const hex = ctx.slice(1);
-    const to255 = (h) => parseInt(h.length === 1 ? h + h : h, 16);
-    if (hex.length === 3) {
-      return { r: to255(hex[0]), g: to255(hex[1]), b: to255(hex[2]), a: 1 };
-    }
-    if (hex.length === 6) {
-      return {
-        r: to255(hex.slice(0, 2)),
-        g: to255(hex.slice(2, 4)),
-        b: to255(hex.slice(4, 6)),
-        a: 1,
-      };
-    }
-  }
-  const m = ctx.match(/rgba?\(([^)]+)\)/);
-  if (!m) return { r: 255, g: 255, b: 255, a: 1 };
-  const parts = m[1].split(",").map((v) => v.trim());
-  const r = parseFloat(parts[0]);
-  const g = parseFloat(parts[1]);
-  const b = parseFloat(parts[2]);
-  const a = parts[3] !== undefined ? parseFloat(parts[3]) : 1;
-  return { r, g, b, a: Number.isNaN(a) ? 1 : a };
-}
-
-function isDarkColor(color) {
-  const { r, g, b, a } = parseRGBA(color);
-  if (a === 0) return false;
-  const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-  return luminance < 0.5;
-}
-
 function getCSSVar(name, fallback) {
   const v = getComputedStyle(document.documentElement)
     .getPropertyValue(name)
@@ -69,13 +33,10 @@ export default function HorizontalScroller() {
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInHorizontalSection, setIsInHorizontalSection] = useState(false);
-  const [colors, setColors] = useState({
-    track: getCSSVar("--scrollbar-track", getCSSVar("--gray-300", "#a6a6a6")),
-    thumb: getCSSVar(
-      "--scrollbar-thumb-light",
-      getCSSVar("--gray-0", "#ffffff")
-    ),
-  });
+  const colors = {
+    track: getCSSVar("--gray-100", "#e0e0e0"),
+    thumb: getCSSVar("--gray-800", "#1a1a1a"),
+  };
 
   // 檢測是否為移動設備
   const [isMobile, setIsMobile] = useState(false);
@@ -93,64 +54,6 @@ export default function HorizontalScroller() {
 
   // 使用導入的 section 配置
   const sections = sectionConfigs;
-
-  // 計算和設置顏色 - track 固定，只有 thumb 反色
-  const computeAndSetColors = () => {
-    const trackEl = scrollbarRef.current;
-    if (!trackEl) return;
-    const rect = trackEl.getBoundingClientRect();
-    const cx = Math.min(
-      window.innerWidth - 2,
-      Math.max(0, rect.left + rect.width / 2)
-    );
-    const cy = Math.min(
-      window.innerHeight - 2,
-      Math.max(0, rect.top + rect.height / 2)
-    );
-    const prev = trackEl.style.pointerEvents;
-    trackEl.style.pointerEvents = "none";
-    let el = document.elementFromPoint(cx, cy);
-    trackEl.style.pointerEvents = prev || "";
-    let bg = "";
-    while (el && el !== document.documentElement && el !== document.body) {
-      const cs = getComputedStyle(el);
-      if (
-        cs &&
-        cs.backgroundColor &&
-        cs.backgroundColor !== "rgba(0, 0, 0, 0)" &&
-        cs.backgroundColor !== "transparent"
-      ) {
-        bg = cs.backgroundColor;
-        break;
-      }
-      el = el.parentElement;
-    }
-    if (!bg) {
-      bg =
-        getComputedStyle(document.body).backgroundColor || "rgb(255,255,255)";
-    }
-    const darkUnderlay = isDarkColor(bg);
-    const trackColor = getCSSVar(
-      "--scrollbar-track",
-      getCSSVar("--gray-300", "#a6a6a6")
-    );
-    const thumbLightColor = getCSSVar(
-      "--scrollbar-thumb-light",
-      getCSSVar("--gray-0", "#ffffff")
-    );
-    const thumbDarkColor = getCSSVar(
-      "--scrollbar-thumb-dark",
-      getCSSVar("--gray-900", "#0a0a0a")
-    );
-
-    if (darkUnderlay) {
-      // 深色底：track 固定灰色，thumb 淺色
-      setColors({ track: trackColor, thumb: thumbLightColor });
-    } else {
-      // 淺色底：track 固定灰色，thumb 深色
-      setColors({ track: trackColor, thumb: thumbDarkColor });
-    }
-  };
 
   useLayoutEffect(() => {
     const container = containerRef.current;
@@ -220,7 +123,6 @@ export default function HorizontalScroller() {
             );
 
             setScrollProgress(horizontalProgress);
-            computeAndSetColors();
           },
           onEnter: () => {
             setIsInHorizontalSection(true);
@@ -461,11 +363,6 @@ export default function HorizontalScroller() {
       });
     }
   };
-
-  // 初始化顏色
-  useEffect(() => {
-    computeAndSetColors();
-  }, [isInHorizontalSection]);
 
   // 所有設備都使用水平滾動，但移動設備有優化的觸控體驗
   return (

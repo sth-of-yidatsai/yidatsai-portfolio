@@ -3,41 +3,6 @@ import "./GlobalScrollbar.css";
 
 const MIN_THUMB_HEIGHT_PX = 32;
 
-function parseRGBA(color) {
-  if (!color) return { r: 255, g: 255, b: 255, a: 1 };
-  const ctx = color.trim().toLowerCase();
-  if (ctx.startsWith("#")) {
-    const hex = ctx.slice(1);
-    const to255 = (h) => parseInt(h.length === 1 ? h + h : h, 16);
-    if (hex.length === 3) {
-      return { r: to255(hex[0]), g: to255(hex[1]), b: to255(hex[2]), a: 1 };
-    }
-    if (hex.length === 6) {
-      return {
-        r: to255(hex.slice(0, 2)),
-        g: to255(hex.slice(2, 4)),
-        b: to255(hex.slice(4, 6)),
-        a: 1,
-      };
-    }
-  }
-  const m = ctx.match(/rgba?\(([^)]+)\)/);
-  if (!m) return { r: 255, g: 255, b: 255, a: 1 };
-  const parts = m[1].split(",").map((v) => v.trim());
-  const r = parseFloat(parts[0]);
-  const g = parseFloat(parts[1]);
-  const b = parseFloat(parts[2]);
-  const a = parts[3] !== undefined ? parseFloat(parts[3]) : 1;
-  return { r, g, b, a: Number.isNaN(a) ? 1 : a };
-}
-
-function isDarkColor(color) {
-  const { r, g, b, a } = parseRGBA(color);
-  if (a === 0) return false;
-  const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-  return luminance < 0.5;
-}
-
 function getCSSVar(name, fallback) {
   const v = getComputedStyle(document.documentElement)
     .getPropertyValue(name)
@@ -57,69 +22,9 @@ export default function GlobalScrollbar() {
   const [active, setActive] = useState(false);
   const [thumbHeight, setThumbHeight] = useState(MIN_THUMB_HEIGHT_PX);
   const [thumbTop, setThumbTop] = useState(0);
-  const [colors, setColors] = useState({
-    track: getCSSVar("--scrollbar-track", getCSSVar("--gray-300", "#a6a6a6")),
-    thumb: getCSSVar(
-      "--scrollbar-thumb-light",
-      getCSSVar("--gray-0", "#ffffff")
-    ),
-  });
-
-  const computeAndSetColors = () => {
-    const trackEl = trackRef.current;
-    if (!trackEl) return;
-    const rect = trackEl.getBoundingClientRect();
-    const cx = Math.min(
-      window.innerWidth - 2,
-      Math.max(0, rect.left + rect.width / 2)
-    );
-    const cy = Math.min(
-      window.innerHeight - 2,
-      Math.max(0, rect.top + rect.height / 2)
-    );
-    const prev = trackEl.style.pointerEvents;
-    trackEl.style.pointerEvents = "none";
-    let el = document.elementFromPoint(cx, cy);
-    trackEl.style.pointerEvents = prev || "";
-    let bg = "";
-    while (el && el !== document.documentElement && el !== document.body) {
-      const cs = getComputedStyle(el);
-      if (
-        cs &&
-        cs.backgroundColor &&
-        cs.backgroundColor !== "rgba(0, 0, 0, 0)" &&
-        cs.backgroundColor !== "transparent"
-      ) {
-        bg = cs.backgroundColor;
-        break;
-      }
-      el = el.parentElement;
-    }
-    if (!bg) {
-      bg =
-        getComputedStyle(document.body).backgroundColor || "rgb(255,255,255)";
-    }
-    const darkUnderlay = isDarkColor(bg);
-    const trackColor = getCSSVar(
-      "--scrollbar-track",
-      getCSSVar("--gray-300", "#a6a6a6")
-    );
-    const thumbLightColor = getCSSVar(
-      "--scrollbar-thumb-light",
-      getCSSVar("--gray-0", "#ffffff")
-    );
-    const thumbDarkColor = getCSSVar(
-      "--scrollbar-thumb-dark",
-      getCSSVar("--gray-900", "#0a0a0a")
-    );
-
-    if (darkUnderlay) {
-      // 深色底：track 固定灰色，thumb 淺色
-      setColors({ track: trackColor, thumb: thumbLightColor });
-    } else {
-      // 淺色底：track 固定灰色，thumb 深色
-      setColors({ track: trackColor, thumb: thumbDarkColor });
-    }
+  const colors = {
+    track: getCSSVar("--gray-100", "#e0e0e0"),
+    thumb: getCSSVar("--gray-800", "#1a1a1a"),
   };
 
   const updateThumbMetrics = () => {
@@ -228,21 +133,18 @@ export default function GlobalScrollbar() {
 
   useEffect(() => {
     updateThumbMetrics();
-    computeAndSetColors();
     let resizeRaf = 0;
     let scrollRaf = 0;
     const onResize = () => {
       cancelAnimationFrame(resizeRaf);
       resizeRaf = requestAnimationFrame(() => {
         updateThumbMetrics();
-        computeAndSetColors();
       });
     };
     const onScroll = () => {
       cancelAnimationFrame(scrollRaf);
       scrollRaf = requestAnimationFrame(() => {
         updateThumbMetrics();
-        computeAndSetColors();
       });
     };
     window.addEventListener("resize", onResize);
