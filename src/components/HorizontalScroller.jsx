@@ -3,6 +3,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalScroller.css";
 import {
+  OverviewSection,
+  MissionSection,
   ProjectsSection,
   sectionConfigs,
 } from "./sections/horizontal-sections";
@@ -164,9 +166,11 @@ export default function HorizontalScroller() {
       gsap.set(scroller, { width: totalWidth });
 
       // 建立水平滾動動畫
-      // 增加停頓區域 - 相當於一個螢幕寬度的額外滾動距離
+      // 增加停頓區域 - 開始和結束都有停頓，相當於兩個螢幕寬度的額外滾動距離
       const pauseZoneHeight = window.innerHeight;
       const horizontalScrollDistance = totalWidth - availableWidth;
+      const totalScrollDistance =
+        horizontalScrollDistance + pauseZoneHeight * 2; // 開始和結束各一個停頓區
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -174,20 +178,29 @@ export default function HorizontalScroller() {
           pin: true,
           scrub: 1,
           start: "top top",
-          end: () => `+=${horizontalScrollDistance + pauseZoneHeight}`,
+          end: () => `+=${totalScrollDistance}`,
           onUpdate: (self) => {
             // 計算實際的水平滾動進度
-            // 當 self.progress 到達水平滾動完成點時，應該保持在 1.0
-            const horizontalProgressThreshold =
-              horizontalScrollDistance /
-              (horizontalScrollDistance + pauseZoneHeight);
+            // 開始停頓區 -> 水平滾動階段 -> 結束停頓區
+            const startPauseThreshold = pauseZoneHeight / totalScrollDistance;
+            const horizontalStartThreshold = startPauseThreshold;
+            const horizontalEndThreshold =
+              (pauseZoneHeight + horizontalScrollDistance) /
+              totalScrollDistance;
 
             let horizontalProgress;
-            if (self.progress <= horizontalProgressThreshold) {
+            if (self.progress <= horizontalStartThreshold) {
+              // 在開始停頓區階段，保持水平滾動開始狀態
+              horizontalProgress = 0.0;
+            } else if (self.progress <= horizontalEndThreshold) {
               // 在水平滾動階段
-              horizontalProgress = self.progress / horizontalProgressThreshold;
+              const horizontalRange =
+                horizontalEndThreshold - horizontalStartThreshold;
+              const horizontalProgressInRange =
+                (self.progress - horizontalStartThreshold) / horizontalRange;
+              horizontalProgress = horizontalProgressInRange;
             } else {
-              // 在停頓區階段，保持水平滾動完成狀態
+              // 在結束停頓區階段，保持水平滾動完成狀態
               horizontalProgress = 1.0;
             }
 
@@ -196,10 +209,14 @@ export default function HorizontalScroller() {
               self.progress,
               "Horizontal Progress:",
               horizontalProgress,
-              "Threshold:",
-              horizontalProgressThreshold,
-              "In Pause Zone:",
-              self.progress > horizontalProgressThreshold
+              "Start Threshold:",
+              horizontalStartThreshold,
+              "End Threshold:",
+              horizontalEndThreshold,
+              "In Start Pause:",
+              self.progress <= horizontalStartThreshold,
+              "In End Pause:",
+              self.progress > horizontalEndThreshold
             );
 
             setScrollProgress(horizontalProgress);
@@ -226,36 +243,30 @@ export default function HorizontalScroller() {
         },
       });
 
-      // 水平移動動畫 - 只在水平滾動階段進行
-      // 計算動畫持續時間比例（排除停頓區）
-      const animationDuration =
-        horizontalScrollDistance / (horizontalScrollDistance + pauseZoneHeight);
+      // 水平移動動畫 - 三階段：開始停頓 -> 水平滾動 -> 結束停頓
+      const startPauseDuration = pauseZoneHeight / totalScrollDistance;
+      const horizontalScrollDuration =
+        horizontalScrollDistance / totalScrollDistance;
+      const endPauseDuration = pauseZoneHeight / totalScrollDistance;
 
+      // 開始停頓區：保持初始位置
       tl.to(scroller, {
-        x: () => -(totalWidth - availableWidth),
+        x: 0,
         ease: "none",
-        duration: animationDuration,
+        duration: startPauseDuration,
       })
-        // 在停頓區階段保持位置不變
+        // 水平滾動階段：從 0 移動到 -(totalWidth - availableWidth)
         .to(scroller, {
           x: () => -(totalWidth - availableWidth),
           ease: "none",
-          duration: 1 - animationDuration,
+          duration: horizontalScrollDuration,
+        })
+        // 結束停頓區：保持最終位置
+        .to(scroller, {
+          x: () => -(totalWidth - availableWidth),
+          ease: "none",
+          duration: endPauseDuration,
         });
-
-      // Sticky 效果處理
-      sections.forEach((_, index) => {
-        if (index === 0) return; // 第一個不需要 sticky 效果
-
-        const stickyElement = scroller.querySelector(`.hs-section-${index}`);
-        if (stickyElement) {
-          gsap.set(stickyElement, {
-            position: "sticky",
-            left: 0,
-            zIndex: index,
-          });
-        }
-      });
     }, container);
 
     // 存儲context到ref
@@ -465,17 +476,17 @@ export default function HorizontalScroller() {
             // 根據 section.id 渲染對應的組件
             const renderSection = () => {
               switch (section.id) {
+                case "overview":
+                  return <OverviewSection config={section} index={index} />;
+                case "mission":
+                  return <MissionSection config={section} index={index} />;
                 case "practices":
                   return <PracticesSection config={section} index={index} />;
                 case "projects":
                   return <ProjectsSection config={section} index={index} />;
                 default:
                   return (
-                    <div
-                      className={`hs-section hs-section-${index} ${
-                        index > 0 ? "sticky" : ""
-                      }`}
-                    ></div>
+                    <div className={`hs-section hs-section-${index}`}></div>
                   );
               }
             };

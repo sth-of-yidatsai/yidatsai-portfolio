@@ -1,0 +1,55 @@
+.hs-section {
+  width: calc(100vw - 64px);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: transparent;
+}
+
+.hs-section.overview-section {
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Overview Section 樣式 */
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--space-md);
+  height: 100%;
+  width: 100%;
+  padding: var(--space-lg);
+}
+
+/* 左上角文字區塊 */
+.overview-text-block {
+  grid-column: 1 / span 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.overview-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  line-height: 1.1;
+}
+
+.title-headline {
+  font-family: var(--font-latin-display), var(--font-cjk);
+  font-size: 4rem;
+  font-weight: var(--font-regular);
+  color: var(--gray-700);
+  letter-spacing: 0.03em;
+}
+
+.title-headline.title-italic {
+  font-family: var(--font-pphatton);
+  font-weight: var(--font-light);
+  font-style: italic;
+}
