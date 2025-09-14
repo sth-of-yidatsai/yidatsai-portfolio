@@ -20,11 +20,11 @@ export default function HeroSection({ index }) {
   // 輪播配置 - 指定專案ID和圖片索引
   const carouselConfig = React.useMemo(
     () => [
-      { projectId: "project-001", imageIndex: 0 },
-      { projectId: "project-002", imageIndex: 0 },
-      { projectId: "project-003", imageIndex: 0 },
-      { projectId: "project-004", imageIndex: 0 },
-      { projectId: "project-002", imageIndex: 1 },
+      { projectId: "project-004", imageIndex: 8 },
+      { projectId: "project-003", imageIndex: 12 },
+      { projectId: "project-003", imageIndex: 3 },
+      { projectId: "project-005", imageIndex: 0 },
+      { projectId: "project-005", imageIndex: 2 },
     ],
     []
   );

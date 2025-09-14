@@ -21,27 +21,27 @@ export default function Projects() {
 
   // 設定與狀態
   const settingsRef = useRef({
-    baseWidth: 400,
-    smallHeight: 330,
-    largeHeight: 500,
-    itemGap: 65,
+    baseWidth: 360, // 3:4 直式比例，寬度
+    baseHeight: 480, // 3:4 直式比例，高度
+    itemGap: 72,
     hoverScale: 1.05,
     expandedScale: 0.5,
     dragEase: 0.075,
     momentumFactor: 200,
     bufferZone: 3,
-    borderRadius: 0,
+    borderRadius: 0, // 無圓角
     vignetteSize: 0,
     vignetteStrength: 0.7,
     vignettePageSize: 200,
     overlayOpacity: 0.9,
     overlayEaseDuration: 0.8,
     zoomDuration: 0.6,
+    offsetY: 320, // 列錯位偏移量
   });
 
   const stateRef = useRef({
     itemSizes: [],
-    itemGap: 65,
+    itemGap: 72,
     columns: 4,
     cellWidth: 0,
     cellHeight: 0,
@@ -124,15 +124,26 @@ export default function Projects() {
 
   // 工具
   const getItemId = (col, row) => `${col},${row}`;
-  const getItemPosition = (col, row, cellWidth, cellHeight) => ({
-    x: col * cellWidth,
-    y: row * cellHeight,
-  });
+  const getItemPosition = (col, row, cellWidth, cellHeight) => {
+    const settings = settingsRef.current;
+    // 奇數列（column）需要向下偏移，使用正確的模運算處理負數
+    const normalizedCol = ((col % 2) + 2) % 2; // 確保負數也能正確計算奇偶性
+    const isOddCol = normalizedCol === 1;
+    const offsetY = isOddCol ? settings.offsetY : 0;
 
-  const getItemSize = (row, col) => {
-    const { itemSizes, columns } = stateRef.current;
-    const sizeIndex = Math.abs((row * columns + col) % itemSizes.length);
-    return itemSizes[sizeIndex];
+    return {
+      x: col * cellWidth,
+      y: row * cellHeight + offsetY,
+    };
+  };
+
+  const getItemSize = () => {
+    const settings = settingsRef.current;
+    // 所有卡片統一尺寸 3:4 直式比例
+    return {
+      width: settings.baseWidth,
+      height: settings.baseHeight,
+    };
   };
 
   // 已移除標題進場顯示
@@ -225,7 +236,7 @@ export default function Projects() {
         if (s.visibleItems.has(itemId)) continue;
         if (s.activeItemId === itemId && s.isExpanded) continue;
 
-        const itemSize = getItemSize(row, col);
+        const itemSize = getItemSize();
         const pos = getItemPosition(col, row, s.cellWidth, s.cellHeight);
 
         const item = document.createElement("div");
@@ -245,7 +256,7 @@ export default function Projects() {
         const rawIndex = row * s.columns + col;
         const idx = ((rawIndex % total) + total) % total;
         const project = allItems[idx];
-        const imageUrl = project?.projectImages?.[0] || "";
+        const imageUrl = project?.coverImage || "";
         const title = project?.title || "";
         const projectId = project?.id || "";
 
@@ -384,10 +395,12 @@ export default function Projects() {
       height: itemHeight,
     };
 
-    const viewportWidth = window.innerWidth;
-    const targetWidth = viewportWidth * settings.expandedScale;
+    const viewportHeight = window.innerHeight;
     const aspectRatio = itemHeight / itemWidth;
-    const targetHeight = targetWidth * aspectRatio;
+
+    // 縱向圖片放大至螢幕高度100%
+    const targetHeight = viewportHeight;
+    const targetWidth = targetHeight / aspectRatio;
 
     gsap.fromTo(
       expanded,
@@ -494,15 +507,10 @@ export default function Projects() {
 
     const settings = settingsRef.current;
     const s = stateRef.current;
-    s.itemSizes = [
-      { width: settings.baseWidth, height: settings.smallHeight },
-      { width: settings.baseWidth, height: settings.largeHeight },
-    ];
     s.itemGap = settings.itemGap;
     s.columns = 4;
     s.cellWidth = settings.baseWidth + settings.itemGap;
-    s.cellHeight =
-      Math.max(settings.smallHeight, settings.largeHeight) + settings.itemGap;
+    s.cellHeight = settings.baseHeight + 80 + settings.itemGap; // 加上 caption 高度，適應更大的卡片
 
     // 初次渲染
     updateVisibleItems();
@@ -554,11 +562,14 @@ export default function Projects() {
     };
     const onResize = () => {
       if (s.isExpanded && s.expandedItem && s.originalPosition) {
-        const viewportWidth = window.innerWidth;
-        const targetWidth = viewportWidth * settings.expandedScale;
+        const viewportHeight = window.innerHeight;
         const aspectRatio =
           s.originalPosition.height / s.originalPosition.width;
-        const targetHeight = targetWidth * aspectRatio;
+
+        // 縱向圖片放大至螢幕高度100%
+        const targetHeight = viewportHeight;
+        const targetWidth = targetHeight / aspectRatio;
+
         gsap.to(s.expandedItem, {
           width: targetWidth,
           height: targetHeight,

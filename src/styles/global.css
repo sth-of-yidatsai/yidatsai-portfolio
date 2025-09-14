@@ -256,7 +256,6 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
-  border-radius: var(--radius-sm);
   /* 防止拖拽和右鍵選單 */
   -webkit-user-drag: none;
   -khtml-user-drag: none;
@@ -502,6 +501,59 @@ em {
   margin-bottom: var(--space-xl);
 }
 
+.ml-xs {
+  margin-left: var(--space-xs);
+}
+.ml-sm {
+  margin-left: var(--space-sm);
+}
+.ml-md {
+  margin-left: var(--space-md);
+}
+.ml-lg {
+  margin-left: var(--space-lg);
+}
+.ml-xl {
+  margin-left: var(--space-xl);
+}
+
+.mr-xs {
+  margin-right: var(--space-xs);
+}
+.mr-sm {
+  margin-right: var(--space-sm);
+}
+.mr-md {
+  margin-right: var(--space-md);
+}
+.mr-lg {
+  margin-right: var(--space-lg);
+}
+.mr-xl {
+  margin-right: var(--space-xl);
+}
+
+.mx-xs {
+  margin-left: var(--space-xs);
+  margin-right: var(--space-xs);
+}
+.mx-sm {
+  margin-left: var(--space-sm);
+  margin-right: var(--space-sm);
+}
+.mx-md {
+  margin-left: var(--space-md);
+  margin-right: var(--space-md);
+}
+.mx-lg {
+  margin-left: var(--space-lg);
+  margin-right: var(--space-lg);
+}
+.mx-xl {
+  margin-left: var(--space-xl);
+  margin-right: var(--space-xl);
+}
+
 .pt-xs {
   padding-top: var(--space-xs);
 }
@@ -532,6 +584,58 @@ em {
 }
 .pb-xl {
   padding-bottom: var(--space-xl);
+}
+
+.pl-xs {
+  padding-left: var(--space-xs);
+}
+.pl-sm {
+  padding-left: var(--space-sm);
+}
+.pl-md {
+  padding-left: var(--space-md);
+}
+.pl-lg {
+  padding-left: var(--space-lg);
+}
+.pl-xl {
+  padding-left: var(--space-xl);
+}
+.pr-xs {
+  padding-right: var(--space-xs);
+}
+.pr-sm {
+  padding-right: var(--space-sm);
+}
+.pr-md {
+  padding-right: var(--space-md);
+}
+.pr-lg {
+  padding-right: var(--space-lg);
+}
+.pr-xl {
+  padding-right: var(--space-xl);
+}
+
+.px-xs {
+  padding-left: var(--space-xs);
+  padding-right: var(--space-xs);
+}
+.px-sm {
+  padding-left: var(--space-sm);
+  padding-right: var(--space-sm);
+}
+.px-md {
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+}
+.px-lg {
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
+}
+.px-xl {
+  padding-left: var(--space-xl);
+  padding-right: var(--space-xl);
 }
 
 /* 12. 自訂滑鼠游標相關樣式 */

@@ -54,11 +54,11 @@ export default function Header() {
   // 輪播配置 - 指定專案ID和圖片索引
   const carouselConfig = React.useMemo(
     () => [
-      { projectId: "project-001", imageIndex: 0 },
-      { projectId: "project-002", imageIndex: 0 },
-      { projectId: "project-003", imageIndex: 0 },
-      { projectId: "project-004", imageIndex: 0 },
-      { projectId: "project-002", imageIndex: 1 },
+      { projectId: "project-004", imageIndex: 5 },
+      { projectId: "project-004", imageIndex: 8 },
+      { projectId: "project-003", imageIndex: 2 },
+      { projectId: "project-005", imageIndex: 4 },
+      { projectId: "project-005", imageIndex: 1 },
     ],
     []
   );

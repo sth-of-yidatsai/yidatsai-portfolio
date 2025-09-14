@@ -37,17 +37,21 @@ html.projects-no-scroll-html {
 /* 卡片 */
 .gallery-item {
   position: absolute;
-  overflow: hidden;
-  background-color: #000000;
+  overflow: visible; /* 改為 visible 讓 caption 可以顯示在卡片外 */
+  background-color: transparent; /* 移除背景色，讓圖片和 caption 分開 */
   cursor: pointer;
   border-radius: var(--border-radius, 0px);
+  display: flex;
+  flex-direction: column;
 }
 
 .gallery-item-image-container {
   width: 100%;
-  height: 100%;
+  height: 480px; /* 固定圖片高度為 3:4 直式比例 */
   overflow: hidden;
   position: relative;
+  background-color: #000000;
+  border-radius: var(--border-radius, 0px);
 }
 
 .gallery-item-image-container::after {
@@ -75,35 +79,34 @@ html.projects-no-scroll-html {
 }
 
 .gallery-item-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  position: relative;
   width: 100%;
-  padding: 10px;
+  padding: 16px 0 0 0; /* 適應更大的卡片，增加間距 */
   z-index: 2;
+  background-color: transparent;
 }
 
 .gallery-item-name {
   font-family: var(--font-stack);
   color: #ffffff;
-  font-size: 12px;
+  font-size: 14px; /* 適應更大的卡片，微微增大字體 */
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: -0.03em;
-  margin-bottom: 2px;
+  margin-bottom: 6px;
   position: relative;
   overflow: hidden;
-  height: 16px;
+  height: 18px;
 }
 
 .gallery-item-number {
   font-family: var(--font-latin);
   color: #888888;
-  font-size: 10px;
+  font-size: 11px; /* 適應更大的卡片，微微增大字體 */
   font-weight: 400;
   position: relative;
   overflow: hidden;
-  height: 14px;
+  height: 15px;
 }
 
 /* 展開視圖 */

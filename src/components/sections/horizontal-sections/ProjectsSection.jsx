@@ -66,7 +66,9 @@ export default function ProjectsSection({ index }) {
 
                 <div className="project-block-content-bottom">
                   <div className="project-category-large">
-                    {project.category?.toUpperCase()}
+                    {Array.isArray(project.category)
+                      ? project.category.join(", ").toUpperCase()
+                      : project.category?.toUpperCase()}
                   </div>
 
                   <div className="project-info">
