@@ -108,7 +108,7 @@
   background: var(--color-secondary); /* 無 hover 時全灰底 */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 3rem 2rem;
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   backdrop-filter: blur(2px);
@@ -136,34 +136,34 @@
 /* 區塊1和3：深色文字 (--gray-700) */
 .fullscreen-project-block:nth-child(1) .project-block-number-large,
 .fullscreen-project-block:nth-child(1) .project-title-corner,
-.fullscreen-project-block:nth-child(1) .project-category-large,
-.fullscreen-project-block:nth-child(1) .project-label,
-.fullscreen-project-block:nth-child(1) .project-description-small {
+.fullscreen-project-block:nth-child(1) .project-practice-areas-large,
+.fullscreen-project-block:nth-child(1) .project-copy,
+.fullscreen-project-block:nth-child(1) .project-description {
   color: var(--gray-700);
 }
 
 .fullscreen-project-block:nth-child(3) .project-block-number-large,
 .fullscreen-project-block:nth-child(3) .project-title-corner,
-.fullscreen-project-block:nth-child(3) .project-category-large,
-.fullscreen-project-block:nth-child(3) .project-label,
-.fullscreen-project-block:nth-child(3) .project-description-small {
+.fullscreen-project-block:nth-child(3) .project-practice-areas-large,
+.fullscreen-project-block:nth-child(3) .project-copy,
+.fullscreen-project-block:nth-child(3) .project-description {
   color: var(--gray-700);
 }
 
 /* 區塊2和4：淺色文字 (--gray-200) */
 .fullscreen-project-block:nth-child(2) .project-block-number-large,
 .fullscreen-project-block:nth-child(2) .project-title-corner,
-.fullscreen-project-block:nth-child(2) .project-category-large,
-.fullscreen-project-block:nth-child(2) .project-label,
-.fullscreen-project-block:nth-child(2) .project-description-small {
+.fullscreen-project-block:nth-child(2) .project-practice-areas-large,
+.fullscreen-project-block:nth-child(2) .project-copy,
+.fullscreen-project-block:nth-child(2) .project-description {
   color: var(--gray-200);
 }
 
 .fullscreen-project-block:nth-child(4) .project-block-number-large,
 .fullscreen-project-block:nth-child(4) .project-title-corner,
-.fullscreen-project-block:nth-child(4) .project-category-large,
-.fullscreen-project-block:nth-child(4) .project-label,
-.fullscreen-project-block:nth-child(4) .project-description-small {
+.fullscreen-project-block:nth-child(4) .project-practice-areas-large,
+.fullscreen-project-block:nth-child(4) .project-copy,
+.fullscreen-project-block:nth-child(4) .project-description {
   color: var(--gray-200);
 }
 
@@ -222,24 +222,30 @@
 }
 
 .fullscreen-project-block:hover .project-title-corner {
-  color: var(--gray-25); /* hover 時改為白色 */
-  transform: translateX(25px); /* hover 時向右移動 */
+  color: var(--gray-25);
+  transform: translateX(25px);
   opacity: 0;
 }
 
 .project-block-content-bottom {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  align-items: start;
+  height: auto;
+  gap: var(--space-lg);
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateY(0px);
+  position: absolute;
+  bottom: 3rem;
+  left: 2rem;
+  right: 2rem;
 }
 
 .fullscreen-project-block:hover .project-block-content-bottom {
-  transform: translateY(-15px); /* hover 時整個底部內容上移 */
+  transform: translateY(-15px);
 }
 
-.project-category-large {
+.project-practice-areas-large {
   font-family: var(--font-pphatton), var(--font-cjk);
   font-size: 2.5rem;
   letter-spacing: 0.1rem;
@@ -247,15 +253,13 @@
   color: var(--color-primary);
   line-height: 1;
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  /* writing-mode: vertical-rl; */
-  /* text-orientation: mixed; */
   align-self: flex-start;
   transform: scale(1);
 }
 
-.fullscreen-project-block:hover .project-category-large {
-  color: var(--gray-25); /* hover 時改為白色，在黑色漸層上更清晰 */
-  transform: scale(1.05); /* hover 時類別文字放大 */
+.fullscreen-project-block:hover .project-practice-areas-large {
+  color: var(--gray-25);
+  transform: scale(1.05);
 }
 
 .project-info {
@@ -265,33 +269,32 @@
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateY(0px);
   opacity: 0.9;
-  margin-left: 0.25rem;
+  margin-left: var(--space-xs);
 }
 
 .fullscreen-project-block:hover .project-info {
-  transform: translateY(-5px); /* hover 時資訊區域向上移動 */
+  transform: translateY(-5px);
   opacity: 1;
 }
 
-.project-label {
+.project-copy {
   font-family: var(--font-latin), var(--font-cjk);
   font-size: 1rem;
   font-weight: var(--font-semibold);
   letter-spacing: 0.01rem;
   color: var(--color-primary);
-  text-transform: lowercase;
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateX(0px);
 }
 
-.fullscreen-project-block:hover .project-label {
-  color: var(--gray-25); /* hover 時改為白色 */
-  transform: translateX(12px); /* hover 時標籤向右移動 */
+.fullscreen-project-block:hover .project-copy {
+  color: var(--gray-25);
+  transform: translateX(12px);
 }
 
-.project-description-small {
+.project-description {
   font-family: var(--font-latin), var(--font-cjk);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   letter-spacing: 0.01rem;
   font-weight: var(--font-regular);
   color: var(--color-primary);
@@ -300,7 +303,7 @@
   transform: translateX(0px);
 }
 
-.fullscreen-project-block:hover .project-description-small {
+.fullscreen-project-block:hover .project-description {
   color: var(--gray-25); /* hover 時改為白色 */
   transform: translateX(12px); /* hover 時描述文字向右移動 */
 }
@@ -318,7 +321,7 @@
     height: 100vh;
   }
 
-  .project-category-large {
+  .project-practice-areas-large {
     writing-mode: horizontal-tb;
     text-orientation: initial;
     font-size: 2rem;
@@ -331,10 +334,16 @@
   .project-block-overlay {
     padding: 2rem 1.5rem;
   }
+
+  .project-block-content-bottom {
+    bottom: 2rem;
+    left: 1.5rem;
+    right: 1.5rem;
+  }
 }
 
 @media (max-width: 480px) {
-  .project-category-large {
+  .project-practice-areas-large {
     font-size: 1.5rem;
   }
 
@@ -342,15 +351,21 @@
     font-size: 6rem;
   }
 
-  .project-label {
+  .project-copy {
     font-size: 0.9rem;
   }
 
-  .project-description-small {
+  .project-description {
     font-size: 0.8rem;
   }
 
   .project-block-overlay {
     padding: 1.5rem 1rem;
+  }
+
+  .project-block-content-bottom {
+    bottom: 1.5rem;
+    left: 1rem;
+    right: 1rem;
   }
 }

@@ -6,32 +6,43 @@ import "./ProjectsSection.css";
 export default function ProjectsSection({ index }) {
   const navigate = useNavigate();
 
-  // 自訂選擇四個專案對應區塊編號 1, 2, 3, 4
-  const selectedProjects = [
-    { blockNumber: "1", projectId: "project-001" }, // 區塊1 - GRAPHIC
-    { blockNumber: "2", projectId: "project-002" }, // 區塊2 - UI.UX
-    { blockNumber: "3", projectId: "project-003" }, // 區塊3 - BOOK
-    { blockNumber: "4", projectId: "project-004" }, // 區塊4 - 3D ART
-  ];
+  // 專案配置 - 指定專案ID和圖片索引
+  const projectConfig = React.useMemo(
+    () => [
+      { blockNumber: "1", projectId: "project-004", imageIndex: 9 }, // 區塊1
+      { blockNumber: "2", projectId: "project-005", imageIndex: 3 }, // 區塊2
+      { blockNumber: "3", projectId: "project-003", imageIndex: 15 }, // 區塊3
+      { blockNumber: "4", projectId: "project-002", imageIndex: 1 }, // 區塊4
+    ],
+    []
+  );
 
-  // 自訂 project-label 文字
-  const customLabels = {
-    "project-001": "the notebook design",
-    "project-002": "the book binding design",
-    "project-003": "the font book design",
-    "project-004": "the 3d botanical art",
+  // PracticeAreas 文字
+  const PracticeAreas = {
+    "project-004": "GRAPHIC",
+    "project-005": "EDITORIAL",
+    "project-003": "TYPEFACE",
+    "project-002": "3D ART",
   };
 
-  // 自訂描述文字（因為不能過長）
+  // Copy 文字
+  const Copy = {
+    "project-004": "Instant recognition, lasting recall.",
+    "project-005": "Complexity made readable.",
+    "project-003": "Your voice, set in type.",
+    "project-002": "Materials, made visible.",
+  };
+
+  // Description文字
   const customDescriptions = {
-    "project-001":
-      "comprises of three components: an outer box, a notebook, and a bookmark",
-    "project-002":
-      "comprises of three components: an outer box, a notebook, and a bookmark",
-    "project-003":
-      "comprises of three components: an outer box, a notebook, and a bookmark",
     "project-004":
-      "comprises of three components: an outer box, a notebook, and a bookmark",
+      "Identity and campaign visuals people recognize and remember. The studio provides a clear brand guide and files prepared for print and digital, ready to deploy.",
+    "project-005":
+      "We turn complex content into readable publications and manage printing from start to finish, delivering finished copies to you.",
+    "project-003":
+      "Type that carries your voice across every touchpoint. We provide font files, licensing guidance, and specimens for print, web, and UI.",
+    "project-002":
+      "Photoreal and stylized 3D that tells the material story. We deliver stills, loops, and GLB/USDZ assets prepared for web, retail, and installation contexts.",
   };
 
   const handleProjectClick = (projectId) => {
@@ -41,9 +52,14 @@ export default function ProjectsSection({ index }) {
   return (
     <div className={`hs-section projects-section hs-section-${index}`}>
       <div className="fullscreen-projects-content">
-        {selectedProjects.map(({ blockNumber, projectId }) => {
+        {projectConfig.map(({ blockNumber, projectId, imageIndex }) => {
           const project = projects.find((p) => p.id === projectId);
           if (!project) return null;
+
+          // 動態生成圖片路徑
+          const imagePath = `/images/projects/${projectId}/${projectId}-img-${String(
+            imageIndex
+          ).padStart(2, "0")}.webp`;
 
           return (
             <div
@@ -51,7 +67,7 @@ export default function ProjectsSection({ index }) {
               className="fullscreen-project-block clickable"
               onClick={() => handleProjectClick(projectId)}
               style={{
-                "--project-bg-image": `url(${project.projectImages?.[0]})`,
+                "--project-bg-image": `url(${imagePath})`,
               }}
             >
               <div className="project-block-overlay">
@@ -65,17 +81,12 @@ export default function ProjectsSection({ index }) {
                 </div>
 
                 <div className="project-block-content-bottom">
-                  <div className="project-category-large">
-                    {Array.isArray(project.category)
-                      ? project.category.join(", ").toUpperCase()
-                      : project.category?.toUpperCase()}
+                  <div className="project-practice-areas-large">
+                    {PracticeAreas[projectId]}
                   </div>
-
                   <div className="project-info">
-                    <div className="project-label">
-                      {customLabels[projectId]}
-                    </div>
-                    <div className="project-description-small">
+                    <div className="project-copy">{Copy[projectId]}</div>
+                    <div className="project-description">
                       {customDescriptions[projectId]}
                     </div>
                   </div>
