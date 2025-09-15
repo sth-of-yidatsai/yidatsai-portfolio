@@ -6,11 +6,14 @@ export default function OverviewSection({ index }) {
     <div className={`hs-section overview-section hs-section-${index}`}>
       <div className="overview-grid">
         <div className="overview-image-block overview-image-block-1">
-          <img
-            src="/images/projects/project-004/project-004-img-09.webp"
-            alt="overview"
-            className="overview-image"
-          />
+          <div className="overview-image-frame">
+            <img
+              src="/images/projects/project-004/project-004-img-09.webp"
+              alt="overview"
+              className="overview-image"
+            />
+          </div>
+
           <span className="overview-image-text">
             <span className="overview-image-number">(001)</span>
             <span className="overview-image-category">Recognizable</span>
@@ -29,18 +32,23 @@ export default function OverviewSection({ index }) {
             <span className="overview-image-number">(002)</span>
             <span className="overview-image-category">Usable</span>
           </span>
-          <img
-            src="/images/projects/project-004/project-004-img-13.webp"
-            alt="overview"
-            className="overview-image"
-          />
+          <div className="overview-image-frame">
+            <img
+              src="/images/projects/project-004/project-004-img-13.webp"
+              alt="overview"
+              className="overview-image"
+            />
+          </div>
         </div>
         <div className="overview-image-block overview-image-block-3">
-          <img
-            src="/images/projects/project-004/project-004-img-12.webp"
-            alt="overview"
-            className="overview-image"
-          />
+          <div className="overview-image-frame">
+            <img
+              src="/images/projects/project-004/project-004-img-12.webp"
+              alt="overview"
+              className="overview-image"
+            />
+          </div>
+
           <span className="overview-image-text">
             <span className="overview-image-number">(003)</span>
             <span className="overview-image-category">Durable</span>
