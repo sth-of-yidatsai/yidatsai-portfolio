@@ -1,17 +1,24 @@
 import React from "react";
 import "./OverviewSection.css";
+import { useHorizontalScroll } from "../../../hooks/useHorizontalScroll";
 
 export default function OverviewSection({ index }) {
+  const { isScrolling, scrollDirection } = useHorizontalScroll();
+
   return (
     <div className={`hs-section overview-section hs-section-${index}`}>
       <div className="overview-grid">
         <div className="overview-image-block overview-image-block-1">
           <div className="overview-image-frame">
-            <img
-              src="/images/projects/project-004/project-004-img-09.webp"
-              alt="overview"
-              className="overview-image"
-            />
+            <div className="overview-image-wrapper">
+              <img
+                src="/images/projects/project-004/project-004-img-09.webp"
+                alt="overview"
+                className={`overview-image ${
+                  isScrolling ? `scroll-${scrollDirection}` : ""
+                }`}
+              />
+            </div>
           </div>
 
           <span className="overview-image-text">
@@ -33,20 +40,28 @@ export default function OverviewSection({ index }) {
             <span className="overview-image-category">Usable</span>
           </span>
           <div className="overview-image-frame">
-            <img
-              src="/images/projects/project-004/project-004-img-13.webp"
-              alt="overview"
-              className="overview-image"
-            />
+            <div className="overview-image-wrapper">
+              <img
+                src="/images/projects/project-004/project-004-img-13.webp"
+                alt="overview"
+                className={`overview-image ${
+                  isScrolling ? `scroll-${scrollDirection}` : ""
+                }`}
+              />
+            </div>
           </div>
         </div>
         <div className="overview-image-block overview-image-block-3">
           <div className="overview-image-frame">
-            <img
-              src="/images/projects/project-004/project-004-img-12.webp"
-              alt="overview"
-              className="overview-image"
-            />
+            <div className="overview-image-wrapper">
+              <img
+                src="/images/projects/project-004/project-004-img-12.webp"
+                alt="overview"
+                className={`overview-image ${
+                  isScrolling ? `scroll-${scrollDirection}` : ""
+                }`}
+              />
+            </div>
           </div>
 
           <span className="overview-image-text">
