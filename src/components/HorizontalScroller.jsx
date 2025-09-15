@@ -82,6 +82,7 @@ export default function HorizontalScroller() {
           scrub: 1,
           start: "top top",
           end: () => `+=${totalScrollDistance}`,
+          id: "horizontal-scroll",
           onUpdate: (self) => {
             // 計算實際的水平滾動進度
             // 開始停頓區 -> 水平滾動階段 -> 結束停頓區

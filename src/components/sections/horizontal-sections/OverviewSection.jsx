@@ -1,9 +1,14 @@
 import React from "react";
 import "./OverviewSection.css";
-import { useHorizontalScroll } from "../../../hooks/useHorizontalScroll";
+import { useScrollDetection } from "../../../hooks/useHorizontalScroll";
 
 export default function OverviewSection({ index }) {
-  const { isScrolling, scrollDirection } = useHorizontalScroll();
+  const {
+    isScrolling,
+    horizontalDirection,
+    verticalDirection,
+    isInHorizontalSection,
+  } = useScrollDetection();
 
   return (
     <div className={`hs-section overview-section hs-section-${index}`}>
@@ -15,7 +20,11 @@ export default function OverviewSection({ index }) {
                 src="/images/projects/project-004/project-004-img-09.webp"
                 alt="overview"
                 className={`overview-image ${
-                  isScrolling ? `scroll-${scrollDirection}` : ""
+                  isScrolling
+                    ? isInHorizontalSection
+                      ? `scroll-horizontal-${horizontalDirection}`
+                      : `scroll-vertical-${verticalDirection}`
+                    : ""
                 }`}
               />
             </div>
@@ -45,7 +54,11 @@ export default function OverviewSection({ index }) {
                 src="/images/projects/project-004/project-004-img-13.webp"
                 alt="overview"
                 className={`overview-image ${
-                  isScrolling ? `scroll-${scrollDirection}` : ""
+                  isScrolling
+                    ? isInHorizontalSection
+                      ? `scroll-horizontal-${horizontalDirection}`
+                      : `scroll-vertical-${verticalDirection}`
+                    : ""
                 }`}
               />
             </div>
@@ -58,7 +71,11 @@ export default function OverviewSection({ index }) {
                 src="/images/projects/project-004/project-004-img-12.webp"
                 alt="overview"
                 className={`overview-image ${
-                  isScrolling ? `scroll-${scrollDirection}` : ""
+                  isScrolling
+                    ? isInHorizontalSection
+                      ? `scroll-horizontal-${horizontalDirection}`
+                      : `scroll-vertical-${verticalDirection}`
+                    : ""
                 }`}
               />
             </div>
