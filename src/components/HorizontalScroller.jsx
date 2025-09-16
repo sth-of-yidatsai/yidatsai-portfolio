@@ -69,11 +69,12 @@ export default function HorizontalScroller() {
       gsap.set(scroller, { width: totalWidth });
 
       // 建立水平滾動動畫
-      // 增加停頓區域 - 開始和結束都有停頓，相當於兩個螢幕寬度的額外滾動距離
-      const pauseZoneHeight = window.innerHeight;
+      // 保留開始和結束的停頓區域，但調整開始停頓區的大小
+      const startPauseZoneHeight = window.innerHeight * 0.5; // 縮小開始停頓區域
+      const endPauseZoneHeight = window.innerHeight;
       const horizontalScrollDistance = totalWidth - availableWidth;
       const totalScrollDistance =
-        horizontalScrollDistance + pauseZoneHeight * 2; // 開始和結束各一個停頓區
+        horizontalScrollDistance + startPauseZoneHeight + endPauseZoneHeight;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -86,10 +87,11 @@ export default function HorizontalScroller() {
           onUpdate: (self) => {
             // 計算實際的水平滾動進度
             // 開始停頓區 -> 水平滾動階段 -> 結束停頓區
-            const startPauseThreshold = pauseZoneHeight / totalScrollDistance;
+            const startPauseThreshold =
+              startPauseZoneHeight / totalScrollDistance;
             const horizontalStartThreshold = startPauseThreshold;
             const horizontalEndThreshold =
-              (pauseZoneHeight + horizontalScrollDistance) /
+              (startPauseZoneHeight + horizontalScrollDistance) /
               totalScrollDistance;
 
             let horizontalProgress;
@@ -147,10 +149,10 @@ export default function HorizontalScroller() {
       });
 
       // 水平移動動畫 - 三階段：開始停頓 -> 水平滾動 -> 結束停頓
-      const startPauseDuration = pauseZoneHeight / totalScrollDistance;
+      const startPauseDuration = startPauseZoneHeight / totalScrollDistance;
       const horizontalScrollDuration =
         horizontalScrollDistance / totalScrollDistance;
-      const endPauseDuration = pauseZoneHeight / totalScrollDistance;
+      const endPauseDuration = endPauseZoneHeight / totalScrollDistance;
 
       // 開始停頓區：保持初始位置
       tl.to(scroller, {
