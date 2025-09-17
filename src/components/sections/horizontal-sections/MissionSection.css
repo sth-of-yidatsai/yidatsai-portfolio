@@ -6,6 +6,12 @@
   justify-content: center;
   position: relative;
   background: transparent;
+  /* GPU 加速和抗鋸齒優化 - 防止邊緣閃爍 */
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .hs-section.mission-section {

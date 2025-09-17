@@ -89,10 +89,10 @@ export default function OverviewSection({ index }) {
         <div className="overview-text-block overview-text-block-2">
           <div className="overview-title">
             <span className="title-copy">
-              I partner with you to clarify vision and shape a coherent visual
-              language that resonates across brand and product. From first
-              conversation to final presence, the process is careful and
-              collaborative—aligning choices with purpose, audience, and time.
+              Grounded in research and guided by empathy, I turn ideas into
+              experiences that feel intuitive and memorable. Rather than chasing
+              deliverables, we cultivate clarity, consistency, and meaning that
+              grow with your practice.
             </span>
           </div>
         </div>

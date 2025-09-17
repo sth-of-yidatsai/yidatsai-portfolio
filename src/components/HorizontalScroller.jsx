@@ -4,11 +4,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalScroller.css";
 import {
   OverviewSection,
+  YidaSection,
   MissionSection,
   ProjectsSection,
   sectionConfigs,
 } from "./sections/horizontal-sections";
-import { VisionSection, PracticesSection } from "./sections/vertical-sections";
 
 function getCSSVar(name, fallback) {
   const v = getComputedStyle(document.documentElement)
@@ -378,10 +378,10 @@ export default function HorizontalScroller() {
               switch (section.id) {
                 case "overview":
                   return <OverviewSection config={section} index={index} />;
+                case "yida":
+                  return <YidaSection config={section} index={index} />;
                 case "mission":
                   return <MissionSection config={section} index={index} />;
-                case "practices":
-                  return <PracticesSection config={section} index={index} />;
                 case "projects":
                   return <ProjectsSection config={section} index={index} />;
                 default:

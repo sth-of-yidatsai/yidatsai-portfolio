@@ -14,72 +14,37 @@
   transform: translateZ(0);
 }
 
-.hs-section.overview-section {
+.hs-section.yida-section {
   background: transparent;
   position: relative;
   overflow: hidden;
 }
 
-/* Overview Section 樣式 */
+/* yida Section 樣式 */
 
-.overview-grid {
+.yida-grid {
   display: grid;
   grid-template-columns: repeat(18, minmax(0, 1fr));
   height: 100%;
   width: 100%;
-  background: var(--linen-500);
+  background: var(--gray-900);
 }
 
-.overview-text-block-1 {
-  grid-column: 6 / span 4;
+.yida-text-block-1 {
+  grid-column: 10 / span 5;
   grid-row: 1;
+  place-self: start start;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  width: 320px;
-  height: 320px;
-  background: var(--linen-100);
-  position: relative;
-  left: -160px;
-  bottom: var(--space-lg);
-  z-index: 3;
+  align-items: start;
+  justify-content: start;
+  padding: var(--space-md);
+  width: 480px;
+  height: 480px;
+  background: var(--sage-700);
+  z-index: 2;
 }
 
-.overview-text-block-1::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  height: 90%;
-  border: 1px solid var(--gray-700);
-  background-color: transparent;
-}
-
-.overview-title {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  line-height: 1.1;
-  color: var(--gray-600);
-}
-
-.title-headline {
-  font-family: var(--font-latin-display), var(--font-cjk);
-  font-size: 2.8rem;
-  font-weight: var(--font-regular);
-  letter-spacing: 0.03em;
-}
-
-.title-headline.title-italic {
-  font-family: var(--font-pphatton);
-  font-weight: var(--font-light);
-  font-style: italic;
-}
-
-.overview-text-block-2 {
+.yida-text-block-2 {
   grid-column: 13 / span 5;
   grid-row: 1;
   display: flex;
@@ -88,29 +53,30 @@
   margin-bottom: 25%;
 }
 
-.title-copy {
-  font-size: 1.8rem;
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-light);
+.yida-about-me {
+  max-width: 300px;
+  font-size: 1rem;
+  font-family: var(--font-latin);
+  font-weight: var(--font-regular);
   line-height: 1.25;
   letter-spacing: 0.03em;
-  color: var(--gray-700);
+  color: var(--gray-100);
 }
 
-.overview-image-block {
+.yida-image-block {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
   width: 100%;
 }
 
-.overview-image-frame {
+.yida-image-frame {
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-.overview-image-wrapper {
+.yida-image-wrapper {
   width: 110%;
   height: 110%;
   transform: translate(-5%, -5%);
@@ -120,7 +86,7 @@
   transform-style: preserve-3d;
 }
 
-.overview-image {
+.yida-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -137,24 +103,24 @@
 }
 
 /* 水平滾動時的圖片位移效果 */
-.overview-image.scroll-horizontal-right {
+.yida-image.scroll-horizontal-right {
   transform: translateX(16px) translateZ(0);
 }
 
-.overview-image.scroll-horizontal-left {
+.yida-image.scroll-horizontal-left {
   transform: translateX(-16px) translateZ(0);
 }
 
 /* 垂直滾動時的圖片位移效果 */
-.overview-image.scroll-vertical-up {
+.yida-image.scroll-vertical-up {
   transform: translateY(-12px) translateZ(0);
 }
 
-.overview-image.scroll-vertical-down {
+.yida-image.scroll-vertical-down {
   transform: translateY(12px) translateZ(0);
 }
 
-.overview-image-text {
+.yida-image-text {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
@@ -166,48 +132,47 @@
   color: var(--gray-500);
 }
 
-.overview-image-block-1 {
-  grid-column: 1 / span 5;
+.yida-image-block-1 {
+  grid-column: 10 / span 9;
   grid-row: 1;
-  align-self: center;
-  z-index: 2;
+  place-self: start start;
+  z-index: 1;
+  border-left: 1px solid var(--gray-900);
 }
 
-.overview-image-block-1 .overview-image-frame {
-  aspect-ratio: 3/4;
+.yida-image-block-1 .yida-image-frame {
+  height: 100vh;
 }
 
-.overview-image-block-1 .overview-image-text {
-  align-items: end;
+.yida-image-block-1 .yida-image-frame .yida-image {
+  filter: grayscale(100%);
 }
 
-.overview-image-block-2 {
+.yida-image-block-2 {
   grid-column: 9 / span 3;
   grid-row: 1;
   align-self: flex-end;
-  z-index: 2;
 }
 
-.overview-image-block-2 .overview-image-frame {
+.yida-image-block-2 .yida-image-frame {
   aspect-ratio: 2/3;
 }
 
-.overview-image-block-2 .overview-image-text {
+.yida-image-block-2 .yida-image-text {
   align-items: start;
 }
 
-.overview-image-block-3 {
+.yida-image-block-3 {
   grid-column: -9 / span 9;
   grid-row: 1;
   place-self: start end;
-  z-index: 2;
 }
 
-.overview-image-block-3 .overview-image-frame {
+.yida-image-block-3 .yida-image-frame {
   aspect-ratio: 5/2;
 }
 
-.overview-image-block-3 .overview-image-text {
+.yida-image-block-3 .yida-image-text {
   align-items: end;
   margin-right: var(--space-md);
 }

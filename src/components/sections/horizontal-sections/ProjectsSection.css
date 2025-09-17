@@ -6,6 +6,12 @@
   justify-content: center;
   position: relative;
   background: transparent;
+  /* GPU 加速和抗鋸齒優化 - 防止邊緣閃爍 */
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .hs-section.projects-section {
@@ -48,15 +54,21 @@
   transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: scale(1);
   z-index: 0;
+  /* GPU 加速和抗鋸齒優化 */
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform: translateZ(0) scale(1);
+  transform: translateZ(0) scale(1);
 }
 
 .fullscreen-project-block:hover::before {
-  transform: scale(1.1); /* hover 時只放大背景圖片 */
+  transform: translateZ(0) scale(1.1); /* hover 時只放大背景圖片，保持硬體加速 */
 }
 
 /* 區塊分隔線 - 使用更精確的定位避免重疊 */
 /* 區塊1最左邊的分隔線 */
-.fullscreen-project-block:nth-child(1)::after {
+/* .fullscreen-project-block:nth-child(1)::after {
   content: "";
   position: absolute;
   top: 0;
@@ -64,7 +76,7 @@
   border-left: 1px solid var(--gray-700);
   height: 100%;
   z-index: 5;
-}
+} */
 
 /* 第1和第2區之間的分隔線 */
 .fullscreen-projects-content::before {
@@ -113,6 +125,12 @@
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   backdrop-filter: blur(2px);
   z-index: 1; /* 確保在背景圖片之上 */
+  /* GPU 加速優化 */
+  will-change: background, backdrop-filter;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 /* 四個區塊 overlay 的不同背景顏色 */

@@ -14,6 +14,12 @@ html {
   height: 100vh;
   overflow: hidden;
   background: transparent;
+  /* GPU 加速優化 */
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 /* 水平滾動器 */
@@ -21,6 +27,11 @@ html {
   display: flex;
   height: 100%;
   will-change: transform;
+  /* GPU 加速和抗鋸齒優化 - 防止水平滾動時邊緣閃爍 */
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 /* Section 樣式現在在 sections/SectionBase.css 中定義 */
