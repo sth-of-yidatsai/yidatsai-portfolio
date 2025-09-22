@@ -265,53 +265,7 @@ img {
   pointer-events: none;
 }
 
-/* 5. 容器與網格系統 */
-.container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-md);
-}
-
-.container-wide {
-  max-width: var(--max-width-wide);
-  margin: 0 auto;
-  padding: 0 var(--space-md);
-}
-
-.container-narrow {
-  max-width: var(--max-width-narrow);
-  margin: 0 auto;
-  padding: 0 var(--space-md);
-}
-
-/* 網格系統 */
-.grid {
-  display: grid;
-  gap: var(--space-lg);
-}
-
-.grid-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.grid-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.grid-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-/* 響應式網格 */
-@media (max-width: 768px) {
-  .grid-2,
-  .grid-3,
-  .grid-4 {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* 6. 常用排版元素 */
+/* 5. 常用排版元素 */
 h1,
 h2,
 h3,
@@ -357,9 +311,9 @@ h6 {
 }
 
 p {
-  margin-bottom: var(--space-md);
-  color: var(--color-text);
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.25;
+  letter-spacing: 0.03em;
 }
 
 /* 強調文字 */
