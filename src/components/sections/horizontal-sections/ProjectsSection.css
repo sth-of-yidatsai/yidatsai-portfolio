@@ -168,6 +168,11 @@
   color: var(--gray-700);
 }
 
+.fullscreen-project-block:nth-child(1) .project-title-corner-separator,
+.fullscreen-project-block:nth-child(3) .project-title-corner-separator {
+  background: var(--gray-700);
+}
+
 /* 區塊2和4：淺色文字 (--gray-200) */
 .fullscreen-project-block:nth-child(2) .project-block-number-large,
 .fullscreen-project-block:nth-child(2) .project-title-corner,
@@ -183,6 +188,11 @@
 .fullscreen-project-block:nth-child(4) .project-copy,
 .fullscreen-project-block:nth-child(4) .project-description {
   color: var(--gray-200);
+}
+
+.fullscreen-project-block:nth-child(2) .project-title-corner-separator,
+.fullscreen-project-block:nth-child(4) .project-title-corner-separator {
+  background: var(--gray-200);
 }
 
 .fullscreen-project-block:hover .project-block-overlay {
@@ -215,7 +225,9 @@
 
 .project-title-corner {
   display: flex;
-  gap: 0.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
   width: 100%;
   position: absolute;
   top: var(--space-xl);
@@ -237,6 +249,11 @@
 
 .project-title-corner-title {
   font-weight: var(--font-bold);
+}
+
+.project-title-corner-separator {
+  width: 1px;
+  height: 48px;
 }
 
 .fullscreen-project-block:hover .project-title-corner {

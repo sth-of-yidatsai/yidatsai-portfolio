@@ -4,3 +4,4 @@ export { default as HeroSection } from "./HeroSection";
 export { default as PracticesSection } from "./PracticesSection";
 export { default as VisionSection } from "./VisionSection";
 export { default as CubeGalleryGradientText } from "./CubeGalleryGradientText";
+export { default as MissionSection } from "./MissionSection";

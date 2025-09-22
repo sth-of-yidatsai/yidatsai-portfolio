@@ -74,7 +74,8 @@ export default function ProjectsSection({ index }) {
                 <div className="project-block-number-large">{blockNumber}</div>
 
                 <div className="project-title-corner">
-                  <span className="project-title-corner-title">Title: </span>
+                  <span className="project-title-corner-title">Title</span>
+                  <div className="project-title-corner-separator" />
                   <span className="project-title-corner-text">
                     {project.title}
                   </span>
