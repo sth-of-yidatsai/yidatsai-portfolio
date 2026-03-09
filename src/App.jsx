@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
-import HeaderVertical from "./components/HeaderVertical";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 import CustomCursor from "./components/CustomCursor";
 import GlobalScrollbar from "./components/GlobalScrollbar";
@@ -12,7 +12,7 @@ function App() {
     <Providers>
       <CustomCursor />
       {!hideGlobalScrollbar && <GlobalScrollbar />}
-      <HeaderVertical />
+      <Header />
       <Outlet />
       <Footer />
     </Providers>

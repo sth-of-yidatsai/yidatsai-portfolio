@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./HeaderVertical.css";
-import projectsData from "../data/projects.json";
+import projectsData from "../../data/projects.json";
 import arrowIcon from "../assets/icons/arrow_outward_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 import arrowUpIcon from "../assets/icons/arrow_circle_up_44dp_2D2D2D_FILL0_wght300_GRAD0_opsz48.svg";
 import menuNumber1 from "../assets/icons/meun-number-1.svg";
 import menuNumber2 from "../assets/icons/meun-number-2.svg";
 import menuNumber3 from "../assets/icons/meun-number-3.svg";
 import menuNumber4 from "../assets/icons/meun-number-4.svg";
-import MarqueeText from "./MarqueeText";
+import MarqueeText from "../../components/MarqueeText";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);

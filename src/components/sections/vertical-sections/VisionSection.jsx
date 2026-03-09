@@ -545,7 +545,7 @@ export default function VisionSection({ index = 0 }) {
           this.p.textAlign(this.p.CENTER, this.p.CENTER);
           this.p.textSize(this.fontSize);
           this.p.textFont(
-            "neue-haas-grotesk-display, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+            "Albert Sans, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
           );
           this.p.textStyle(this.p.MEDIUM);
           this.p.text(this.text, 0, 0);

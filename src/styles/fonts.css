@@ -1,8 +1,10 @@
-/* PPHatton 字型引入 */
+/* ============================================================
+   PP Hatton — 本地字型載入
+   ============================================================ */
 @font-face {
   font-family: "PPHatton";
-  src: url("/images/fonts/PPHatton-Regular.woff2") format("woff2");
-  font-weight: 400;
+  src: url("/images/fonts/PPHatton-Ultralight.woff2") format("woff2");
+  font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
@@ -25,274 +27,130 @@
 
 @font-face {
   font-family: "PPHatton";
-  src: url("/images/fonts/PPHatton-Ultralight.woff2") format("woff2");
-  font-weight: 200;
+  src: url("/images/fonts/PPHatton-Regular.woff2") format("woff2");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
+
+/* ============================================================
+   CSS 變數
+   ============================================================ */
 :root {
-  /* 英文與數字 → Neue Haas Grotesk；中文 → Noto Sans TC；特殊字型 → PPHatton */
-  --font-latin: "neue-haas-grotesk-text", system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-latin-display: "neue-haas-grotesk-display", system-ui, -apple-system,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-cjk: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC",
-    sans-serif;
-  --font-pphatton: "PPHatton", "neue-haas-grotesk-display", system-ui,
-    -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* 字型族 */
+  --font-manrope:  "Manrope", sans-serif;
+  --font-hatton:   "PPHatton", "Manrope", sans-serif;
+  --font-cjk:      "Noto Sans TC", sans-serif;
 
-  /* 字重變數 - 統一管理 */
-  --font-ultra-thin: 100;
-  --font-thin: 200;
-  --font-light: 300;
-  --font-regular: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
-  --font-extrabold: 800;
-  --font-black: 900;
+  /* 字重 */
+  --fw-extralight: 200;
+  --fw-light:      300;
+  --fw-regular:    400;
+  --fw-medium:     500;
+  --fw-semibold:   600;
+  --fw-bold:       700;
+  --fw-extrabold:  800;
+
+  /* 字級（響應式 clamp） */
+  --fs-12pt: clamp(0.9rem,  1.2vw, 1rem);     
+  --fs-16pt: clamp(1.1rem,  1.6vw, 1.33rem);
+  --fs-18pt: clamp(1.3rem,  1.8vw, 1.5rem);
+  --fs-20pt: clamp(1.4rem,  2.0vw, 1.67rem);
+  --fs-22pt: clamp(1.5rem,  2.2vw, 1.83rem);
+  --fs-24pt: clamp(1.6rem,  2.5vw, 2rem);
+  --fs-32pt: clamp(2rem,    3.5vw, 2.67rem);
+  --fs-40pt: clamp(2.4rem,  4.5vw, 3.33rem);
+  --fs-48pt: clamp(3rem,    6.0vw, 4rem);
 }
 
-/* Neue Haas Grotesk Display 字型類別 - 使用統一的字重變數 */
-.neue-haas-display-ultra-thin {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-ultra-thin);
-  font-style: normal;
-}
 
-.neue-haas-display-ultra-thin-italic {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-ultra-thin);
-  font-style: italic;
-}
-
-.neue-haas-display-thin {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-thin);
-  font-style: normal;
-}
-
-.neue-haas-display-thin-italic {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-thin);
-  font-style: italic;
-}
-
-.neue-haas-display-extra-light {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-light);
-  font-style: normal;
-}
-
-.neue-haas-display-extra-light-italic {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-light);
-  font-style: italic;
-}
-
-.neue-haas-display-light {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-regular);
-  font-style: normal;
-}
-
-.neue-haas-display-light-italic {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-regular);
-  font-style: italic;
-}
-
-.neue-haas-display-roman {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-medium);
-  font-style: normal;
-}
-
-.neue-haas-display-roman-italic {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-medium);
-  font-style: italic;
-}
-
-.neue-haas-display-medium {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-semibold);
-  font-style: normal;
-}
-
-.neue-haas-display-medium-italic {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-semibold);
-  font-style: italic;
-}
-
-.neue-haas-display-bold {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-bold);
-  font-style: normal;
-}
-
-.neue-haas-display-bold-italic {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-bold);
-  font-style: italic;
-}
-
-.neue-haas-display-black {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-black);
-  font-style: normal;
-}
-
-.neue-haas-display-black-italic {
-  font-family: var(--font-latin-display);
-  font-weight: var(--font-black);
-  font-style: italic;
-}
-
-/* Neue Haas Grotesk Text 字型類別 */
-.neue-haas-text-roman {
-  font-family: var(--font-latin);
-  font-weight: var(--font-regular);
-  font-style: normal;
-}
-
-.neue-haas-text-roman-italic {
-  font-family: var(--font-latin);
-  font-weight: var(--font-regular);
-  font-style: italic;
-}
-
-.neue-haas-text-medium {
-  font-family: var(--font-latin);
-  font-weight: var(--font-medium);
-  font-style: normal;
-}
-
-.neue-haas-text-medium-italic {
-  font-family: var(--font-latin);
-  font-weight: var(--font-medium);
-  font-style: italic;
-}
-
-.neue-haas-text-bold {
-  font-family: var(--font-latin);
-  font-weight: var(--font-bold);
-  font-style: normal;
-}
-
-.neue-haas-text-bold-italic {
-  font-family: var(--font-latin);
-  font-weight: var(--font-bold);
-  font-style: italic;
-}
-
-/* PPHatton 字型類別 */
-.pphatton {
-  font-family: var(--font-pphatton);
-  font-weight: var(--font-regular);
-  font-style: normal;
-}
-
-.pphatton-regular {
-  font-family: var(--font-pphatton);
-  font-weight: var(--font-regular);
-  font-style: normal;
-}
-
-.pphatton-light {
-  font-family: var(--font-pphatton);
-  font-weight: var(--font-light);
-  font-style: normal;
-}
-
-.pphatton-light-italic {
-  font-family: var(--font-pphatton);
-  font-weight: var(--font-light);
-  font-style: italic;
-}
-
-.pphatton-ultralight {
-  font-family: var(--font-pphatton);
-  font-weight: var(--font-thin);
-  font-style: normal;
-}
-
-/* Noto Sans TC 字型類別 - 使用統一的字重變數 */
-.noto-sans-tc {
-  font-family: var(--font-cjk);
-  font-optical-sizing: auto;
-  font-style: normal;
-}
-
-.noto-sans-tc-light {
-  font-family: var(--font-cjk);
-  font-optical-sizing: auto;
-  font-weight: var(--font-light);
-  font-style: normal;
-}
-
-.noto-sans-tc-regular {
-  font-family: var(--font-cjk);
-  font-optical-sizing: auto;
-  font-weight: var(--font-regular);
-  font-style: normal;
-}
-
-.noto-sans-tc-medium {
-  font-family: var(--font-cjk);
-  font-optical-sizing: auto;
-  font-weight: var(--font-medium);
-  font-style: normal;
-}
-
-.noto-sans-tc-bold {
-  font-family: var(--font-cjk);
-  font-optical-sizing: auto;
-  font-weight: var(--font-bold);
-  font-style: normal;
-}
-
-/* 全站字型堆疊 */
+/* ============================================================
+   全站預設
+   ============================================================ */
 html,
 body {
-  font-family: var(--font-latin), var(--font-cjk);
+  font-family: var(--font-manrope), var(--font-cjk);
+  font-weight: var(--fw-regular);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-variant-numeric: lining-nums tabular-nums;
-  font-feature-settings: "case" 1;
 }
 
-/* 中文內容強制走 Noto Sans TC */
 :lang(zh),
 :lang(zh-TW),
 :lang(zh-HK) {
-  font-family: var(--font-cjk), var(--font-latin);
+  font-family: var(--font-cjk), var(--font-manrope);
 }
 
-/* 實用工具類 */
-.font-latin {
-  font-family: var(--font-latin), var(--font-cjk) !important;
-}
-.font-cjk {
-  font-family: var(--font-cjk), var(--font-latin) !important;
-}
-.font-pphatton {
-  font-family: var(--font-pphatton) !important;
-}
-.font-pphatton-light {
-  font-family: var(--font-pphatton) !important;
-  font-weight: var(--font-light) !important;
-}
-.font-pphatton-ultralight {
-  font-family: var(--font-pphatton) !important;
-  font-weight: var(--font-thin) !important;
-}
-.font-stack {
-  font-family: var(--font-latin), var(--font-cjk);
-}
-.tabular {
-  font-variant-numeric: tabular-nums;
-}
+
+/* ============================================================
+   Manrope — 英文字型 (wght 200–800)
+   ============================================================ */
+.manrope-extralight        { font-family: var(--font-manrope); font-weight: var(--fw-extralight); font-style: normal; font-optical-sizing: auto; }
+.manrope-extralight-italic { font-family: var(--font-manrope); font-weight: var(--fw-extralight); font-style: italic; font-optical-sizing: auto; }
+
+.manrope-light             { font-family: var(--font-manrope); font-weight: var(--fw-light);      font-style: normal; font-optical-sizing: auto; }
+.manrope-light-italic      { font-family: var(--font-manrope); font-weight: var(--fw-light);      font-style: italic; font-optical-sizing: auto; }
+
+.manrope-regular           { font-family: var(--font-manrope); font-weight: var(--fw-regular);    font-style: normal; font-optical-sizing: auto; }
+.manrope-regular-italic    { font-family: var(--font-manrope); font-weight: var(--fw-regular);    font-style: italic; font-optical-sizing: auto; }
+
+.manrope-medium            { font-family: var(--font-manrope); font-weight: var(--fw-medium);     font-style: normal; font-optical-sizing: auto; }
+.manrope-medium-italic     { font-family: var(--font-manrope); font-weight: var(--fw-medium);     font-style: italic; font-optical-sizing: auto; }
+
+.manrope-semibold          { font-family: var(--font-manrope); font-weight: var(--fw-semibold);   font-style: normal; font-optical-sizing: auto; }
+.manrope-semibold-italic   { font-family: var(--font-manrope); font-weight: var(--fw-semibold);   font-style: italic; font-optical-sizing: auto; }
+
+.manrope-bold              { font-family: var(--font-manrope); font-weight: var(--fw-bold);       font-style: normal; font-optical-sizing: auto; }
+.manrope-bold-italic       { font-family: var(--font-manrope); font-weight: var(--fw-bold);       font-style: italic; font-optical-sizing: auto; }
+
+.manrope-extrabold         { font-family: var(--font-manrope); font-weight: var(--fw-extrabold);  font-style: normal; font-optical-sizing: auto; }
+.manrope-extrabold-italic  { font-family: var(--font-manrope); font-weight: var(--fw-extrabold);  font-style: italic; font-optical-sizing: auto; }
+
+
+/* ============================================================
+   PP Hatton — 英文展示字型 (wght 200 / 300 / 400)
+   ============================================================ */
+.hatton-ultralight         { font-family: var(--font-hatton); font-weight: var(--fw-extralight); font-style: normal; }
+.hatton-light              { font-family: var(--font-hatton); font-weight: var(--fw-light);      font-style: normal; }
+.hatton-light-italic       { font-family: var(--font-hatton); font-weight: var(--fw-light);      font-style: italic; }
+.hatton-regular            { font-family: var(--font-hatton); font-weight: var(--fw-regular);    font-style: normal; }
+
+
+/* ============================================================
+   Noto Sans TC — 繁體中文字型 (wght 100–900)
+   ============================================================ */
+.noto-thin         { font-family: var(--font-cjk); font-weight: 100; font-style: normal; font-optical-sizing: auto; }
+.noto-extralight   { font-family: var(--font-cjk); font-weight: 200; font-style: normal; font-optical-sizing: auto; }
+.noto-light        { font-family: var(--font-cjk); font-weight: 300; font-style: normal; font-optical-sizing: auto; }
+.noto-regular      { font-family: var(--font-cjk); font-weight: 400; font-style: normal; font-optical-sizing: auto; }
+.noto-medium       { font-family: var(--font-cjk); font-weight: 500; font-style: normal; font-optical-sizing: auto; }
+.noto-semibold     { font-family: var(--font-cjk); font-weight: 600; font-style: normal; font-optical-sizing: auto; }
+.noto-bold         { font-family: var(--font-cjk); font-weight: 700; font-style: normal; font-optical-sizing: auto; }
+.noto-extrabold    { font-family: var(--font-cjk); font-weight: 800; font-style: normal; font-optical-sizing: auto; }
+.noto-black        { font-family: var(--font-cjk); font-weight: 900; font-style: normal; font-optical-sizing: auto; }
+
+
+/* ============================================================
+   工具類 — 快速切換字型族
+   ============================================================ */
+.font-manrope  { font-family: var(--font-manrope) !important; }
+.font-hatton   { font-family: var(--font-hatton)  !important; }
+.font-cjk      { font-family: var(--font-cjk)     !important; }
+.tabular-nums  { font-variant-numeric: tabular-nums; }
+
+
+/* ============================================================
+   工具類 — 響應式字級（pt 對應 clamp）
+   ============================================================ */
+.fs-12pt { font-size: clamp(0.9rem, 1.2vw, 1rem);     }
+.fs-16pt { font-size: clamp(1.1rem,  1.6vw, 1.33rem); }
+.fs-18pt { font-size: clamp(1.3rem,  1.8vw, 1.5rem);  }
+.fs-20pt { font-size: clamp(1.4rem,  2.0vw, 1.67rem); }
+.fs-22pt { font-size: clamp(1.5rem,  2.2vw, 1.83rem); }
+.fs-24pt { font-size: clamp(1.6rem,  2.5vw, 2rem);    }
+.fs-32pt { font-size: clamp(2rem,    3.5vw, 2.67rem); }
+.fs-40pt { font-size: clamp(2.4rem,  4.5vw, 3.33rem); }
+.fs-48pt { font-size: clamp(3rem,    6.0vw, 4rem);    }

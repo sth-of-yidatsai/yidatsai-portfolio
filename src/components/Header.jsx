@@ -1,185 +1,187 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 import "./Header.css";
-import projectsData from "../data/projects.json";
-import arrowIcon from "../assets/icons/arrow_outward_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
-import MarqueeText from "./MarqueeText";
+
+const NAV_LINKS = [
+  { number: "01", label: "PROJECT", to: "/projects" },
+  { number: "02", label: "PLAYGROUND", to: "/playground" },
+  { number: "03", label: "ABOUT", to: "/about" },
+  { number: "04", label: "CONTACT", to: "/contact" },
+];
+
+/** Line-level roll: the whole line slides up/down as a unit */
+function LineRoll({ children }) {
+  return (
+    <span className="line-roll">
+      <span className="line-roll-top">{children}</span>
+      <span className="line-roll-bottom" aria-hidden="true">{children}</span>
+    </span>
+  );
+}
+
+/** Letter-level roll: each character slides independently */
+function RollingText({ children }) {
+  return (
+    <span className="rolling-text" aria-label={children}>
+      {[...children].map((char, i) =>
+        char === " " ? (
+          <span key={i} className="rolling-space">&nbsp;</span>
+        ) : (
+          <span key={i} className="rolling-letter" style={{ "--i": i }}>
+            <span className="rolling-top">{char}</span>
+            <span className="rolling-bottom" aria-hidden="true">{char}</span>
+          </span>
+        )
+      )}
+    </span>
+  );
+}
+
+function detectBgTheme() {
+  const points = [
+    [window.innerWidth * 0.5, window.innerHeight * 0.35],
+    [window.innerWidth * 0.25, window.innerHeight * 0.35],
+    [window.innerWidth * 0.75, window.innerHeight * 0.35],
+  ];
+
+  let total = 0;
+  let count = 0;
+
+  for (const [x, y] of points) {
+    let el = document.elementFromPoint(x, y);
+    while (el && el !== document.documentElement) {
+      const bg = window.getComputedStyle(el).backgroundColor;
+      const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+      if (m) {
+        const alpha = m[4] !== undefined ? parseFloat(m[4]) : 1;
+        if (alpha > 0.05) {
+          total += (0.299 * +m[1] + 0.587 * +m[2] + 0.114 * +m[3]) / 255;
+          count++;
+          break;
+        }
+      }
+      el = el.parentElement;
+    }
+  }
+
+  if (count === 0) {
+    const bg = window.getComputedStyle(document.body).backgroundColor;
+    const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if (m) {
+      const lum = (0.299 * +m[1] + 0.587 * +m[2] + 0.114 * +m[3]) / 255;
+      return lum < 0.5 ? "dark" : "light";
+    }
+    return "light";
+  }
+
+  return total / count < 0.5 ? "dark" : "light";
+}
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const headerRef = useRef(null);
-  const navigate = useNavigate();
+  const [theme, setTheme] = useState("light");
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = useCallback(() => {
+    if (isOpen) {
+      setIsOpen(false);
+    } else {
+      const detected = detectBgTheme();
+      setTheme(detected);
+      setIsOpen(true);
+      setHasOpened(true);
+    }
+  }, [isOpen]);
 
-  // 控制滾動條顯示/隱藏
+  const closeMenu = useCallback(() => setIsOpen(false), []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKey = (e) => {
+      if (e.key === "Escape") closeMenu();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isOpen, closeMenu]);
+
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add("menu-open");
     } else {
       document.body.classList.remove("menu-open");
     }
-
-    // 告知其他頁面（如 Projects）選單狀態已改變
-    try {
-      window.dispatchEvent(
-        new CustomEvent("menu-open-change", { detail: { isOpen } })
-      );
-    } catch {
-      // 忽略舊瀏覽器的自訂事件錯誤
-    }
-
-    return () => {
-      document.body.classList.remove("menu-open");
-    };
+    return () => document.body.classList.remove("menu-open");
   }, [isOpen]);
 
-  // 第一次開啟後標記，讓「關閉動畫」僅在曾開啟過之後才會觸發
-  useEffect(() => {
-    if (isOpen) setHasOpened(true);
-  }, [isOpen]);
-
-  // 輪播配置 - 指定專案ID和圖片索引
-  const carouselConfig = React.useMemo(
-    () => [
-      { projectId: "project-001", imageIndex: 0 },
-      { projectId: "project-002", imageIndex: 0 },
-      { projectId: "project-003", imageIndex: 0 },
-      { projectId: "project-004", imageIndex: 0 },
-      { projectId: "project-002", imageIndex: 1 },
-    ],
-    []
-  );
-
-  // 根據配置獲取圖片和專案資訊
-  const carouselData = React.useMemo(() => {
-    return carouselConfig
-      .map((config) => {
-        const project = projectsData.find((p) => p.id === config.projectId);
-        if (!project) return null;
-
-        return {
-          image:
-            project.projectImages[config.imageIndex] ||
-            project.projectImages[0],
-          title: project.title,
-          year: project.year,
-          projectId: config.projectId,
-        };
-      })
-      .filter(Boolean);
-  }, [carouselConfig]);
-
-  const images = carouselData.map((item) => item.image);
-
-  // 自動輪播
-  useEffect(() => {
-    if (isOpen) {
-      const interval = setInterval(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % images.length);
-      }, 5000);
-      return () => clearInterval(interval);
-    }
-  }, [isOpen, images.length]);
-
-  const handleProjectClick = () => {
-    navigate("/projects");
-    setIsOpen(false);
-  };
+  const overlayClass = [
+    "header-overlay",
+    isOpen ? "open" : "",
+    hasOpened ? "has-opened" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <>
-      <div
-        className={`overlay${isOpen ? " open" : ""}${
-          hasOpened ? " has-opened" : ""
-        }`}
-      >
-        {/* 左半邊 - 導航選單 */}
-        <div className="menu-section">
-          <nav className="navigation">
-            <ul>
-              <li>
-                <Link to="/" onClick={toggleMenu}>
-                  HOME
-                </Link>
-              </li>
-              <li>
-                <Link to="/projects" onClick={toggleMenu}>
-                  WORK
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" onClick={toggleMenu}>
-                  ABOUT
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" onClick={toggleMenu}>
-                  CONTACT
-                </Link>
-              </li>
-            </ul>
-          </nav>
-          <MarqueeText
-            textColor="var(--linen-900)"
-            lineColor="var(--gray-700)"
-          />
-        </div>
+      {/* Full-screen overlay */}
+      <div className={overlayClass} data-theme={theme} aria-hidden={!isOpen}>
+        {/* Top 50vh — solid panel */}
+        <div className="header-overlay-top">
+          {/* YIDATSAI — clickable, navigates home */}
+          <Link
+            to="/"
+            className="header-overlay-logo"
+            aria-label="YIDA TSAI"
+            onClick={closeMenu}
+          >
+            <LineRoll>YI</LineRoll>
+            <LineRoll>DA</LineRoll>
+            <LineRoll>TSAI</LineRoll>
+          </Link>
 
-        {/* 右半邊 - 圖片輪播 */}
-        <div className="carousel-section">
-          <div className="carousel-container">
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className={`carousel-slide ${
-                  index === currentImageIndex ? "active" : ""
-                }`}
-                style={{ backgroundImage: `url(${image})` }}
-              />
-            ))}
-          </div>
-
-          {/* 資訊區塊 */}
-          <div className="project-info-panel">
-            <div className="info-content">
-              <div className="info-text-section">
-                <div className="year-section">
-                  <div className="info-item">
-                    <span className="info-label">Year:</span>
-                    <span className="info-value">
-                      {carouselData[currentImageIndex]?.year}
-                    </span>
-                  </div>
-                </div>
-                <div className="title-section">
-                  <div className="info-item">
-                    <span className="info-label">Title:</span>
-                    <span className="info-value">
-                      {carouselData[currentImageIndex]?.title}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <button
-                className="project-button clickable"
-                onClick={handleProjectClick}
+          <nav className="header-overlay-nav" aria-label="Main navigation">
+            {NAV_LINKS.map(({ number, label, to }) => (
+              <Link
+                key={to}
+                to={to}
+                className="header-nav-item clickable"
+                onClick={closeMenu}
               >
-                <img src={arrowIcon} alt="View Project" />
-              </button>
-            </div>
-          </div>
+                <span className="header-nav-number">({number})</span>
+                <span className="header-nav-label">
+                  <RollingText>{label}</RollingText>
+                </span>
+              </Link>
+            ))}
+          </nav>
         </div>
+
+        {/* Bottom 50vh — liquid glass */}
+        <div className="header-overlay-glass" />
       </div>
 
-      <header ref={headerRef} className="header">
-        <button className="menu-icon clickable" onClick={toggleMenu}>
-          <span className={isOpen ? "line line1 open" : "line line1"}></span>
-          <span className={isOpen ? "line line2 open" : "line line2"}></span>
+      {/* Header bar — always visible, animates hamburger ↔ X */}
+      <header className="header-bar">
+        <Link
+          to="/"
+          className={[
+            "header-bar-logo",
+            "clickable",
+            isOpen ? "logo-out" : "",
+            hasOpened && !isOpen ? "logo-in" : "",
+          ].filter(Boolean).join(" ")}
+        >
+          YIDA
+        </Link>
+        <button
+          className="header-hamburger clickable"
+          onClick={toggleMenu}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isOpen}
+        >
+          <span className={`header-hamburger-line line1${isOpen ? " open" : ""}`} />
+          <span className={`header-hamburger-line line2${isOpen ? " open" : ""}`} />
         </button>
-        <div className="logo">YIDA TSAI</div>
       </header>
     </>
   );

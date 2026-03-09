@@ -132,7 +132,7 @@
   --scrollbar-thumb: var(--gray-800); /* 拉條固定顏色 */
 }
 
-/* 2. 全局基礎樣式 */
+/* 全局基礎樣式 */
 html {
   /* 確保不會阻斷子元素的 mix-blend-mode */
   isolation: auto;
@@ -143,8 +143,7 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   font-weight: var(--font-regular);
-  /* 為垂直 Header 預留空間 */
-  margin-left: 64px;
+  margin: 0;
 
   /* 自訂滑鼠游標 - 在桌面設備上隱藏預設游標 */
   cursor: none !important;
@@ -222,7 +221,7 @@ img {
   pointer-events: none;
 }
 
-/* 3. 超連結 */
+/* 超連結 */
 a {
   color: var(--color-primary);
   text-decoration: none;
@@ -251,7 +250,7 @@ a:hover::after {
   transform: scaleX(1);
 }
 
-/* 4. 圖片 */
+/* 圖片 */
 img {
   max-width: 100%;
   height: auto;
@@ -265,7 +264,7 @@ img {
   pointer-events: none;
 }
 
-/* 5. 常用排版元素 */
+/* 常用排版元素 */
 h1,
 h2,
 h3,
@@ -327,7 +326,7 @@ em {
   color: var(--color-text-light);
 }
 
-/* 7. 按鈕樣式 */
+/* 按鈕樣式 */
 .button {
   display: inline-block;
   padding: var(--space-sm) var(--space-lg);
@@ -362,27 +361,14 @@ em {
   color: var(--color-bg);
 }
 
-/* 8. 卡片樣式 */
-.card {
-  background: var(--color-bg);
-  border-radius: var(--radius-md);
-  padding: var(--space-lg);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.3s ease;
-}
-
-.card:hover {
-  box-shadow: var(--shadow-md);
-}
-
-/* 9. 分隔線 */
+/* 分隔線 */
 .divider {
   height: 1px;
   background: var(--color-border);
   margin: var(--space-lg) 0;
 }
 
-/* 10. 文字工具類 */
+/* 文字工具類 */
 .text-center {
   text-align: center;
 }
@@ -422,7 +408,7 @@ em {
   font-weight: var(--font-black);
 }
 
-/* 11. 間距工具類 */
+/* 間距工具類 */
 .mt-xs {
   margin-top: var(--space-xs);
 }
@@ -592,7 +578,7 @@ em {
   padding-right: var(--space-xl);
 }
 
-/* 12. 自訂滑鼠游標相關樣式 */
+/* 自訂滑鼠游標相關樣式 */
 /* 所有可點擊元素都使用自訂游標 */
 a,
 button,
