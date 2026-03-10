@@ -50,7 +50,7 @@
 .footer-line-roll {
   display: block;
   position: relative;
-  clip-path: inset(0 0 0 0);
+  overflow: hidden;       /* clips .footer-line-roll-bottom so it doesn't extend scrollHeight */
   line-height: inherit;
 }
 
@@ -185,7 +185,6 @@
 .footer-lang-toggle {
   position: relative;
   display: flex;
-  width: fit-content;
   border: 1px solid var(--gray-600);
   border-radius: 2px;
   overflow: hidden;
@@ -204,18 +203,20 @@
 .footer-lang-btn {
   position: relative;
   z-index: 1;
+  flex: 1;                  /* equal width for both buttons so indicator aligns exactly */
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 80px;
-  padding: 8px 28px;
+  width: 88px;              /* fixed equal width — wide enough for "English" */
+  padding: 8px 0;
   background: transparent;
   border: none;
   color: var(--gray-500);
   font-family: var(--font-manrope);
   font-weight: var(--fw-medium);
   font-size: var(--fs-12pt);
-  letter-spacing: 0.06em;
+  line-height: 1;
+  letter-spacing: 0;        /* remove trailing letter-spacing that offsets visual center */
   white-space: nowrap;
   transition: color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
