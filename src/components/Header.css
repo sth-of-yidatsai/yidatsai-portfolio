@@ -227,11 +227,11 @@
 .header-overlay-logo {
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
+  line-height: 1.35;
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight);
-  font-size: clamp(3rem, 5vw, 6rem);
-  letter-spacing: 0.03em;
+  font-size: clamp(3rem, 5vw, 5.5rem);
+  letter-spacing: 0.06em;
   color: currentColor;
   text-decoration: none;
   flex-shrink: 0;
@@ -343,7 +343,7 @@
 .header-nav-label {
   font-family: var(--font-manrope);
   font-weight: var(--fw-medium);
-  font-size: var(--fs-20pt);
+  font-size: var(--fs-16pt);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   overflow: hidden;

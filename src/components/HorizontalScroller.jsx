@@ -3,8 +3,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalScroller.css";
 import {
-  OverviewSection,
-  YidaSection,
   ProjectsSection,
   sectionConfigs,
 } from "./sections/horizontal-sections";
@@ -375,10 +373,6 @@ export default function HorizontalScroller() {
             // 根據 section.id 渲染對應的組件
             const renderSection = () => {
               switch (section.id) {
-                case "overview":
-                  return <OverviewSection config={section} index={index} />;
-                case "yida":
-                  return <YidaSection config={section} index={index} />;
                 case "projects":
                   return <ProjectsSection config={section} index={index} />;
                 default:

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import "./HeroSection.css";
 import projectsData from "../../../data/projects.json";
-import arrowIcon from "../../../assets/icons/arrow_outward_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 import leftArrowIcon from "../../../assets/icons/keyboard_arrow_left_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 import rightArrowIcon from "../../../assets/icons/keyboard_arrow_right_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 
@@ -15,16 +13,14 @@ export default function HeroSection({ index }) {
   const [nextImageIndex, setNextImageIndex] = useState(0);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [blindsCount, setBlindsCount] = useState(12);
-  const navigate = useNavigate();
-
   // 輪播配置 - 指定專案ID和圖片索引
   const carouselConfig = React.useMemo(
     () => [
-      { projectId: "project-004", imageIndex: 8 },
-      { projectId: "project-003", imageIndex: 12 },
-      { projectId: "project-003", imageIndex: 3 },
-      { projectId: "project-005", imageIndex: 0 },
-      { projectId: "project-005", imageIndex: 2 },
+      { projectId: "project-001", imageIndex: 0 },
+      { projectId: "project-002", imageIndex: 1 },
+      { projectId: "project-003", imageIndex: 2 },
+      { projectId: "project-002", imageIndex: 3 },
+      { projectId: "project-001", imageIndex: 4 },
     ],
     []
   );
@@ -159,12 +155,6 @@ export default function HeroSection({ index }) {
     triggerImageTransition(newIndex);
   };
 
-  const handleProjectClick = () => {
-    if (displayData?.projectId) {
-      navigate(`/projects/${displayData.projectId}`);
-    }
-  };
-
   return (
     <div className={`hs-section hero-section hs-section-${index}`}>
       {/* 輪播背景 */}
@@ -209,30 +199,10 @@ export default function HeroSection({ index }) {
       {/* 底部專案資訊欄 */}
       <div className="hero-project-info-panel">
         <div className="hero-info-content">
-          {/* 左箭頭 */}
-          <button
-            className="hero-nav-button hero-prev-button clickable"
-            onClick={handlePrevious}
-            aria-label="Previous project"
-          >
-            <img src={leftArrowIcon} alt="Previous" />
-          </button>
-          <div className="hero-nav-button-divider" />
-          {/* 右箭頭 */}
-          <button
-            className="hero-nav-button hero-next-button clickable"
-            onClick={handleNext}
-            aria-label="Next project"
-          >
-            <img src={rightArrowIcon} alt="Next" />
-          </button>
-
           {/* Title區域 */}
           <div className="hero-title-section">
             <div className="hero-info-item">
-              <div className="hero-info-label-wrapper">
-                <span className="hero-info-label">Title</span>
-              </div>
+              <span className="hero-info-label">Title</span>
               <span
                 className={`hero-info-value ${
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
@@ -246,9 +216,7 @@ export default function HeroSection({ index }) {
           {/* Year區域 */}
           <div className="hero-year-section">
             <div className="hero-info-item">
-              <div className="hero-info-label-wrapper">
-                <span className="hero-info-label">Year</span>
-              </div>
+              <span className="hero-info-label">Year</span>
               <span
                 className={`hero-info-value ${
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
@@ -262,9 +230,7 @@ export default function HeroSection({ index }) {
           {/* TAG區域 */}
           <div className="hero-tag-section">
             <div className="hero-info-item">
-              <div className="hero-info-label-wrapper">
-                <span className="hero-info-label">Tag</span>
-              </div>
+              <span className="hero-info-label">Tag</span>
               <div
                 className={`hero-tag-list ${
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
@@ -285,12 +251,22 @@ export default function HeroSection({ index }) {
             </div>
           </div>
 
-          {/* 前往專案按鈕 */}
+          {/* 左箭頭 */}
           <button
-            className="hero-project-button clickable"
-            onClick={handleProjectClick}
+            className="hero-nav-button hero-prev-button clickable"
+            onClick={handlePrevious}
+            aria-label="Previous project"
           >
-            <img src={arrowIcon} alt="View Projects" />
+            <img src={leftArrowIcon} alt="Previous" />
+          </button>
+          <div className="hero-nav-button-divider" />
+          {/* 右箭頭 */}
+          <button
+            className="hero-nav-button hero-next-button clickable"
+            onClick={handleNext}
+            aria-label="Next project"
+          >
+            <img src={rightArrowIcon} alt="Next" />
           </button>
         </div>
       </div>
