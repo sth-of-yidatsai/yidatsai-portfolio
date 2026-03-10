@@ -1,7 +1,7 @@
 import { Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { LanguageContext } from '../contexts/LanguageContext';
-import FooterBadge from './FooterBadge';
+import footerCircle from '../assets/icons/footer_circle.svg';
 import './Footer.css';
 
 /**
@@ -126,7 +126,7 @@ export default function Footer() {
 
         {/* Col 4 — badge + copyright */}
         <div className="footer-right">
-          <FooterBadge />
+          <img src={footerCircle} className="footer-badge-svg" alt="" aria-hidden="true" />
           <div className="footer-copyright-wrap">
             <p className="footer-copyright">Yida Tsai © 2020–{year}</p>
           </div>

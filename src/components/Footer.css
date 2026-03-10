@@ -204,7 +204,11 @@
 .footer-lang-btn {
   position: relative;
   z-index: 1;
-  padding: 7px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  padding: 8px 28px;
   background: transparent;
   border: none;
   color: var(--gray-500);
@@ -214,6 +218,7 @@
   letter-spacing: 0.06em;
   white-space: nowrap;
   transition: color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
 }
 
 .footer-lang-btn.active            { color: var(--gray-900); }
