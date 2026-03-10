@@ -112,6 +112,9 @@
   --space-xl: 64px;
   --space-2xl: 128px;
 
+  /* 流體頁面水平邊距 — 可全站套用 */
+  --px-page: clamp(var(--space-lg), 5vw, var(--space-2xl)); /* 32px → 128px */
+
   /* 版面寬度 */
   --max-width: 1200px;
   --max-width-wide: 1400px;

@@ -1,203 +1,35 @@
-.gallery-page {
-  margin: 0 !important;
-  padding: 0 !important;
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  margin-left: 64px;
-  overflow: hidden;
-  background-color: #000;
+.projects-page {
+  padding: 120px 64px 80px;
+  min-height: 100vh;
   color: #fff;
-  z-index: 1; /* 將整個專案頁設為一個較低層的堆疊上下文，確保 Header(999) 永遠在上層 */
+  background-color: #000;
 }
 
-body.projects-no-scroll {
-  overflow: hidden !important;
-}
-
-html.projects-no-scroll-html {
-  overflow: hidden !important;
-}
-
-/* 容器與畫布 */
-.gallery-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  cursor: grab;
-  touch-action: none; /* 啟用觸控拖曳，避免瀏覽器預設手勢 */
-}
-
-.gallery-canvas {
-  position: absolute;
-  will-change: transform;
-}
-
-/* 卡片 */
-.gallery-item {
-  position: absolute;
-  overflow: visible; /* 改為 visible 讓 caption 可以顯示在卡片外 */
-  background-color: transparent; /* 移除背景色，讓圖片和 caption 分開 */
-  cursor: pointer;
-  border-radius: var(--border-radius, 0px);
-  display: flex;
-  flex-direction: column;
-}
-
-.gallery-item-image-container {
-  width: 100%;
-  height: 480px; /* 固定圖片高度為 3:4 直式比例 */
-  overflow: hidden;
-  position: relative;
-  background-color: #000000;
-  border-radius: var(--border-radius, 0px);
-}
-
-.gallery-item-image-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  box-shadow: inset 0 0 var(--vignette-size, 0px) rgba(0, 0, 0, 0.5);
-  z-index: 1;
-}
-
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-  transition: transform 0.3s ease;
-}
-
-.gallery-item:hover img {
-  transform: scale(var(--hover-scale, 1.05));
-}
-
-.gallery-item-caption {
-  position: relative;
-  width: 100%;
-  padding: 16px 0 0 0; /* 適應更大的卡片，增加間距 */
-  z-index: 2;
-  background-color: transparent;
-}
-
-.gallery-item-name {
+.projects-title {
   font-family: var(--font-stack);
-  color: #ffffff;
-  font-size: 14px; /* 適應更大的卡片，微微增大字體 */
+  font-size: 48px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: -0.03em;
-  margin-bottom: 6px;
-  position: relative;
-  overflow: hidden;
-  height: 18px;
+  margin-bottom: 64px;
 }
 
-.gallery-item-number {
-  font-family: var(--font-latin);
-  color: #888888;
-  font-size: 11px; /* 適應更大的卡片，微微增大字體 */
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.projects-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 24px 0;
+}
+
+.projects-item-title {
+  font-family: var(--font-stack);
+  font-size: 20px;
   font-weight: 400;
-  position: relative;
-  overflow: hidden;
-  height: 15px;
-}
-
-/* 展開視圖 */
-.gallery-expanded-item {
-  position: relative;
-  z-index: 850; /* 低於 header(999) */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #000000;
-  overflow: hidden;
-  cursor: default;
-  pointer-events: none; /* 容器不攔截事件，避免遮擋 Header / 自訂游標 */
-  border-radius: var(--border-radius, 0px);
-}
-
-/* 極輕微暗層，提升 mix-blend 差值游標對比，但不影響畫面觀感 */
-.gallery-expanded-item::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.04);
-  pointer-events: none;
-}
-
-.gallery-expanded-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: auto; /* 僅圖片可點擊導頁 */
-  cursor: pointer;
-}
-
-.gallery-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #000000;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 800; /* 低於 expanded 與 header */
-}
-
-.gallery-overlay.active {
-  pointer-events: auto;
-}
-
-/* 當 Header 菜單展開時，讓展開圖退到更低層，並讓 Header 完整可點擊 */
-body.menu-open .gallery-expanded-item {
-  z-index: 600;
-  pointer-events: none;
-}
-
-/* 已移除標題與黑底樣式 */
-
-/* caption clone */
-.gallery-caption-clone {
-  position: fixed;
-  z-index: 900;
-}
-
-/* Page vignette（可選） */
-.gallery-page-vignette-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 790; /* 低於 overlay */
-}
-
-.gallery-page-vignette {
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 var(--page-vignette-size, 0px)
-    var(--page-vignette-color, rgba(0, 0, 0, 0.9));
-}
-
-.gallery-page-vignette-strong {
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 var(--page-vignette-strong-size, 0px)
-    var(--page-vignette-strong-color, rgba(0, 0, 0, 0.95));
-}
-
-.gallery-page-vignette-extreme {
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 var(--page-vignette-extreme-size, 0px)
-    var(--page-vignette-extreme-color, rgba(0, 0, 0, 1));
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #fff;
 }

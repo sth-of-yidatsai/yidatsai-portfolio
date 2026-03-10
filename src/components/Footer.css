@@ -1,439 +1,307 @@
-/* Footer 主容器 */
+/* ============================================================
+   Footer
+   ============================================================ */
+
 .footer {
-  background: var(--color-dark);
-  color: var(--color-light);
-  padding: var(--space-2xl) 0 var(--space-lg);
-  margin-top: 0;
-  margin-bottom: 0;
-  position: relative;
+  background: var(--gray-900);
+  color: var(--gray-0);
+  padding: var(--space-xl) var(--px-page);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.footer-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-md);
-}
-
-/* 主要內容區域 */
-.footer-main {
+/* ── 4-column outer grid (equal columns, equal gaps) ──
+   Col 1: YIDATSAI logo
+   Col 2-3: footer-mid (nav + contact, shares row heights)
+   Col 4: badge + copyright
+   ── */
+.footer-inner {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  gap: var(--space-xl);
-  align-items: start;
-  margin-bottom: var(--space-xl);
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(var(--space-lg), 4vw, var(--space-xl));
+  align-items: stretch;
+  width: 100%;
 }
 
-/* 品牌區域 */
-.footer-brand {
+.footer-logo  { grid-column: 1; }
+.footer-mid   { grid-column: 2 / 4; }
+.footer-right { grid-column: 4; }
+
+/* ============================================================
+   Col 1 · YIDATSAI logo — mirrors header-overlay-logo
+   ============================================================ */
+.footer-logo {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  line-height: 1.2;
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-extralight);
+  font-size: clamp(3rem, 5vw, 5.5rem);
+  letter-spacing: 0.06em;
+  color: var(--gray-0);
+  text-decoration: none;
+  user-select: none;
 }
 
-.footer-logo {
-  font-size: 3rem;
-  font-weight: var(--font-bold);
-  color: var(--color-light);
+.footer-logo::after { display: none !important; }
+.footer-logo:hover  { color: var(--gray-0); opacity: 1; }
+
+/* Line-roll animation */
+.footer-line-roll {
+  display: block;
+  position: relative;
+  clip-path: inset(0 0 0 0);
+  line-height: inherit;
+}
+
+.footer-line-roll-top,
+.footer-line-roll-bottom {
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footer-line-roll-bottom {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.footer-logo .footer-line-roll:nth-child(1) .footer-line-roll-top,
+.footer-logo .footer-line-roll:nth-child(1) .footer-line-roll-bottom { transition-delay: 0s;    }
+.footer-logo .footer-line-roll:nth-child(2) .footer-line-roll-top,
+.footer-logo .footer-line-roll:nth-child(2) .footer-line-roll-bottom { transition-delay: 0.07s; }
+.footer-logo .footer-line-roll:nth-child(3) .footer-line-roll-top,
+.footer-logo .footer-line-roll:nth-child(3) .footer-line-roll-bottom { transition-delay: 0.14s; }
+
+.footer-logo:hover .footer-line-roll-top    { transform: translateY(-100%); }
+.footer-logo:hover .footer-line-roll-bottom { transform: translateY(-100%); }
+
+/* ============================================================
+   Cols 2–3 · Aligned nav + contact grid
+   Items interleaved: nav1, contact1, nav2, contact2 …
+   Each pair shares the same auto row → perfect alignment.
+   row-gap creates space so the 6 borders remain distinct.
+   ============================================================ */
+.footer-mid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* column-gap mirrors outer gap so col-2 / col-3 spacing = col-1/2 and col-3/4 */
+  column-gap: clamp(var(--space-lg), 4vw, var(--space-xl));
+  /* row-gap keeps each contact item's top/bottom borders visually separate */
+  row-gap: var(--space-sm);
+  align-items: center;
+}
+
+/* ── Nav items ── */
+.footer-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--gray-0);
+  text-decoration: none;
+  opacity: 0.6;
+  padding: 14px 0;          /* matches contact-link height so rows align */
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.footer-nav-item::after { display: none !important; }
+
+.footer-nav-item.clickable:hover {
+  opacity: 1;
+  transform: translateY(0) !important;
+}
+
+.footer-nav-bullet {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.footer-nav-label {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-16pt);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-family: var(--font-stack);
+  overflow: hidden;
   line-height: 1;
 }
 
-.footer-tagline {
-  font-size: 0.9rem;
-  font-weight: var(--font-light);
-  color: var(--color-accent);
-  line-height: 1.5;
-  margin: 0;
-  font-family: var(--font-stack);
-  opacity: 0.8;
-}
+/* Rolling text (per-letter, identical to Header) */
+.footer-rolling-text  { display: inline-flex; column-gap: 0.01em; }
+.footer-rolling-space { display: inline-block; width: 0.3em; }
 
-/* 導航區域 */
-.footer-nav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-xl);
-}
-
-.footer-nav-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.footer-nav-title {
-  font-size: 0.8rem;
-  font-weight: var(--font-semibold);
-  color: var(--color-light);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin: 0;
-  font-family: var(--font-stack);
-  opacity: 0.9;
-}
-
-.footer-nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.footer-nav-link {
-  font-size: 0.9rem;
-  font-weight: var(--font-regular);
-  color: var(--color-accent);
-  text-decoration: none;
-  font-family: var(--font-stack);
-  transition: all 0.3s ease;
-  position: relative;
+.footer-rolling-letter {
   display: inline-block;
+  position: relative;
+  clip-path: inset(0 0 1px 0);
+  line-height: inherit;
 }
 
-.footer-nav-link:hover {
-  color: var(--color-light);
-  transform: translateX(5px);
+.footer-rolling-top,
+.footer-rolling-bottom {
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i) * 0.035s);
 }
 
-.footer-nav-link::after {
-  content: "";
+.footer-rolling-bottom {
   position: absolute;
+  top: 100%;
   left: 0;
-  bottom: -2px;
-  width: 0;
-  height: 1px;
-  background: var(--color-light);
-  transition: width 0.3s ease;
+  transform: translateY(0);
 }
 
-.footer-nav-link:hover::after {
-  width: 100%;
-}
+.footer-nav-item:hover .footer-rolling-top    { transform: translateY(-100%); }
+.footer-nav-item:hover .footer-rolling-bottom { transform: translateY(-100%); }
 
-.footer-nav-item {
-  font-size: 0.9rem;
-  font-weight: var(--font-light);
-  color: var(--color-accent);
-  font-family: var(--font-stack);
-  opacity: 0.7;
-}
-
-/* 聯絡區域 */
-.footer-contact {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  align-items: flex-end;
-  text-align: right;
-}
-
-.footer-contact-title {
-  font-size: 0.8rem;
-  font-weight: var(--font-semibold);
-  color: var(--color-light);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin: 0;
-  font-family: var(--font-stack);
-  opacity: 0.9;
-}
-
-.footer-contact-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  align-items: flex-end;
-}
-
+/* ── Contact links ──
+   Each link has its OWN border-top AND border-bottom (6 lines total).
+   row-gap in .footer-mid provides the gap between adjacent rows
+   so borders never share or visually merge.
+   ── */
 .footer-contact-link {
-  font-size: 1rem;
-  font-weight: var(--font-medium);
-  color: var(--color-light);
+  display: block;
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-12pt);
+  color: var(--gray-400);
   text-decoration: none;
-  font-family: var(--font-stack);
-  transition: all 0.3s ease;
+  padding: 8px 0;
+  border-top:    1px solid var(--gray-700);
+  border-bottom: 1px solid var(--gray-700);
+  transition: color 0.3s ease;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.footer-contact-link::after { display: none !important; }
+.footer-contact-link:hover  { color: var(--gray-0); }
+
+/* ── Language toggle — sliding white pill ── */
+.footer-lang-toggle {
   position: relative;
-}
-
-.footer-contact-link:hover {
-  color: var(--color-secondary);
-  transform: translateY(-2px);
-}
-
-/* 社交連結 */
-.footer-social {
   display: flex;
-  gap: var(--space-md);
-  align-items: center;
-}
-
-.footer-social-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--color-accent);
-  border-radius: 50%;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  position: relative;
+  width: fit-content;
+  border: 1px solid var(--gray-600);
+  border-radius: 2px;
   overflow: hidden;
 }
 
-.footer-social-link::before {
-  content: "";
+.footer-lang-indicator {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: var(--color-light);
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  width: 50%;
+  background: var(--gray-0);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 0;
 }
 
-.footer-social-link:hover::before {
-  width: 100%;
-  height: 100%;
-}
-
-.footer-social-text {
-  font-size: 0.7rem;
-  font-weight: var(--font-semibold);
-  color: var(--color-accent);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-family: var(--font-stack);
+.footer-lang-btn {
   position: relative;
   z-index: 1;
-  transition: color 0.3s ease;
+  padding: 7px 24px;
+  background: transparent;
+  border: none;
+  color: var(--gray-500);
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-12pt);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  transition: color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.footer-social-link:hover .footer-social-text {
-  color: var(--color-dark);
-}
+.footer-lang-btn.active            { color: var(--gray-900); }
+.footer-lang-btn:not(.active):hover { color: var(--gray-200); }
+.footer-lang-btn.clickable:hover   { transform: none !important; }
 
-/* 分隔線 */
-.footer-divider {
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-accent) 20%,
-    var(--color-accent) 80%,
-    transparent 100%
-  );
-  opacity: 0.3;
-  margin: var(--space-xl) 0;
-}
-
-/* 底部區域 */
-.footer-bottom {
+/* ============================================================
+   Col 4 · Badge + copyright
+   ============================================================ */
+.footer-right {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
   gap: var(--space-md);
+  padding-left: var(--space-2xl);
+}
+
+/* ── Rotating badge SVG ──
+   The <g class="footer-badge-rings"> inside the SVG contains
+   both text ring groups and spins around the SVG centre.
+   Centre text and crosshair are outside that group → static.
+   ── */
+.footer-badge-svg {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  display: block;
+}
+
+.footer-badge-rings {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: footer-badge-spin 18s linear infinite;
+}
+
+@keyframes footer-badge-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Copyright — own top + bottom border ── */
+.footer-copyright-wrap {
+  border-top:    1px solid var(--gray-700);
+  border-bottom: 1px solid var(--gray-700);
+  padding: var(--space-sm) 0;
+  width: 100%;
+  text-align: center;
 }
 
 .footer-copyright {
-  flex: 1;
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-12pt);
+  color: var(--gray-500);
+  letter-spacing: 0.08em;
+  margin: 0;
+  white-space: nowrap;
 }
 
-.footer-copyright-text {
-  font-size: 0.75rem;
-  font-weight: var(--font-light);
-  color: var(--color-accent);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-family: var(--font-stack);
-  opacity: 0.7;
-}
-
-.footer-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-lg);
-}
-
-.footer-location {
-  font-size: 0.75rem;
-  font-weight: var(--font-medium);
-  color: var(--color-accent);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-family: var(--font-stack);
-  opacity: 0.8;
-}
-
-.footer-status {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  font-size: 0.75rem;
-  font-weight: var(--font-medium);
-  color: var(--color-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-family: var(--font-stack);
-}
-
-.footer-status-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--color-secondary);
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.2);
-  }
-}
-
-/* 響應式設計 */
-
-/* 平板裝置 */
+/* ============================================================
+   Responsive
+   ============================================================ */
 @media (max-width: 1024px) {
-  .footer {
-    padding: var(--space-xl) 0 var(--space-lg);
-  }
-
-  .footer-main {
+  .footer-inner {
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-lg);
+    grid-template-rows: auto auto;
   }
 
-  .footer-contact {
-    grid-column: 1 / -1;
-    align-items: center;
-    text-align: center;
-    margin-top: var(--space-lg);
-  }
-
-  .footer-nav {
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
-  }
+  .footer-logo  { grid-column: 1; grid-row: 1; }
+  .footer-right { grid-column: 2; grid-row: 1; align-items: flex-end; }
+  .footer-mid   { grid-column: 1 / 3; grid-row: 2; }
 }
 
-/* 手機裝置 */
 @media (max-width: 768px) {
   .footer {
-    padding: var(--space-xl) 0 var(--space-md);
+    padding: var(--space-xl) var(--space-lg);
   }
 
-  .footer-main {
+  .footer-inner {
     grid-template-columns: 1fr;
-    gap: var(--space-lg);
-    text-align: center;
+    grid-template-rows: auto;
   }
 
-  .footer-brand {
-    align-items: center;
-    text-align: center;
-  }
+  .footer-logo  { grid-column: 1; grid-row: auto; font-size: clamp(3rem, 12vw, 5rem); }
+  .footer-mid   { grid-column: 1; grid-row: auto; }
+  .footer-right { grid-column: 1; grid-row: auto; align-items: flex-start; }
 
-  .footer-logo {
-    font-size: 2.5rem;
-  }
-
-  .footer-nav {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-lg);
-    text-align: left;
-  }
-
-  .footer-nav-group {
-    align-items: flex-start;
-  }
-
-  .footer-contact {
-    align-items: center;
-    text-align: center;
-  }
-
-  .footer-contact-info {
-    align-items: center;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    text-align: center;
-    gap: var(--space-md);
-  }
-
-  .footer-meta {
-    justify-content: center;
-  }
-}
-
-/* 小型手機裝置 */
-@media (max-width: 480px) {
-  .footer-container {
-    padding: 0 var(--space-sm);
-  }
-
-  .footer-logo {
-    font-size: 2rem;
-  }
-
-  .footer-nav {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .footer-nav-group {
-    align-items: center;
-  }
-
-  .footer-social {
-    gap: var(--space-sm);
-  }
-
-  .footer-social-link {
-    width: 36px;
-    height: 36px;
-  }
-
-  .footer-meta {
-    flex-direction: column;
-    gap: var(--space-sm);
-  }
-}
-
-/* 動畫效果 */
-.footer-nav-link,
-.footer-contact-link,
-.footer-social-link {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Hover效果增強 */
-@media (hover: hover) {
-  .footer-social-link:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-light);
-  }
-}
-
-/* 深色模式適配（如果需要） */
-@media (prefers-color-scheme: dark) {
-  .footer {
-    background: var(--color-dark);
-  }
+  .footer-copyright-wrap { text-align: left; }
+  .footer-copyright      { text-align: left; }
 }
