@@ -34,7 +34,7 @@
 .footer-logo {
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
+  line-height: 1.25;
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight);
   font-size: clamp(3rem, 5vw, 5.5rem);
@@ -42,6 +42,7 @@
   color: var(--gray-0);
   text-decoration: none;
   user-select: none;
+  margin-bottom: -0.25em;
 }
 
 .footer-logo::after { display: none !important; }
@@ -99,7 +100,7 @@
   color: var(--gray-0);
   text-decoration: none;
   opacity: 0.6;
-  padding: 14px 0;          /* matches contact-link height so rows align */
+  padding: 14px 0;
   transition: opacity 0.3s ease;
   white-space: nowrap;
 }
@@ -165,7 +166,7 @@
 .footer-contact-link {
   display: block;
   font-family: var(--font-manrope);
-  font-weight: var(--fw-light);
+  font-weight: var(--fw-regular);
   font-size: var(--fs-12pt);
   color: var(--gray-400);
   text-decoration: none;
@@ -259,26 +260,30 @@
 }
 
 /* ── Copyright — row 4, same row as lang toggle ──
-   Border/padding matches .footer-contact-link for visual consistency.
-   row-gap (from footer-inner subgrid) handles row separation. ── */
+   Identical style to .footer-contact-link; display:grid / place-items:center
+   centres the text, align-self:stretch pins borders to row edges. ── */
 .footer-copyright-wrap {
   grid-row: 4;
-  display: block;
-  padding: 8px 0;
+  /* centering */
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  /* identical to .footer-contact-link */
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-12pt);
+  color: var(--gray-400);
+  /* padding: 8px 0; */
+  margin: 8px 0;
   border-top:    1px solid var(--gray-700);
   border-bottom: 1px solid var(--gray-700);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
   width: 100%;
 }
 
 .footer-copyright {
-  font-family: var(--font-manrope);
-  font-weight: var(--fw-light);
-  font-size: var(--fs-12pt);
-  color: var(--gray-500);
-  letter-spacing: 0.08em;
   margin: 0;
-  white-space: nowrap;
-  text-align: center;
 }
 
 /* ============================================================

@@ -53,6 +53,7 @@
   --fw-extrabold:  800;
 
   /* 字級（響應式 clamp） */
+  --fs-8pt:  clamp(0.6rem,  0.8vw, 0.67rem);
   --fs-10pt: clamp(0.75rem, 1vw,   0.83rem);
   --fs-12pt: clamp(0.9rem,  1.2vw, 1rem);
   --fs-16pt: clamp(1.1rem,  1.6vw, 1.33rem);
@@ -146,6 +147,7 @@ body {
 /* ============================================================
    工具類 — 響應式字級（pt 對應 clamp）
    ============================================================ */
+.fs-8pt  { font-size: clamp(0.6rem,  0.8vw, 0.67rem); }
 .fs-10pt { font-size: clamp(0.75rem, 1vw, 0.83rem);   }
 .fs-12pt { font-size: clamp(0.9rem, 1.2vw, 1rem);    }
 .fs-16pt { font-size: clamp(1.1rem,  1.6vw, 1.33rem); }

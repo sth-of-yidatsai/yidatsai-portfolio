@@ -326,7 +326,7 @@
 .hero-tag-item {
   color: var(--gray-50);
   font-family: var(--font-manrope), var(--font-cjk);
-  font-size: var(--fs-10pt);
+  font-size: var(--fs-8pt);
   font-weight: var(--fw-medium);
   letter-spacing: 0.05em;
   padding: var(--space-xs) 10px;
