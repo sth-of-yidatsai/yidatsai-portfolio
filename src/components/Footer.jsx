@@ -1,7 +1,8 @@
-import { Fragment, useContext } from 'react';
+import { Fragment, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { LanguageContext } from '../contexts/LanguageContext';
-import footerCircle from '../assets/icons/footer_circle.svg';
+import Lottie from 'lottie-react';
+import footerCircleAnimation from '../assets/icons/FooterCircle.json';
 import './Footer.css';
 
 /**
@@ -81,6 +82,28 @@ function LanguageToggle({ language, setLanguage }) {
   );
 }
 
+/* ── Footer badge — Lottie, paused by default, plays on hover ─────── */
+
+function FooterBadgeLottie() {
+  const lottieRef = useRef(null);
+
+  const handleEnter = () => lottieRef.current?.play();
+  const handleLeave = () => lottieRef.current?.stop();
+
+  return (
+    <Lottie
+      lottieRef={lottieRef}
+      animationData={footerCircleAnimation}
+      autoplay={false}
+      loop={true}
+      className="footer-badge"
+      aria-hidden="true"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    />
+  );
+}
+
 /* ── Footer ────────────────────────────────────────────────────────── */
 
 export default function Footer() {
@@ -126,7 +149,7 @@ export default function Footer() {
 
         {/* Col 4 — badge + copyright */}
         <div className="footer-right">
-          <img src={footerCircle} className="footer-badge-svg" alt="" aria-hidden="true" />
+          <FooterBadgeLottie />
           <div className="footer-copyright-wrap">
             <p className="footer-copyright">Yida Tsai © 2020–{year}</p>
           </div>
