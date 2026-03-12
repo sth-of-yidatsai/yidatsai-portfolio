@@ -101,24 +101,24 @@
   align-self: stretch;
 }
 .fs-image-3 .fs-image-frame {
-  aspect-ratio: 3 / 4;
+  flex: 1;
+  min-height: 0;
 }
 
 .fs-center-col {
-  grid-column: 5 / 8;
+  grid-column: 5 / 9;
   grid-row: 3 / 5;
   align-self: stretch;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  max-width: min(25vw, 380px);
 }
 
 .fs-bio-block {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  margin-bottom: 18%;
-  max-width: 16vw;
 }
 
 .fs-image-4 {
