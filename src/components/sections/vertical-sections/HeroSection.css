@@ -1,6 +1,6 @@
 /* Hero Section 樣式 */
 .hs-section {
-  width: calc(100vw - 64px);
+  width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;

@@ -1,0 +1,235 @@
+/* ====================================================================
+   ApproachSection — 左右 50vw 分割布局
+   ==================================================================== */
+
+.as-section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ────────────────────────────────────────────────
+   Left Panel
+   ──────────────────────────────────────────────── */
+
+.as-left {
+  width: 50vw;
+  height: 100vh;
+  background: var(--gray-0);
+  display: flex;
+  align-items: flex-start;
+  padding: var(--space-2xl) var(--px-page);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.as-left-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  width: 100%;
+}
+
+/* ── Small 1:1 image ── */
+
+.as-small-image {
+  width: clamp(160px, 20vw, 300px);
+  flex-shrink: 0;
+}
+
+.as-image-frame {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.as-image-wrapper {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.as-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  image-rendering: -webkit-optimize-contrast;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* 視差位移 class（與 FieldSection 一致） */
+.as-image.scroll-horizontal-right { transform: translateX(16px)  translateZ(0); }
+.as-image.scroll-horizontal-left  { transform: translateX(-16px) translateZ(0); }
+.as-image.scroll-vertical-up      { transform: translateY(-12px) translateZ(0); }
+.as-image.scroll-vertical-down    { transform: translateY(12px)  translateZ(0); }
+
+/* ── Text block ── */
+
+.as-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.as-title {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-22pt);
+  letter-spacing: 0.03em;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.as-rule {
+  display: block;
+  width: 2rem;
+  height: 1px;
+  background: var(--gray-400);
+  flex-shrink: 0;
+}
+
+.as-body {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-regular);
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  color: var(--gray-500);
+  margin: 0;
+}
+
+/* ────────────────────────────────────────────────
+   Right Panel
+   ──────────────────────────────────────────────── */
+
+.as-right {
+  width: 50vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Full-bleed background image */
+
+.as-right-image-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.as-right-image-wrapper {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.as-right-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.as-right-image.scroll-horizontal-right { transform: translateX(16px)  translateZ(0); }
+.as-right-image.scroll-horizontal-left  { transform: translateX(-16px) translateZ(0); }
+.as-right-image.scroll-vertical-up      { transform: translateY(-12px) translateZ(0); }
+.as-right-image.scroll-vertical-down    { transform: translateY(12px)  translateZ(0); }
+
+/* ────────────────────────────────────────────────
+   Timeline: diagonal line + labels
+   ──────────────────────────────────────────────── */
+
+.as-timeline-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.as-year {
+  position: absolute;
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.75);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.as-year-start {
+  left: 4%;
+  top: 4%;
+}
+
+.as-year-end {
+  right: 4%;
+  bottom: 4%;
+}
+
+.as-tagline {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+ font-family: var(--font-hatton);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-22pt);
+  letter-spacing: 0.03em;
+  margin: 0;
+  line-height: 1.2;
+  color: var(--gray-0);
+  opacity: 0.85;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ────────────────────────────────────────────────
+   Glass block — 1:1 square, bottom-left corner
+   (效果參考 Header overlay-glass)
+   ──────────────────────────────────────────────── */
+
+.as-glass-block {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  /* 1:1 square based on the shorter viewport dimension */
+  width: min(45vh, 45vw);
+  height: min(45vh, 45vw);
+  backdrop-filter: blur(48px) saturate(180%) brightness(0.96);
+  -webkit-backdrop-filter: blur(48px) saturate(180%) brightness(0.96);
+  background: rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  z-index: 1;
+  overflow: hidden;
+}

@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalScroller.css";
 import {
+  ApproachSection,
   ProjectsSection,
   sectionConfigs,
 } from "./sections/horizontal-sections";
@@ -60,8 +61,8 @@ export default function HorizontalScroller() {
     // 所有設備都啟用水平滾動，但移動設備有優化的觸控處理
 
     const ctx = gsap.context(() => {
-      // 計算總寬度 - 考慮 Header 的 64px 寬度
-      const availableWidth = window.innerWidth - 64;
+      // 計算總寬度 - 全版 100vw
+      const availableWidth = window.innerWidth;
       const totalWidth = sections.length * availableWidth;
       gsap.set(scroller, { width: totalWidth });
 
@@ -373,6 +374,8 @@ export default function HorizontalScroller() {
             // 根據 section.id 渲染對應的組件
             const renderSection = () => {
               switch (section.id) {
+                case "approach":
+                  return <ApproachSection config={section} index={index} />;
                 case "projects":
                   return <ProjectsSection config={section} index={index} />;
                 default:
