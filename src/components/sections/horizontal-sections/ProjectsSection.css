@@ -6,9 +6,7 @@
   justify-content: center;
   position: relative;
   background: transparent;
-  will-change: transform;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
+  /* 建立獨立 stacking context，使 backdrop-filter 能在正確範圍內取樣 */
   transform: translateZ(0);
 }
 
@@ -37,65 +35,47 @@
   overflow: hidden;
 }
 
-/* 背景圖片 - 預設黑白 */
+/* 背景圖片 - 預設黑白 + 模糊玻璃效果 */
 .fullscreen-project-block::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: -5%;
+  left: -5%;
+  right: -5%;
+  bottom: -5%;
   background-image: var(--project-bg-image);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  filter: grayscale(1);
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: translateZ(0) scale(1);
+  filter: grayscale(1) blur(14px) brightness(0.85);
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    filter 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: scale(1);
   z-index: 0;
-  will-change: transform, filter;
-  backface-visibility: hidden;
 }
 
-/* Hover：彩色 + 放大 */
+/* Hover：彩色 + 清晰 + 放大 */
 .fullscreen-project-block:hover::before {
-  filter: grayscale(0);
-  transform: translateZ(0) scale(1.06);
+  filter: grayscale(0) blur(0px) brightness(1);
+  transform: scale(1.06);
 }
 
-/* 區塊分隔線 */
-.fullscreen-projects-content::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 25vw;
-  border-left: 1px solid var(--gray-700);
-  height: 100vh;
-  z-index: 5;
-}
-
-.fullscreen-projects-content::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50vw;
-  border-left: 1px solid var(--gray-700);
-  height: 100vh;
-  z-index: 5;
-}
-
+/* 區塊分隔線 — 每個 block 自身的右邊線，避免跨 compositing layer */
+.fullscreen-project-block:nth-child(1)::after,
+.fullscreen-project-block:nth-child(2)::after,
 .fullscreen-project-block:nth-child(3)::after {
   content: "";
   position: absolute;
   top: 0;
   right: 0;
-  border-left: 1px solid var(--gray-700);
+  width: 1px;
   height: 100%;
+  background: var(--gray-700);
   z-index: 5;
+  pointer-events: none;
 }
 
-/* Glass overlay - 預設套用玻璃效果 */
+/* Overlay - 半透明暗色罩，配合背景模糊模擬玻璃感 */
 .project-block-overlay {
   position: absolute;
   top: 0;
@@ -106,32 +86,29 @@
   flex-direction: column;
   justify-content: flex-start;
   padding: 3rem 2rem;
-  backdrop-filter: blur(20px) saturate(160%) brightness(0.75);
-  -webkit-backdrop-filter: blur(20px) saturate(160%) brightness(0.75);
-  background: rgba(0, 0, 0, 0.2);
-  transition: backdrop-filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    background 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: rgba(0, 0, 0, 0.25);
+  transition: background 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   z-index: 1;
-  will-change: backdrop-filter, background;
 }
 
-/* Hover：移除玻璃效果 */
+/* Hover：移除暗色罩 */
 .fullscreen-project-block:hover .project-block-overlay {
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   background: transparent;
 }
 
 /* 大號數字 */
 .project-block-number-large {
   font-family: var(--font-hatton);
-  font-weight: var(--fw-extralight);
-  font-size: var(--fs-96pt);
+  font-weight: var(--fw-thin);
+  font-size: var(--fs-144pt);
+  line-height: 1;
   opacity: 0.85;
-  color: var(--gray-100);
+  color: var(--gray-0);
   transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-  transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateY(0px);
+  margin-top: var(--space-xl);
+  margin-left: var(--space-md);
 }
 
 .fullscreen-project-block:hover .project-block-number-large {
@@ -202,14 +179,24 @@
     height: 100vh;
   }
 
-  .project-practice-areas-large {
-    writing-mode: horizontal-tb;
-    text-orientation: initial;
-    font-size: 2rem;
+  /* 垂直排列時分隔線改為底部水平線 */
+  .fullscreen-project-block:nth-child(1)::after,
+  .fullscreen-project-block:nth-child(2)::after,
+  .fullscreen-project-block:nth-child(3)::after {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
   }
 
   .project-block-number-large {
-    font-size: 8rem;
+    font-size: var(--fs-48pt);
+  }
+
+  .project-practice-areas-large {
+    font-size: var(--fs-18pt);
   }
 
   .project-block-overlay {
@@ -224,20 +211,16 @@
 }
 
 @media (max-width: 480px) {
-  .project-practice-areas-large {
-    font-size: 1.5rem;
-  }
-
   .project-block-number-large {
-    font-size: 6rem;
+    font-size: var(--fs-40pt);
   }
 
-  .project-copy {
-    font-size: 0.9rem;
+  .project-practice-areas-large {
+    font-size: var(--fs-16pt);
   }
 
   .project-description {
-    font-size: 0.8rem;
+    font-size: var(--fs-10pt);
   }
 
   .project-block-overlay {

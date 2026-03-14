@@ -3,6 +3,14 @@
    ============================================================ */
 @font-face {
   font-family: "PPHatton";
+  src: url("/images/fonts/PPHatton-Thin.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PPHatton";
   src: url("/images/fonts/PPHatton-Ultralight.woff2") format("woff2");
   font-weight: 200;
   font-style: normal;
@@ -44,6 +52,7 @@
   --font-cjk:      "Noto Sans TC", sans-serif;
 
   /* 字重 */
+  --fw-thin:       100;
   --fw-extralight: 200;
   --fw-light:      300;
   --fw-regular:    400;
@@ -70,7 +79,8 @@
   --fs-56pt: clamp(3.5rem,  7vw,    4.67rem);
   --fs-64pt: clamp(4rem,    8vw,    5.33rem);
   --fs-72pt: clamp(4.5rem,  9vw,    6rem);
-  --fs-96pt: clamp(5rem,    11vw,   8rem);
+  --fs-96pt:  clamp(5rem,    11vw,   8rem);
+  --fs-144pt: clamp(6rem,   12vw,   12rem);
 }
 
 
@@ -120,8 +130,9 @@ body {
 
 
 /* ============================================================
-   PP Hatton — 英文展示字型 (wght 200 / 300 / 400)
+   PP Hatton — 英文展示字型 (wght 100 / 200 / 300 / 400)
    ============================================================ */
+.hatton-thin               { font-family: var(--font-hatton); font-weight: var(--fw-thin);       font-style: normal; }
 .hatton-ultralight         { font-family: var(--font-hatton); font-weight: var(--fw-extralight); font-style: normal; }
 .hatton-light              { font-family: var(--font-hatton); font-weight: var(--fw-light);      font-style: normal; }
 .hatton-light-italic       { font-family: var(--font-hatton); font-weight: var(--fw-light);      font-style: italic; }
@@ -171,4 +182,5 @@ body {
 .fs-56pt { font-size: var(--fs-56pt); }
 .fs-64pt { font-size: var(--fs-64pt); }
 .fs-72pt { font-size: var(--fs-72pt); }
-.fs-96pt { font-size: var(--fs-96pt); }
+.fs-96pt  { font-size: var(--fs-96pt);  }
+.fs-144pt { font-size: var(--fs-144pt); }

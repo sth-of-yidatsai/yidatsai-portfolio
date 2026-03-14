@@ -7,7 +7,7 @@ export default function ProjectsSection({ index }) {
   // 專案配置 - 指定專案ID和圖片索引
   const projectConfig = React.useMemo(
     () => [
-      { blockNumber: "1", projectId: "project-003", imageIndex: 9 }, // 區塊1
+      { blockNumber: "1", projectId: "project-003", imageIndex: 3 }, // 區塊1
       { blockNumber: "2", projectId: "project-003", imageIndex: 8 }, // 區塊2
       { blockNumber: "3", projectId: "project-003", imageIndex: 6 }, // 區塊3
       { blockNumber: "4", projectId: "project-003", imageIndex: 1 }, // 區塊4
