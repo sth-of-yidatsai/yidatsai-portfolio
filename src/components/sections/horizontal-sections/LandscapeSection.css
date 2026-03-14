@@ -30,6 +30,37 @@
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
+  overflow: hidden;
+}
+
+/* ── Rolling text (圖片切換動畫) ──────────────────────────────────── */
+
+.ls-rolling-text {
+  display: inline-flex;
+  column-gap: 0.01em;
+}
+
+.ls-rolling-space {
+  display: inline-block;
+  width: 0.3em;
+}
+
+.ls-rolling-letter {
+  display: inline-block;
+  position: relative;
+  clip-path: inset(0 0 1px 0);
+  line-height: inherit;
+}
+
+.ls-rolling-top {
+  display: block;
+  animation: ls-roll-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i) * 0.035s);
+}
+
+@keyframes ls-roll-in {
+  from { transform: translateY(110%); }
+  to   { transform: translateY(0); }
 }
 
 .ls-label-left  { left:  9vw; }
@@ -53,7 +84,25 @@
   overflow: hidden;
 }
 
-/* Base and incoming images both fill the frame */
+/* Parallax wrapper — extra 10% bleed on each side allows image to shift */
+.ls-image-parallax-wrapper {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateZ(0);
+}
+
+.ls-image-parallax-wrapper.scroll-horizontal-right { transform: translateX(16px)  translateZ(0); }
+.ls-image-parallax-wrapper.scroll-horizontal-left  { transform: translateX(-16px) translateZ(0); }
+.ls-image-parallax-wrapper.scroll-vertical-up      { transform: translateY(-12px) translateZ(0); }
+.ls-image-parallax-wrapper.scroll-vertical-down    { transform: translateY(12px)  translateZ(0); }
+
+/* Base and incoming images both fill the wrapper */
 .ls-image {
   position: absolute;
   inset: 0;
@@ -83,4 +132,5 @@
   margin: 0;
   text-align: center;
   user-select: none;
+  overflow: hidden;
 }

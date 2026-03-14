@@ -1,6 +1,24 @@
 import React, { useMemo } from "react";
 import "./LandscapeSection.css";
 import projectsData from "../../../data/projects.json";
+import { useScrollDetection } from "../../../hooks/useHorizontalScroll";
+
+/** 逐字捲動（從下方捲入），用於圖片切換時的文字動畫 */
+function RollingText({ children }) {
+  return (
+    <span className="ls-rolling-text" aria-label={children}>
+      {[...children].map((char, i) =>
+        char === " " ? (
+          <span key={i} className="ls-rolling-space">&nbsp;</span>
+        ) : (
+          <span key={i} className="ls-rolling-letter" style={{ "--i": i }}>
+            <span className="ls-rolling-top">{char}</span>
+          </span>
+        )
+      )}
+    </span>
+  );
+}
 
 // ── Slide configuration — manage here for easy replacement ──
 // Each slide: { projectId, imageIndex, leftLabel, rightLabel, caption }
@@ -44,6 +62,19 @@ function resolveSlide(cfg) {
 export default function LandscapeSection({ index, landscapeProgress = 0 }) {
   const slides = useMemo(() => LANDSCAPE_SLIDES.map(resolveSlide), []);
 
+  const {
+    isScrolling,
+    horizontalDirection,
+    verticalDirection,
+    isInHorizontalSection,
+  } = useScrollDetection();
+
+  const scrollClass = isScrolling
+    ? isInHorizontalSection
+      ? `scroll-horizontal-${horizontalDirection}`
+      : `scroll-vertical-${verticalDirection}`
+    : "";
+
   const NUM_TRANSITIONS = slides.length - 1; // 2
 
   // Which transition we're in (0 or 1)
@@ -70,40 +101,51 @@ export default function LandscapeSection({ index, landscapeProgress = 0 }) {
   // Text switches to incoming slide once it covers more than half the frame
   const activeSlide = transitionProgress >= 0.5 ? incomingSlide : baseSlide;
 
+  // Key changes when activeSlide switches → React remounts → CSS roll-in triggers
+  const activeSlideIndex = transitionIndex + (transitionProgress >= 0.5 ? 1 : 0);
+
   // Show overlay whenever a transition is in progress
   const showOverlay = transitionProgress > 0.001;
 
   return (
     <section className={`ls-section hs-section hs-section-${index}`}>
       {/* Side labels */}
-      <span className="ls-side-label ls-label-left">{activeSlide.leftLabel}</span>
-      <span className="ls-side-label ls-label-right">{activeSlide.rightLabel}</span>
+      <span key={`left-${activeSlideIndex}`} className="ls-side-label ls-label-left">
+        <RollingText>{activeSlide.leftLabel}</RollingText>
+      </span>
+      <span key={`right-${activeSlideIndex}`} className="ls-side-label ls-label-right">
+        <RollingText>{activeSlide.rightLabel}</RollingText>
+      </span>
 
       {/* Center content: image frame + caption */}
       <div className="ls-content">
         <div className="ls-image-frame">
-          {/* Base image — current slide */}
-          <img
-            src={baseSlide.image}
-            alt={baseSlide.leftLabel}
-            className="ls-image ls-image-base"
-            draggable={false}
-          />
-
-          {/* Incoming image — scales from 0 to 1 (scroll-driven) */}
-          {showOverlay && (
+          <div className={`ls-image-parallax-wrapper ${scrollClass}`}>
+            {/* Base image — current slide */}
             <img
-              src={incomingSlide.image}
-              alt={incomingSlide.leftLabel}
-              className="ls-image ls-image-incoming"
-              style={{ transform: `scale(${incomingScale})` }}
+              src={baseSlide.image}
+              alt={baseSlide.leftLabel}
+              className="ls-image ls-image-base"
               draggable={false}
             />
-          )}
+
+            {/* Incoming image — scales from 0 to 1 (scroll-driven) */}
+            {showOverlay && (
+              <img
+                src={incomingSlide.image}
+                alt={incomingSlide.leftLabel}
+                className="ls-image ls-image-incoming"
+                style={{ transform: `scale(${incomingScale})` }}
+                draggable={false}
+              />
+            )}
+          </div>
         </div>
 
         {/* Caption below image */}
-        <p className="ls-caption">{activeSlide.caption}</p>
+        <p key={`caption-${activeSlideIndex}`} className="ls-caption">
+          <RollingText>{activeSlide.caption}</RollingText>
+        </p>
       </div>
     </section>
   );
