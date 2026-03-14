@@ -106,22 +106,22 @@
     BL → scaleY(-1) (arms go down + left)
     BR → scale(-1,-1) (arms go down + right)
 */
-.ls-deco-tl { width: 56px; left:  calc(-50px - var(--space-md)); top:    calc(7px - var(--space-md)); transform: none; }
-.ls-deco-tr { width: 56px; right: calc(-50px - var(--space-md)); top:    calc(7px - var(--space-md)); transform: scaleX(-1); }
-.ls-deco-bl { width: 56px; left:  calc(-50px - var(--space-md)); bottom: calc(7px - var(--space-md)); transform: scaleY(-1); }
-.ls-deco-br { width: 56px; right: calc(-50px - var(--space-md)); bottom: calc(7px - var(--space-md)); transform: scale(-1, -1); }
+.ls-deco-tl { width: 56px; left:  calc(-50px - var(--space-lg)); top:    calc(7px - var(--space-lg)); transform: none; }
+.ls-deco-tr { width: 56px; right: calc(-50px - var(--space-lg)); top:    calc(7px - var(--space-lg)); transform: scaleX(-1); }
+.ls-deco-bl { width: 56px; left:  calc(-50px - var(--space-lg)); bottom: calc(7px - var(--space-lg)); transform: scaleY(-1); }
+.ls-deco-br { width: 56px; right: calc(-50px - var(--space-lg)); bottom: calc(7px - var(--space-lg)); transform: scale(-1, -1); }
 
 /* Center SVG: viewBox 99.45×21.06 — horizontal bar at y≈14.5px.
    top/bottom 13px places the bar flush with the frame edge. */
 .ls-deco-tc {
   width: 100px;
-  top: calc(13px - var(--space-lg));
+  top: calc(7px - var(--space-lg));
   left: 50%;
   transform: translateX(-50%);
 }
 .ls-deco-bc {
   width: 100px;
-  bottom: calc(13px - var(--space-lg));
+  bottom: calc(7px - var(--space-lg));
   left: 50%;
   transform: translateX(-50%) scaleY(-1);
 }
