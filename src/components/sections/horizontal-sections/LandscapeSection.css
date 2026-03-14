@@ -23,8 +23,8 @@
   top: 50%;
   transform: translateY(-50%);
   font-family: var(--font-manrope);
-  font-size: var(--fs-12pt);
-  font-weight: var(--fw-regular);
+  font-size: var(--fs-14pt);
+  font-weight: var(--fw-medium);
   letter-spacing: 0.04em;
   color: var(--gray-600);
   white-space: nowrap;
@@ -72,7 +72,58 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: var(--space-lg);
+}
+
+/* ── Outer frame wrapper (holds image-frame + SVG decorations) ───── */
+
+.ls-frame-outer {
+  position: relative;
+  /* padding matches the SVG decoration overhang so decorations don't clip */
+  padding: 28px 0;
+}
+
+/* ── SVG decorations ──────────────────────────────────────────────── */
+
+.ls-deco {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  display: block;
+}
+
+/*
+  Corner SVG: junction (inner L angle) at (49.75px, 20.78px) of 56×27px element.
+  Each corner: junction aligns with frame corner, arms extend OUTSIDE the frame.
+
+  Offset formula:
+    top/bottom = 28px (frame padding) - 20.78px ≈ 7px
+    left/right = -(49.75px) ≈ -50px  (arm extends outside the frame edge)
+
+  Transforms flip direction so arms always expand outward:
+    TL → none     (arms go up + left)
+    TR → scaleX(-1) (arms go up + right)
+    BL → scaleY(-1) (arms go down + left)
+    BR → scale(-1,-1) (arms go down + right)
+*/
+.ls-deco-tl { width: 56px; left:  calc(-50px - var(--space-md)); top:    calc(7px - var(--space-md)); transform: none; }
+.ls-deco-tr { width: 56px; right: calc(-50px - var(--space-md)); top:    calc(7px - var(--space-md)); transform: scaleX(-1); }
+.ls-deco-bl { width: 56px; left:  calc(-50px - var(--space-md)); bottom: calc(7px - var(--space-md)); transform: scaleY(-1); }
+.ls-deco-br { width: 56px; right: calc(-50px - var(--space-md)); bottom: calc(7px - var(--space-md)); transform: scale(-1, -1); }
+
+/* Center SVG: viewBox 99.45×21.06 — horizontal bar at y≈14.5px.
+   top/bottom 13px places the bar flush with the frame edge. */
+.ls-deco-tc {
+  width: 100px;
+  top: calc(13px - var(--space-lg));
+  left: 50%;
+  transform: translateX(-50%);
+}
+.ls-deco-bc {
+  width: 100px;
+  bottom: calc(13px - var(--space-lg));
+  left: 50%;
+  transform: translateX(-50%) scaleY(-1);
 }
 
 /* ── Image frame ──────────────────────────────────────────────────── */

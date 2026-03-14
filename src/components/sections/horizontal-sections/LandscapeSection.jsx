@@ -2,6 +2,8 @@ import React, { useMemo } from "react";
 import "./LandscapeSection.css";
 import projectsData from "../../../data/projects.json";
 import { useScrollDetection } from "../../../hooks/useHorizontalScroll";
+import cornerSvg from "../../../assets/icons/landscape-section-corner.svg";
+import centerSvg from "../../../assets/icons/landscape-section-center.svg";
 
 /** 逐字捲動（從下方捲入），用於圖片切換時的文字動畫 */
 function RollingText({ children }) {
@@ -119,26 +121,38 @@ export default function LandscapeSection({ index, landscapeProgress = 0 }) {
 
       {/* Center content: image frame + caption */}
       <div className="ls-content">
-        <div className="ls-image-frame">
-          <div className={`ls-image-parallax-wrapper ${scrollClass}`}>
-            {/* Base image — current slide */}
-            <img
-              src={baseSlide.image}
-              alt={baseSlide.leftLabel}
-              className="ls-image ls-image-base"
-              draggable={false}
-            />
+        <div className="ls-frame-outer">
+          {/* Corner decorations — corner SVG is bottom-right oriented; rotate for each corner */}
+          <img src={cornerSvg} className="ls-deco ls-deco-tl" aria-hidden="true" draggable={false} />
+          <img src={cornerSvg} className="ls-deco ls-deco-tr" aria-hidden="true" draggable={false} />
+          <img src={cornerSvg} className="ls-deco ls-deco-bl" aria-hidden="true" draggable={false} />
+          <img src={cornerSvg} className="ls-deco ls-deco-br" aria-hidden="true" draggable={false} />
 
-            {/* Incoming image — scales from 0 to 1 (scroll-driven) */}
-            {showOverlay && (
+          {/* Center decorations — top and bottom */}
+          <img src={centerSvg} className="ls-deco ls-deco-tc" aria-hidden="true" draggable={false} />
+          <img src={centerSvg} className="ls-deco ls-deco-bc" aria-hidden="true" draggable={false} />
+
+          <div className="ls-image-frame">
+            <div className={`ls-image-parallax-wrapper ${scrollClass}`}>
+              {/* Base image — current slide */}
               <img
-                src={incomingSlide.image}
-                alt={incomingSlide.leftLabel}
-                className="ls-image ls-image-incoming"
-                style={{ transform: `scale(${incomingScale})` }}
+                src={baseSlide.image}
+                alt={baseSlide.leftLabel}
+                className="ls-image ls-image-base"
                 draggable={false}
               />
-            )}
+
+              {/* Incoming image — scales from 0 to 1 (scroll-driven) */}
+              {showOverlay && (
+                <img
+                  src={incomingSlide.image}
+                  alt={incomingSlide.leftLabel}
+                  className="ls-image ls-image-incoming"
+                  style={{ transform: `scale(${incomingScale})` }}
+                  draggable={false}
+                />
+              )}
+            </div>
           </div>
         </div>
 
