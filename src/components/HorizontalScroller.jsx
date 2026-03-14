@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalScroller.css";
 import {
   ApproachSection,
+  LandscapeSection,
   ProjectsSection,
   sectionConfigs,
 } from "./sections/horizontal-sections";
@@ -30,6 +31,7 @@ export default function HorizontalScroller() {
   });
 
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [landscapeProgress, setLandscapeProgress] = useState(0);
   const [isInHorizontalSection, setIsInHorizontalSection] = useState(false);
   const colors = {
     track: getCSSVar("--gray-100", "#e0e0e0"),
@@ -61,18 +63,39 @@ export default function HorizontalScroller() {
     // 所有設備都啟用水平滾動，但移動設備有優化的觸控處理
 
     const ctx = gsap.context(() => {
-      // 計算總寬度 - 全版 100vw
-      const availableWidth = window.innerWidth;
-      const totalWidth = sections.length * availableWidth;
+      const VW = window.innerWidth;
+      const VH = window.innerHeight;
+      const totalWidth = sections.length * VW;
       gsap.set(scroller, { width: totalWidth });
 
-      // 建立水平滾動動畫
-      // 保留開始和結束的停頓區域，但調整開始停頓區的大小
-      const startPauseZoneHeight = window.innerHeight * 0.5; // 縮小開始停頓區域
-      const endPauseZoneHeight = window.innerHeight;
-      const horizontalScrollDistance = totalWidth - availableWidth;
+      // ── Scroll distance constants ──────────────────────────────────
+      const startPauseH = VH * 0.5;
+      const endPauseH   = VH;
+
+      // Landscape section pause zone (2 image transitions × VH each)
+      const landscapeIdx = sections.findIndex((s) => s.id === "landscape");
+      const landscapePauseH = landscapeIdx !== -1 ? VH * 2 : 0;
+
+      // Horizontal distances split around landscape pause
+      const horizBefore = landscapeIdx !== -1 ? landscapeIdx * VW : (sections.length - 1) * VW;
+      const horizAfter  = landscapeIdx !== -1 ? (sections.length - 1 - landscapeIdx) * VW : 0;
+      const totalHoriz  = horizBefore + horizAfter;
+
       const totalScrollDistance =
-        horizontalScrollDistance + startPauseZoneHeight + endPauseZoneHeight;
+        startPauseH + horizBefore + landscapePauseH + horizAfter + endPauseH;
+
+      // ── Normalised thresholds (fraction of totalScrollDistance) ───
+      const t1 = startPauseH / totalScrollDistance;                                              // end of start pause
+      const t2 = (startPauseH + horizBefore) / totalScrollDistance;                             // landscape centred
+      const t3 = (startPauseH + horizBefore + landscapePauseH) / totalScrollDistance;           // landscape pause ends
+      const t4 = (startPauseH + horizBefore + landscapePauseH + horizAfter) / totalScrollDistance; // end of horiz scroll
+
+      // ── Duration fractions for GSAP timeline ──────────────────────
+      const d_start   = startPauseH   / totalScrollDistance;
+      const d_hBefore = horizBefore   / totalScrollDistance;
+      const d_lPause  = landscapePauseH / totalScrollDistance;
+      const d_hAfter  = horizAfter    / totalScrollDistance;
+      const d_end     = endPauseH     / totalScrollDistance;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -83,56 +106,44 @@ export default function HorizontalScroller() {
           end: () => `+=${totalScrollDistance}`,
           id: "horizontal-scroll",
           onUpdate: (self) => {
-            // 計算實際的水平滾動進度
-            // 開始停頓區 -> 水平滾動階段 -> 結束停頓區
-            const startPauseThreshold =
-              startPauseZoneHeight / totalScrollDistance;
-            const horizontalStartThreshold = startPauseThreshold;
-            const horizontalEndThreshold =
-              (startPauseZoneHeight + horizontalScrollDistance) /
-              totalScrollDistance;
+            let hProgress = 0;
+            let lProgress = 0;
 
-            let horizontalProgress;
-            if (self.progress <= horizontalStartThreshold) {
-              // 在開始停頓區階段，保持水平滾動開始狀態
-              horizontalProgress = 0.0;
-            } else if (self.progress <= horizontalEndThreshold) {
-              // 在水平滾動階段
-              const horizontalRange =
-                horizontalEndThreshold - horizontalStartThreshold;
-              const horizontalProgressInRange =
-                (self.progress - horizontalStartThreshold) / horizontalRange;
-              horizontalProgress = horizontalProgressInRange;
+            if (self.progress <= t1) {
+              // Start pause
+              hProgress = 0;
+              lProgress = 0;
+            } else if (self.progress <= t2) {
+              // Scrolling toward landscape
+              const frac = (t2 - t1) > 0 ? (self.progress - t1) / (t2 - t1) : 0;
+              hProgress  = totalHoriz > 0 ? frac * (horizBefore / totalHoriz) : 0;
+              lProgress  = 0;
+            } else if (self.progress <= t3) {
+              // Landscape pause — image transitions
+              hProgress  = totalHoriz > 0 ? horizBefore / totalHoriz : 0;
+              lProgress  = (t3 - t2) > 0 ? (self.progress - t2) / (t3 - t2) : 0;
+            } else if (self.progress <= t4) {
+              // Scrolling from landscape to end
+              const frac = (t4 - t3) > 0 ? (self.progress - t3) / (t4 - t3) : 0;
+              hProgress  = totalHoriz > 0
+                ? horizBefore / totalHoriz + frac * (horizAfter / totalHoriz)
+                : frac;
+              lProgress  = 1;
             } else {
-              // 在結束停頓區階段，保持水平滾動完成狀態
-              horizontalProgress = 1.0;
+              // End pause
+              hProgress = 1;
+              lProgress = 1;
             }
 
-            console.log(
-              "Total Progress:",
-              self.progress,
-              "Horizontal Progress:",
-              horizontalProgress,
-              "Start Threshold:",
-              horizontalStartThreshold,
-              "End Threshold:",
-              horizontalEndThreshold,
-              "In Start Pause:",
-              self.progress <= horizontalStartThreshold,
-              "In End Pause:",
-              self.progress > horizontalEndThreshold
-            );
-
-            setScrollProgress(horizontalProgress);
+            setScrollProgress(hProgress);
+            setLandscapeProgress(lProgress);
           },
           onEnter: () => {
             setIsInHorizontalSection(true);
-            // 隱藏 GlobalScrollbar
             document.body.classList.add("horizontal-scrolling");
           },
           onLeave: () => {
             setIsInHorizontalSection(false);
-            // 顯示 GlobalScrollbar
             document.body.classList.remove("horizontal-scrolling");
           },
           onEnterBack: () => {
@@ -146,30 +157,32 @@ export default function HorizontalScroller() {
         },
       });
 
-      // 水平移動動畫 - 三階段：開始停頓 -> 水平滾動 -> 結束停頓
-      const startPauseDuration = startPauseZoneHeight / totalScrollDistance;
-      const horizontalScrollDuration =
-        horizontalScrollDistance / totalScrollDistance;
-      const endPauseDuration = endPauseZoneHeight / totalScrollDistance;
+      // ── Build timeline ─────────────────────────────────────────────
+      // Phase 1: start pause (x stays at 0)
+      tl.to(scroller, { x: 0, ease: "none", duration: d_start });
 
-      // 開始停頓區：保持初始位置
-      tl.to(scroller, {
-        x: 0,
-        ease: "none",
-        duration: startPauseDuration,
-      })
-        // 水平滾動階段：從 0 移動到 -(totalWidth - availableWidth)
-        .to(scroller, {
-          x: () => -(totalWidth - availableWidth),
-          ease: "none",
-          duration: horizontalScrollDuration,
-        })
-        // 結束停頓區：保持最終位置
-        .to(scroller, {
-          x: () => -(totalWidth - availableWidth),
-          ease: "none",
-          duration: endPauseDuration,
-        });
+      if (landscapeIdx !== -1) {
+        // Phase 2: scroll from approach to landscape centre
+        if (horizBefore > 0) {
+          tl.to(scroller, { x: -horizBefore, ease: "none", duration: d_hBefore });
+        }
+        // Phase 3 (gap): landscape image-transition pause.
+        // No x tween is added here — GSAP holds x at -horizBefore for d_lPause time.
+        // Phase 4 is positioned "+=${d_lPause}" after the end of Phase 2/3.
+        if (horizAfter > 0) {
+          tl.to(
+            scroller,
+            { x: -(horizBefore + horizAfter), ease: "none", duration: d_hAfter },
+            `+=${d_lPause}`   // ← gap: starts d_lPause after Phase 2 ends
+          );
+        }
+        // Phase 5: end pause
+        tl.to(scroller, { x: -totalHoriz, ease: "none", duration: d_end });
+      } else {
+        // No landscape — plain horizontal scroll then end pause
+        tl.to(scroller, { x: -totalHoriz, ease: "none", duration: d_hBefore + d_hAfter });
+        tl.to(scroller, { x: -totalHoriz, ease: "none", duration: d_end });
+      }
     }, container);
 
     // 存儲context到ref
@@ -376,6 +389,14 @@ export default function HorizontalScroller() {
               switch (section.id) {
                 case "approach":
                   return <ApproachSection config={section} index={index} />;
+                case "landscape":
+                  return (
+                    <LandscapeSection
+                      config={section}
+                      index={index}
+                      landscapeProgress={landscapeProgress}
+                    />
+                  );
                 case "projects":
                   return <ProjectsSection config={section} index={index} />;
                 default:
