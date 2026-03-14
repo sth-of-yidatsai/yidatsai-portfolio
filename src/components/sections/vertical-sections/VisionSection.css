@@ -1,0 +1,139 @@
+/* ====================================================================
+   VisionSection — Between Art & System
+   ==================================================================== */
+
+.vs-section {
+  width: 100%;
+  background-color: var(--gray-900);
+  color: var(--gray-0);
+  padding: var(--space-2xl) var(--px-page);
+  box-sizing: border-box;
+}
+
+.vs-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* ── Header ── */
+.vs-header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.vs-title {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-thin);
+  font-size: var(--fs-72pt);
+  color: var(--gray-0);
+  letter-spacing: 0.12em;
+  line-height: 1.08;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 0 0 var(--space-lg);
+}
+
+.vs-subtitle {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-12pt);
+  color: var(--gray-400);
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+/* ── Diagram ── */
+.vs-diagram-wrap {
+  width: 100%;
+  max-width: 660px;
+  margin: 0 auto var(--space-2xl);
+}
+
+.vs-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Circle fill blend — overlapping areas brighten slightly */
+.vs-circle-fill {
+  mix-blend-mode: screen;
+}
+
+/* SVG text — resolved via class (works in modern browsers) */
+.vs-svg-title {
+  font-family: var(--font-manrope), sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  fill: rgba(255, 255, 255, 0.82);
+  letter-spacing: 0.13em;
+}
+
+.vs-svg-kw {
+  font-family: var(--font-manrope), sans-serif;
+  font-size: 9.5px;
+  font-weight: 300;
+  fill: rgba(255, 255, 255, 0.48);
+  letter-spacing: 0.04em;
+}
+
+.vs-svg-center {
+  font-family: var(--font-manrope), sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  fill: rgba(255, 255, 255, 0.68);
+  letter-spacing: 0.15em;
+}
+
+/* ── Pillar descriptions ── */
+.vs-pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-xl);
+  text-align: center;
+  padding-top: var(--space-xl);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vs-pillar-title {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-extralight);
+  font-size: var(--fs-14pt);
+  color: var(--gray-0);
+  letter-spacing: 0.2em;
+  margin: 0 0 var(--space-md);
+}
+
+.vs-pillar-text {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-10pt);
+  color: var(--gray-400);
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .vs-title {
+    font-size: var(--fs-48pt);
+  }
+
+  .vs-pillars {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .vs-title {
+    font-size: var(--fs-36pt);
+  }
+
+  .vs-diagram-wrap {
+    max-width: 100%;
+  }
+}

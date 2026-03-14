@@ -1,7 +1,7 @@
 import React from "react";
 import "./Home.css";
 import HorizontalScroller from "../components/HorizontalScroller";
-import { HeroSection, FieldSection } from "../components/sections/vertical-sections";
+import { HeroSection, FieldSection, VisionSection } from "../components/sections/vertical-sections";
 
 export default function Home() {
   return (
@@ -9,6 +9,7 @@ export default function Home() {
       <HeroSection />
       <FieldSection />
       <HorizontalScroller />
+      <VisionSection />
     </div>
   );
 }
