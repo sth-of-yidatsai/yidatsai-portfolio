@@ -53,17 +53,24 @@
   --fw-extrabold:  800;
 
   /* 字級（響應式 clamp） */
-  --fs-8pt:  clamp(0.6rem,  0.8vw, 0.67rem);
-  --fs-10pt: clamp(0.75rem, 1vw,   0.83rem);
-  --fs-12pt: clamp(0.9rem,  1.2vw, 1rem);
-  --fs-16pt: clamp(1.1rem,  1.6vw, 1.33rem);
-  --fs-18pt: clamp(1.3rem,  1.8vw, 1.5rem);
-  --fs-20pt: clamp(1.4rem,  2.0vw, 1.67rem);
-  --fs-22pt: clamp(1.5rem,  2.2vw, 1.83rem);
-  --fs-24pt: clamp(1.6rem,  2.5vw, 2rem);
-  --fs-32pt: clamp(2rem,    3.5vw, 2.67rem);
-  --fs-40pt: clamp(2.4rem,  4.5vw, 3.33rem);
-  --fs-48pt: clamp(3rem,    6.0vw, 4rem);
+  --fs-8pt:  clamp(0.6rem,  0.8vw,  0.67rem);
+  --fs-10pt: clamp(0.75rem, 1vw,    0.83rem);
+  --fs-12pt: clamp(0.9rem,  1.2vw,  1rem);
+  --fs-14pt: clamp(1rem,    1.4vw,  1.17rem);
+  --fs-16pt: clamp(1.1rem,  1.6vw,  1.33rem);
+  --fs-18pt: clamp(1.3rem,  1.8vw,  1.5rem);
+  --fs-20pt: clamp(1.4rem,  2vw,    1.67rem);
+  --fs-22pt: clamp(1.5rem,  2.2vw,  1.83rem);
+  --fs-24pt: clamp(1.6rem,  2.5vw,  2rem);
+  --fs-28pt: clamp(1.8rem,  3vw,    2.33rem);
+  --fs-32pt: clamp(2rem,    3.5vw,  2.67rem);
+  --fs-36pt: clamp(2.2rem,  4vw,    3rem);
+  --fs-40pt: clamp(2.4rem,  4.5vw,  3.33rem);
+  --fs-48pt: clamp(3rem,    6vw,    4rem);
+  --fs-56pt: clamp(3.5rem,  7vw,    4.67rem);
+  --fs-64pt: clamp(4rem,    8vw,    5.33rem);
+  --fs-72pt: clamp(4.5rem,  9vw,    6rem);
+  --fs-96pt: clamp(5rem,    11vw,   8rem);
 }
 
 
@@ -145,16 +152,23 @@ body {
 
 
 /* ============================================================
-   工具類 — 響應式字級（pt 對應 clamp）
+   工具類 — 響應式字級（pt 對應 clamp，引用變數）
    ============================================================ */
-.fs-8pt  { font-size: clamp(0.6rem,  0.8vw, 0.67rem); }
-.fs-10pt { font-size: clamp(0.75rem, 1vw, 0.83rem);   }
-.fs-12pt { font-size: clamp(0.9rem, 1.2vw, 1rem);    }
-.fs-16pt { font-size: clamp(1.1rem,  1.6vw, 1.33rem); }
-.fs-18pt { font-size: clamp(1.3rem,  1.8vw, 1.5rem);  }
-.fs-20pt { font-size: clamp(1.4rem,  2.0vw, 1.67rem); }
-.fs-22pt { font-size: clamp(1.5rem,  2.2vw, 1.83rem); }
-.fs-24pt { font-size: clamp(1.6rem,  2.5vw, 2rem);    }
-.fs-32pt { font-size: clamp(2rem,    3.5vw, 2.67rem); }
-.fs-40pt { font-size: clamp(2.4rem,  4.5vw, 3.33rem); }
-.fs-48pt { font-size: clamp(3rem,    6.0vw, 4rem);    }
+.fs-8pt  { font-size: var(--fs-8pt);  }
+.fs-10pt { font-size: var(--fs-10pt); }
+.fs-12pt { font-size: var(--fs-12pt); }
+.fs-14pt { font-size: var(--fs-14pt); }
+.fs-16pt { font-size: var(--fs-16pt); }
+.fs-18pt { font-size: var(--fs-18pt); }
+.fs-20pt { font-size: var(--fs-20pt); }
+.fs-22pt { font-size: var(--fs-22pt); }
+.fs-24pt { font-size: var(--fs-24pt); }
+.fs-28pt { font-size: var(--fs-28pt); }
+.fs-32pt { font-size: var(--fs-32pt); }
+.fs-36pt { font-size: var(--fs-36pt); }
+.fs-40pt { font-size: var(--fs-40pt); }
+.fs-48pt { font-size: var(--fs-48pt); }
+.fs-56pt { font-size: var(--fs-56pt); }
+.fs-64pt { font-size: var(--fs-64pt); }
+.fs-72pt { font-size: var(--fs-72pt); }
+.fs-96pt { font-size: var(--fs-96pt); }

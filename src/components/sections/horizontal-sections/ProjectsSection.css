@@ -6,11 +6,9 @@
   justify-content: center;
   position: relative;
   background: transparent;
-  /* GPU 加速和抗鋸齒優化 - 防止邊緣閃爍 */
   will-change: transform;
   backface-visibility: hidden;
   transform-style: preserve-3d;
-  -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
 
@@ -39,7 +37,7 @@
   overflow: hidden;
 }
 
-/* 使用偽元素來處理背景圖片，這樣可以獨立控制圖片的縮放 */
+/* 背景圖片 - 預設黑白 */
 .fullscreen-project-block::before {
   content: "";
   position: absolute;
@@ -51,34 +49,22 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: scale(1);
-  z-index: 0;
-  /* GPU 加速和抗鋸齒優化 */
-  will-change: transform;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  -webkit-transform: translateZ(0) scale(1);
+  filter: grayscale(1);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateZ(0) scale(1);
+  z-index: 0;
+  will-change: transform, filter;
+  backface-visibility: hidden;
 }
 
+/* Hover：彩色 + 放大 */
 .fullscreen-project-block:hover::before {
-  transform: translateZ(0) scale(1.1); /* hover 時只放大背景圖片，保持硬體加速 */
+  filter: grayscale(0);
+  transform: translateZ(0) scale(1.06);
 }
 
-/* 區塊分隔線 - 使用更精確的定位避免重疊 */
-/* 區塊1最左邊的分隔線 */
-/* .fullscreen-project-block:nth-child(1)::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-left: 1px solid var(--gray-700);
-  height: 100%;
-  z-index: 5;
-} */
-
-/* 第1和第2區之間的分隔線 */
+/* 區塊分隔線 */
 .fullscreen-projects-content::before {
   content: "";
   position: absolute;
@@ -89,7 +75,6 @@
   z-index: 5;
 }
 
-/* 第2和第3區之間的分隔線 */
 .fullscreen-projects-content::after {
   content: "";
   position: absolute;
@@ -100,7 +85,6 @@
   z-index: 5;
 }
 
-/* 第3和第4區之間的分隔線 */
 .fullscreen-project-block:nth-child(3)::after {
   content: "";
   position: absolute;
@@ -111,244 +95,106 @@
   z-index: 5;
 }
 
+/* Glass overlay - 預設套用玻璃效果 */
 .project-block-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--color-secondary); /* 無 hover 時全灰底 */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   padding: 3rem 2rem;
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  backdrop-filter: blur(2px);
-  z-index: 1; /* 確保在背景圖片之上 */
-  /* GPU 加速優化 */
-  will-change: background, backdrop-filter;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  backdrop-filter: blur(20px) saturate(160%) brightness(0.75);
+  -webkit-backdrop-filter: blur(20px) saturate(160%) brightness(0.75);
+  background: rgba(0, 0, 0, 0.2);
+  transition: backdrop-filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    background 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 1;
+  will-change: backdrop-filter, background;
 }
 
-/* 四個區塊 overlay 的不同背景顏色 */
-.fullscreen-project-block:nth-child(1) .project-block-overlay {
-  background: var(--linen-300); /* 區塊1 */
-}
-
-.fullscreen-project-block:nth-child(2) .project-block-overlay {
-  background: var(--gray-700); /* 區塊2 */
-}
-
-.fullscreen-project-block:nth-child(3) .project-block-overlay {
-  background: var(--linen-300); /* 區塊3 */
-}
-
-.fullscreen-project-block:nth-child(4) .project-block-overlay {
-  background: var(--gray-700); /* 區塊4 */
-}
-
-/* 四個區塊的不同文字顏色 */
-/* 區塊1和3：深色文字 (--gray-700) */
-.fullscreen-project-block:nth-child(1) .project-block-number-large,
-.fullscreen-project-block:nth-child(1) .project-title-corner,
-.fullscreen-project-block:nth-child(1) .project-practice-areas-large,
-.fullscreen-project-block:nth-child(1) .project-copy,
-.fullscreen-project-block:nth-child(1) .project-description {
-  color: var(--gray-700);
-}
-
-.fullscreen-project-block:nth-child(3) .project-block-number-large,
-.fullscreen-project-block:nth-child(3) .project-title-corner,
-.fullscreen-project-block:nth-child(3) .project-practice-areas-large,
-.fullscreen-project-block:nth-child(3) .project-copy,
-.fullscreen-project-block:nth-child(3) .project-description {
-  color: var(--gray-700);
-}
-
-.fullscreen-project-block:nth-child(1) .project-title-corner-separator,
-.fullscreen-project-block:nth-child(3) .project-title-corner-separator {
-  background: var(--gray-700);
-}
-
-/* 區塊2和4：淺色文字 (--gray-200) */
-.fullscreen-project-block:nth-child(2) .project-block-number-large,
-.fullscreen-project-block:nth-child(2) .project-title-corner,
-.fullscreen-project-block:nth-child(2) .project-practice-areas-large,
-.fullscreen-project-block:nth-child(2) .project-copy,
-.fullscreen-project-block:nth-child(2) .project-description {
-  color: var(--gray-200);
-}
-
-.fullscreen-project-block:nth-child(4) .project-block-number-large,
-.fullscreen-project-block:nth-child(4) .project-title-corner,
-.fullscreen-project-block:nth-child(4) .project-practice-areas-large,
-.fullscreen-project-block:nth-child(4) .project-copy,
-.fullscreen-project-block:nth-child(4) .project-description {
-  color: var(--gray-200);
-}
-
-.fullscreen-project-block:nth-child(2) .project-title-corner-separator,
-.fullscreen-project-block:nth-child(4) .project-title-corner-separator {
-  background: var(--gray-200);
-}
-
+/* Hover：移除玻璃效果 */
 .fullscreen-project-block:hover .project-block-overlay {
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    /* 上方完全透明，圖片清晰 */ transparent 40%,
-    /* 中間區域保持透明 */ rgba(0, 0, 0, 0.3) 70%,
-    /* 開始出現黑色漸層 */ rgba(0, 0, 0, 0.6) 100%
-      /* 底部較深的黑色，增強文字閱讀性 */
-  );
-  backdrop-filter: blur(0px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: transparent;
 }
 
+/* 大號數字 */
 .project-block-number-large {
-  font-family: var(--font-latin-display), var(--font-cjk);
-  font-size: 18rem;
-  font-weight: var(--font-thin);
-  color: var(--color-primary);
-  line-height: 0.8;
-  opacity: 0.8;
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: translateY(0px) scale(1);
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-extralight);
+  font-size: var(--fs-96pt);
+  opacity: 0.85;
+  color: var(--gray-100);
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(0px);
 }
 
 .fullscreen-project-block:hover .project-block-number-large {
   opacity: 0;
-  transform: translateY(-10px) scale(1.02); /* hover 時輕微上移和放大 */
+  transform: translateY(-12px);
 }
 
-.project-title-corner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  width: 100%;
-  position: absolute;
-  top: var(--space-xl);
-  right: 2rem;
-  font-family: var(--font-latin), var(--font-cjk);
-  font-size: 0.75rem;
-  letter-spacing: 0.01rem;
-  font-weight: var(--font-regular);
-  color: var(--color-primary);
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  line-height: 1.2;
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  max-width: 1.5rem;
-  text-align: center;
-  transform: translateX(0px);
-  opacity: 1;
-}
-
-.project-title-corner-title {
-  font-weight: var(--font-bold);
-}
-
-.project-title-corner-separator {
-  width: 1px;
-  height: 48px;
-}
-
-.fullscreen-project-block:hover .project-title-corner {
-  color: var(--gray-25);
-  transform: translateX(25px);
-  opacity: 0;
-}
-
+/* 底部內容 */
 .project-block-content-bottom {
   display: flex;
   flex-direction: column;
   align-items: start;
   height: auto;
-  gap: var(--space-lg);
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: translateY(0px);
+  gap: var(--space-md);
   position: absolute;
   bottom: 3rem;
   left: 2rem;
   right: 2rem;
-}
-
-.fullscreen-project-block:hover .project-block-content-bottom {
-  transform: translateY(-15px);
-}
-
-.project-practice-areas-large {
-  font-family: var(--font-pphatton), var(--font-cjk);
-  font-size: 2.5rem;
-  letter-spacing: 0.1rem;
-  font-weight: var(--font-regular);
-  color: var(--color-primary);
-  line-height: 1;
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  align-self: flex-start;
-  transform: scale(1);
-}
-
-.fullscreen-project-block:hover .project-practice-areas-large {
-  color: var(--gray-25);
-  transform: scale(1.05);
-}
-
-.project-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateY(0px);
-  opacity: 0.9;
-  margin-left: var(--space-xs);
-}
-
-.fullscreen-project-block:hover .project-info {
-  transform: translateY(-5px);
   opacity: 1;
 }
 
-.project-copy {
-  font-family: var(--font-latin), var(--font-cjk);
-  font-size: 1rem;
-  font-weight: var(--font-semibold);
-  letter-spacing: 0.01rem;
-  color: var(--color-primary);
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: translateX(0px);
+.fullscreen-project-block:hover .project-block-content-bottom {
+  opacity: 0;
+  transform: translateY(8px);
 }
 
-.fullscreen-project-block:hover .project-copy {
-  color: var(--gray-25);
-  transform: translateX(12px);
+.project-practice-areas-large {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-22pt);
+  letter-spacing: 0.03em;
+  color: var(--gray-100);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.project-rule {
+  display: block;
+  width: 2rem;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
 }
 
 .project-description {
-  font-family: var(--font-latin), var(--font-cjk);
-  font-size: 0.8rem;
-  letter-spacing: 0.01rem;
-  font-weight: var(--font-regular);
-  color: var(--color-primary);
-  line-height: 1.4;
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: translateX(0px);
-}
-
-.fullscreen-project-block:hover .project-description {
-  color: var(--gray-25); /* hover 時改為白色 */
-  transform: translateX(12px); /* hover 時描述文字向右移動 */
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  color: var(--gray-200);
+  margin: 0;
+  white-space: pre-line;
 }
 
 /* 響應式設計 */
 @media (max-width: 768px) {
-  /* 滿版設計響應式 */
   .fullscreen-projects-content {
     flex-direction: column;
-    height: 400vh; /* 四個區塊垂直排列 */
+    height: 400vh;
   }
 
   .fullscreen-project-block {

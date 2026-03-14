@@ -37,7 +37,7 @@
   line-height: 1.25;
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight);
-  font-size: clamp(3rem, 5vw, 5.5rem);
+  font-size: var(--fs-64pt);
   letter-spacing: 0.06em;
   color: var(--gray-0);
   text-decoration: none;
