@@ -23,10 +23,10 @@
 
 .vs-title {
   font-family: var(--font-hatton);
-  font-weight: var(--fw-thin);
-  font-size: var(--fs-72pt);
+  font-weight: var(--fw-extralight);
+  font-size: var(--fs-64pt);
   color: var(--gray-0);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   line-height: 1.08;
   display: flex;
   flex-direction: column;
@@ -35,19 +35,24 @@
   margin: 0 0 var(--space-lg);
 }
 
+.vs-title-sub {
+  font-family: var(--font-manrope);
+  font-size: clamp(4.25rem, 8.25vw, 5.75rem)
+}
+
 .vs-subtitle {
   font-family: var(--font-manrope);
   font-weight: var(--fw-light);
-  font-size: var(--fs-12pt);
+  font-size: var(--fs-14pt);
   color: var(--gray-400);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   margin: 0;
 }
 
 /* ── Diagram ── */
 .vs-diagram-wrap {
   width: 100%;
-  max-width: 660px;
+  max-width: 40vw;
   margin: 0 auto var(--space-2xl);
 }
 
@@ -62,10 +67,113 @@
   mix-blend-mode: screen;
 }
 
+/* ── Glass sphere animations ── */
+
+.vs-ball {
+  transform-box: fill-box;
+  transform-origin: center;
+  cursor: pointer;
+  transition: filter 0.70s ease-out;
+}
+
+/* ── Idle drift — applied to .vs-shape only, text stays fixed ── */
+@keyframes vs-drift {
+  0%   { transform: translate(  0px,   0px); }
+  30%  { transform: translate( 2px, -10px); }
+  65%  { transform: translate(-2px, -14px); }
+  100% { transform: translate(  0px,   0px); }
+}
+
+.vs-shape { transform-box: fill-box; transform-origin: center; }
+
+.vs-phase-idle .vs-shape-aes { animation: vs-drift 7.2s ease-in-out infinite; }
+.vs-phase-idle .vs-shape-log { animation: vs-drift 8.8s ease-in-out infinite -2.8s; }
+.vs-phase-idle .vs-shape-exp { animation: vs-drift 6.6s ease-in-out infinite -5.1s; }
+
+/* ── Hover-in keyframes — each sphere floats outward from centroid ── */
+@keyframes vs-hover-aes {
+  from { transform: translateY(0px)       scale(1);     }
+  to   { transform: translateY(-12px)     scale(1.025); }
+}
+@keyframes vs-hover-log {
+  from { transform: translate(0, 0)       scale(1);     }
+  to   { transform: translate(-10px, 7px) scale(1.025); }
+}
+@keyframes vs-hover-exp {
+  from { transform: translate(0, 0)       scale(1);     }
+  to   { transform: translate( 10px, 7px) scale(1.025); }
+}
+
+/* ── Hover-out keyframes — return to origin ── */
+@keyframes vs-leave-aes {
+  from { transform: translateY(-12px)     scale(1.025); }
+  to   { transform: translateY(0px)       scale(1);     }
+}
+@keyframes vs-leave-log {
+  from { transform: translate(-10px, 7px) scale(1.025); }
+  to   { transform: translate(0, 0)       scale(1);     }
+}
+@keyframes vs-leave-exp {
+  from { transform: translate( 10px, 7px) scale(1.025); }
+  to   { transform: translate(0, 0)       scale(1);     }
+}
+
+/* ── Phase: hovering ── */
+.vs-phase-hovering.vs-ball-aes { animation: vs-hover-aes 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.vs-phase-hovering.vs-ball-log { animation: vs-hover-log 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.vs-phase-hovering.vs-ball-exp { animation: vs-hover-exp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.vs-phase-hovering {
+  filter:
+    brightness(1.18)
+    drop-shadow(0 0 22px rgba(200, 200, 200, 0.45))
+    drop-shadow(0 8px 32px rgba(160, 160, 160, 0.30));
+}
+
+/* ── Phase: leaving (return animation) ── */
+.vs-phase-leaving.vs-ball-aes { animation: vs-leave-aes 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.vs-phase-leaving.vs-ball-log { animation: vs-leave-log 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.vs-phase-leaving.vs-ball-exp { animation: vs-leave-exp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+/* ── Arrow trim-path animation ──
+   Arc length = R_arc 305 × 96° × π/180 ≈ 511 SVG units
+   Each arrow draws in, holds, then fades — staggered by 2s  */
+@keyframes vs-arrow-draw {
+  0%   { stroke-dashoffset: 511; opacity: 0;   }
+  6%   { opacity: 0.5; }
+  42%  { stroke-dashoffset: 0;   opacity: 1;   }
+  68%  { stroke-dashoffset: 0;   opacity: 1;   }
+  88%  { stroke-dashoffset: 0;   opacity: 0;   }
+  100% { stroke-dashoffset: 511; opacity: 0;   }
+}
+
+.vs-arrow {
+  stroke-dasharray: 511;
+  stroke-dashoffset: 511;
+  animation: vs-arrow-draw 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes vs-arrowhead-show {
+  0%   { opacity: 0; }
+  41%  { opacity: 0; }
+  42%  { opacity: 1; }
+  68%  { opacity: 1; }
+  88%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.vs-arrowhead {
+  animation-name: vs-arrowhead-show;
+  animation-duration: 6s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-delay: var(--arrowhead-delay, 0s);
+}
+
 /* SVG text — resolved via class (works in modern browsers) */
 .vs-svg-title {
   font-family: var(--font-manrope), sans-serif;
-  font-size: 13px;
+  font-size: var(--fs-12pt);
   font-weight: 300;
   fill: rgba(255, 255, 255, 0.82);
   letter-spacing: 0.13em;
@@ -73,7 +181,7 @@
 
 .vs-svg-kw {
   font-family: var(--font-manrope), sans-serif;
-  font-size: 9.5px;
+  font-size: var(--fs-8pt);
   font-weight: 300;
   fill: rgba(255, 255, 255, 0.48);
   letter-spacing: 0.04em;

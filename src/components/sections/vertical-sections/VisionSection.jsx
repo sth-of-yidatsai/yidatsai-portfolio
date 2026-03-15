@@ -1,96 +1,120 @@
-import React from "react";
+import { useState, useCallback, useRef } from "react";
 import "./VisionSection.css";
+import visionCircle from "../../../assets/icons/vision-circle.svg";
 
 /* ══════════════════════════════════════════════════════════════════
-   Geometry
-   ──────────────────────────────────────────────────────────────────
-   viewBox : 700 × 650
-   Equilateral triangle, side d = 200, r = 133
-   Centroid : (350, 350)
-   dist centroid→circle-center = d/√3 ≈ 115.5
+   Geometry  —  viewBox 700 × 650
+   Centroid (350,350)  R=155
 
-   Circle centers
-     A (Aesthetics, top)         : (350, 234)
-     L (Logic,      bottom-left) : (250, 408)
-     E (Experience, bottom-right): (450, 408)
+   Circle centres
+     A (350,234)=270°   L (250,408)=150°   E (450,408)=30°
 
-   Large-arrow circle
-     Center : (350, 350)   R_arc = 285
-     Gap angles (SVG CW from east):
-       A-E gap → 330°    L-A gap → 210°    E-L gap → 90°
-     Arrow endpoints: ±8° from each gap (104° arcs, sweep=1, large-arc=0)
-       218°→(125,175)  322°→(575,175)   — Arrow 1
-       338°→(614,243)  82°→(390,632)    — Arrow 2
-        98°→(310,632) 202°→(86,243)     — Arrow 3
+   Arrows — three 90° arcs on ONE circle (350,350) R_arc=305, CW
+     Gap midpoints: A-E=330°  E-L=90°  L-A=210°
+     Each arc spans gap ± 12° (96° arc, sweep=1, large-arc=0)
+       Arrow 1  222°→318°   (123,146)→(577,146)   over A
+       Arrow 2  342°→ 78°   (640,256)→(413,648)   past E
+       Arrow 3  102°→198°   (287,648)→( 60,256)   past L
    ══════════════════════════════════════════════════════════════════ */
 
-const R     = 133;   // circle radius  (SVG user units)
-const AX=350, AY=234;   // Aesthetics centre
-const LX=250, LY=408;   // Logic centre
-const EX=450, EY=408;   // Experience centre
+const R   = 155;
+const AX  = 350, AY = 234;
+const LX  = 250, LY = 408;
+const EX  = 450, EY = 408;
+const OFF = 44;
 
-/* Text anchors — offset toward clock position:
-     Aesthetics  → 12 o'clock (↑)
-     Logic       → 8  o'clock (↙)   cos150=-0.866 sin150=0.5
-     Experience  → 4  o'clock (↘)   cos30=0.866  sin30=0.5   */
-const OFF = 38; // pixels from circle-centre toward clock direction
 const CIRCLES = [
   {
-    id: "aes",
-    cx: AX, cy: AY,
+    id: "aes", cx: AX, cy: AY,
+    rotation: 0,
     title: "AESTHETICS",
-    kw1: "Form · Rhythm · Texture ·",
-    kw2: "Visual Tone",
-    // 12 o'clock = (0, -1)
-    tx: AX,           ty: AY - OFF - 38,
-    k1y: AY - OFF - 16, k2y: AY - OFF - 1,
+    kw1: "Form · Rhythm · Texture ·", kw2: "Visual Tone",
+    tx: AX,   ty: 172,  k1y: 196, k2y: 212,
   },
   {
-    id: "log",
-    cx: LX, cy: LY,
+    id: "log", cx: LX, cy: LY,
+    rotation: 240,
     title: "LOGIC",
-    kw1: "System · Hierarchy ·",
-    kw2: "Clarity · Function",
-    // 8 o'clock = cos(150°)=-0.866  sin(150°)=0.5
-    tx: LX + OFF * -0.866,  ty: LY + OFF * 0.5 - 20,
-    k1y: LY + OFF * 0.5 + 2, k2y: LY + OFF * 0.5 + 17,
+    kw1: "System · Hierarchy ·", kw2: "Clarity · Function",
+    tx: LX + OFF * -0.866,  ty: LY + OFF * 0.5 - 18,
+    k1y: LY + OFF * 0.5 + 6, k2y: LY + OFF * 0.5 + 22,
   },
   {
-    id: "exp",
-    cx: EX, cy: EY,
+    id: "exp", cx: EX, cy: EY,
+    rotation: 120,
     title: "EXPERIENCE",
-    kw1: "Narrative · Atmosphere ·",
-    kw2: "Memory · Presence",
-    // 4 o'clock = cos(30°)=0.866  sin(30°)=0.5
-    tx: EX + OFF * 0.866,  ty: EY + OFF * 0.5 - 20,
-    k1y: EY + OFF * 0.5 + 2, k2y: EY + OFF * 0.5 + 17,
+    kw1: "Narrative · Atmosphere ·", kw2: "Memory · Presence",
+    tx: EX + OFF * 0.866,   ty: EY + OFF * 0.5 - 18,
+    k1y: EY + OFF * 0.5 + 6, k2y: EY + OFF * 0.5 + 22,
   },
 ];
 
-/* Three arcs of the single large circle  (CW, sweep=1, large-arc=0) */
+/* R_arc=305 — each arc is 96° CW, clearly outside all three spheres */
 const ARROWS = [
-  "M 125 175 A 285 285 0 0 1 575 175",   // over top  (L-A gap → A-E gap)
-  "M 614 243 A 285 285 0 0 1 390 632",   // lower-right  (A-E gap → E-L gap)
-  "M 310 632 A 285 285 0 0 1 86 243",    // lower-left  (E-L gap → L-A gap)
+  "M 123 146 A 305 305 0 0 1 577 146",   // L-A gap → A-E gap  (over top of A)
+  "M 640 256 A 305 305 0 0 1 413 648",   // A-E gap → E-L gap  (right, past E)
+  "M 287 648 A 305 305 0 0 1  60 256",   // E-L gap → L-A gap  (bottom-left, past L)
 ];
 
-function VennCircle({ cx, cy, id }) {
+/* Arrowhead endpoint positions + rotation angles (tangent of CW arc at each end) */
+const ARROW_ENDS = [
+  { x: 577, y: 146, angle:  48 },  // end of arrow 1 (318° on arc)
+  { x: 413, y: 648, angle: 168 },  // end of arrow 2 (78° on arc)
+  { x:  60, y: 256, angle: 288 },  // end of arrow 3 (198° on arc)
+];
+
+const ANIM_DURATION = 900; // ms — must match CSS animation duration
+
+function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y }) {
+  const [phase, setPhase] = useState("idle");
+  const timerRef = useRef(null);
+
+  const handleEnter = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setPhase("hovering");
+  }, []);
+
+  const handleLeave = useCallback(() => {
+    setPhase("leaving");
+    timerRef.current = setTimeout(() => setPhase("idle"), ANIM_DURATION);
+  }, []);
+
+  const rotStyle = rotation
+    ? { transform: `rotate(${rotation}deg)`, transformBox: "fill-box", transformOrigin: "center" }
+    : undefined;
+
   return (
-    <g>
-      {/* Blurred outer glow blob */}
-      <circle
-        cx={cx} cy={cy} r={R + 55}
-        fill={`url(#glow-${id})`}
-        filter="url(#vs-blur)"
-      />
-      {/* Main sphere with smooth radial gradient */}
-      <circle
-        cx={cx} cy={cy} r={R}
-        fill={`url(#fill-${id})`}
-        stroke="rgba(255,255,255,0.16)"
-        strokeWidth="0.6"
-        className="vs-circle-fill"
-      />
+    /* Outer group — handles hover phase animations (circle + text move together) */
+    <g
+      className={`vs-ball vs-ball-${id} vs-phase-${phase}`}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      {/* Inner shape group — idle drift applies here only (text excluded) */}
+      <g className={`vs-shape vs-shape-${id}`}>
+
+        {/* Layer 1 · Atmospheric halo */}
+        <circle cx={cx} cy={cy} r={R + 90}
+          fill="url(#glow-atm)"
+          filter="url(#vs-f-atm)"
+          pointerEvents="none"
+        />
+
+        {/* Layer 2 · vision-circle.svg */}
+        <image
+          href={visionCircle}
+          x={cx - R} y={cy - R}
+          width={R * 2} height={R * 2}
+          style={rotStyle}
+          className="vs-circle-fill"
+        />
+
+      </g>
+
+      {/* Labels — in outer group: move with hover but NOT with idle drift */}
+      <text x={tx} y={ty}  textAnchor="middle" className="vs-svg-title">{title}</text>
+      <text x={tx} y={k1y} textAnchor="middle" className="vs-svg-kw">{kw1}</text>
+      <text x={tx} y={k2y} textAnchor="middle" className="vs-svg-kw">{kw2}</text>
     </g>
   );
 }
@@ -100,16 +124,14 @@ export default function VisionSection() {
     <section className="vs-section">
       <div className="vs-inner">
 
-        {/* ── Header ── */}
         <header className="vs-header">
           <h2 className="vs-title">
             <span>BETWEEN</span>
-            <span>ART &amp; SYSTEM</span>
+            <span>ART <span className="vs-title-sub">&amp; SYSTEM</span></span>
           </h2>
           <p className="vs-subtitle">Where aesthetics, logic and experience converge</p>
         </header>
 
-        {/* ── Venn Diagram ── */}
         <div className="vs-diagram-wrap">
           <svg
             className="vs-svg"
@@ -118,84 +140,59 @@ export default function VisionSection() {
             aria-hidden="true"
           >
             <defs>
-              {/* Soft blur filter for glow blobs */}
-              <filter id="vs-blur" x="-60%" y="-60%" width="220%" height="220%">
-                <feGaussianBlur stdDeviation="22" />
+
+              <filter id="vs-f-atm" x="-100%" y="-100%" width="300%" height="300%">
+                <feGaussianBlur stdDeviation="42" />
               </filter>
 
-              {CIRCLES.map(({ id }) => (
-                <React.Fragment key={id}>
-                  {/* Extended outer glow gradient (used on r+55 circle) */}
-                  <radialGradient
-                    id={`glow-${id}`}
-                    cx="50%" cy="50%" r="50%"
-                    gradientUnits="objectBoundingBox"
-                  >
-                    <stop offset="0%"   stopColor="#aaaaaa" stopOpacity="0.22" />
-                    <stop offset="45%"  stopColor="#888888" stopOpacity="0.12" />
-                    <stop offset="80%"  stopColor="#555555" stopOpacity="0.05" />
-                    <stop offset="100%" stopColor="#111111" stopOpacity="0"    />
-                  </radialGradient>
+              <radialGradient id="glow-atm" cx="50%" cy="50%" r="50%"
+                gradientUnits="objectBoundingBox">
+                <stop offset="0%"   stopColor="#cccccc" stopOpacity="0.28" />
+                <stop offset="28%"  stopColor="#888888" stopOpacity="0.12" />
+                <stop offset="62%"  stopColor="#444444" stopOpacity="0.04" />
+                <stop offset="100%" stopColor="#000000" stopOpacity="0"    />
+              </radialGradient>
 
-                  {/* Main sphere fill — lighter outer rim, darker interior */}
-                  <radialGradient
-                    id={`fill-${id}`}
-                    cx="50%" cy="50%" r="52%"
-                    gradientUnits="objectBoundingBox"
-                  >
-                    <stop offset="0%"   stopColor="#1a1a1a" stopOpacity="0.55" />
-                    <stop offset="40%"  stopColor="#303030" stopOpacity="0.38" />
-                    <stop offset="72%"  stopColor="#606060" stopOpacity="0.26" />
-                    <stop offset="90%"  stopColor="#909090" stopOpacity="0.18" />
-                    <stop offset="100%" stopColor="#cccccc" stopOpacity="0.10" />
-                  </radialGradient>
-                </React.Fragment>
-              ))}
-
-              {/* Arrowhead */}
-              <marker
-                id="vs-arrow"
-                markerWidth="8" markerHeight="6"
-                refX="7" refY="3"
-                orient="auto"
-              >
-                <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.40)" />
-              </marker>
             </defs>
 
-            {/* ── Circles ── */}
-            {CIRCLES.map(({ id, cx, cy }) => (
-              <VennCircle key={id} cx={cx} cy={cy} id={id} />
-            ))}
-
-            {/* ── Arrows (arcs of one large circle, CW) ── */}
-            {ARROWS.map((d, i) => (
-              <path
-                key={i}
-                d={d}
-                fill="none"
-                stroke="rgba(255,255,255,0.30)"
-                strokeWidth="1.2"
-                markerEnd="url(#vs-arrow)"
+            {/* Circles — rendered first (back layer) */}
+            {CIRCLES.map(({ id, cx, cy, rotation, title, kw1, kw2, tx, ty, k1y, k2y }) => (
+              <VennCircle key={id}
+                cx={cx} cy={cy} id={id} rotation={rotation}
+                title={title} kw1={kw1} kw2={kw2}
+                tx={tx} ty={ty} k1y={k1y} k2y={k2y}
               />
             ))}
 
-            {/* ── Centre label ── */}
-            <text x="350" y="344" textAnchor="middle" className="vs-svg-center">STRUCTURED</text>
-            <text x="350" y="358" textAnchor="middle" className="vs-svg-center">EMOTION</text>
-
-            {/* ── Circle labels ── */}
-            {CIRCLES.map(({ id, title, kw1, kw2, tx, ty, k1y, k2y }) => (
-              <g key={`lbl-${id}`}>
-                <text x={tx} y={ty}  textAnchor="middle" fontSize="20" className="vs-svg-title">{title}</text>
-                <text x={tx} y={k1y} textAnchor="middle" fontSize="13" className="vs-svg-kw">{kw1}</text>
-                <text x={tx} y={k2y} textAnchor="middle" fontSize="13" className="vs-svg-kw">{kw2}</text>
-              </g>
+            {/* Arrows — trim-path animation, staggered */}
+            {ARROWS.map((d, i) => (
+              <path key={i} d={d}
+                fill="none"
+                stroke="rgba(255,255,255,0.38)"
+                strokeWidth="1.2"
+                className="vs-arrow"
+                style={{ animationDelay: `${i * 2}s` }}
+              />
             ))}
+
+            {/* Arrowheads — appear only when trim-path stroke reaches endpoint */}
+            {ARROW_ENDS.map(({ x, y, angle }, i) => (
+              <polygon key={i}
+                points="0 0, 7 2.5, 0 5"
+                fill="rgba(255,255,255,0.35)"
+                transform={`translate(${x}, ${y}) rotate(${angle}) translate(-6, -2.5)`}
+                className="vs-arrowhead"
+                style={{ '--arrowhead-delay': `${i * 2}s` }}
+              />
+            ))}
+
+            {/* Centre label */}
+            <text x="350" y="346" textAnchor="middle" className="vs-svg-center">STRUCTURED</text>
+            <text x="350" y="360" textAnchor="middle" className="vs-svg-center">EMOTION</text>
+
           </svg>
         </div>
 
-        {/* ── Pillar descriptions ── */}
         <div className="vs-pillars">
           <div className="vs-pillar">
             <h3 className="vs-pillar-title">LOGIC</h3>
