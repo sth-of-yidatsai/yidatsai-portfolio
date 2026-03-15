@@ -63,21 +63,50 @@ const ARROW_ENDS = [
   { x:  60, y: 256, angle: 288 },  // end of arrow 3 (198° on arc)
 ];
 
-const ANIM_DURATION = 900; // ms — must match CSS animation duration
+const ANIM_DURATION  = 900; // ms — must match CSS animation duration
+const ENTER_DEBOUNCE = 120; // ms — ignore rapid enter/leave sweeps
 
-function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y }) {
+function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
+                      onHoverStart, onHoverEnd }) {
   const [phase, setPhase] = useState("idle");
-  const timerRef = useRef(null);
+  const phaseRef    = useRef("idle");          // shadow state — stale-closure safe
+  const enterTimer  = useRef(null);
+  const leaveTimer  = useRef(null);
+
+  const setP = (p) => { phaseRef.current = p; setPhase(p); };
 
   const handleEnter = useCallback(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setPhase("hovering");
-  }, []);
+    // Cancel any in-flight leave reset
+    if (leaveTimer.current) { clearTimeout(leaveTimer.current); leaveTimer.current = null; }
+    // Cancel previous pending enter (re-debounce)
+    if (enterTimer.current) clearTimeout(enterTimer.current);
+
+    enterTimer.current = setTimeout(() => {
+      enterTimer.current = null;
+      // Ask parent how long to wait for the previous leave to finish
+      const wait = onHoverStart();
+      if (wait > 0) {
+        enterTimer.current = setTimeout(() => { enterTimer.current = null; setP("hovering"); }, wait);
+      } else {
+        setP("hovering");
+      }
+    }, ENTER_DEBOUNCE);
+  }, [onHoverStart]);
 
   const handleLeave = useCallback(() => {
-    setPhase("leaving");
-    timerRef.current = setTimeout(() => setPhase("idle"), ANIM_DURATION);
-  }, []);
+    // If debounce hasn't fired yet — user just swept through, do nothing
+    if (enterTimer.current) {
+      clearTimeout(enterTimer.current);
+      enterTimer.current = null;
+      return;
+    }
+    // If we never reached hovering state, skip leave animation
+    if (phaseRef.current === "idle") return;
+
+    setP("leaving");
+    onHoverEnd();
+    leaveTimer.current = setTimeout(() => { leaveTimer.current = null; setP("idle"); }, ANIM_DURATION);
+  }, [onHoverEnd]);
 
   const rotStyle = rotation
     ? { transform: `rotate(${rotation}deg)`, transformBox: "fill-box", transformOrigin: "center" }
@@ -120,8 +149,22 @@ function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y })
 }
 
 export default function VisionSection() {
-  const headerRef = useRef(null);
+  const headerRef      = useRef(null);
   const [isHeaderInView, setIsHeaderInView] = useState(false);
+
+  // Global leave-lock: timestamp until which next hover-in must wait
+  const leavingUntilRef = useRef(0);
+
+  // Called by a circle on hover-in; returns ms to delay before animating
+  const handleHoverStart = useCallback(() => {
+    const remaining = leavingUntilRef.current - Date.now();
+    return remaining > 0 ? remaining : 0;
+  }, []);
+
+  // Called by a circle when it starts leaving; locks new hovers for ANIM_DURATION
+  const handleHoverEnd = useCallback(() => {
+    leavingUntilRef.current = Date.now() + ANIM_DURATION;
+  }, []);
 
   useEffect(() => {
     const el = headerRef.current;
@@ -189,6 +232,8 @@ export default function VisionSection() {
                 cx={cx} cy={cy} id={id} rotation={rotation}
                 title={title} kw1={kw1} kw2={kw2}
                 tx={tx} ty={ty} k1y={k1y} k2y={k2y}
+                onHoverStart={handleHoverStart}
+                onHoverEnd={handleHoverEnd}
               />
             ))}
 
