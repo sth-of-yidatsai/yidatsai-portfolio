@@ -4,10 +4,12 @@ import Footer from "./components/Footer";
 import CustomCursor from "./components/CustomCursor";
 import GlobalScrollbar from "./components/GlobalScrollbar";
 import { Providers } from "./providers";
+import useSmoothScroll from "./hooks/useSmoothScroll";
 
 function App() {
   const location = useLocation();
   const hideGlobalScrollbar = location.pathname === "/projects";
+  useSmoothScroll();
   return (
     <Providers>
       <CustomCursor />
