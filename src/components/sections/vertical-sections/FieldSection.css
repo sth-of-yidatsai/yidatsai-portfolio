@@ -149,6 +149,7 @@
   margin-bottom: -0.35em;
 }
 
+
 /* 各行錯開 delay（同 header-overlay-logo） */
 .fs-name .line-roll:nth-child(1) .line-roll-top,
 .fs-name .line-roll:nth-child(1) .line-roll-bottom { transition-delay: 0s;    }
@@ -156,6 +157,11 @@
 .fs-name .line-roll:nth-child(2) .line-roll-bottom { transition-delay: 0.07s; }
 .fs-name .line-roll:nth-child(3) .line-roll-top,
 .fs-name .line-roll:nth-child(3) .line-roll-bottom { transition-delay: 0.14s; }
+
+.fs-name .line-roll-top,
+.fs-name .line-roll-bottom {
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
 /* 初始：top 隱藏在 clip 上方，bottom 在 clip 下方（全域 Header.css 已定義） */
 .fs-name .line-roll-top {
