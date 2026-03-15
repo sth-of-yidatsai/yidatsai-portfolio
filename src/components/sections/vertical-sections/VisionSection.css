@@ -45,7 +45,7 @@
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight);
   font-size: var(--fs-64pt);
-  color: var(--gray-50);
+  color: var(--gray-100);
   letter-spacing: 0.1em;
   line-height: 1.08;
   display: flex;
