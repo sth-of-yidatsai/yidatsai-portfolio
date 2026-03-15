@@ -142,7 +142,7 @@
   font-family: var(--font-hatton);
   font-weight: var(--fw-light);
   font-size: var(--fs-22pt);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
   color: var(--gray-100);
   margin: 0;
   line-height: 1.2;

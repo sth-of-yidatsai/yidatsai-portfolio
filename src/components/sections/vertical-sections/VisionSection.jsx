@@ -223,19 +223,19 @@ export default function VisionSection() {
 
         <div className="vs-pillars">
           <div className="vs-pillar">
-            <h3 className="vs-pillar-title">LOGIC</h3>
+            <h3 className="vs-pillar-title">Logic</h3>
             <p className="vs-pillar-text">
               Structure organizes complexity. Systems, hierarchy and clarity transform ideas into understandable experiences.
             </p>
           </div>
           <div className="vs-pillar">
-            <h3 className="vs-pillar-title">AESTHETICS</h3>
+            <h3 className="vs-pillar-title">Aesthetic</h3>
             <p className="vs-pillar-text">
               Visual language shapes perception. Form, rhythm and tone create an intuitive layer that communicates beyond words.
             </p>
           </div>
           <div className="vs-pillar">
-            <h3 className="vs-pillar-title">EXPERIENCE</h3>
+            <h3 className="vs-pillar-title">Experience</h3>
             <p className="vs-pillar-text">
               Design becomes meaningful through experience — atmosphere, memory and narrative that resonate with people.
             </p>

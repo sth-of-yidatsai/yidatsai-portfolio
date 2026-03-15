@@ -90,7 +90,7 @@
   font-family: var(--font-hatton);
   font-weight: var(--fw-light);
   font-size: var(--fs-22pt);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
   color: var(--gray-600);
   margin: 0;
   line-height: 1.2;
@@ -201,10 +201,10 @@
   top: 50%;
   transform: translate(-50%, -50%);
   white-space: nowrap;
- font-family: var(--font-hatton);
+  font-family: var(--font-hatton);
   font-weight: var(--fw-light);
   font-size: var(--fs-22pt);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
   margin: 0;
   line-height: 1.2;
   color: var(--gray-0);

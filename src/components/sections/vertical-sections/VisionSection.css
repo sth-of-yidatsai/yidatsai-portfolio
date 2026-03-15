@@ -18,7 +18,7 @@
 /* ── Header ── */
 .vs-header {
   text-align: center;
-  margin-bottom: var(--space-2xl);
+  margin-bottom: var(--space-xl);
 }
 
 /* ── Header entrance animation (line-roll) ── */
@@ -45,7 +45,7 @@
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight);
   font-size: var(--fs-64pt);
-  color: var(--gray-0);
+  color: var(--gray-50);
   letter-spacing: 0.1em;
   line-height: 1.08;
   display: flex;
@@ -201,23 +201,23 @@
 .vs-svg-title {
   font-family: var(--font-manrope), sans-serif;
   font-size: var(--fs-12pt);
-  font-weight: 300;
-  fill: rgba(255, 255, 255, 0.82);
+  font-weight: var(--fw-light);
+  fill: rgba(255, 255, 255, 0.92);
   letter-spacing: 0.13em;
 }
 
 .vs-svg-kw {
   font-family: var(--font-manrope), sans-serif;
   font-size: var(--fs-8pt);
-  font-weight: 300;
+  font-weight: var(--fw-light);
   fill: rgba(255, 255, 255, 0.48);
   letter-spacing: 0.04em;
 }
 
 .vs-svg-center {
   font-family: var(--font-manrope), sans-serif;
-  font-size: 8px;
-  font-weight: 600;
+  font-size: var(--fs-8pt);
+  font-weight: var(--fw-medium);
   fill: rgba(255, 255, 255, 0.68);
   letter-spacing: 0.15em;
 }
@@ -229,25 +229,27 @@
   gap: var(--space-xl);
   text-align: center;
   padding-top: var(--space-xl);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .vs-pillar-title {
-  font-family: var(--font-manrope);
-  font-weight: var(--fw-extralight);
-  font-size: var(--fs-14pt);
-  color: var(--gray-0);
-  letter-spacing: 0.2em;
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-22pt);
+  letter-spacing: 0.05em;
+  color: var(--gray-200);
+  line-height: 1.2;
   margin: 0 0 var(--space-md);
 }
 
 .vs-pillar-text {
   font-family: var(--font-manrope);
-  font-weight: var(--fw-light);
-  font-size: var(--fs-10pt);
-  color: var(--gray-400);
-  line-height: 1.65;
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-regular);
   letter-spacing: 0.02em;
+  line-height: 1.5;
+  color: var(--gray-400);
+  margin: 0;
   margin: 0;
 }
 
