@@ -21,6 +21,26 @@
   margin-bottom: var(--space-2xl);
 }
 
+/* ── Header entrance animation (line-roll) ── */
+.vs-header .line-roll-top,
+.vs-header .line-roll-bottom {
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vs-header .line-roll-top {
+  transform: translateY(-100%);
+}
+
+.vs-header--in-view .line-roll-bottom {
+  transform: translateY(-100%);
+}
+
+.vs-title .line-roll:nth-child(1) .line-roll-top,
+.vs-title .line-roll:nth-child(1) .line-roll-bottom { transition-delay: 0s;    }
+
+.vs-title .line-roll:nth-child(2) .line-roll-top,
+.vs-title .line-roll:nth-child(2) .line-roll-bottom { transition-delay: 0.14s; }
+
 .vs-title {
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight);
@@ -46,6 +66,7 @@
   font-size: var(--fs-14pt);
   color: var(--gray-400);
   letter-spacing: 0.06em;
+  text-align: center;
   margin: 0;
 }
 

@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import "./VisionSection.css";
 import visionCircle from "../../../assets/icons/vision-circle.svg";
 
@@ -120,14 +120,42 @@ function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y })
 }
 
 export default function VisionSection() {
+  const headerRef = useRef(null);
+  const [isHeaderInView, setIsHeaderInView] = useState(false);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsHeaderInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "-30% 0px -30% 0px", threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section className="vs-section">
       <div className="vs-inner">
 
-        <header className="vs-header">
+        <header
+          className={`vs-header${isHeaderInView ? " vs-header--in-view" : ""}`}
+          ref={headerRef}
+        >
           <h2 className="vs-title">
-            <span>BETWEEN</span>
-            <span>ART <span className="vs-title-sub">&amp; SYSTEM</span></span>
+            <span className="line-roll">
+              <span className="line-roll-top">BETWEEN</span>
+              <span className="line-roll-bottom" aria-hidden="true">BETWEEN</span>
+            </span>
+            <span className="line-roll">
+              <span className="line-roll-top">ART <span className="vs-title-sub">&amp; SYSTEM</span></span>
+              <span className="line-roll-bottom" aria-hidden="true">ART <span className="vs-title-sub">&amp; SYSTEM</span></span>
+            </span>
           </h2>
           <p className="vs-subtitle">Where aesthetics, logic and experience converge</p>
         </header>
