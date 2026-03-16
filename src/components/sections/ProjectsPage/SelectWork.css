@@ -24,11 +24,11 @@
 
 .select-work__eyebrow {
   font-family: var(--font-manrope);
-  font-size: var(--fs-12pt);
-  font-weight: var(--fw-light);
+  font-size: var(--fs-14pt);
+  font-weight: var(--fw-bold);
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--gray-400);
+  color: var(--gray-500);
   margin: 0;
 }
 
@@ -163,7 +163,7 @@
   font-weight: var(--fw-light);
   line-height: 1.5;
   letter-spacing: 0.02em;
-  color: var(--gray-50);
+  color: var(--gray-200);
   margin: 0;
   overflow: hidden;
   display: -webkit-box;
