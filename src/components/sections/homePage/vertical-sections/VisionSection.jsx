@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import "./VisionSection.css";
-import visionCircle from "../../../assets/icons/vision-circle.svg";
+import visionCircle from "../../../../assets/icons/vision-circle.svg";
 
 /* ══════════════════════════════════════════════════════════════════
    Geometry  —  viewBox 700 × 650

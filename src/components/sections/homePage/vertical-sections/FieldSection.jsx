@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./FieldSection.css";
-import projectsData from "../../../data/projects.json";
-import { useImageParallax } from "../../../hooks/useImageParallax";
+import projectsData from "../../../../data/projects.json";
+import { useImageParallax } from "../../../../hooks/useImageParallax";
 
 /** 與 header-overlay-logo 相同的 line-roll 結構 */
 function LineRoll({ children }) {

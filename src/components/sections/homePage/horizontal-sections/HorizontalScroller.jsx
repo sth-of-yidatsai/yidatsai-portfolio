@@ -7,7 +7,7 @@ import {
   LandscapeSection,
   ProjectsSection,
   sectionConfigs,
-} from "./sections/horizontal-sections";
+} from "./";
 
 function getCSSVar(name, fallback) {
   const v = getComputedStyle(document.documentElement)

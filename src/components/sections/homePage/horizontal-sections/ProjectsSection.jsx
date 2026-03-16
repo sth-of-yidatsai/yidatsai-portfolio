@@ -1,5 +1,5 @@
 import React from "react";
-import projects from "../../../data/projects.json";
+import projects from "../../../../data/projects.json";
 import "./ProjectsSection.css";
 
 export default function ProjectsSection({ index }) {

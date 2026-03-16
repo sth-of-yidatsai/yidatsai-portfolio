@@ -1,7 +1,7 @@
 import React from "react";
 import "./ApproachSection.css";
-import projectsData from "../../../data/projects.json";
-import { useImageParallax } from "../../../hooks/useImageParallax";
+import projectsData from "../../../../data/projects.json";
+import { useImageParallax } from "../../../../hooks/useImageParallax";
 
 // ── 圖片配置 ── 統一管理，方便置換
 const approachConfig = {

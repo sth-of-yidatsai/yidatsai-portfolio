@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 import "./LandscapeSection.css";
-import projectsData from "../../../data/projects.json";
-import { useImageParallax } from "../../../hooks/useImageParallax";
-import cornerSvg from "../../../assets/icons/landscape-section-corner.svg";
-import centerSvg from "../../../assets/icons/landscape-section-center.svg";
+import projectsData from "../../../../data/projects.json";
+import { useImageParallax } from "../../../../hooks/useImageParallax";
+import cornerSvg from "../../../../assets/icons/landscape-section-corner.svg";
+import centerSvg from "../../../../assets/icons/landscape-section-center.svg";
 
 /** 逐字捲動（從下方捲入），用於圖片切換時的文字動畫 */
 function RollingText({ children }) {

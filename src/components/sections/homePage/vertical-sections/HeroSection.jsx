@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./HeroSection.css";
-import projectsData from "../../../data/projects.json";
-import leftArrowIcon from "../../../assets/icons/keyboard_arrow_left_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
-import rightArrowIcon from "../../../assets/icons/keyboard_arrow_right_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
+import projectsData from "../../../../data/projects.json";
+import leftArrowIcon from "../../../../assets/icons/keyboard_arrow_left_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
+import rightArrowIcon from "../../../../assets/icons/keyboard_arrow_right_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 
 export default function HeroSection({ index }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
