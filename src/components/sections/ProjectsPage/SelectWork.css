@@ -1,0 +1,184 @@
+/* ── SelectWork Section ──────────────────────────────────────────────────── */
+
+.select-work {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--gray-900);
+  color: var(--gray-0);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-top: clamp(72px, 10vh, 112px); /* header clearance */
+  padding-bottom: var(--space-lg);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+
+.select-work__header {
+  padding: 0 var(--px-page);
+  margin-bottom: var(--space-lg);
+  flex-shrink: 0;
+}
+
+.select-work__eyebrow {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-light);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin: 0;
+}
+
+/* ── Viewport ────────────────────────────────────────────────────────────── */
+
+.select-work__viewport {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 var(--px-page);
+  box-sizing: border-box;
+}
+
+/* ── Track ───────────────────────────────────────────────────────────────── */
+
+.select-work__track {
+  display: flex;
+  gap: 16px; /* CARD_GAP — keep in sync with JS constant */
+  height: 100%;
+  will-change: transform;
+}
+
+.select-work__track.is-animating {
+  /* easeInOutQuart — 優雅起步、快速穿越、從容落定 */
+  transition: transform 1.8s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ── Card Wrap (card + number label) ─────────────────────────────────────── */
+
+.select-work__card-wrap {
+  flex-shrink: 0;
+  /* Show exactly 3 cards at a time */
+  width: calc((100vw - 2 * var(--px-page) - 2 * 16px) / 3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+
+.select-work__card {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Oversized wrapper gives the image room to shift without revealing gaps */
+.select-work__card-img-wrapper {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.select-work__card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transform: translateZ(0);
+}
+
+/* ── Parallax classes (applied by useImageParallax) ─────────────────────── */
+.select-work__card-img.scroll-horizontal-right { transform: translateX(16px)  translateZ(0); }
+.select-work__card-img.scroll-horizontal-left  { transform: translateX(-16px) translateZ(0); }
+.select-work__card-img.scroll-vertical-up      { transform: translateY(-12px) translateZ(0); }
+.select-work__card-img.scroll-vertical-down    { transform: translateY(12px)  translateZ(0); }
+
+/* ── Glass Overlay ───────────────────────────────────────────────────────── */
+
+.select-work__card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(48px) saturate(180%) brightness(0.9);
+  -webkit-backdrop-filter: blur(48px) saturate(180%) brightness(0.9);
+  background: rgba(0, 0, 0, 0.5);
+  padding: var(--space-lg) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.select-work__card:hover .select-work__card-overlay {
+  transform: translateY(0);
+}
+
+/* Suppress hover overlay while dragging */
+.select-work__viewport.is-dragging .select-work__card:hover .select-work__card-overlay {
+  transform: translateY(100%);
+}
+
+/* ── Overlay Typography ──────────────────────────────────────────────────── */
+
+.select-work__card-title {
+  font-family: var(--font-manrope), var(--font-cjk);
+  font-size: var(--fs-14pt);
+  font-weight: var(--fw-medium);
+  color: var(--gray-50);
+  letter-spacing: 0.05em;
+  /* ellipsis 三件套：缺一不可 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  margin: 0;
+}
+
+.select-work__card-rule {
+  display: block;
+  width: 2rem;
+  height: 1px;
+  background: var(--gray-400);
+  flex-shrink: 0;
+}
+
+.select-work__card-desc {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-light);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--gray-50);
+  margin: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* ── Card Number ─────────────────────────────────────────────────────────── */
+
+.select-work__card-number {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.04em;
+  color: var(--gray-200);
+  text-align: right;
+  flex-shrink: 0;
+}
