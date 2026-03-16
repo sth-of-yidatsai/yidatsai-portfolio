@@ -133,13 +133,15 @@ export default function Footer() {
               </Link>
 
               {contact.type === 'link' ? (
-                <a
-                  href={contact.href}
-                  className="footer-contact-link clickable"
-                  {...(contact.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                >
-                  {contact.text}
-                </a>
+                <div className="footer-contact-row">
+                  <a
+                    href={contact.href}
+                    className="footer-contact-link clickable"
+                    {...(contact.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  >
+                    {contact.text}
+                  </a>
+                </div>
               ) : (
                 <LanguageToggle language={language} setLanguage={setLanguage} />
               )}

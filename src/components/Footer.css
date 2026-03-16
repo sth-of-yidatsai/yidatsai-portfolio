@@ -43,6 +43,8 @@
   text-decoration: none;
   user-select: none;
   margin-bottom: -0.25em;
+  align-self: start;
+  width: fit-content;
 }
 
 .footer-logo::after { display: none !important; }
@@ -103,6 +105,7 @@
   padding: 14px 0;
   transition: opacity 0.3s ease;
   white-space: nowrap;
+  width: fit-content;
 }
 
 .footer-nav-item::after { display: none !important; }
@@ -163,16 +166,22 @@
    row-gap in .footer-mid provides the gap between adjacent rows
    so borders never share or visually merge.
    ── */
+/* Wrapper keeps full-width borders; the <a> inside shrinks to text width */
+.footer-contact-row {
+  border-top:    1px solid var(--gray-700);
+  border-bottom: 1px solid var(--gray-700);
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+}
+
 .footer-contact-link {
-  display: block;
+  display: inline;
   font-family: var(--font-manrope);
   font-weight: var(--fw-regular);
   font-size: var(--fs-12pt);
   color: var(--gray-400);
   text-decoration: none;
-  padding: 8px 0;
-  border-top:    1px solid var(--gray-700);
-  border-bottom: 1px solid var(--gray-700);
   transition: color 0.3s ease;
   letter-spacing: 0.02em;
   white-space: nowrap;
