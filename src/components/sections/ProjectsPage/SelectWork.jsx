@@ -14,11 +14,11 @@ import "./SelectWork.css";
 // ─── Work Selection Config ──────────────────────────────────────────────────
 // Define which project and which image index appears in each card slot.
 const SELECTED_WORKS = [
-  { projectId: "project-001", imageIndex: 0 },
-  { projectId: "project-002", imageIndex: 0 },
+  { projectId: "project-001", imageIndex: 2 },
+  { projectId: "project-002", imageIndex: 5 },
   { projectId: "project-003", imageIndex: 2 },
-  { projectId: "project-001", imageIndex: 5 },
-  { projectId: "project-002", imageIndex: 4 },
+  { projectId: "project-002", imageIndex: 16 },
+  { projectId: "project-003", imageIndex: 5 },
 ];
 // ───────────────────────────────────────────────────────────────────────────
 
