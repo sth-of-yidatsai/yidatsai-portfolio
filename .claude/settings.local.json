@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npm run build)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(sed -i 's|import { useScrollDetection } from \"\"../../../hooks/useHorizontalScroll\"\";|import { useImageParallax } from \"\"../../../hooks/useImageParallax\"\";|g' \"c:/Users/user/Documents/GitHub/yidatsai-portfolio/src/components/sections/horizontal-sections/LandscapeSection.jsx\")",
+      "Bash(sed -i 's|import { useScrollDetection } from \"\"../../../hooks/useHorizontalScroll\"\";|import { useImageParallax } from \"\"../../../hooks/useImageParallax\"\";|g' \"c:/Users/user/Documents/GitHub/yidatsai-portfolio/src/components/sections/horizontal-sections/ApproachSection.jsx\")"
     ]
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import "./ApproachSection.css";
 import projectsData from "../../../data/projects.json";
-import { useScrollDetection } from "../../../hooks/useHorizontalScroll";
+import { useImageParallax } from "../../../hooks/useImageParallax";
 
 // ── 圖片配置 ── 統一管理，方便置換
 const approachConfig = {
@@ -15,21 +15,10 @@ function getImage(cfg) {
 }
 
 export default function ApproachSection({ index }) {
-  const {
-    isScrolling,
-    horizontalDirection,
-    verticalDirection,
-    isInHorizontalSection,
-  } = useScrollDetection();
+  const { scrollClass } = useImageParallax();
 
   const leftSrc  = getImage(approachConfig.leftImage);
   const rightSrc = getImage(approachConfig.rightImage);
-
-  const scrollClass = isScrolling
-    ? isInHorizontalSection
-      ? `scroll-horizontal-${horizontalDirection}`
-      : `scroll-vertical-${verticalDirection}`
-    : "";
 
   return (
     <section className={`as-section hs-section hs-section-${index}`}>

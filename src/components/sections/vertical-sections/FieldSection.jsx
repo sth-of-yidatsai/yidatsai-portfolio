@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./FieldSection.css";
 import projectsData from "../../../data/projects.json";
-import { useScrollDetection } from "../../../hooks/useHorizontalScroll";
+import { useImageParallax } from "../../../hooks/useImageParallax";
 
 /** 與 header-overlay-logo 相同的 line-roll 結構 */
 function LineRoll({ children }) {
@@ -22,12 +22,7 @@ const fieldConfig = [
 ];
 
 export default function FieldSection() {
-  const {
-    isScrolling,
-    horizontalDirection,
-    verticalDirection,
-    isInHorizontalSection,
-  } = useScrollDetection();
+  const { scrollClass } = useImageParallax();
 
   const images = fieldConfig.map((cfg) => {
     const project = projectsData.find((p) => p.id === cfg.projectId);
@@ -36,12 +31,6 @@ export default function FieldSection() {
       label: cfg.label,
     };
   });
-
-  const scrollClass = isScrolling
-    ? isInHorizontalSection
-      ? `scroll-horizontal-${horizontalDirection}`
-      : `scroll-vertical-${verticalDirection}`
-    : "";
 
   // ── fs-name 進入畫面中央時觸發 line-roll 動畫 ──
   const nameRef = useRef(null);

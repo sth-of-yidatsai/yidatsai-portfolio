@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import "./LandscapeSection.css";
 import projectsData from "../../../data/projects.json";
-import { useScrollDetection } from "../../../hooks/useHorizontalScroll";
+import { useImageParallax } from "../../../hooks/useImageParallax";
 import cornerSvg from "../../../assets/icons/landscape-section-corner.svg";
 import centerSvg from "../../../assets/icons/landscape-section-center.svg";
 
@@ -64,18 +64,7 @@ function resolveSlide(cfg) {
 export default function LandscapeSection({ index, landscapeProgress = 0 }) {
   const slides = useMemo(() => LANDSCAPE_SLIDES.map(resolveSlide), []);
 
-  const {
-    isScrolling,
-    horizontalDirection,
-    verticalDirection,
-    isInHorizontalSection,
-  } = useScrollDetection();
-
-  const scrollClass = isScrolling
-    ? isInHorizontalSection
-      ? `scroll-horizontal-${horizontalDirection}`
-      : `scroll-vertical-${verticalDirection}`
-    : "";
+  const { scrollClass } = useImageParallax();
 
   const NUM_TRANSITIONS = slides.length - 1; // 2
 
