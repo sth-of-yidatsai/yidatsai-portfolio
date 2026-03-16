@@ -38,6 +38,7 @@ export default function HeroSection({ index }) {
             project.projectImages[0],
           title: project.title,
           year: project.year,
+          category: project.category || [],
           tags: project.tags || [],
           projectId: config.projectId,
         };
@@ -224,6 +225,30 @@ export default function HeroSection({ index }) {
               >
                 {displayData?.year}
               </span>
+            </div>
+          </div>
+
+          {/* Category區域 */}
+          <div className="hero-tag-section">
+            <div className="hero-info-item">
+              <span className="hero-info-label">Category</span>
+              <div
+                className={`hero-tag-list ${
+                  animationPhase !== "idle" ? `animate-${animationPhase}` : ""
+                }`}
+              >
+                {displayData?.category?.map((cat, index) => (
+                  <span
+                    key={`${cat}-${index}`}
+                    className="hero-tag-item"
+                    style={{
+                      "--animation-delay": `${(index + 1) * 0.05}s`,
+                    }}
+                  >
+                    {cat}
+                  </span>
+                )) || []}
+              </div>
             </div>
           </div>
 
