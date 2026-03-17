@@ -58,14 +58,30 @@ export default function useSmoothScroll({ ease = 0.03, disabled = false } = {}) 
     };
 
     // 讓外部程式碼透過 CustomEvent 注入目標位置，由 smooth scroll 系統執行動畫
+    // detail.ease 可選，覆蓋預設 ease 值，tick 結束後自動還原
     const onScrollTo = (e) => {
       if (rafId) {
         cancelAnimationFrame(rafId);
         rafId = null;
       }
+      const jumpEase = e.detail.ease ?? ease;
       targetY  = clamp(e.detail.top, 0, maxScrollY());
       currentY = window.scrollY;
-      tick();
+
+      const jumpTick = () => {
+        const diff = targetY - currentY;
+        if (Math.abs(diff) < 0.5) {
+          currentY = targetY;
+          window.scrollTo(0, currentY);
+          rafId = null;
+          return;
+        }
+        currentY += diff * jumpEase;
+        window.scrollTo(0, currentY);
+        rafId = requestAnimationFrame(jumpTick);
+      };
+
+      jumpTick();
     };
 
     window.addEventListener("wheel",          onWheel,    { passive: false });

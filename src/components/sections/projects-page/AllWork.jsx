@@ -168,7 +168,7 @@ export default function AllWork() {
     }
     if (!sectionRef.current) return;
     const top = sectionRef.current.getBoundingClientRect().top + window.scrollY;
-    window.dispatchEvent(new CustomEvent("smoothScrollTo", { detail: { top } }));
+    window.dispatchEvent(new CustomEvent("smoothScrollTo", { detail: { top, ease: 0.03 } }));
   }, [page]);
 
   const goTo = useCallback((p) => {
