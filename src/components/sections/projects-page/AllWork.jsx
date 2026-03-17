@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useMemo, useCallback, memo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useMemo, useCallback, memo } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import projectsData from "../../../data/projects.json";
 import { useImageParallax } from "../../../hooks/useImageParallax";
 import iconFirst from "../../../assets/icons/first_page_24dp_2D2D2D_FILL0_wght400_GRAD0_opsz24.svg";
@@ -147,8 +147,9 @@ function Pagination({ page, totalPages, onGoTo }) {
 
 export default function AllWork() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { scrollClass } = useImageParallax();
-  const [page, setPage] = useState(1);
+  const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
   const sectionRef = useRef(null);
   const isFirstRender = useRef(true);
 
@@ -172,8 +173,8 @@ export default function AllWork() {
   }, [page]);
 
   const goTo = useCallback((p) => {
-    setPage(p);
-  }, []);
+    setSearchParams({ page: p });
+  }, [setSearchParams]);
 
   const handleCardClick = useCallback(
     (project) => {
