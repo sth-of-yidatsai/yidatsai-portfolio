@@ -4,10 +4,10 @@
   position: relative;
   width: 100vw;
   height: 100vh;
-  margin-left: 64px;
+  margin-left: var(--space-xl);
   overflow: hidden;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--gray-900);
+  color: var(--gray-0);
   z-index: 1; /* 將整個專案頁設為一個較低層的堆疊上下文，確保 Header(999) 永遠在上層 */
 }
 
@@ -38,7 +38,7 @@ html.projects-no-scroll-html {
 .gallery-item {
   position: absolute;
   overflow: visible; /* 改為 visible 讓 caption 可以顯示在卡片外 */
-  background-color: transparent; /* 移除背景色，讓圖片和 caption 分開 */
+  background-color: transparent;
   cursor: pointer;
   border-radius: var(--border-radius, 0px);
   display: flex;
@@ -47,10 +47,10 @@ html.projects-no-scroll-html {
 
 .gallery-item-image-container {
   width: 100%;
-  height: 480px; /* 固定圖片高度為 3:4 直式比例 */
+  height: 480px; /* 3:4 直式比例，對應 JS baseHeight */
   overflow: hidden;
   position: relative;
-  background-color: #000000;
+  background-color: var(--gray-900);
   border-radius: var(--border-radius, 0px);
 }
 
@@ -81,32 +81,34 @@ html.projects-no-scroll-html {
 .gallery-item-caption {
   position: relative;
   width: 100%;
-  padding: 16px 0 0 0; /* 適應更大的卡片，增加間距 */
+  padding: var(--space-md) 0 0 0;
   z-index: 2;
   background-color: transparent;
 }
 
 .gallery-item-name {
-  font-family: var(--font-stack);
-  color: #ffffff;
-  font-size: 14px; /* 適應更大的卡片，微微增大字體 */
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: -0.03em;
+  font-family: var(--font-manrope), var(--font-cjk);
+  color: var(--gray-200);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.05em;
   margin-bottom: 6px;
   position: relative;
-  overflow: hidden;
-  height: 18px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  line-height: 1.3;
 }
 
 .gallery-item-number {
-  font-family: var(--font-latin);
-  color: #888888;
-  font-size: 11px; /* 適應更大的卡片，微微增大字體 */
-  font-weight: 400;
+  font-family: var(--font-manrope);
+  color: var(--gray-400);
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.04em;
   position: relative;
   overflow: hidden;
-  height: 15px;
+  height: 18px;
 }
 
 /* 展開視圖 */
@@ -116,7 +118,7 @@ html.projects-no-scroll-html {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #000000;
+  background-color: var(--gray-900);
   overflow: hidden;
   cursor: default;
   pointer-events: none; /* 容器不攔截事件，避免遮擋 Header / 自訂游標 */
@@ -146,7 +148,7 @@ html.projects-no-scroll-html {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #000000;
+  background-color: var(--gray-900);
   pointer-events: none;
   opacity: 0;
   z-index: 800; /* 低於 expanded 與 header */
@@ -200,4 +202,27 @@ body.menu-open .gallery-expanded-item {
   inset: 0;
   box-shadow: inset 0 0 var(--page-vignette-extreme-size, 0px)
     var(--page-vignette-extreme-color, rgba(0, 0, 0, 1));
+}
+
+/* Drag hint */
+.gallery-drag-hint {
+  position: fixed;
+  bottom: var(--space-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  z-index: 800;
+  margin: 0;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.gallery-drag-hint.is-dragging {
+  opacity: 0;
 }

@@ -1,22 +1,23 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import projectsRaw from "../data/projects.json";
 import "./Playground.css";
 
 gsap.registerPlugin(CustomEase);
 CustomEase.create("hop", "0.9, 0, 0.1, 1");
 
-// 僅使用 projects.json 的第一張圖作為封面顯示
+// Sort descending by order (same as AllWork)
+const projectsData = [...projectsRaw].sort((a, b) => b.order - a.order);
 
 export default function Playground() {
-  const loaderData = useLoaderData();
-  const projectsData = Array.isArray(loaderData) ? loaderData : [];
   const navigate = useNavigate();
 
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const overlayRef = useRef(null);
+  const dragHintRef = useRef(null);
   // 移除標題顯示
 
   // 設定與狀態
@@ -71,28 +72,6 @@ export default function Playground() {
     rafId: 0,
     titleDelayTween: null,
   });
-
-  // 專案排序：以 id 內的數字降冪（號碼越大越新）
-  const parseProjectOrder = (id) => {
-    if (typeof id !== "string") return 0;
-    const m = id.match(/(\d+)/g);
-    if (!m || !m.length) return 0;
-    // 取最後一段數字以避免 id 中有其他數字
-    return parseInt(m[m.length - 1], 10) || 0;
-  };
-
-  const getSortedProjects = () => {
-    const arr = Array.isArray(projectsData) ? [...projectsData] : [];
-    arr.sort((a, b) => parseProjectOrder(b?.id) - parseProjectOrder(a?.id));
-    return arr;
-  };
-
-  // 從圖片網址提取專案編號字串（保留前導零），如 "project-003" → "003"
-  const extractNumberFromImageUrl = (url) => {
-    if (typeof url !== "string") return null;
-    const m = url.match(/project[-_](\d+)/i);
-    return m && m[1] ? m[1] : null;
-  };
 
   // 不再干預游標顯示，交由全站 CustomCursor 負責
 
@@ -200,7 +179,7 @@ export default function Playground() {
     const currentItems = new Set();
 
     // 若沒有任何專案資料，直接返回
-    const allItems = getSortedProjects();
+    const allItems = projectsData;
     const total = allItems.length;
     if (total === 0) {
       // 清空既有可見元素
@@ -211,23 +190,6 @@ export default function Playground() {
       s.visibleItems.clear();
       return;
     }
-
-    // 依目前資料 id 中數字段的最大位數決定顯示位數（例如 project-003 → 3 位數）
-    const computePadLen = (items) => {
-      let maxLen = 1;
-      for (let i = 0; i < items.length; i += 1) {
-        const idStr = items[i]?.id;
-        if (typeof idStr === "string") {
-          const m = idStr.match(/(\d+)/g);
-          if (m && m.length) {
-            const seg = m[m.length - 1];
-            maxLen = Math.max(maxLen, seg.length);
-          }
-        }
-      }
-      return maxLen;
-    };
-    const padLen = computePadLen(allItems);
 
     for (let row = startRow; row <= endRow; row += 1) {
       for (let col = startCol; col <= endCol; col += 1) {
@@ -256,7 +218,11 @@ export default function Playground() {
         const rawIndex = row * s.columns + col;
         const idx = ((rawIndex % total) + total) % total;
         const project = allItems[idx];
-        const imageUrl = project?.coverImage || "";
+        const imageUrl = project?.cover === "placeholder.webp"
+          ? `/images/projects/placeholder.webp`
+          : project?.id && project?.cover
+            ? `/images/projects/${project.id}/${project.cover}`
+            : "";
         const title = project?.title || "";
         const projectId = project?.id || "";
 
@@ -276,18 +242,7 @@ export default function Playground() {
         caption.appendChild(nameEl);
         const numberEl = document.createElement("div");
         numberEl.className = "gallery-item-number";
-        // 依圖片網址中的資料夾/檔名提取編號，優先使用該編號（保留前導零）
-        const urlNumber = extractNumberFromImageUrl(imageUrl);
-        if (urlNumber) {
-          numberEl.textContent = `#${urlNumber}`;
-        } else {
-          // 後備：使用 id 的數字長度進行補零，或以位置序號
-          const fallbackNumber = idx + 1;
-          numberEl.textContent = `#${String(fallbackNumber).padStart(
-            padLen,
-            "0"
-          )}`;
-        }
+        numberEl.textContent = `(${String(project?.order ?? idx + 1).padStart(3, "0")})`;
         caption.appendChild(numberEl);
         item.appendChild(caption);
 
@@ -530,6 +485,7 @@ export default function Playground() {
       s.startX = e.clientX;
       s.startY = e.clientY;
       if (containerRef.current) containerRef.current.style.cursor = "grabbing";
+      if (dragHintRef.current) dragHintRef.current.classList.add("is-dragging");
     };
     const onMouseMove = (e) => {
       if (!s.isDragging || !s.canDrag) return;
@@ -549,6 +505,7 @@ export default function Playground() {
     const onMouseUp = () => {
       if (!s.isDragging) return;
       s.isDragging = false;
+      if (dragHintRef.current) dragHintRef.current.classList.remove("is-dragging");
       if (s.canDrag && containerRef.current) {
         containerRef.current.style.cursor = "grab";
         if (
@@ -592,6 +549,7 @@ export default function Playground() {
       s.startY = t.clientY;
       s.lastDragTime = Date.now();
       if (containerRef.current) containerRef.current.style.cursor = "grabbing";
+      if (dragHintRef.current) dragHintRef.current.classList.add("is-dragging");
     };
     const onTouchMove = (e) => {
       if (!s.isDragging || !s.canDrag) return;
@@ -615,6 +573,7 @@ export default function Playground() {
     const onTouchEnd = () => {
       if (!s.isDragging) return;
       s.isDragging = false;
+      if (dragHintRef.current) dragHintRef.current.classList.remove("is-dragging");
       if (s.canDrag && containerRef.current) {
         containerRef.current.style.cursor = "grab";
         if (
@@ -699,6 +658,8 @@ export default function Playground() {
         <div className="gallery-page-vignette-strong" />
         <div className="gallery-page-vignette-extreme" />
       </div>
+
+      <p className="gallery-drag-hint" ref={dragHintRef} aria-hidden>Drag to move</p>
     </div>
   );
 }
