@@ -1,5 +1,5 @@
 import React from "react";
-import SelectWork from "../components/sections/ProjectsPage/SelectWork";
+import SelectWork from "../components/sections/projects-page/SelectWork";
 import "./Projects.css";
 
 export default function Projects() {

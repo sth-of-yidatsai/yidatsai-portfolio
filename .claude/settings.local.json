@@ -4,7 +4,13 @@
       "Bash(npm run build)",
       "Bash(npm install:*)",
       "Bash(sed -i 's|import { useScrollDetection } from \"\"../../../hooks/useHorizontalScroll\"\";|import { useImageParallax } from \"\"../../../hooks/useImageParallax\"\";|g' \"c:/Users/user/Documents/GitHub/yidatsai-portfolio/src/components/sections/horizontal-sections/LandscapeSection.jsx\")",
-      "Bash(sed -i 's|import { useScrollDetection } from \"\"../../../hooks/useHorizontalScroll\"\";|import { useImageParallax } from \"\"../../../hooks/useImageParallax\"\";|g' \"c:/Users/user/Documents/GitHub/yidatsai-portfolio/src/components/sections/horizontal-sections/ApproachSection.jsx\")"
+      "Bash(sed -i 's|import { useScrollDetection } from \"\"../../../hooks/useHorizontalScroll\"\";|import { useImageParallax } from \"\"../../../hooks/useImageParallax\"\";|g' \"c:/Users/user/Documents/GitHub/yidatsai-portfolio/src/components/sections/horizontal-sections/ApproachSection.jsx\")",
+      "Bash(mv homePage home-page-temp)",
+      "Bash(mv home-page-temp:*)",
+      "Bash(mv ProjectsPage projects-page-temp)",
+      "Bash(mv projects-page-temp:*)",
+      "Bash(powershell -Command \"Rename-Item ''c:\\\\Users\\\\user\\\\Documents\\\\GitHub\\\\yidatsai-portfolio\\\\src\\\\components\\\\sections\\\\homePage'' ''home-page''; Rename-Item ''c:\\\\Users\\\\user\\\\Documents\\\\GitHub\\\\yidatsai-portfolio\\\\src\\\\components\\\\sections\\\\ProjectsPage'' ''projects-page''\")",
+      "Bash(powershell -Command \":*)"
     ]
   }
 }
