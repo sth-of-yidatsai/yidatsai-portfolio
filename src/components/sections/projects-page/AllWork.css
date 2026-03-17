@@ -208,11 +208,11 @@
 }
 
 .all-work__page-btn--current::before {
-  top: 0;
+  top: 3px;
 }
 
 .all-work__page-btn--current::after {
-  bottom: 0;
+  bottom: 3px;
 }
 
 /* ── Single-dot placeholder (no adjacent page) ───────────────────────────── */
