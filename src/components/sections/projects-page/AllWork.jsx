@@ -83,9 +83,6 @@ function Pagination({ page, totalPages, onGoTo }) {
         <img src={iconPrev} alt="" />
       </button>
 
-      {/* Left decorative dots */}
-      <SquareDots />
-
       {/* Prev page number or single dot placeholder */}
       {prevPage ? (
         <button
@@ -122,9 +119,6 @@ function Pagination({ page, totalPages, onGoTo }) {
           <SquareDots count={1} />
         </span>
       )}
-
-      {/* Right decorative dots */}
-      <SquareDots />
 
       {/* Next page */}
       <button
