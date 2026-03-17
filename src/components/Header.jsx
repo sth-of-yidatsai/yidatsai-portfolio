@@ -157,7 +157,7 @@ export default function Header() {
         </div>
 
         {/* Bottom 50vh — liquid glass */}
-        <div className="header-overlay-glass" />
+        <div className="header-overlay-glass" onClick={closeMenu} />
       </div>
 
       {/* Header bar — always visible, animates hamburger ↔ X */}
