@@ -214,18 +214,19 @@
 
 .hero-info-label {
   font-family: var(--font-manrope);
-  font-size: var(--fs-10pt);
+  font-size: var(--fs-8pt);
   font-weight: var(--fw-bold);
   color: var(--gray-50);
   opacity: 0.45;
   letter-spacing: 0.1em;
   white-space: nowrap;
+  text-transform: uppercase;
   flex-shrink: 0;
 }
 
 .hero-info-value {
   font-family: var(--font-manrope), var(--font-cjk);
-  font-size: var(--fs-14pt);
+  font-size: var(--fs-12pt);
   font-weight: var(--fw-medium);
   color: var(--gray-50);
   letter-spacing: 0.05em;
