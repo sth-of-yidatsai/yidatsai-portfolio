@@ -6,7 +6,7 @@ export default function Project001({ project }) {
   const data = project || {
     title: "Project 001",
     year: "",
-    projectImages: [],
+    images: [],
     description: "",
   };
 
@@ -22,9 +22,9 @@ export default function Project001({ project }) {
 
       {/* Hero 區塊：可置入自定動畫或版面 */}
       <section style={{ marginBottom: 48 }}>
-        {data.projectImages?.[0] && (
+        {data.images?.[0] && (
           <img
-            src={data.projectImages[0]}
+            src={`/images/projects/${data.id}/${data.images[0]}`}
             alt={`${data.title} hero`}
             style={{ width: "100%", height: "auto", display: "block" }}
           />

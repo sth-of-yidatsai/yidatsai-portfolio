@@ -1,24 +1,18 @@
 import React from "react";
 import "./ApproachSection.css";
-import projectsData from "../../../../data/projects.json";
 import { useImageParallax } from "../../../../hooks/useImageParallax";
 
 // ── 圖片配置 ── 統一管理，方便置換
 const approachConfig = {
-  leftImage:  { projectId: "project-003", imageIndex: 5 },
-  rightImage: { projectId: "project-003", imageIndex: 7 },
+  leftImage:  "/images/projects/foucault-book-binding/05.webp",
+  rightImage: "/images/projects/foucault-book-binding/07.webp",
 };
-
-function getImage(cfg) {
-  const project = projectsData.find((p) => p.id === cfg.projectId);
-  return project?.projectImages[cfg.imageIndex] ?? project?.projectImages[0] ?? "";
-}
 
 export default function ApproachSection({ index }) {
   const { scrollClass } = useImageParallax();
 
-  const leftSrc  = getImage(approachConfig.leftImage);
-  const rightSrc = getImage(approachConfig.rightImage);
+  const leftSrc  = approachConfig.leftImage;
+  const rightSrc = approachConfig.rightImage;
 
   return (
     <section className={`as-section hs-section hs-section-${index}`}>

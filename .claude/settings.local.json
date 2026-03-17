@@ -10,7 +10,10 @@
       "Bash(mv ProjectsPage projects-page-temp)",
       "Bash(mv projects-page-temp:*)",
       "Bash(powershell -Command \"Rename-Item ''c:\\\\Users\\\\user\\\\Documents\\\\GitHub\\\\yidatsai-portfolio\\\\src\\\\components\\\\sections\\\\homePage'' ''home-page''; Rename-Item ''c:\\\\Users\\\\user\\\\Documents\\\\GitHub\\\\yidatsai-portfolio\\\\src\\\\components\\\\sections\\\\ProjectsPage'' ''projects-page''\")",
-      "Bash(powershell -Command \":*)"
+      "Bash(powershell -Command \":*)",
+      "Bash(mv project-001:*)",
+      "Bash(mv project-002:*)",
+      "Bash(mv project-003:*)"
     ]
   }
 }

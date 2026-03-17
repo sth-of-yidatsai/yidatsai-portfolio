@@ -48,3 +48,9 @@ body.horizontal-scrolling .global-scrollbar {
   opacity: 0;
   pointer-events: none;
 }
+
+/* Projects 頁面停留在 SelectWork 區塊時隱藏滾動條 */
+body.in-select-work .global-scrollbar {
+  opacity: 0;
+  pointer-events: none;
+}

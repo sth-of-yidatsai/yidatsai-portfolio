@@ -57,12 +57,25 @@ export default function useSmoothScroll({ ease = 0.03, disabled = false } = {}) 
       }
     };
 
-    window.addEventListener("wheel",  onWheel,  { passive: false });
-    window.addEventListener("scroll", onScroll, { passive: true });
+    // 讓外部程式碼透過 CustomEvent 注入目標位置，由 smooth scroll 系統執行動畫
+    const onScrollTo = (e) => {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      targetY  = clamp(e.detail.top, 0, maxScrollY());
+      currentY = window.scrollY;
+      tick();
+    };
+
+    window.addEventListener("wheel",          onWheel,    { passive: false });
+    window.addEventListener("scroll",         onScroll,   { passive: true });
+    window.addEventListener("smoothScrollTo", onScrollTo);
 
     return () => {
-      window.removeEventListener("wheel",  onWheel);
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("wheel",          onWheel);
+      window.removeEventListener("scroll",         onScroll);
+      window.removeEventListener("smoothScrollTo", onScrollTo);
       if (rafId) {
         cancelAnimationFrame(rafId);
         rafId = null;

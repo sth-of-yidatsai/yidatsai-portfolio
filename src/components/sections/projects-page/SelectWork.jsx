@@ -14,11 +14,11 @@ import "./SelectWork.css";
 // ─── Work Selection Config ──────────────────────────────────────────────────
 // Define which project and which image index appears in each card slot.
 const SELECTED_WORKS = [
-  { projectId: "project-001", imageIndex: 2 },
-  { projectId: "project-002", imageIndex: 5 },
-  { projectId: "project-003", imageIndex: 2 },
-  { projectId: "project-002", imageIndex: 16 },
-  { projectId: "project-003", imageIndex: 5 },
+  "formosa-font",
+  "taiwan-glass-notebook",
+  "foucault-book-binding",
+  "taiwan-glass-notebook",
+  "foucault-book-binding",
 ];
 // ───────────────────────────────────────────────────────────────────────────
 
@@ -28,14 +28,14 @@ const ANIM_MS = 1900; // slightly longer than CSS transition (1800ms) to fire af
 
 function buildCards(config, data) {
   return config
-    .map((cfg, i) => {
-      const p = data.find((x) => x.id === cfg.projectId);
+    .map((projectId, i) => {
+      const p = data.find((x) => x.id === projectId);
       if (!p) return null;
       return {
         id: p.id,
         title: p.title,
         description: p.description,
-        image: p.projectImages[cfg.imageIndex] ?? p.projectImages[0],
+        image: `/images/projects/${p.id}/${p.cover}`,
         number: `(${String(i + 1).padStart(2, "0")})`,
       };
     })

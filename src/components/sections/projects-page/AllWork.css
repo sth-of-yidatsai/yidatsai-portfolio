@@ -1,0 +1,254 @@
+/* ── AllWork Section ──────────────────────────────────────────────────────── */
+
+.all-work {
+  position: relative;
+  width: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  padding: var(--space-xl) var(--px-page);
+  box-sizing: border-box;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+
+.all-work__header {
+  margin-bottom: var(--space-lg);
+}
+
+.all-work__eyebrow {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-14pt);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin: 0;
+}
+
+/* ── Grid ────────────────────────────────────────────────────────────────── */
+
+.all-work__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  /* Contain layout recalculations to this subtree */
+  contain: layout style;
+}
+
+/* ── Card Wrap ───────────────────────────────────────────────────────────── */
+
+.all-work__card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  cursor: none;
+}
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+
+.all-work__card {
+  position: relative;
+  overflow: hidden;
+  /* Same aspect ratio feel as SelectWork: portrait ~3:4 */
+  aspect-ratio: 3 / 4;
+  isolation: isolate;
+}
+
+/* Oversized wrapper for parallax room */
+.all-work__card-img-wrapper {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+}
+
+.all-work__card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    scale 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ── Hover: slight scale-up ──────────────────────────────────────────────── */
+
+.all-work__card-wrap:hover .all-work__card-img {
+  transform: translate3d(0, 0, 0) scale(1.04);
+}
+
+/* Ensure parallax classes don't lose the scale on hover */
+.all-work__card-wrap:hover .all-work__card-img.scroll-horizontal-right {
+  transform: translate3d(16px, 0, 0) scale(1.04);
+}
+.all-work__card-wrap:hover .all-work__card-img.scroll-horizontal-left {
+  transform: translate3d(-16px, 0, 0) scale(1.04);
+}
+.all-work__card-wrap:hover .all-work__card-img.scroll-vertical-up {
+  transform: translate3d(0, -12px, 0) scale(1.04);
+}
+.all-work__card-wrap:hover .all-work__card-img.scroll-vertical-down {
+  transform: translate3d(0, 12px, 0) scale(1.04);
+}
+
+/* ── Parallax classes ────────────────────────────────────────────────────── */
+
+.all-work__card-img.scroll-horizontal-right { transform: translate3d(16px,  0, 0) scale(1); }
+.all-work__card-img.scroll-horizontal-left  { transform: translate3d(-16px, 0, 0) scale(1); }
+.all-work__card-img.scroll-vertical-up      { transform: translate3d(0, -12px, 0) scale(1); }
+.all-work__card-img.scroll-vertical-down    { transform: translate3d(0,  12px, 0) scale(1); }
+
+/* ── Card Info ───────────────────────────────────────────────────────────── */
+
+.all-work__card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.all-work__card-number {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.04em;
+  color: var(--gray-500);
+}
+
+.all-work__card-title {
+  font-family: var(--font-manrope), var(--font-cjk);
+  font-size: var(--fs-14pt);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+/* ── Pagination ──────────────────────────────────────────────────────────── */
+
+.all-work__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--gray-100);
+}
+
+/* ── Page Button Base ────────────────────────────────────────────────────── */
+
+.all-work__page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 36px;
+  padding: 0 4px;
+  background: none;
+  border: none;
+  cursor: none;
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.08em;
+  color: var(--gray-400);
+  transition: color 0.2s ease;
+  user-select: none;
+}
+
+.all-work__page-btn:not(:disabled):hover {
+  color: var(--color-text);
+}
+
+.all-work__page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Adjacent Page Numbers (prev / next) ─────────────────────────────────── */
+
+.all-work__page-btn--adjacent {
+  font-size: var(--fs-10pt);
+  min-width: 28px;
+  height: 28px;
+  color: var(--gray-400);
+}
+
+/* ── Current Page ────────────────────────────────────────────────────────── */
+
+.all-work__page-btn--current {
+  position: relative;
+  font-size: var(--fs-18pt);
+  color: var(--color-text);
+  font-weight: var(--fw-medium);
+  min-width: 40px;
+  height: 44px;
+  cursor: default;
+  opacity: 1 !important;
+}
+
+.all-work__page-btn--current::before,
+.all-work__page-btn--current::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--color-text);
+}
+
+.all-work__page-btn--current::before {
+  top: 0;
+}
+
+.all-work__page-btn--current::after {
+  bottom: 0;
+}
+
+/* ── Single-dot placeholder (no adjacent page) ───────────────────────────── */
+
+.all-work__page-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+}
+
+/* ── Nav Buttons (arrows) ────────────────────────────────────────────────── */
+
+.all-work__page-btn--nav img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  filter: invert(1) brightness(0.3); /* dark arrows on light bg */
+}
+
+.all-work__page-btn--nav:not(:disabled):hover img {
+  filter: invert(1) brightness(0);
+}
+
+.all-work__page-btn--nav:disabled img {
+  filter: invert(1) brightness(0.7);
+}
+
+/* ── Decorative Square Dots ──────────────────────────────────────────────── */
+
+.all-work__dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.all-work__dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background-color: var(--gray-300);
+  flex-shrink: 0;
+}

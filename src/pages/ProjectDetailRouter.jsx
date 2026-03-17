@@ -4,9 +4,9 @@ import ProjectDetail from './ProjectDetail.jsx';
 
 // 以 id 對應各專案的獨立頁面（可持續擴充）
 const projectPages = {
-  'project-001': React.lazy(() => import('./projects/Project001.jsx')),
-  // 'project-002': React.lazy(() => import('./projects/Project002.jsx')),
-  // 'project-003': React.lazy(() => import('./projects/Project003.jsx')),
+  'formosa-font': React.lazy(() => import('./projects/Project001.jsx')),
+  // 'taiwan-glass-notebook': React.lazy(() => import('./projects/Project002.jsx')),
+  // 'foucault-book-binding': React.lazy(() => import('./projects/Project003.jsx')),
 };
 
 export default function ProjectDetailRouter() {

@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import "./LandscapeSection.css";
-import projectsData from "../../../../data/projects.json";
 import { useImageParallax } from "../../../../hooks/useImageParallax";
 import cornerSvg from "../../../../assets/icons/landscape-section-corner.svg";
 import centerSvg from "../../../../assets/icons/landscape-section-center.svg";
@@ -23,25 +22,22 @@ function RollingText({ children }) {
 }
 
 // ── Slide configuration — manage here for easy replacement ──
-// Each slide: { projectId, imageIndex, leftLabel, rightLabel, caption }
+// Each slide: { image, leftLabel, rightLabel, caption }
 const LANDSCAPE_SLIDES = [
   {
-    projectId: "project-003",
-    imageIndex: 8,
+    image: "/images/projects/foucault-book-binding/08.webp",
     leftLabel: "Product Design",
     rightLabel: "Product Design",
     caption: "(001)",
   },
   {
-    projectId: "project-003",
-    imageIndex: 2,
+    image: "/images/projects/foucault-book-binding/02.webp",
     leftLabel: "Editorial",
     rightLabel: "Editorial",
     caption: "(002)",
   },
   {
-    projectId: "project-003",
-    imageIndex: 0,
+    image: "/images/projects/foucault-book-binding/cover.webp",
     leftLabel: "Illustration",
     rightLabel: "Illustration",
     caption: "(003)",
@@ -49,12 +45,8 @@ const LANDSCAPE_SLIDES = [
 ];
 
 function resolveSlide(cfg) {
-  const project = projectsData.find((p) => p.id === cfg.projectId);
   return {
-    image:
-      project?.projectImages[cfg.imageIndex] ??
-      project?.projectImages[0] ??
-      "",
+    image: cfg.image,
     leftLabel: cfg.leftLabel,
     rightLabel: cfg.rightLabel,
     caption: cfg.caption,

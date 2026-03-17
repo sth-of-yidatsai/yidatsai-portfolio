@@ -7,10 +7,10 @@ export default function ProjectsSection({ index }) {
   // 專案配置 - 指定專案ID和圖片索引
   const projectConfig = React.useMemo(
     () => [
-      { blockNumber: "1", projectId: "project-003", imageIndex: 3 }, // 區塊1
-      { blockNumber: "2", projectId: "project-003", imageIndex: 8 }, // 區塊2
-      { blockNumber: "3", projectId: "project-003", imageIndex: 6 }, // 區塊3
-      { blockNumber: "4", projectId: "project-003", imageIndex: 1 }, // 區塊4
+      { blockNumber: "1", projectId: "foucault-book-binding", image: "02.webp" }, // 區塊1
+      { blockNumber: "2", projectId: "foucault-book-binding", image: "07.webp" }, // 區塊2
+      { blockNumber: "3", projectId: "foucault-book-binding", image: "05.webp" }, // 區塊3
+      { blockNumber: "4", projectId: "foucault-book-binding", image: "cover.webp" }, // 區塊4
     ],
     []
   );
@@ -34,13 +34,11 @@ export default function ProjectsSection({ index }) {
   return (
     <div className={`hs-section projects-section hs-section-${index}`}>
       <div className="fullscreen-projects-content">
-        {projectConfig.map(({ blockNumber, projectId, imageIndex }) => {
+        {projectConfig.map(({ blockNumber, projectId, image }) => {
           const project = projects.find((p) => p.id === projectId);
           if (!project) return null;
 
-          const imagePath = `/images/projects/${projectId}/${projectId}-img-${String(
-            imageIndex
-          ).padStart(2, "0")}.webp`;
+          const imagePath = `/images/projects/${projectId}/${image}`;
 
           return (
             <div

@@ -16,11 +16,11 @@ export default function HeroSection({ index }) {
   // 輪播配置 - 指定專案ID和圖片索引
   const carouselConfig = React.useMemo(
     () => [
-      { projectId: "project-001", imageIndex: 0 },
-      { projectId: "project-002", imageIndex: 1 },
-      { projectId: "project-003", imageIndex: 2 },
-      { projectId: "project-002", imageIndex: 3 },
-      { projectId: "project-001", imageIndex: 4 },
+      { projectId: "formosa-font",          image: "cover.webp" },
+      { projectId: "taiwan-glass-notebook", image: "01.webp"    },
+      { projectId: "foucault-book-binding", image: "02.webp"    },
+      { projectId: "taiwan-glass-notebook", image: "03.webp"    },
+      { projectId: "formosa-font",          image: "04.webp"    },
     ],
     []
   );
@@ -33,9 +33,7 @@ export default function HeroSection({ index }) {
         if (!project) return null;
 
         return {
-          image:
-            project.projectImages[config.imageIndex] ||
-            project.projectImages[0],
+          image: `/images/projects/${project.id}/${config.image}`,
           title: project.title,
           year: project.year,
           category: project.category || [],

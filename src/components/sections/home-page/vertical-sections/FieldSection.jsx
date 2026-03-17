@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./FieldSection.css";
-import projectsData from "../../../../data/projects.json";
 import { useImageParallax } from "../../../../hooks/useImageParallax";
 
 /** 與 header-overlay-logo 相同的 line-roll 結構 */
@@ -15,22 +14,19 @@ function LineRoll({ children }) {
 
 // ── 圖片配置 ── 統一管理，方便置換
 const fieldConfig = [
-  { projectId: "project-002", imageIndex: 0,  label: "(Product Design)" },
-  { projectId: "project-002", imageIndex: 2,  label: "(Graphic Design)"  },
-  { projectId: "project-002", imageIndex: 4,  label: "(Typography)"      },
-  { projectId: "project-002", imageIndex: 2,  label: "(Poster Design)"   },
+  { projectId: "taiwan-glass-notebook", image: "cover.webp", label: "(Product Design)" },
+  { projectId: "taiwan-glass-notebook", image: "02.webp",    label: "(Graphic Design)"  },
+  { projectId: "taiwan-glass-notebook", image: "04.webp",    label: "(Typography)"      },
+  { projectId: "taiwan-glass-notebook", image: "02.webp",    label: "(Poster Design)"   },
 ];
 
 export default function FieldSection() {
   const { scrollClass } = useImageParallax();
 
-  const images = fieldConfig.map((cfg) => {
-    const project = projectsData.find((p) => p.id === cfg.projectId);
-    return {
-      src: project?.projectImages[cfg.imageIndex] ?? project?.projectImages[0] ?? "",
-      label: cfg.label,
-    };
-  });
+  const images = fieldConfig.map((cfg) => ({
+    src: `/images/projects/${cfg.projectId}/${cfg.image}`,
+    label: cfg.label,
+  }));
 
   // ── fs-name 進入畫面中央時觸發 line-roll 動畫 ──
   const nameRef = useRef(null);

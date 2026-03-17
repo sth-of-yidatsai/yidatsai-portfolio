@@ -12,8 +12,8 @@ export default function ProjectDetail() {
       <h1 style={{ marginBottom: 8 }}>{project.title}</h1>
       <div style={{ opacity: 0.6, marginBottom: 24 }}>{project.year}</div>
       <div style={{ display: 'grid', gap: 24 }}>
-        {project.projectImages?.map((src, idx) => (
-          <img key={idx} src={src} alt={`${project.title} ${idx + 1}`} />
+        {project.images?.map((filename, idx) => (
+          <img key={idx} src={`/images/projects/${project.id}/${filename}`} alt={`${project.title} ${idx + 1}`} />
         ))}
       </div>
       <p style={{ marginTop: 24 }}>{project.description}</p>
