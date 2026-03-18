@@ -112,15 +112,7 @@ export function LoaderProvider({
 
   return (
     <LoaderContext.Provider value={value}>
-      <div
-        style={{
-          opacity: loading ? 0 : 1,
-          transition: "opacity 0.5s ease",
-          isolation: "auto",
-        }}
-      >
-        {children}
-      </div>
+      {children}
       <CustomLoader show={show} />
     </LoaderContext.Provider>
   );
