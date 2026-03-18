@@ -77,40 +77,125 @@
   border-left: 1px solid var(--gray-200);
 }
 
-/* ── Select ───────────────────────────────────────────────────── */
-.cf__select-wrap {
+/* ── Custom Select ────────────────────────────────────────────── */
+.cf__csel {
   flex: 1;
   position: relative;
   border-left: 1px solid var(--gray-200);
 }
 
-.cf__select-wrap + .cf__select-wrap {
-  border-left: 1px solid var(--gray-200);
-}
-
-.cf__select {
+.cf__csel-trigger {
   width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  background: transparent;
   border: none;
   outline: none;
-  background: transparent;
   font-family: var(--font-manrope);
   font-weight: var(--fw-regular);
   font-size: var(--fs-12pt);
   color: var(--gray-600);
-  padding: var(--space-md) var(--space-2xl) var(--space-md) var(--space-md);
+  padding: var(--space-md);
   cursor: none;
+  text-align: left;
 }
 
-.cf__select-arrow {
+.cf__csel-arrow {
+  color: var(--gray-400);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.cf__csel-trigger--open .cf__csel-arrow {
+  transform: rotate(180deg);
+}
+
+/* panel = absolute container holding list + custom scrollbar */
+.cf__csel-panel {
   position: absolute;
-  right: var(--space-md);
-  top: 50%;
-  transform: translateY(-50%);
+  top: 100%;
+  left: -1px;
+  right: 0;
+  display: flex;
+  background: var(--gray-0);
+  border: 1px solid var(--gray-200);
+  border-top: none;
+  z-index: 200;
+  max-height: 220px;
+}
+
+.cf__csel-list {
+  flex: 1;
+  overflow-y: scroll;
+  /* hide native scrollbar — custom div scrollbar is used instead */
+  scrollbar-width: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cf__csel-list::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+.cf__csel-list li {
+  margin: 0;
+  padding: 0;
+}
+
+/* custom scrollbar track — matches GlobalScrollbar */
+.cf__csel-track {
+  width: 6px;
+  flex-shrink: 0;
+  background: var(--gray-100);
+  position: relative;
+}
+
+/* custom scrollbar thumb — matches GlobalScrollbar */
+.cf__csel-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--gray-800);
+  min-height: 24px;
+  will-change: transform, height;
+}
+
+.cf__csel-option {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
   color: var(--gray-500);
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  cursor: none;
+  transition: color 0.15s;
+}
+
+.cf__csel-option:hover {
+  color: var(--gray-900);
+}
+
+.cf__csel-option--selected {
+  color: var(--gray-700);
+  font-weight: var(--fw-semibold);
+}
+
+.cf__csel--disabled .cf__csel-trigger {
+  color: var(--gray-300);
   pointer-events: none;
-  font-size: 0.75rem;
+}
+
+.cf__csel--disabled .cf__csel-arrow {
+  color: var(--gray-200);
 }
 
 /* ── Interest checkboxes ──────────────────────────────────────── */
@@ -456,7 +541,7 @@
     border-left: none;
   }
 
-  .cf__select-wrap {
+  .cf__csel {
     border-left: none;
   }
 

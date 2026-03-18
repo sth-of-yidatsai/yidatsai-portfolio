@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import "./ContactForm.css";
@@ -75,6 +75,105 @@ const REGIONS = [
   "Oceania",
 ];
 
+// ─── Custom Select ────────────────────────────────────────────────────────────
+
+const MIN_THUMB_H = 24;
+
+function CustomSelect({ name, value, options, onChange, disabled = false }) {
+  const [open, setOpen] = useState(false);
+  const rootRef  = useRef(null);
+  const listRef  = useRef(null);
+  const thumbRef = useRef(null);
+
+  // ── Close on outside click ──────────────────────────────────────
+  useEffect(() => {
+    if (!open) return;
+    function onPointer(e) {
+      if (rootRef.current && !rootRef.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointer);
+    return () => document.removeEventListener("pointerdown", onPointer);
+  }, [open]);
+
+  // ── Close on Escape ─────────────────────────────────────────────
+  useEffect(() => {
+    if (!open) return;
+    function onKey(e) { if (e.key === "Escape") setOpen(false); }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  // ── Custom thumb sync + wheel capture ──────────────────────────
+  useEffect(() => {
+    const list  = listRef.current;
+    const thumb = thumbRef.current;
+    if (!list || !thumb || !open) return;
+
+    const updateThumb = () => {
+      const { scrollTop, scrollHeight, clientHeight } = list;
+      const ratio      = scrollHeight > clientHeight ? scrollTop / (scrollHeight - clientHeight) : 0;
+      const thumbH     = Math.max(MIN_THUMB_H, (clientHeight / scrollHeight) * clientHeight);
+      const maxTop     = clientHeight - thumbH;
+      thumb.style.height    = `${thumbH}px`;
+      thumb.style.transform = `translateY(${ratio * maxTop}px)`;
+    };
+
+    // Block wheel from reaching smooth-scroll on window; scroll list manually
+    const onWheel = (e) => {
+      e.stopPropagation();
+      list.scrollTop += e.deltaY;
+      updateThumb();
+    };
+
+    updateThumb();
+    list.addEventListener("scroll", updateThumb, { passive: true });
+    list.addEventListener("wheel",  onWheel,     { passive: false });
+    return () => {
+      list.removeEventListener("scroll", updateThumb);
+      list.removeEventListener("wheel",  onWheel);
+    };
+  }, [open]);
+
+  return (
+    <div className={`cf__csel${disabled ? " cf__csel--disabled" : ""}`} ref={rootRef}>
+      <button
+        type="button"
+        className={`cf__csel-trigger${open ? " cf__csel-trigger--open" : ""}`}
+        onClick={() => !disabled && setOpen((v) => !v)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-disabled={disabled}
+      >
+        <span className="cf__csel-value">{value}</span>
+        <span className="cf__csel-arrow" aria-hidden="true">&#x25BE;</span>
+      </button>
+
+      {open && (
+        <div className="cf__csel-panel">
+          <ul className="cf__csel-list" role="listbox" ref={listRef}>
+            {options.map((opt) => (
+              <li key={opt} role="option" aria-selected={opt === value}>
+                <button
+                  type="button"
+                  className={`cf__csel-option${opt === value ? " cf__csel-option--selected" : ""}`}
+                  onClick={() => { onChange(name, opt); setOpen(false); }}
+                >
+                  {opt}
+                </button>
+              </li>
+            ))}
+          </ul>
+          <div className="cf__csel-track">
+            <div className="cf__csel-thumb" ref={thumbRef} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Form initial state ───────────────────────────────────────────────────────
+
 const initialForm = {
   firstName: "",
   lastName: "",
@@ -140,6 +239,16 @@ export default function ContactForm() {
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  }, []);
+
+  const handleSelectChange = useCallback((name, value) => {
+    setForm((prev) => {
+      const next = { ...prev, [name]: value };
+      // mutual exclusion: selecting a specific county locks region, and vice versa
+      if (name === "locationCounty" && value !== "Taiwan") next.locationRegion = "International";
+      if (name === "locationRegion" && value !== "International") next.locationCounty = "Taiwan";
+      return next;
+    });
   }, []);
 
   const handleInterest = useCallback((label) => {
@@ -333,32 +442,20 @@ export default function ContactForm() {
         <div className="cf__row">
           <span className="cf__label">My location</span>
           <div className="cf__fields cf__fields--split">
-            <div className="cf__select-wrap">
-              <select
-                className="cf__select"
-                name="locationCounty"
-                value={form.locationCounty}
-                onChange={handleChange}
-              >
-                {TAIWAN_COUNTIES.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
-              <span className="cf__select-arrow" aria-hidden="true">&#x25BE;</span>
-            </div>
-            <div className="cf__select-wrap">
-              <select
-                className="cf__select"
-                name="locationRegion"
-                value={form.locationRegion}
-                onChange={handleChange}
-              >
-                {REGIONS.map((r) => (
-                  <option key={r} value={r}>{r}</option>
-                ))}
-              </select>
-              <span className="cf__select-arrow" aria-hidden="true">&#x25BE;</span>
-            </div>
+            <CustomSelect
+              name="locationCounty"
+              value={form.locationCounty}
+              options={TAIWAN_COUNTIES}
+              onChange={handleSelectChange}
+              disabled={form.locationRegion !== "International"}
+            />
+            <CustomSelect
+              name="locationRegion"
+              value={form.locationRegion}
+              options={REGIONS}
+              onChange={handleSelectChange}
+              disabled={form.locationCounty !== "Taiwan"}
+            />
           </div>
         </div>
 
