@@ -66,40 +66,6 @@ export default function ApproachSection({ index }) {
           </div>
         </div>
 
-        {/* 1:1 glass overlay block — bottom-left corner, contains all timeline elements */}
-        <div className="as-glass-block">
-
-          {/* Diagonal timeline SVG */}
-          <svg
-            className="as-timeline-svg"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            {/* 左下角 → 中心留空 */}
-            <line
-              x1="4"  y1="96"
-              x2="41" y2="59"
-              stroke="rgba(255,255,255,0.45)"
-              strokeWidth="1.2"
-              vectorEffect="non-scaling-stroke"
-            />
-            {/* 右上角 → 中心留空 */}
-            <line
-              x1="96" y1="4"
-              x2="59" y2="41"
-              stroke="rgba(255,255,255,0.45)"
-              strokeWidth="1.2"
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
-
-          {/* Year and tagline labels */}
-          <span className="as-year as-year-start">(2018)</span>
-          <span className="as-tagline">Creative Process</span>
-          <span className="as-year as-year-end">(2026)</span>
-
-        </div>
 
       </div>
 
