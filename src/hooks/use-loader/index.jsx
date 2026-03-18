@@ -4,72 +4,93 @@ import React, {
   useState,
   useCallback,
   useEffect,
+  useRef,
 } from "react";
 import { useLocation } from "react-router-dom";
 import { Loader } from "./components.jsx";
 
-// 創建 Context
 const LoaderContext = createContext();
 
 /**
  * LoaderProvider - 全域載入動畫提供者
- * @param {number} minLoadTime - 最小載入時間（毫秒），預設1500ms
+ * @param {number} minLoadTime      - 初始頁面最小載入時間（毫秒），預設 1500ms
+ * @param {number} routeMinLoadTime - 路由切換最小載入時間（毫秒），預設 600ms
  * @param {React.Component} CustomLoader - 自訂載入組件
- * @param {React.ReactNode} children - 子組件
+ * @param {React.ReactNode} children
  */
 export function LoaderProvider({
   minLoadTime = 1500,
+  routeMinLoadTime = 600,
   CustomLoader = Loader,
   children,
 }) {
   const location = useLocation();
-  const [loading, setLoading] = useState(true); // 初始為載入中
-  const [show, setShow] = useState(true); // 初始顯示loader
+  const [loading, setLoading] = useState(true);
+  const [show, setShow] = useState(true);
   const [isPageReady, setIsPageReady] = useState(false);
 
-  // 頁面載入完成後的處理
+  // 記住當下這次等待應該用哪個最小時間
+  const minTimeRef = useRef(minLoadTime);
+  // 標記是否是首次掛載（第一次 pathname effect 不要觸發路由切換邏輯）
+  const isInitialLoad = useRef(true);
+
+  // ── 初始頁面載入 ────────────────────────────────────────────────────
   useEffect(() => {
-    const handlePageLoad = () => {
-      setIsPageReady(true);
+    minTimeRef.current = minLoadTime;
+
+    const markReady = () => {
+      // 等字體載入完成再放行，避免 loader 消失時文字閃爍 (FOUC)
+      document.fonts.ready.then(() => setIsPageReady(true));
     };
 
-    // 檢查頁面是否已經載入完成
     if (document.readyState === "complete") {
-      handlePageLoad();
+      markReady();
     } else {
-      window.addEventListener("load", handlePageLoad);
+      window.addEventListener("load", markReady);
+      return () => window.removeEventListener("load", markReady);
+    }
+  }, [minLoadTime]);
+
+  // ── 路由切換 ────────────────────────────────────────────────────────
+  useEffect(() => {
+    // 首次掛載時跳過（由上方 initial load effect 處理）
+    if (isInitialLoad.current) {
+      isInitialLoad.current = false;
+      return;
     }
 
-    return () => {
-      window.removeEventListener("load", handlePageLoad);
-    };
-  }, []);
-
-  // 路由變化時重新顯示loading
-  useEffect(() => {
+    minTimeRef.current = routeMinLoadTime;
     setLoading(true);
     setShow(true);
     setIsPageReady(false);
 
-    // 短延遲後標記頁面準備就緒（用於路由切換）
-    const routeTimer = setTimeout(() => {
-      setIsPageReady(true);
-    }, 100);
+    let cancelled = false;
 
-    return () => clearTimeout(routeTimer);
-  }, [location.pathname]);
+    Promise.all([
+      // 等字體就緒（新頁面若有新字體變體也會被等到）
+      document.fonts.ready,
+      // 給 React 一個 tick 渲染新頁面後再 sample fonts
+      new Promise((r) => setTimeout(r, 50)),
+    ]).then(() => {
+      if (!cancelled) setIsPageReady(true);
+    });
 
-  // 當頁面準備好後，等待最小載入時間然後隱藏loader
+    return () => {
+      cancelled = true;
+    };
+  }, [location.pathname, routeMinLoadTime]);
+
+  // ── 頁面準備好後等最小時間，再隱藏 loader ──────────────────────────
   useEffect(() => {
-    if (isPageReady) {
-      const timer = setTimeout(() => {
-        setLoading(false);
-        setShow(false);
-      }, minLoadTime);
+    if (!isPageReady) return;
 
-      return () => clearTimeout(timer);
-    }
-  }, [isPageReady, minLoadTime]);
+    const timer = setTimeout(() => {
+      setLoading(false);
+      setShow(false);
+    }, minTimeRef.current);
+
+    return () => clearTimeout(timer);
+  }, [isPageReady]);
 
   const showLoader = useCallback(() => {
     setLoading(true);
@@ -91,12 +112,10 @@ export function LoaderProvider({
 
   return (
     <LoaderContext.Provider value={value}>
-      {/* 只有在loading完成後才顯示內容 */}
       <div
         style={{
           opacity: loading ? 0 : 1,
           transition: "opacity 0.5s ease",
-          /* 確保不會阻斷子元素的 mix-blend-mode */
           isolation: "auto",
         }}
       >
@@ -109,15 +128,13 @@ export function LoaderProvider({
 
 /**
  * useLoader Hook
- * @returns {Object} - { loading, show, showLoader, hideLoader }
+ * @returns {Object} - { loading, show, showLoader, hideLoader, isPageReady }
  */
 export function useLoader() {
   const context = useContext(LoaderContext);
-
   if (!context) {
     throw new Error("useLoader must be used within a LoaderProvider");
   }
-
   return context;
 }
 

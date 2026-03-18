@@ -6,7 +6,7 @@ import { LanguageProvider } from "./contexts/LanguageContext.jsx";
 export function Providers({ children }) {
   return (
     <LanguageProvider>
-      <LoaderProvider minLoadTime={2000} CustomLoader={Loader}>
+      <LoaderProvider minLoadTime={2000} routeMinLoadTime={600} CustomLoader={Loader}>
         {children}
       </LoaderProvider>
     </LanguageProvider>
