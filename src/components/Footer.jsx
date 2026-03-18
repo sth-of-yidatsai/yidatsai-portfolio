@@ -106,9 +106,11 @@ function FooterBadgeLottie() {
 
 /* ── Footer ────────────────────────────────────────────────────────── */
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 export default function Footer() {
   const { language, setLanguage } = useContext(LanguageContext);
-  const year = new Date().getFullYear();
+  const year = CURRENT_YEAR;
 
   return (
     <footer className="footer">

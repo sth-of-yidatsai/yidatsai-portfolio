@@ -19,17 +19,65 @@ const TOAST_REMOVE_MS  = 6500;
 // ── Set true to preview toast style, false in production ──────────────────────
 const PREVIEW_TOAST = false;
 
-const INTERESTS = [
-  "Logo Design",
-  "Complete Brand Identity System (CIS)",
-  "Website Visuals",
-  "Print Design",
-  "Packaging Design",
-  "Other",
+const INTEREST_GROUPS = [
+  { group: "Brand",   items: ["Logo Design", "Brand Identity", "Brand Strategy", "Rebranding"] },
+  { group: "Graphic", items: ["Packaging Design", "Print Design", "Editorial Design", "Campaign Visuals"] },
+  { group: "Digital", items: ["Website Design", "UI / UX Design", "Landing Page", "Design System"] },
+  { group: "Extras",  items: ["Social Media", "Motion Graphics", "3D Visual"] },
+  { group: "Other",   items: ["Not sure yet"] },
 ];
+
+// ─── Budget weight system ─────────────────────────────────────────────────────
+
+const INTEREST_WEIGHTS = {
+  "Logo Design":       1,
+  "Brand Identity":    3,
+  "Brand Strategy":    3,
+  "Rebranding":        3,
+  "Packaging Design":  2,
+  "Print Design":      1,
+  "Editorial Design":  2,
+  "Campaign Visuals":  2,
+  "Website Design":    3,
+  "UI / UX Design":    3,
+  "Landing Page":      2,
+  "Design System":     3,
+  "Social Media":      1,
+  "Motion Graphics":   2,
+  "3D Visual":         2,
+  "Not sure yet":      0,
+};
+
+const CATEGORY_MULTIPLIERS = { Brand: 1.2, Graphic: 1.0, Digital: 1.1, Extras: 0.8, Other: 1.0 };
+
+// item → group lookup (built once at module level)
+const ITEM_GROUP = {};
+INTEREST_GROUPS.forEach(({ group, items }) => items.forEach((item) => { ITEM_GROUP[item] = group; }));
+
+// minimum budget index forced by certain high-value items
+const MIN_BUDGET_FOR = { "Brand Identity": 2, "Brand Strategy": 2 };
+
+function suggestBudgetIndex(selectedItems) {
+  if (selectedItems.length === 0) return 1; // default → $2,500
+  const score = selectedItems.reduce((sum, item) => {
+    const w = INTEREST_WEIGHTS[item] ?? 0;
+    const m = CATEGORY_MULTIPLIERS[ITEM_GROUP[item]] ?? 1.0;
+    return sum + w * m;
+  }, 0);
+  const minIdx = selectedItems.reduce((mx, item) => Math.max(mx, MIN_BUDGET_FOR[item] ?? 0), 0);
+  let idx = score <= 2 ? 0 : score <= 4 ? 1 : score <= 6 ? 2 : score <= 8 ? 3 : 4;
+  return Math.max(idx, minIdx);
+}
 
 const BUDGET_STEPS = [1200, 2500, 3600, 4500, 6000];
 const BUDGET_TIERS = ["Starter", "Basic", "Standard", "Pro", "Custom"];
+const BUDGET_DESCS = [
+  "Best for small-scale projects",
+  "Ideal for focused design needs",
+  "Balanced solution for growing brands",
+  "Ideal for a complete brand experience",
+  "Tailored for premium, full-scale projects",
+];
 
 const TIMELINES = [
   "Within 1 month",
@@ -184,7 +232,7 @@ const initialForm = {
   locationCounty: "Taiwan",
   locationRegion: "International",
   interests: [],
-  budgetIndex: 3,
+  budgetIndex: 1,
   timeline: "",
   message: "",
   honeypot: "",       // hidden anti-bot field
@@ -218,6 +266,7 @@ export default function ContactForm() {
   const [form, setForm]           = useState(initialForm);
   const [status, setStatus]       = useState("idle"); // idle | sending | success | error | rate-limited
   const [toastVisible, setToastVisible] = useState(false);
+  const [isBudgetLocked, setIsBudgetLocked] = useState(false);
   const { executeRecaptcha }      = useGoogleReCaptcha();
 
   // Auto-dismiss toast (skipped in preview mode)
@@ -234,6 +283,14 @@ export default function ContactForm() {
       clearTimeout(resetTimer);
     };
   }, [status]);
+
+  // Unlock budget suggestion when all interests are cleared
+  useEffect(() => {
+    if (form.interests.length === 0) {
+      setIsBudgetLocked(false);
+      setForm((prev) => ({ ...prev, budgetIndex: 1 }));
+    }
+  }, [form.interests.length]);
 
   // ─── Handlers ──────────────────────────────────────────────────────────────
 
@@ -256,13 +313,20 @@ export default function ContactForm() {
   const handleInterest = useCallback((label) => {
     setForm((prev) => {
       const has = prev.interests.includes(label);
-      return {
-        ...prev,
-        interests: has
-          ? prev.interests.filter((i) => i !== label)
-          : [...prev.interests, label],
-      };
+      const newInterests = has
+        ? prev.interests.filter((i) => i !== label)
+        : [...prev.interests, label];
+      const next = { ...prev, interests: newInterests };
+      if (!isBudgetLocked && newInterests.length > 0) {
+        next.budgetIndex = suggestBudgetIndex(newInterests);
+      }
+      return next;
     });
+  }, [isBudgetLocked]);
+
+  const handleBudgetClick = useCallback((i) => {
+    setIsBudgetLocked(true);
+    setForm((prev) => ({ ...prev, budgetIndex: i }));
   }, []);
 
   const handleTimeline = useCallback((t) => {
@@ -378,7 +442,7 @@ export default function ContactForm() {
 
         {/* ── Name ── */}
         <div className="cf__row">
-          <span className="cf__label">My name is</span>
+          <span className="cf__label">Full Name</span>
           <div className="cf__fields cf__fields--split">
             <input
               className="cf__input"
@@ -403,13 +467,13 @@ export default function ContactForm() {
 
         {/* ── Company ── */}
         <div className="cf__row">
-          <span className="cf__label">Company/Brand Name</span>
+          <span className="cf__label">Company or Brand Name</span>
           <div className="cf__fields">
             <input
               className="cf__input"
               type="text"
               name="company"
-              placeholder="Please enter company or brand name"
+              placeholder="Company or brand name"
               value={form.company}
               onChange={handleChange}
             />
@@ -418,13 +482,13 @@ export default function ContactForm() {
 
         {/* ── Contact ── */}
         <div className="cf__row">
-          <span className="cf__label">You can reach me at</span>
+          <span className="cf__label">Contact Information</span>
           <div className="cf__fields cf__fields--split">
             <input
               className="cf__input"
               type="email"
               name="email"
-              placeholder="email@example.com*"
+              placeholder="Email Address*"
               value={form.email}
               onChange={handleChange}
               required
@@ -433,7 +497,7 @@ export default function ContactForm() {
               className="cf__input"
               type="tel"
               name="phone"
-              placeholder="+886 912-345-678"
+              placeholder="Phone Number"
               value={form.phone}
               onChange={handleChange}
             />
@@ -442,7 +506,7 @@ export default function ContactForm() {
 
         {/* ── Location ── */}
         <div className="cf__row">
-          <span className="cf__label">My location</span>
+          <span className="cf__label">Location</span>
           <div className="cf__fields cf__fields--split">
             <CustomSelect
               name="locationCounty"
@@ -463,34 +527,41 @@ export default function ContactForm() {
 
         {/* ── Interests ── */}
         <div className="cf__row cf__row--interests">
-          <span className="cf__label">I am primarily interested in</span>
+          <span className="cf__label">Area of Interest</span>
           <div className="cf__fields">
-            <div className="cf__interest-grid">
-              {INTERESTS.map((label) => {
-                const checked = form.interests.includes(label);
-                return (
-                  <label key={label} className="cf__interest-item">
-                    <span
-                      className={`cf__radio-ring${checked ? " cf__radio-ring--checked" : ""}`}
-                      aria-hidden="true"
-                    />
-                    <input
-                      type="checkbox"
-                      className="cf__checkbox-hidden"
-                      checked={checked}
-                      onChange={() => handleInterest(label)}
-                    />
-                    <span className="cf__interest-label">{label}</span>
-                  </label>
-                );
-              })}
+            <div className="cf__interest-groups">
+              {INTEREST_GROUPS.map(({ group, items }) => (
+                <div key={group} className="cf__interest-group">
+                  <span className="cf__interest-group-label">{group}</span>
+                  <div className="cf__interest-items">
+                    {items.map((label) => {
+                      const checked = form.interests.includes(label);
+                      return (
+                        <label key={label} className="cf__interest-item">
+                          <span
+                            className={`cf__radio-ring${checked ? " cf__radio-ring--checked" : ""}`}
+                            aria-hidden="true"
+                          />
+                          <input
+                            type="checkbox"
+                            className="cf__checkbox-hidden"
+                            checked={checked}
+                            onChange={() => handleInterest(label)}
+                          />
+                          <span className="cf__interest-label">{label}</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
         {/* ── Budget ── */}
         <div className="cf__row cf__row--budget">
-          <span className="cf__label">Select Your Budget</span>
+          <span className="cf__label">Project Budget (USD $)</span>
           <div className="cf__fields">
             <div className="cf__budget-track">
               {/* tier names row */}
@@ -506,12 +577,17 @@ export default function ContactForm() {
               </div>
               {/* dots row — ::before line stays at top:10px (half dot-wrap) */}
               <div className="cf__budget-dots">
+                {/* animated fill — width driven by budgetIndex */}
+                <span
+                  className="cf__budget-fill"
+                  style={{ width: `${(form.budgetIndex / (BUDGET_STEPS.length - 1)) * 80}%` }}
+                />
                 {BUDGET_STEPS.map((v, i) => (
                   <button
                     key={v}
                     type="button"
                     className={`cf__budget-step${i === form.budgetIndex ? " cf__budget-step--active" : ""}`}
-                    onClick={() => setForm((prev) => ({ ...prev, budgetIndex: i }))}
+                    onClick={() => handleBudgetClick(i)}
                     aria-label={`Budget ${BUDGET_TIERS[i]} ${i === BUDGET_STEPS.length - 1 ? `$${v.toLocaleString()}+` : `$${v.toLocaleString()}`}`}
                   >
                     <span className="cf__budget-dot-wrap">
@@ -533,13 +609,15 @@ export default function ContactForm() {
                   </span>
                 ))}
               </div>
+              {/* description line */}
+              <p className="cf__budget-desc">{BUDGET_DESCS[form.budgetIndex]} (All prices are in USD)</p>
             </div>
           </div>
         </div>
 
         {/* ── Timeline ── */}
         <div className="cf__row cf__row--timeline">
-          <span className="cf__label">Expected Timeline</span>
+          <span className="cf__label">Project Timeline</span>
           <div className="cf__fields">
             <div className="cf__timeline-grid">
               {TIMELINES.map((t) => (
@@ -558,12 +636,12 @@ export default function ContactForm() {
 
         {/* ── Message ── */}
         <div className="cf__row cf__row--message">
-          <span className="cf__label">Please tell me more about your project</span>
+          <span className="cf__label">Project Details</span>
           <div className="cf__fields">
             <textarea
               className="cf__textarea"
               name="message"
-              placeholder="Please briefly describe your brand background, target audience, and the goals you wish to achieve with this design project"
+              placeholder="Briefly describe your brand, target audience, and project goals."
               value={form.message}
               onChange={handleChange}
               rows={4}

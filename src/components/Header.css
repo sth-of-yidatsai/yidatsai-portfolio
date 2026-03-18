@@ -205,6 +205,8 @@
   /* Hidden off-top by default */
   transform: translateY(-100%);
   transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Pre-promote to GPU layer so the slide animation starts without a first-frame hitch */
+  will-change: transform;
 }
 
 .header-overlay.open .header-overlay-top {
@@ -299,6 +301,7 @@
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 0.4s ease, transform 0.4s ease;
+  will-change: transform, opacity;
 }
 
 .header-nav-item::after {
@@ -406,6 +409,8 @@
   background: rgba(255, 255, 255, 0.04);
   opacity: 0;
   transition: opacity 0.4s ease 0.2s;
+  /* Pre-allocate compositing layer: backdrop-filter is expensive to create mid-animation */
+  will-change: opacity;
 }
 
 .header-overlay.open .header-overlay-glass {

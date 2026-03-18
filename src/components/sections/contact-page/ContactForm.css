@@ -209,20 +209,50 @@
 }
 
 /* ── Interest checkboxes ──────────────────────────────────────── */
-.cf__interest-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-md) var(--space-lg);
+/* ── Interest groups ──────────────────────────────────────────── */
+.cf__interest-groups {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-lg);
   padding-left: var(--space-md);
   padding-top: var(--space-xs);
   padding-bottom: var(--space-xs);
 }
 
-.cf__interest-item {
+.cf__interest-group {
   display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  flex: 1;
+}
+
+.cf__interest-group-label {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-semibold);
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.cf__interest-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.cf__interest-item {
+  display: inline-flex;  /* shrink to content width */
+  align-self: flex-start;
   align-items: center;
   gap: var(--space-sm);
   cursor: none;
+}
+
+.cf__interest-item:hover .cf__radio-ring:not(.cf__radio-ring--checked) {
+  border-color: var(--gray-600);
 }
 
 .cf__checkbox-hidden {
@@ -252,8 +282,19 @@
 .cf__interest-label {
   font-family: var(--font-manrope);
   font-size: var(--fs-12pt);
-  color: var(--gray-600);
+  color: var(--gray-500);
   user-select: none;
+  transition: color 0.2s;
+}
+
+.cf__interest-item:hover .cf__interest-label {
+  color: var(--gray-800);
+}
+
+/* checked label */
+.cf__radio-ring--checked ~ .cf__interest-label {
+  color: var(--gray-700);
+  font-weight: var(--fw-semibold);
 }
 
 /* ── Budget dot step selector ─────────────────────────────────── */
@@ -279,7 +320,7 @@
   font-size: var(--fs-10pt);
   color: var(--gray-400);
   white-space: nowrap;
-  transition: color 0.2s, font-weight 0.2s;
+  transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cf__budget-tier-cell--active,
@@ -303,14 +344,26 @@
   left: 10%;
   right: 10%;
   height: 1px;
-  background: var(--gray-300);
+  background: var(--gray-200);
   z-index: 0;
+}
+
+/* animated fill bar — width driven by inline style */
+.cf__budget-fill {
+  position: absolute;
+  top: 10px;
+  left: 10%;
+  height: 1.5px;
+  background: var(--gray-700);
+  z-index: 1;
+  pointer-events: none;
+  transition: width 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cf__budget-step {
   flex: 1;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -338,7 +391,11 @@
   height: 8px;
   border-radius: 50%;
   background: var(--gray-400);
-  transition: width 0.2s, height 0.2s, background 0.2s, border-color 0.2s;
+  transition:
+    width        0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    height       0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    background   0.3s  ease,
+    border-color 0.3s  ease;
   position: relative;
 }
 
@@ -361,10 +418,35 @@
   background: var(--gray-700);
 }
 
+/* ── Budget description ───────────────────────────────────────── */
+.cf__budget-desc {
+  margin: 0;
+  padding-top: var(--space-sm);
+  text-align: center;
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  color: var(--gray-400);
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+/* ── Budget suggestion hint ───────────────────────────────────── */
+.cf__budget-hint {
+  margin: 0;
+  padding-top: var(--space-xs);
+  text-align: center;
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  color: var(--gray-300);
+  letter-spacing: 0.03em;
+}
+
 /* ── Timeline segmented control ───────────────────────────────── */
 .cf__timeline-grid {
   display: flex;
   width: 100%;
+  /* border renders in front of button backgrounds — keeps left divider visible on hover/active */
+  border-left: 1px solid var(--gray-200);
 }
 
 .cf__timeline-btn {
@@ -492,7 +574,6 @@
 .cf__send-wrap {
   display: flex;
   align-items: center;
-  padding-top: var(--space-lg);
 }
 
 .cf__send-btn {
@@ -564,9 +645,13 @@
     display: none;
   }
 
-  .cf__interest-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .cf__interest-groups {
+    flex-wrap: wrap;
     padding-left: 0;
+  }
+
+  .cf__interest-group {
+    flex: 1 1 40%;
   }
 
   .cf__timeline-grid {
@@ -596,8 +681,8 @@
 }
 
 @media (max-width: 600px) {
-  .cf__interest-grid {
-    grid-template-columns: 1fr;
+  .cf__interest-group {
+    flex: 1 1 100%;
   }
 
   .cf__budget-tier-cell,
