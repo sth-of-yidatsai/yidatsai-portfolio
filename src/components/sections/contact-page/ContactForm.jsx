@@ -13,8 +13,8 @@ const RATE_LIMIT_MS    = 60 * 60 * 1000;
 const RATE_LIMIT_KEY   = "cf_submissions";
 
 // Toast auto-dismiss timing (ms)
-const TOAST_VISIBLE_MS = 3500;
-const TOAST_REMOVE_MS  = 4200;
+const TOAST_VISIBLE_MS = 5500;
+const TOAST_REMOVE_MS  = 6500;
 
 // ── Set true to preview toast style, false in production ──────────────────────
 const PREVIEW_TOAST = false;
@@ -29,6 +29,7 @@ const INTERESTS = [
 ];
 
 const BUDGET_STEPS = [1200, 2500, 3600, 4500, 6000];
+const BUDGET_TIERS = ["Starter", "Basic", "Standard", "Pro", "Custom"];
 
 const TIMELINES = [
   "Within 1 month",
@@ -238,7 +239,8 @@ export default function ContactForm() {
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const cleaned = name === "phone" ? value.replace(/[^\d+-]/g, "") : value;
+    setForm((prev) => ({ ...prev, [name]: cleaned }));
   }, []);
 
   const handleSelectChange = useCallback((name, value) => {
@@ -488,9 +490,21 @@ export default function ContactForm() {
 
         {/* ── Budget ── */}
         <div className="cf__row cf__row--budget">
-          <span className="cf__label">My budget is</span>
+          <span className="cf__label">Select Your Budget</span>
           <div className="cf__fields">
             <div className="cf__budget-track">
+              {/* tier names row */}
+              <div className="cf__budget-tier-row">
+                {BUDGET_STEPS.map((v, i) => (
+                  <span
+                    key={`tier-${v}`}
+                    className={`cf__budget-tier-cell${i === form.budgetIndex ? " cf__budget-tier-cell--active" : ""}`}
+                  >
+                    {BUDGET_TIERS[i]}
+                  </span>
+                ))}
+              </div>
+              {/* dots row — ::before line stays at top:10px (half dot-wrap) */}
               <div className="cf__budget-dots">
                 {BUDGET_STEPS.map((v, i) => (
                   <button
@@ -498,17 +512,25 @@ export default function ContactForm() {
                     type="button"
                     className={`cf__budget-step${i === form.budgetIndex ? " cf__budget-step--active" : ""}`}
                     onClick={() => setForm((prev) => ({ ...prev, budgetIndex: i }))}
-                    aria-label={`Budget ${i === BUDGET_STEPS.length - 1 ? `$${v.toLocaleString()}+` : `$${v.toLocaleString()}`}`}
+                    aria-label={`Budget ${BUDGET_TIERS[i]} ${i === BUDGET_STEPS.length - 1 ? `$${v.toLocaleString()}+` : `$${v.toLocaleString()}`}`}
                   >
                     <span className="cf__budget-dot-wrap">
                       <span className="cf__budget-dot" />
                     </span>
-                    <span className="cf__budget-label">
-                      {i === BUDGET_STEPS.length - 1
-                        ? `$\u00a0${v.toLocaleString()}+`
-                        : `$\u00a0${v.toLocaleString()}`}
-                    </span>
                   </button>
+                ))}
+              </div>
+              {/* price labels row */}
+              <div className="cf__budget-price-row">
+                {BUDGET_STEPS.map((v, i) => (
+                  <span
+                    key={`price-${v}`}
+                    className={`cf__budget-price-cell${i === form.budgetIndex ? " cf__budget-price-cell--active" : ""}`}
+                  >
+                    {i === BUDGET_STEPS.length - 1
+                      ? `$\u00a0${v.toLocaleString()}+`
+                      : `$\u00a0${v.toLocaleString()}`}
+                  </span>
                 ))}
               </div>
             </div>

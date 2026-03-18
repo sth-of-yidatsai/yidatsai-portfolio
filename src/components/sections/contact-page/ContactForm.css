@@ -19,6 +19,11 @@
   align-items: center;
   border-bottom: 1px solid var(--gray-200);
   min-height: 64px;
+  /* left vertical divider — always spans full row height with 2px gap */
+  background-image: linear-gradient(var(--gray-200), var(--gray-200));
+  background-size: 1px calc(100% - 8px);
+  background-position: clamp(180px, 22%, 280px) 4px;
+  background-repeat: no-repeat;
 }
 
 .cf__row--interests,
@@ -27,6 +32,12 @@
   align-items: start;
   padding-top: var(--space-md);
   padding-bottom: var(--space-md);
+}
+
+.cf__row--interests .cf__label,
+.cf__row--timeline .cf__label,
+.cf__row--message .cf__label {
+  align-self: center;
 }
 
 .cf__row--budget {
@@ -53,6 +64,11 @@
 
 .cf__fields--split {
   flex-direction: row;
+  /* split divider — spans full field height with 2px gap */
+  background-image: linear-gradient(var(--gray-200), var(--gray-200));
+  background-size: 1px calc(100% - 8px);
+  background-position: 50% 4px;
+  background-repeat: no-repeat;
 }
 
 /* ── Inputs ───────────────────────────────────────────────────── */
@@ -66,22 +82,16 @@
   font-size: var(--fs-12pt);
   color: var(--gray-700);
   padding: var(--space-md) var(--space-md);
-  border-left: 1px solid var(--gray-200);
 }
 
 .cf__input::placeholder {
   color: var(--gray-300);
 }
 
-.cf__input + .cf__input {
-  border-left: 1px solid var(--gray-200);
-}
-
 /* ── Custom Select ────────────────────────────────────────────── */
 .cf__csel {
   flex: 1;
   position: relative;
-  border-left: 1px solid var(--gray-200);
 }
 
 .cf__csel-trigger {
@@ -204,7 +214,6 @@
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-md) var(--space-lg);
   padding-left: var(--space-md);
-  border-left: 1px solid var(--gray-200);
   padding-top: var(--space-xs);
   padding-bottom: var(--space-xs);
 }
@@ -250,46 +259,68 @@
 /* ── Budget dot step selector ─────────────────────────────────── */
 .cf__budget-track {
   width: 100%;
-  padding: var(--space-lg) var(--space-md);
-  border-left: 1px solid var(--gray-200);
+  padding: var(--space-lg) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
+/* tier names row and price row */
+.cf__budget-tier-row,
+.cf__budget-price-row {
+  display: flex;
+}
+
+.cf__budget-tier-cell,
+.cf__budget-price-cell {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  color: var(--gray-400);
+  white-space: nowrap;
+  transition: color 0.2s, font-weight 0.2s;
+}
+
+.cf__budget-tier-cell--active,
+.cf__budget-price-cell--active {
+  color: var(--gray-700);
+  font-weight: var(--fw-semibold);
+}
+
+/* dots row — line top:10px aligns to center of 20px dot-wrap */
 .cf__budget-dots {
   position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  /* inset first/last dot from the container edges */
-  padding: 0 10px;
 }
 
-/* connecting line — runs from center of first dot to center of last dot:
-   padding(10px) + half of dot-wrap(10px) = 20px each side */
+/* connecting line — left/right 10% = center of first/last flex:1 cell */
 .cf__budget-dots::before {
   content: "";
   position: absolute;
-  top: 10px;   /* half of 20px dot-wrap height */
-  left: 20px;
-  right: 20px;
+  top: 10px;
+  left: 10%;
+  right: 10%;
   height: 1px;
   background: var(--gray-300);
   z-index: 0;
 }
 
 .cf__budget-step {
+  flex: 1;
   position: relative;
   z-index: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   background: none;
   border: none;
   padding: 0;
   cursor: none;
 }
 
-/* Fixed-size wrapper — same height regardless of active/inactive state */
+/* Fixed-size wrapper */
 .cf__budget-dot-wrap {
   width: 20px;
   height: 20px;
@@ -330,24 +361,10 @@
   background: var(--gray-700);
 }
 
-.cf__budget-label {
-  font-family: var(--font-manrope);
-  font-size: var(--fs-10pt);
-  color: var(--gray-400);
-  white-space: nowrap;
-  transition: color 0.2s, font-weight 0.2s;
-}
-
-.cf__budget-step--active .cf__budget-label {
-  color: var(--gray-700);
-  font-weight: var(--fw-semibold);
-}
-
 /* ── Timeline segmented control ───────────────────────────────── */
 .cf__timeline-grid {
   display: flex;
   width: 100%;
-  border-left: 1px solid var(--gray-200);
 }
 
 .cf__timeline-btn {
@@ -391,7 +408,6 @@
   padding: var(--space-md);
   resize: vertical;
   line-height: 1.6;
-  border-left: 1px solid var(--gray-200);
   box-sizing: border-box;
 }
 
@@ -416,7 +432,7 @@
   position: fixed;
   bottom: clamp(24px, 4vh, 48px);
   left: 50%;
-  transform: translateX(-50%) translateY(12px);
+  transform: translateX(-50%) translateY(20px);
   opacity: 0;
   pointer-events: none;
   z-index: 9999;
@@ -432,8 +448,8 @@
   background: var(--gray-0);
 
   transition:
-    opacity 0.45s ease,
-    transform 0.45s ease;
+    opacity  0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cf__toast--visible {
@@ -527,38 +543,34 @@
     padding-bottom: var(--space-sm);
   }
 
+  .cf__fields::before {
+    display: none;
+  }
+
   .cf__fields--split {
     flex-direction: column;
   }
 
   .cf__input {
-    border-left: none;
     border-bottom: 1px solid var(--gray-200);
     padding-left: 0;
   }
 
   .cf__input + .cf__input {
-    border-left: none;
+    background-image: none;
   }
 
-  .cf__csel {
-    border-left: none;
+  .cf__csel + .cf__csel::before {
+    display: none;
   }
 
   .cf__interest-grid {
     grid-template-columns: repeat(2, 1fr);
-    border-left: none;
-    padding-left: 0;
-  }
-
-  .cf__budget-track {
-    border-left: none;
     padding-left: 0;
   }
 
   .cf__timeline-grid {
     flex-wrap: wrap;
-    border-left: none;
   }
 
   .cf__timeline-btn {
@@ -569,7 +581,6 @@
   }
 
   .cf__textarea {
-    border-left: none;
     padding-left: 0;
   }
 
@@ -589,7 +600,8 @@
     grid-template-columns: 1fr;
   }
 
-  .cf__budget-label {
+  .cf__budget-tier-cell,
+  .cf__budget-price-cell {
     display: none;
   }
 }
