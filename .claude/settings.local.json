@@ -13,7 +13,9 @@
       "Bash(powershell -Command \":*)",
       "Bash(mv project-001:*)",
       "Bash(mv project-002:*)",
-      "Bash(mv project-003:*)"
+      "Bash(mv project-003:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm list:*)"
     ]
   }
 }

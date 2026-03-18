@@ -1,0 +1,510 @@
+/* ================================================================
+   ContactForm — contact-page section
+   ================================================================ */
+
+.cf {
+  padding: 0 var(--px-page) var(--space-2xl);
+}
+
+/* ── Form wrapper ─────────────────────────────────────────────── */
+.cf__form {
+  width: 100%;
+  border-top: 1.5px solid var(--gray-700);
+}
+
+/* ── Row ──────────────────────────────────────────────────────── */
+.cf__row {
+  display: grid;
+  grid-template-columns: clamp(180px, 22%, 280px) 1fr;
+  align-items: center;
+  border-bottom: 1px solid var(--gray-200);
+  min-height: 64px;
+}
+
+.cf__row--interests,
+.cf__row--timeline,
+.cf__row--message {
+  align-items: start;
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-md);
+}
+
+.cf__row--budget {
+  align-items: center;
+  min-height: 100px;
+}
+
+/* ── Label ────────────────────────────────────────────────────── */
+.cf__label {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-12pt);
+  color: var(--gray-700);
+  padding-right: var(--space-lg);
+  line-height: 1.3;
+}
+
+/* ── Fields container ─────────────────────────────────────────── */
+.cf__fields {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.cf__fields--split {
+  flex-direction: row;
+}
+
+/* ── Inputs ───────────────────────────────────────────────────── */
+.cf__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-12pt);
+  color: var(--gray-700);
+  padding: var(--space-md) var(--space-md);
+  border-left: 1px solid var(--gray-200);
+}
+
+.cf__input::placeholder {
+  color: var(--gray-300);
+}
+
+.cf__input + .cf__input {
+  border-left: 1px solid var(--gray-200);
+}
+
+/* ── Select ───────────────────────────────────────────────────── */
+.cf__select-wrap {
+  flex: 1;
+  position: relative;
+  border-left: 1px solid var(--gray-200);
+}
+
+.cf__select-wrap + .cf__select-wrap {
+  border-left: 1px solid var(--gray-200);
+}
+
+.cf__select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-12pt);
+  color: var(--gray-600);
+  padding: var(--space-md) var(--space-2xl) var(--space-md) var(--space-md);
+  cursor: none;
+}
+
+.cf__select-arrow {
+  position: absolute;
+  right: var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-500);
+  pointer-events: none;
+  font-size: 0.75rem;
+}
+
+/* ── Interest checkboxes ──────────────────────────────────────── */
+.cf__interest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md) var(--space-lg);
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--gray-200);
+  padding-top: var(--space-xs);
+  padding-bottom: var(--space-xs);
+}
+
+.cf__interest-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: none;
+}
+
+.cf__checkbox-hidden {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.cf__radio-ring {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gray-400);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.cf__radio-ring--checked {
+  border-color: var(--gray-700);
+  background: var(--gray-700);
+  box-shadow: inset 0 0 0 4px var(--gray-0);
+}
+
+.cf__interest-label {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  color: var(--gray-600);
+  user-select: none;
+}
+
+/* ── Budget dot step selector ─────────────────────────────────── */
+.cf__budget-track {
+  width: 100%;
+  padding: var(--space-lg) var(--space-md);
+  border-left: 1px solid var(--gray-200);
+}
+
+.cf__budget-dots {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  /* inset first/last dot from the container edges */
+  padding: 0 10px;
+}
+
+/* connecting line — runs from center of first dot to center of last dot:
+   padding(10px) + half of dot-wrap(10px) = 20px each side */
+.cf__budget-dots::before {
+  content: "";
+  position: absolute;
+  top: 10px;   /* half of 20px dot-wrap height */
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: var(--gray-300);
+  z-index: 0;
+}
+
+.cf__budget-step {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: none;
+}
+
+/* Fixed-size wrapper — same height regardless of active/inactive state */
+.cf__budget-dot-wrap {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* inactive dot */
+.cf__budget-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gray-400);
+  transition: width 0.2s, height 0.2s, background 0.2s, border-color 0.2s;
+  position: relative;
+}
+
+/* active dot — bullseye, fills the entire dot-wrap */
+.cf__budget-step--active .cf__budget-dot {
+  width: 20px;
+  height: 20px;
+  background: var(--gray-0);
+  border: 1.5px solid var(--gray-700);
+}
+
+.cf__budget-step--active .cf__budget-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gray-700);
+}
+
+.cf__budget-label {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  color: var(--gray-400);
+  white-space: nowrap;
+  transition: color 0.2s, font-weight 0.2s;
+}
+
+.cf__budget-step--active .cf__budget-label {
+  color: var(--gray-700);
+  font-weight: var(--fw-semibold);
+}
+
+/* ── Timeline segmented control ───────────────────────────────── */
+.cf__timeline-grid {
+  display: flex;
+  width: 100%;
+  border-left: 1px solid var(--gray-200);
+}
+
+.cf__timeline-btn {
+  flex: 1;
+  border: none;
+  border-right: 1px solid var(--gray-200);
+  background: transparent;
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  color: var(--gray-500);
+  padding: var(--space-md) var(--space-sm);
+  text-align: center;
+  cursor: none;
+  transition: color 0.2s, background 0.2s;
+}
+
+.cf__timeline-btn:last-child {
+  border-right: none;
+}
+
+.cf__timeline-btn--active {
+  color: var(--gray-700);
+  font-weight: var(--fw-semibold);
+  background: var(--gray-50);
+}
+
+.cf__timeline-btn:hover:not(.cf__timeline-btn--active) {
+  color: var(--gray-600);
+  background: var(--gray-50);
+}
+
+/* ── Textarea ─────────────────────────────────────────────────── */
+.cf__textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  color: var(--gray-700);
+  padding: var(--space-md);
+  resize: vertical;
+  line-height: 1.6;
+  border-left: 1px solid var(--gray-200);
+  box-sizing: border-box;
+}
+
+.cf__textarea::placeholder {
+  color: var(--gray-300);
+}
+
+/* ── Honeypot ─────────────────────────────────────────────────── */
+.cf__honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  tab-index: -1;
+}
+
+/* ── Toast notification ───────────────────────────────────────── */
+.cf__toast {
+  position: fixed;
+  bottom: clamp(24px, 4vh, 48px);
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  letter-spacing: 0.03em;
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+
+  padding: var(--space-md) var(--space-lg);
+  border: 1px solid currentColor;
+  background: var(--gray-0);
+
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+
+.cf__toast--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.cf__toast--success,
+.cf__toast--error {
+  color: var(--gray-600);
+  border-color: var(--gray-400);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+/* ── Footer ───────────────────────────────────────────────────── */
+.cf__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--gray-200);
+  flex-wrap: wrap;
+}
+
+.cf__note {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  color: var(--gray-400);
+  text-align: right;
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+}
+
+
+/* ── Send button ──────────────────────────────────────────────── */
+.cf__send-wrap {
+  display: flex;
+  align-items: center;
+  padding-top: var(--space-lg);
+}
+
+.cf__send-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(90px, 10vw, 130px);
+  height: clamp(90px, 10vw, 130px);
+  border-radius: 50%;
+  border: 1.5px solid var(--gray-700);
+  background: transparent;
+  cursor: none;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.cf__send-btn:hover {
+  background: var(--gray-700);
+}
+
+.cf__send-btn:hover .cf__send-text {
+  color: var(--gray-0);
+}
+
+.cf__send-btn--sending {
+  opacity: 0.6;
+}
+
+.cf__send-text {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-light);
+  font-style: italic;
+  font-size: var(--fs-18pt);
+  color: var(--gray-700);
+  transition: color 0.3s ease;
+  letter-spacing: 0.01em;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .cf__row {
+    grid-template-columns: 1fr;
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-sm);
+  }
+
+  .cf__label {
+    padding-right: 0;
+    padding-bottom: var(--space-sm);
+  }
+
+  .cf__fields--split {
+    flex-direction: column;
+  }
+
+  .cf__input {
+    border-left: none;
+    border-bottom: 1px solid var(--gray-200);
+    padding-left: 0;
+  }
+
+  .cf__input + .cf__input {
+    border-left: none;
+  }
+
+  .cf__select-wrap {
+    border-left: none;
+  }
+
+  .cf__interest-grid {
+    grid-template-columns: repeat(2, 1fr);
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .cf__budget-track {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .cf__timeline-grid {
+    flex-wrap: wrap;
+    border-left: none;
+  }
+
+  .cf__timeline-btn {
+    flex: 1 1 40%;
+    border: 1px solid var(--gray-200);
+    margin: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  .cf__textarea {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .cf__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cf__note {
+    text-align: left;
+    flex: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .cf__interest-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cf__budget-label {
+    display: none;
+  }
+}

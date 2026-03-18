@@ -1,65 +1,34 @@
+/* ================================================================
+   Contact Page
+   ================================================================ */
+
 .contact-page {
   min-height: 100vh;
-  padding-top: calc(var(--space-2xl));
-  padding-bottom: var(--space-2xl);
-  padding-left: var(--space-lg);
+  padding-top: var(--space-2xl);
   background: var(--color-bg);
 }
 
+/* ── Hero header ──────────────────────────────────────────────── */
 .contact-hero {
-  margin-bottom: var(--space-xl);
+  padding: 0 var(--px-page) var(--space-xl);
+}
+
+.contact-eyebrow {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin: 0 0 var(--space-md);
 }
 
 .contact-title {
-  font-size: 3rem;
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-56pt);
+  color: var(--gray-700);
   letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
-
-.contact-subtitle {
-  color: var(--color-text-light);
-  margin-top: var(--space-sm);
-}
-
-.contact-content {
-  margin-top: var(--space-xl);
-}
-
-.contact-list {
-  list-style: none;
-  padding: 0;
+  line-height: 1.05;
   margin: 0;
-  display: grid;
-  gap: var(--space-md);
-}
-
-.contact-item {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  align-items: center;
-  padding: var(--space-md) 0;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.contact-label {
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-text-light);
-}
-
-.contact-link {
-  font-size: 1.1rem;
-  color: var(--color-primary);
-}
-
-@media (max-width: 768px) {
-  .contact-title {
-    font-size: 2.2rem;
-  }
-
-  .contact-item {
-    grid-template-columns: 1fr;
-    gap: var(--space-xs);
-  }
 }
