@@ -46,6 +46,15 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
       },
       {
+        // Prettier paginated URL: /projects/page/2, /projects/page/3 …
+        // Must be declared before "projects/:id" so React Router matches
+        // the literal segment "page" before treating it as a project id.
+        path: "projects/page/:page",
+        element: <Projects />,
+        loader: projectsLoader,
+        errorElement: <ErrorPage />,
+      },
+      {
         path: "playground",
         element: <Playground />,
         loader: projectsLoader,

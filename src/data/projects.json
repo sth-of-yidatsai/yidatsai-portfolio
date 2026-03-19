@@ -26,7 +26,8 @@
     ],
     "description": "The diverse terrain and climates of Taiwan have given birth to a wide spectrum of plant life. Taiwan was once known as \"Formosa\", meaning \"beautiful island\" in Portuguese. Our hope is to take its meaning, interpret it, and create font designs showcasing Taiwan's flora and our precious island's biodiversity.",
     "category": ["Editorial", "Book", "Typography", "Type Design"],
-    "tags": ["Botanical", "Taiwan"]
+    "tags": ["Botanical", "Taiwan"],
+    "size": "large"
   },
   {
     "id": "taiwan-glass-notebook",
@@ -54,7 +55,8 @@
     ],
     "description": "The notebook design comprises of three components: an outer box, a notebook, and a bookmark. The outer box is made of patterned glass with brass accents, which gives it a unique and elegant look. The notebook is bound with an exposed spine, making writing convenient. The notebook uses toned gray acid-free paper, which is of high quality and suitable for various dry and wet media. It is perfect for writing and drawing. The notebook also comes with a bookmark that features the same traditional patterned glass design using embossed printing.",
     "category": ["Product", "Graphic", "Photography"],
-    "tags": ["Notebook", "Taiwan", "Glass"]
+    "tags": ["Notebook", "Taiwan", "Glass"],
+    "size": "large"
   },
   {
     "id": "foucault-book-binding",
@@ -86,7 +88,8 @@
     ],
     "description": "This project is an editorial design of two works by French philosopher Michel Foucault: \"The Order of Things\" (1966) and \"The Archaeology of Knowledge\" (1969). \"The Order of Things\" argues that \"man\" as a subject of scientific knowledge is a recent invention, the result of a fundamental mutation in our culture. Foucault shows how classical systems of knowledge, which linked all of nature within a great chain of being and analogies between the stars in the heavens and the features in a human face, gave way to the modern sciences of biology, philology, and political economy. \"The Archaeology of Knowledge\" proposes that every historical period has underlying epistemic assumptions, ways of thinking, which determine what is truth and what is acceptable discourse about a subject, by delineating the origins of biology, economics, and linguistics.",
     "category": ["Editorial", "Book", "Poster"],
-    "tags": ["Philosophy", "Michel Foucault"]
+    "tags": ["Philosophy", "Michel Foucault"],
+    "size": "large"
   },
   {
     "id": "test-project-04",
@@ -106,7 +109,8 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "large"
   },
   {
     "id": "test-project-06",
@@ -136,7 +140,8 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "large"
   },
   {
     "id": "test-project-09",
@@ -176,7 +181,8 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "large"
   },
   {
     "id": "test-project-13",
@@ -216,7 +222,8 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "small"
   },
   {
     "id": "test-project-17",
@@ -226,7 +233,8 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "large"
   },
   {
     "id": "test-project-18",
@@ -246,7 +254,8 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "square"
   },
   {
     "id": "test-project-20",
@@ -256,7 +265,8 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "square"
   },
   {
     "id": "test-project-21",
@@ -266,7 +276,8 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "large"
   },
   {
     "id": "test-project-22",
@@ -276,7 +287,8 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "small"
   },
   {
     "id": "test-project-23",
@@ -286,7 +298,8 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "large"
   },
   {
     "id": "test-project-24",
@@ -296,7 +309,8 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "square"
   },
   {
     "id": "test-project-25",
@@ -306,6 +320,7 @@
     "cover": "placeholder.webp",
     "images": ["placeholder.webp"],
     "category": ["Test"],
-    "tags": ["Placeholder"]
+    "tags": ["Placeholder"],
+    "size": "small"
   }
 ]

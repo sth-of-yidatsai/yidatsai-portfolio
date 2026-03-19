@@ -25,24 +25,50 @@
   margin: 0;
 }
 
-/* ── Grid ────────────────────────────────────────────────────────────────── */
+/* ── Two-column masonry ──────────────────────────────────────────────────── */
+/*
+  Items distributed by JS (buildLayout) using greedy height balancing —
+  the shorter column always gets the next card, so columns grow
+  independently with no whitespace gaps between them.
+*/
 
-.all-work__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-md);
-  /* Contain layout recalculations to this subtree */
-  contain: layout style;
+.all-work__masonry {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.all-work__col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+@media (max-width: 640px) {
+  .all-work__masonry {
+    flex-direction: column;
+  }
 }
 
 /* ── Card Wrap ───────────────────────────────────────────────────────────── */
 
 .all-work__card-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-xl);
+  display: block;
   cursor: none;
+
+  /* Scroll fade-in: start invisible */
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s ease var(--stagger-delay, 0s),
+    transform 0.65s ease var(--stagger-delay, 0s);
+}
+
+.all-work__card-wrap.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ── Card ────────────────────────────────────────────────────────────────── */
@@ -50,12 +76,25 @@
 .all-work__card {
   position: relative;
   overflow: hidden;
-  /* Same aspect ratio feel as SelectWork: portrait ~3:4 */
-  aspect-ratio: 3 / 4;
   isolation: isolate;
+  /* Fallback ratio — should always be overridden by a size modifier */
+  aspect-ratio: 4 / 3;
 }
 
-/* Oversized wrapper for parallax room */
+/* ── Size modifiers ──────────────────────────────────────────────────────── */
+
+/* small  → short landscape */
+.all-work__card-wrap--small  .all-work__card { aspect-ratio: 4 / 3; }
+
+/* large  → tall portrait */
+.all-work__card-wrap--large  .all-work__card { aspect-ratio: 3 / 5; }
+
+/* square → 1:1 */
+.all-work__card-wrap--square .all-work__card { aspect-ratio: 1 / 1; }
+
+/* ── Parallax image wrapper ──────────────────────────────────────────────── */
+
+/* Oversized wrapper gives room for parallax translation */
 .all-work__card-img-wrapper {
   position: absolute;
   inset: -5%;
@@ -72,29 +111,28 @@
   will-change: transform;
   backface-visibility: hidden;
   transform: translate3d(0, 0, 0) scale(1);
-  transition:
-    transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    scale 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* easeOutCubic — fast initial response, long elegant deceleration */
+  transition: transform 1.6s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-/* ── Hover: slight scale-up ──────────────────────────────────────────────── */
+/* ── Hover: slow elegant scale-up ────────────────────────────────────────── */
 
 .all-work__card-wrap:hover .all-work__card-img {
-  transform: translate3d(0, 0, 0) scale(1.04);
+  transform: translate3d(0, 0, 0) scale(1.07);
 }
 
-/* Ensure parallax classes don't lose the scale on hover */
+/* Preserve scale when parallax classes are active */
 .all-work__card-wrap:hover .all-work__card-img.scroll-horizontal-right {
-  transform: translate3d(16px, 0, 0) scale(1.04);
+  transform: translate3d(16px, 0, 0) scale(1.07);
 }
 .all-work__card-wrap:hover .all-work__card-img.scroll-horizontal-left {
-  transform: translate3d(-16px, 0, 0) scale(1.04);
+  transform: translate3d(-16px, 0, 0) scale(1.07);
 }
 .all-work__card-wrap:hover .all-work__card-img.scroll-vertical-up {
-  transform: translate3d(0, -12px, 0) scale(1.04);
+  transform: translate3d(0, -12px, 0) scale(1.07);
 }
 .all-work__card-wrap:hover .all-work__card-img.scroll-vertical-down {
-  transform: translate3d(0, 12px, 0) scale(1.04);
+  transform: translate3d(0, 12px, 0) scale(1.07);
 }
 
 /* ── Parallax classes ────────────────────────────────────────────────────── */
@@ -104,156 +142,43 @@
 .all-work__card-img.scroll-vertical-up      { transform: translate3d(0, -12px, 0) scale(1); }
 .all-work__card-img.scroll-vertical-down    { transform: translate3d(0,  12px, 0) scale(1); }
 
-/* ── Card Info ───────────────────────────────────────────────────────────── */
+/* ── Caption ─────────────────────────────────────────────────────────────── */
 
-.all-work__card-info {
+.all-work__caption {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 10px;
 }
 
-.all-work__card-number {
+.all-work__caption-title {
+  font-family: var(--font-manrope), var(--font-cjk);
+  font-size: var(--fs-14pt);
+  font-weight: var(--fw-medium);
+  color: var(--gray-600);
+    letter-spacing: 0.03em;
+  line-height: 1.4;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.all-work__caption-num {
   font-family: var(--font-manrope);
   font-size: var(--fs-10pt);
   font-weight: var(--fw-regular);
-  letter-spacing: 0.04em;
   color: var(--gray-500);
-}
-
-.all-work__card-title {
- font-family: var(--font-manrope), var(--font-cjk);
-  font-size: var(--fs-14pt);
-  font-weight: var(--fw-medium);
-  color: var(--gray-700);
-  letter-spacing: 0.05em;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  margin: 0;
-}
-
-/* ── Pagination ──────────────────────────────────────────────────────────── */
-
-.all-work__pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-md);
-  margin-top: var(--space-xl);
-  padding-top: var(--space-lg);
-}
-
-/* ── Page Button Base ────────────────────────────────────────────────────── */
-
-.all-work__page-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
-  height: 36px;
-  padding: 0 4px;
-  background: none;
-  border: none;
-  cursor: none;
-  font-family: var(--font-manrope);
-  font-size: var(--fs-12pt);
-  font-weight: var(--fw-medium);
-  letter-spacing: 0.08em;
-  color: var(--gray-500);
-  transition: color 0.2s ease;
-  user-select: none;
-}
-
-.all-work__page-btn:not(:disabled):hover {
-  color: var(--gray-900);
-}
-
-.all-work__page-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-/* ── Adjacent Page Numbers (prev / next) ─────────────────────────────────── */
-
-.all-work__page-btn--adjacent {
-  font-size: var(--fs-10pt);
-  font-weight: var(--fw-medium);
-  min-width: 28px;
-  height: 28px;
-  color: var(--gray-400);
-}
-
-/* ── Current Page ────────────────────────────────────────────────────────── */
-
-.all-work__page-btn--current {
-  position: relative;
-  font-size: var(--fs-14pt);
-  color: var(--gray-700);
-  font-weight: var(--fw-medium);
-  min-width: 40px;
-  height: 44px;
-  cursor: default;
-  opacity: 1 !important;
-}
-
-.all-work__page-btn--current::before,
-.all-work__page-btn--current::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background-color: var(--gray-700);
-}
-
-.all-work__page-btn--current::before {
-  top: 3px;
-}
-
-.all-work__page-btn--current::after {
-  bottom: 3px;
-}
-
-/* ── Single-dot placeholder (no adjacent page) ───────────────────────────── */
-
-.all-work__page-placeholder {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 28px;
-  height: 28px;
-}
-
-/* ── Nav Buttons (arrows) ────────────────────────────────────────────────── */
-
-.all-work__page-btn--nav img {
-  display: block;
-  width: 20px;
-  height: 20px;
-  filter: invert(1) brightness(0.3); /* dark arrows on light bg */
-}
-
-.all-work__page-btn--nav:not(:disabled):hover img {
-  filter: invert(1) brightness(0);
-}
-
-.all-work__page-btn--nav:disabled img {
-  filter: invert(1) brightness(0.7);
-}
-
-/* ── Decorative Square Dots ──────────────────────────────────────────────── */
-
-.all-work__dots {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.all-work__dot {
-  display: inline-block;
-  width: 4px;
-  height: 4px;
-  background-color: var(--gray-300);
   flex-shrink: 0;
+  letter-spacing: 0.04em;
+}
+
+/* ── Infinite scroll sentinel ────────────────────────────────────────────── */
+
+.all-work__sentinel {
+  height: 1px;
+  width: 100%;
+  margin-top: var(--space-xl);
 }
