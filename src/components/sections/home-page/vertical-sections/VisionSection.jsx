@@ -66,6 +66,34 @@ const ARROW_ENDS = [
 const ANIM_DURATION  = 900; // ms — must match CSS animation duration
 const ENTER_DEBOUNCE = 120; // ms — ignore rapid enter/leave sweeps
 
+/* Two scroll steps — each step shows one copy on left + one on right */
+const COPY_STEPS = [
+  {
+    left: {
+      title: "LOGIC",
+      lead: "Structure creates clarity.",
+      body: ["Through system and hierarchy,", "complexity becomes readable."],
+    },
+    right: {
+      title: "AESTHETICS",
+      lead: "Form gives emotion a surface.",
+      body: ["Through rhythm and tone,", "visual language begins to speak."],
+    },
+  },
+  {
+    left: {
+      title: "EXPERIENCE",
+      lead: "Experience gives design its meaning.",
+      body: ["What we remember", "is what we feel."],
+    },
+    right: {
+      title: "Structured Emotion",
+      lead: "Emotion is not accidental.",
+      body: ["It is shaped through structure,", "and realized through aesthetics, logic and experience."],
+    },
+  },
+];
+
 function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
                       onHoverStart, onHoverEnd }) {
   const [phase, setPhase] = useState("idle");
@@ -148,9 +176,26 @@ function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
   );
 }
 
+function CopyPanel({ data, active }) {
+  return (
+    <div className={`vs-copy${active ? " vs-copy--active" : ""}`}>
+      <h3 className="vs-copy-title">{data.title}</h3>
+      <div className="vs-copy-line" />
+      <p className="vs-copy-lead">{data.lead}</p>
+      <p className="vs-copy-body">
+        {data.body.map((line, i) => (
+          <span key={i}>{line}{i < data.body.length - 1 && <br />}</span>
+        ))}
+      </p>
+    </div>
+  );
+}
+
 export default function VisionSection() {
   const headerRef      = useRef(null);
+  const scrollZoneRef  = useRef(null);
   const [isHeaderInView, setIsHeaderInView] = useState(false);
+  const [scrollStep, setScrollStep] = useState(0);
 
   // Global leave-lock: timestamp until which next hover-in must wait
   const leavingUntilRef = useRef(0);
@@ -182,10 +227,27 @@ export default function VisionSection() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const el = scrollZoneRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const totalScrollable = el.offsetHeight - window.innerHeight;
+      if (totalScrollable <= 0) return;
+      const scrolled = Math.max(0, -rect.top);
+      const progress = Math.min(1, scrolled / totalScrollable);
+      setScrollStep(progress < 0.5 ? 0 : 1);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <section className="vs-section">
-      <div className="vs-inner">
 
+      {/* Header — scrolls normally above the sticky zone */}
+      <div className="vs-inner">
         <header
           className={`vs-header${isHeaderInView ? " vs-header--in-view" : ""}`}
           ref={headerRef}
@@ -202,92 +264,95 @@ export default function VisionSection() {
           </h2>
           <p className="vs-subtitle">Where aesthetics, logic and experience converge</p>
         </header>
-
-        <div className="vs-diagram-wrap">
-          <svg
-            className="vs-svg"
-            viewBox="0 0 700 650"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <defs>
-
-              <filter id="vs-f-atm" x="-100%" y="-100%" width="300%" height="300%">
-                <feGaussianBlur stdDeviation="42" />
-              </filter>
-
-              <radialGradient id="glow-atm" cx="50%" cy="50%" r="50%"
-                gradientUnits="objectBoundingBox">
-                <stop offset="0%"   stopColor="#cccccc" stopOpacity="0.28" />
-                <stop offset="28%"  stopColor="#888888" stopOpacity="0.12" />
-                <stop offset="62%"  stopColor="#444444" stopOpacity="0.04" />
-                <stop offset="100%" stopColor="#000000" stopOpacity="0"    />
-              </radialGradient>
-
-            </defs>
-
-            {/* Circles — rendered first (back layer) */}
-            {CIRCLES.map(({ id, cx, cy, rotation, title, kw1, kw2, tx, ty, k1y, k2y }) => (
-              <VennCircle key={id}
-                cx={cx} cy={cy} id={id} rotation={rotation}
-                title={title} kw1={kw1} kw2={kw2}
-                tx={tx} ty={ty} k1y={k1y} k2y={k2y}
-                onHoverStart={handleHoverStart}
-                onHoverEnd={handleHoverEnd}
-              />
-            ))}
-
-            {/* Arrows — trim-path animation, staggered */}
-            {ARROWS.map((d, i) => (
-              <path key={i} d={d}
-                fill="none"
-                stroke="rgba(255,255,255,0.38)"
-                strokeWidth="1.2"
-                className="vs-arrow"
-                style={{ animationDelay: `${i * 2}s` }}
-              />
-            ))}
-
-            {/* Arrowheads — appear only when trim-path stroke reaches endpoint */}
-            {ARROW_ENDS.map(({ x, y, angle }, i) => (
-              <polygon key={i}
-                points="0 0, 7 2.5, 0 5"
-                fill="rgba(255,255,255,0.35)"
-                transform={`translate(${x}, ${y}) rotate(${angle}) translate(-6, -2.5)`}
-                className="vs-arrowhead"
-                style={{ '--arrowhead-delay': `${i * 2}s` }}
-              />
-            ))}
-
-            {/* Centre label */}
-            <text x="350" y="346" textAnchor="middle" className="vs-svg-center">STRUCTURED</text>
-            <text x="350" y="360" textAnchor="middle" className="vs-svg-center">EMOTION</text>
-
-          </svg>
-        </div>
-
-        <div className="vs-pillars">
-          <div className="vs-pillar">
-            <h3 className="vs-pillar-title">Logic</h3>
-            <p className="vs-pillar-text">
-              Structure organizes complexity. Systems, hierarchy and clarity transform ideas into understandable experiences.
-            </p>
-          </div>
-          <div className="vs-pillar">
-            <h3 className="vs-pillar-title">Aesthetic</h3>
-            <p className="vs-pillar-text">
-              Visual language shapes perception. Form, rhythm and tone create an intuitive layer that communicates beyond words.
-            </p>
-          </div>
-          <div className="vs-pillar">
-            <h3 className="vs-pillar-title">Experience</h3>
-            <p className="vs-pillar-text">
-              Design becomes meaningful through experience — atmosphere, memory and narrative that resonate with people.
-            </p>
-          </div>
-        </div>
-
       </div>
+
+      {/* Sticky scroll zone — diagram + flanking copy */}
+      <div className="vs-scroll-zone" ref={scrollZoneRef}>
+        <div className="vs-sticky-panel">
+          <div className="vs-layout">
+
+            {/* Left text column */}
+            <div className="vs-text-col vs-text-col--left">
+              {COPY_STEPS.map((step, si) => (
+                <CopyPanel key={si} data={step.left} active={scrollStep === si} />
+              ))}
+            </div>
+
+            {/* Centre — Venn diagram */}
+            <div className="vs-diagram-wrap">
+              <svg
+                className="vs-svg"
+                viewBox="0 0 700 650"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <defs>
+
+                  <filter id="vs-f-atm" x="-100%" y="-100%" width="300%" height="300%">
+                    <feGaussianBlur stdDeviation="42" />
+                  </filter>
+
+                  <radialGradient id="glow-atm" cx="50%" cy="50%" r="50%"
+                    gradientUnits="objectBoundingBox">
+                    <stop offset="0%"   stopColor="#cccccc" stopOpacity="0.28" />
+                    <stop offset="28%"  stopColor="#888888" stopOpacity="0.12" />
+                    <stop offset="62%"  stopColor="#444444" stopOpacity="0.04" />
+                    <stop offset="100%" stopColor="#000000" stopOpacity="0"    />
+                  </radialGradient>
+
+                </defs>
+
+                {/* Circles — rendered first (back layer) */}
+                {CIRCLES.map(({ id, cx, cy, rotation, title, kw1, kw2, tx, ty, k1y, k2y }) => (
+                  <VennCircle key={id}
+                    cx={cx} cy={cy} id={id} rotation={rotation}
+                    title={title} kw1={kw1} kw2={kw2}
+                    tx={tx} ty={ty} k1y={k1y} k2y={k2y}
+                    onHoverStart={handleHoverStart}
+                    onHoverEnd={handleHoverEnd}
+                  />
+                ))}
+
+                {/* Arrows — trim-path animation, staggered */}
+                {ARROWS.map((d, i) => (
+                  <path key={i} d={d}
+                    fill="none"
+                    stroke="rgba(255,255,255,0.38)"
+                    strokeWidth="1.2"
+                    className="vs-arrow"
+                    style={{ animationDelay: `${i * 2}s` }}
+                  />
+                ))}
+
+                {/* Arrowheads — appear only when trim-path stroke reaches endpoint */}
+                {ARROW_ENDS.map(({ x, y, angle }, i) => (
+                  <polygon key={i}
+                    points="0 0, 7 2.5, 0 5"
+                    fill="rgba(255,255,255,0.35)"
+                    transform={`translate(${x}, ${y}) rotate(${angle}) translate(-6, -2.5)`}
+                    className="vs-arrowhead"
+                    style={{ '--arrowhead-delay': `${i * 2}s` }}
+                  />
+                ))}
+
+                {/* Centre label */}
+                <text x="350" y="346" textAnchor="middle" className="vs-svg-center">STRUCTURED</text>
+                <text x="350" y="360" textAnchor="middle" className="vs-svg-center">EMOTION</text>
+
+              </svg>
+            </div>
+
+            {/* Right text column */}
+            <div className="vs-text-col vs-text-col--right">
+              {COPY_STEPS.map((step, si) => (
+                <CopyPanel key={si} data={step.right} active={scrollStep === si} />
+              ))}
+            </div>
+
+          </div>
+        </div>
+      </div>
+
     </section>
   );
 }

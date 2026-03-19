@@ -6,13 +6,14 @@
   width: 100%;
   background-color: var(--gray-900);
   color: var(--gray-0);
-  padding: var(--space-2xl) var(--px-page);
   box-sizing: border-box;
+  padding-top: var(--space-2xl);
 }
 
 .vs-inner {
   max-width: var(--max-width);
   margin: 0 auto;
+  padding: 0 var(--px-page);
 }
 
 /* ── Header ── */
@@ -70,17 +71,115 @@
   margin: 0;
 }
 
-/* ── Diagram ── */
-.vs-diagram-wrap {
+/* ══════════════════════════════════════════════════════════════════
+   Sticky scroll zone
+   ══════════════════════════════════════════════════════════════════ */
+
+.vs-scroll-zone {
+  position: relative;
+  height: 300vh;
+}
+
+.vs-sticky-panel {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Diagram fills the full panel — text columns float over the margins */
+.vs-layout {
   width: 100%;
-  max-width: 40vw;
-  margin: 0 auto var(--space-2xl);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ── Text columns — absolutely positioned in the page margins ── */
+.vs-text-col {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(160px, 18vw, 280px);
+  display: grid;
+  /* both copy panels occupy the same cell so they overlay each other */
+  z-index: 1;
+}
+
+.vs-text-col--left  { left:  calc(50% - 40.4vh - clamp(160px, 18vw, 280px) - 1vw - var(--space-md)); }
+.vs-text-col--right { right: calc(50% - 40.4vh - clamp(160px, 18vw, 280px) - 1vw - var(--space-md)); }
+
+.vs-text-col > * {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+/* ── Copy panels ── */
+.vs-copy {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.vs-copy--active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.vs-copy-title {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-12pt);
+  letter-spacing: 0.08em;
+  color: var(--gray-200);
+  margin: 0 0 var(--space-sm);
+}
+
+.vs-copy-line {
+  width: 24px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.28);
+  margin-bottom: var(--space-md);
+}
+
+.vs-copy-lead {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-14pt);
+  letter-spacing: 0.02em;
+  line-height: 1.45;
+  color: var(--gray-100);
+  margin: 0 0 var(--space-md);
+}
+
+.vs-copy-body {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-12pt);
+  letter-spacing: 0.02em;
+  line-height: 1.65;
+  color: var(--gray-400);
+  margin: 0;
+}
+
+/* ── Diagram — constrained to 70vh tall, centred ── */
+.vs-diagram-wrap {
+  margin: 0 auto;
 }
 
 .vs-svg {
-  width: 100%;
-  height: auto;
   display: block;
+  height: 75vh;
+  width: auto;
+  max-width: 100%;
 }
 
 /* Circle fill blend — overlapping areas brighten slightly */
@@ -222,46 +321,53 @@
   letter-spacing: 0.15em;
 }
 
-/* ── Pillar descriptions ── */
-.vs-pillars {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--space-xl);
-  text-align: center;
-  padding-top: var(--space-xl);
-  border-top: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-.vs-pillar-title {
-  font-family: var(--font-hatton);
-  font-weight: var(--fw-light);
-  font-size: var(--fs-22pt);
-  letter-spacing: 0.05em;
-  color: var(--gray-200);
-  line-height: 1.2;
-  margin: 0 0 var(--space-md);
-}
-
-.vs-pillar-text {
-  font-family: var(--font-manrope);
-  font-size: var(--fs-12pt);
-  font-weight: var(--fw-regular);
-  letter-spacing: 0.02em;
-  line-height: 1.5;
-  color: var(--gray-400);
-  margin: 0;
-  margin: 0;
-}
-
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .vs-title {
     font-size: var(--fs-48pt);
   }
 
-  .vs-pillars {
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
+  /* On mobile: no sticky, stack diagram then text blocks */
+  .vs-scroll-zone {
+    height: auto;
+  }
+
+  .vs-sticky-panel {
+    position: static;
+    height: auto;
+    padding: 0 var(--px-page) var(--space-2xl);
+  }
+
+  .vs-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    position: static;
+  }
+
+  .vs-text-col {
+    position: static;
+    transform: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .vs-text-col > * {
+    grid-row: unset;
+    grid-column: unset;
+  }
+
+  .vs-copy {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .vs-svg {
+    height: auto;
+    width: 100%;
   }
 }
 
@@ -271,6 +377,6 @@
   }
 
   .vs-diagram-wrap {
-    max-width: 100%;
+    width: 100%;
   }
 }
