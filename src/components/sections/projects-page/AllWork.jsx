@@ -8,8 +8,7 @@ import "./AllWork.css";
 const PAGE_SIZE = 10;
 
 // 沒有明確指定 size 的作品，依照此節奏自動分配尺寸
-// 順序設計原則：small/large 交錯保持視覺節奏，square 作為視覺錨點
-const PATTERN = ["small", "large", "square", "small", "large", "small", "square", "large"];
+const PATTERN = ["landscape", "portrait", "square", "landscape", "portrait", "landscape", "square", "portrait"];
 
 let _pi = 0;
 const sortedProjects = [...projectsData]
@@ -25,9 +24,9 @@ const TOTAL_PAGES = Math.ceil(TOTAL / PAGE_SIZE);
 // 演算法：每次將下一張卡片放入「目前較矮」的欄位（貪婪最短欄）。
 // 結果：兩欄各自獨立堆疊，不會因為混排高矮卡片而產生大片空白。
 const SIZE_HEIGHT = {
-  small:  0.75,   // 4:3 橫幅 — 視覺高度較短
-  large:  1.667,  // 3:5 直幅 — 視覺高度最高
-  square: 1.0,    // 1:1 正方 — 視覺高度中等
+  landscape: 0.75,   // 4:3 — shorter
+  portrait:  1.333,  // 3:4 — taller
+  square:    1.0,    // 1:1 — medium
 };
 
 function buildLayout(projects) {

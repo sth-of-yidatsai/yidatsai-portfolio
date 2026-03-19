@@ -8,8 +8,22 @@ import "./Playground.css";
 gsap.registerPlugin(CustomEase);
 CustomEase.create("hop", "0.9, 0, 0.1, 1");
 
-// Sort descending by order (same as AllWork)
-const projectsData = [...projectsRaw].sort((a, b) => b.order - a.order);
+// 與 AllWork 相同的尺寸循環 PATTERN（無 size 欄位時自動補上）
+const PATTERN = ["landscape", "portrait", "square", "landscape", "portrait", "landscape", "square", "portrait"];
+
+// 各 size 對應的像素尺寸
+const SIZE_DIMS = {
+  landscape: { width: 480, height: 360 }, // 4:3
+  portrait:  { width: 360, height: 480 }, // 3:4
+  square:    { width: 360, height: 360 }, // 1:1
+};
+const DEFAULT_DIMS = { width: 360, height: 480 }; // fallback（同 portrait）
+
+// Sort descending by order，並補上缺少的 size
+let _pi = 0;
+const projectsData = [...projectsRaw]
+  .sort((a, b) => b.order - a.order)
+  .map((p) => (p.size ? p : { ...p, size: PATTERN[_pi++ % PATTERN.length] }));
 
 export default function Playground() {
   const navigate = useNavigate();
@@ -22,8 +36,6 @@ export default function Playground() {
 
   // 設定與狀態
   const settingsRef = useRef({
-    baseWidth: 360, // 3:4 直式比例，寬度
-    baseHeight: 480, // 3:4 直式比例，高度
     itemGap: 72,
     hoverScale: 1.05,
     expandedScale: 0.5,
@@ -116,13 +128,9 @@ export default function Playground() {
     };
   };
 
-  const getItemSize = () => {
-    const settings = settingsRef.current;
-    // 所有卡片統一尺寸 3:4 直式比例
-    return {
-      width: settings.baseWidth,
-      height: settings.baseHeight,
-    };
+  const getItemSize = (project) => {
+    // 依照 project.size 回傳對應尺寸，與 AllWork 相同邏輯
+    return SIZE_DIMS[project?.size] || DEFAULT_DIMS;
   };
 
   // 已移除標題進場顯示
@@ -198,26 +206,26 @@ export default function Playground() {
         if (s.visibleItems.has(itemId)) continue;
         if (s.activeItemId === itemId && s.isExpanded) continue;
 
-        const itemSize = getItemSize();
+        // index 與資料（僅使用 projects.json）
+        // 正確的歐幾里得取模，避免 row/col 為負數時索引錯誤
+        const rawIndex = row * s.columns + col;
+        const idx = ((rawIndex % total) + total) % total;
+        const project = allItems[idx];
+
+        const itemSize = getItemSize(project);
         const pos = getItemPosition(col, row, s.cellWidth, s.cellHeight);
 
         const item = document.createElement("div");
         item.className = "gallery-item clickable";
         item.id = itemId;
         item.style.width = `${itemSize.width}px`;
-        item.style.height = `${itemSize.height}px`;
+        // height 不設定，讓 item 自然高度 = 圖片 + caption
         item.style.left = `${pos.x}px`;
         item.style.top = `${pos.y}px`;
         item.dataset.col = String(col);
         item.dataset.row = String(row);
         item.dataset.width = String(itemSize.width);
-        item.dataset.height = String(itemSize.height);
-
-        // index 與資料（僅使用 projects.json）
-        // 正確的歐幾里得取模，避免 row/col 為負數時索引錯誤
-        const rawIndex = row * s.columns + col;
-        const idx = ((rawIndex % total) + total) % total;
-        const project = allItems[idx];
+        item.dataset.height = String(itemSize.height); // 僅圖片高度，用於展開動畫
         const imageUrl = project?.cover === "placeholder.webp"
           ? `/images/projects/placeholder.webp`
           : project?.id && project?.cover
@@ -228,6 +236,7 @@ export default function Playground() {
 
         const imageContainer = document.createElement("div");
         imageContainer.className = "gallery-item-image-container";
+        imageContainer.style.height = `${itemSize.height}px`; // 圖片區高度 = 指定比例
         const img = document.createElement("img");
         img.src = imageUrl;
         img.alt = title;
@@ -464,8 +473,11 @@ export default function Playground() {
     const s = stateRef.current;
     s.itemGap = settings.itemGap;
     s.columns = 4;
-    s.cellWidth = settings.baseWidth + settings.itemGap;
-    s.cellHeight = settings.baseHeight + 80 + settings.itemGap; // 加上 caption 高度，適應更大的卡片
+    // cellWidth / cellHeight 以最大可能尺寸計算，確保不同比例卡片不重疊
+    const maxCardWidth = Math.max(...Object.values(SIZE_DIMS).map((d) => d.width), DEFAULT_DIMS.width);
+    const maxCardHeight = Math.max(...Object.values(SIZE_DIMS).map((d) => d.height), DEFAULT_DIMS.height);
+    s.cellWidth = maxCardWidth + settings.itemGap;
+    s.cellHeight = maxCardHeight + 80 + settings.itemGap; // +80 for caption
 
     // 初次渲染
     updateVisibleItems();

@@ -83,14 +83,14 @@
 
 /* ── Size modifiers ──────────────────────────────────────────────────────── */
 
-/* small  → short landscape */
-.all-work__card-wrap--small  .all-work__card { aspect-ratio: 4 / 3; }
+/* landscape → 4:3 */
+.all-work__card-wrap--landscape .all-work__card { aspect-ratio: 4 / 3; }
 
-/* large  → tall portrait */
-.all-work__card-wrap--large  .all-work__card { aspect-ratio: 3 / 5; }
+/* portrait → 3:4 */
+.all-work__card-wrap--portrait  .all-work__card { aspect-ratio: 3 / 4; }
 
 /* square → 1:1 */
-.all-work__card-wrap--square .all-work__card { aspect-ratio: 1 / 1; }
+.all-work__card-wrap--square    .all-work__card { aspect-ratio: 1 / 1; }
 
 /* ── Parallax image wrapper ──────────────────────────────────────────────── */
 

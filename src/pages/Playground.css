@@ -47,7 +47,7 @@ html.projects-no-scroll-html {
 
 .gallery-item-image-container {
   width: 100%;
-  height: 480px; /* 3:4 直式比例，對應 JS baseHeight */
+  /* height 由 JS 直接設定（itemSize.height），確保圖片比例正確，caption 不計入 */
   overflow: hidden;
   position: relative;
   background-color: var(--gray-900);
