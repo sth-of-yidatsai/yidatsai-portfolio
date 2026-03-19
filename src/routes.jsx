@@ -36,37 +36,38 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Home /> },
-      { path: "about", element: <About /> },
-      { path: "contact", element: <Contact /> },
+      { index: true, element: <Home />, handle: { title: () => "YI-DA TSAI" } },
+      { path: "about", element: <About />, handle: { title: () => "About | YI-DA TSAI" } },
+      { path: "contact", element: <Contact />, handle: { title: () => "Contact | YI-DA TSAI" } },
       {
         path: "projects",
         element: <Projects />,
         loader: projectsLoader,
         errorElement: <ErrorPage />,
+        handle: { title: () => "Projects | YI-DA TSAI" },
       },
       {
-        // Prettier paginated URL: /projects/page/2, /projects/page/3 …
-        // Must be declared before "projects/:id" so React Router matches
-        // the literal segment "page" before treating it as a project id.
         path: "projects/page/:page",
         element: <Projects />,
         loader: projectsLoader,
         errorElement: <ErrorPage />,
+        handle: { title: () => "Projects | YI-DA TSAI" },
       },
       {
         path: "playground",
         element: <Playground />,
         loader: projectsLoader,
         errorElement: <ErrorPage />,
+        handle: { title: () => "Playground | YI-DA TSAI" },
       },
       {
         path: "projects/:id",
         element: <ProjectDetailRouter />,
         loader: projectDetailLoader,
         errorElement: <ErrorPage />,
+        handle: { title: (data) => data?.title ? `${data.title} | YI-DA TSAI` : "Project | YI-DA TSAI" },
       },
-      { path: "*", element: <NotFound /> },
+      { path: "*", element: <NotFound />, handle: { title: () => "Not Found | YI-DA TSAI" } },
     ],
   },
 ]);
