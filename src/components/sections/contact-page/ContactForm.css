@@ -130,7 +130,7 @@
   left: -1px;
   right: 0;
   display: flex;
-  background: var(--gray-0);
+  background: var(--gray-25);
   border: 1px solid var(--gray-200);
   border-top: none;
   z-index: 200;
@@ -409,7 +409,7 @@
 .cf__budget-step--active .cf__budget-dot {
   width: 20px;
   height: 20px;
-  background: var(--gray-0);
+  background: var(--gray-25);
   border: 1.5px solid var(--gray-700);
 }
 
@@ -533,7 +533,7 @@
 
   padding: var(--space-md) var(--space-lg);
   border: 1px solid currentColor;
-  background: var(--gray-0);
+  background: var(--gray-25);
 
   transition:
     opacity  0.9s cubic-bezier(0.16, 1, 0.3, 1),

@@ -200,7 +200,7 @@
   align-items: flex-end;
   padding: var(--space-xl) var(--px-page);
   /* Default: light theme */
-  background-color: var(--gray-0);
+  background-color: var(--gray-25);
   color: var(--gray-800);
   /* Hidden off-top by default */
   transform: translateY(-100%);

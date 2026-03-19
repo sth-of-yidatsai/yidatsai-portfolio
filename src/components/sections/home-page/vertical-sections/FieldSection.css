@@ -5,7 +5,7 @@
 .fs-section {
   width: 100%;
   padding: var(--space-2xl) var(--px-page) ;
-  background: var(--gray-0);
+  background: var(--gray-25);
   box-sizing: border-box;
 }
 
