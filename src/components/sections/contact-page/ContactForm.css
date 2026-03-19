@@ -334,6 +334,12 @@
   position: relative;
   display: flex;
   align-items: flex-start;
+  touch-action: none;
+}
+
+.cf__budget-dots--dragging,
+.cf__budget-dots--dragging * {
+  user-select: none;
 }
 
 /* connecting line — left/right 10% = center of first/last flex:1 cell */

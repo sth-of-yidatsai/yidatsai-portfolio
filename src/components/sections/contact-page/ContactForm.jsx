@@ -269,6 +269,8 @@ export default function ContactForm() {
   const [isBudgetLocked, setIsBudgetLocked] = useState(false);
   const { executeRecaptcha }      = useGoogleReCaptcha();
 
+  const budgetDotsRef             = useRef(null);
+
   // Auto-dismiss toast (skipped in preview mode)
   useEffect(() => {
     if (PREVIEW_TOAST) return;
@@ -327,6 +329,53 @@ export default function ContactForm() {
   const handleBudgetClick = useCallback((i) => {
     setIsBudgetLocked(true);
     setForm((prev) => ({ ...prev, budgetIndex: i }));
+  }, []);
+
+  const handleBudgetPointerDown = useCallback((e) => {
+    if (e.button !== undefined && e.button !== 0) return; // left mouse only
+    e.preventDefault();
+
+    const getIdx = (clientX) => {
+      const el = budgetDotsRef.current;
+      if (!el) return null;
+      const rect = el.getBoundingClientRect();
+      const ratio = (clientX - rect.left) / rect.width;
+      return Math.max(0, Math.min(BUDGET_STEPS.length - 1, Math.round(ratio * (BUDGET_STEPS.length - 1))));
+    };
+
+    const apply = (clientX) => {
+      const idx = getIdx(clientX);
+      if (idx === null) return;
+      setIsBudgetLocked(true);
+      setForm((prev) => (prev.budgetIndex === idx ? prev : { ...prev, budgetIndex: idx }));
+    };
+
+    const startX = e.touches ? e.touches[0].clientX : e.clientX;
+    apply(startX);
+
+    const el = budgetDotsRef.current;
+    if (el) el.classList.add("cf__budget-dots--dragging");
+    document.body.style.userSelect = "none";
+
+    const onMove = (e) => {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      apply(clientX);
+    };
+
+    const onUp = () => {
+      const el = budgetDotsRef.current;
+      if (el) el.classList.remove("cf__budget-dots--dragging");
+      document.body.style.userSelect = "";
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchend", onUp);
+    };
+
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    window.addEventListener("touchmove", onMove, { passive: true });
+    window.addEventListener("touchend", onUp);
   }, []);
 
   const handleTimeline = useCallback((t) => {
@@ -576,7 +625,12 @@ export default function ContactForm() {
                 ))}
               </div>
               {/* dots row — ::before line stays at top:10px (half dot-wrap) */}
-              <div className="cf__budget-dots">
+              <div
+                className="cf__budget-dots"
+                ref={budgetDotsRef}
+                onMouseDown={handleBudgetPointerDown}
+                onTouchStart={handleBudgetPointerDown}
+              >
                 {/* animated fill — width driven by budgetIndex */}
                 <span
                   className="cf__budget-fill"
