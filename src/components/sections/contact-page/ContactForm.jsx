@@ -416,7 +416,11 @@ export default function ContactForm() {
           from_email: form.email,
           phone:      form.phone    || "—",
           company:    form.company  || "—",
-          location:   `${form.locationCounty} / ${form.locationRegion}`,
+          location:   form.locationCounty !== "Taiwan"
+            ? form.locationCounty
+            : form.locationRegion !== "International"
+              ? form.locationRegion
+              : "—",
           interests:  form.interests.length ? form.interests.join(", ") : "—",
           budget:     budgetLabel,
           timeline:   form.timeline || "—",

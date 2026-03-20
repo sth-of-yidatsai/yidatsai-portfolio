@@ -70,26 +70,26 @@ const ENTER_DEBOUNCE = 120; // ms — ignore rapid enter/leave sweeps
 const COPY_STEPS = [
   {
     left: {
-      title: "LOGIC",
+      title: "Logic",
       lead: "Structure creates clarity.",
-      body: ["Through system and hierarchy,", "complexity becomes readable."],
+      body: ["Systems and hierarchy", "make complexity readable."],
     },
     right: {
-      title: "AESTHETICS",
+      title: "Aesthetics",
       lead: "Form gives emotion a surface.",
-      body: ["Through rhythm and tone,", "visual language begins to speak."],
+      body: ["Rhythm and visual tone", "allow language to emerge."],
     },
   },
   {
     left: {
-      title: "EXPERIENCE",
-      lead: "Experience gives design its meaning.",
-      body: ["What we remember", "is what we feel."],
+      title: "Experience",
+      lead: "Experience gives design meaning.",
+      body: ["Atmosphere and memory", "shape how it is felt."],
     },
     right: {
       title: "Structured Emotion",
       lead: "Emotion is not accidental.",
-      body: ["It is shaped through structure,", "and realized through aesthetics, logic and experience."],
+      body: ["It is shaped through structure, and brought", "to life through design."],
     },
   },
 ];

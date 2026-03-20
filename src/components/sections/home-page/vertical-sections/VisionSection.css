@@ -104,14 +104,14 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: clamp(160px, 18vw, 280px);
+  width: clamp(200px, 22vw, 340px);
   display: grid;
   /* both copy panels occupy the same cell so they overlay each other */
   z-index: 1;
 }
 
-.vs-text-col--left  { left:  calc(50% - 40.4vh - clamp(160px, 18vw, 280px) - 1vw - var(--space-md)); }
-.vs-text-col--right { right: calc(50% - 40.4vh - clamp(160px, 18vw, 280px) - 1vw - var(--space-md)); }
+.vs-text-col--left  { left:  calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg)); }
+.vs-text-col--right { right: calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg)); }
 
 .vs-text-col > * {
   grid-row: 1;
@@ -135,19 +135,21 @@
 }
 
 .vs-copy-title {
-  font-family: var(--font-manrope);
+  font-family: var(--font-hatton);
   font-weight: var(--fw-light);
-  font-size: var(--fs-12pt);
-  letter-spacing: 0.08em;
+  font-size: var(--fs-22pt);
+  letter-spacing: 0.05em;
   color: var(--gray-200);
   margin: 0 0 var(--space-sm);
+  text-wrap: nowrap;
 }
 
 .vs-copy-line {
-  width: 24px;
+  display: block;
+  width: 2rem;
   height: 1px;
   background: rgba(255, 255, 255, 0.28);
-  margin-bottom: var(--space-md);
+  margin: var(--space-md) 0;
 }
 
 .vs-copy-lead {
@@ -158,6 +160,7 @@
   line-height: 1.45;
   color: var(--gray-100);
   margin: 0 0 var(--space-md);
+  text-wrap: nowrap;
 }
 
 .vs-copy-body {
