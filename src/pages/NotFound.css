@@ -212,14 +212,14 @@
 .nf-home-label {
   font-family: var(--font-manrope);
   font-size: var(--fs-10pt);
-  font-weight: var(--fw-bold);
+  font-weight: var(--fw-medium);
   color: var(--gray-700);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   writing-mode: vertical-rl;
   text-orientation: mixed;
   padding: 16px 12px;
-  transition: letter-spacing 0.3s ease, color 0.25s ease;
+  transition: font-weight 0.3s ease, color 0.25s ease;
 }
 
 /* hover */
@@ -228,7 +228,7 @@
 }
 
 .nf-home-btn:hover .nf-home-label {
-  letter-spacing: 0.14em;
+  font-weight: var(--fw-bold);
   color: var(--gray-900);
 }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 
 import App from "./App.jsx";
 import Home from "./pages/Home.jsx";
@@ -7,7 +7,7 @@ import About from "./pages/About.jsx";
 import Projects from "./pages/Projects.jsx";
 import Playground from "./pages/Playground.jsx";
 import Contact from "./pages/Contact.jsx";
-import ProjectDetailRouter from "./pages/ProjectDetailRouter.jsx";
+import ProjectDetail from "./pages/ProjectDetail.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 
@@ -22,10 +22,7 @@ export async function projectDetailLoader({ params }) {
   const { id } = params || {};
   const project = projects.find((p) => p.id === id);
   if (!project) {
-    throw new Response("Not Found", {
-      status: 404,
-      statusText: "Project Not Found",
-    });
+    return redirect("/not-found");
   }
   return project;
 }
@@ -62,7 +59,7 @@ const router = createBrowserRouter([
       },
       {
         path: "projects/:id",
-        element: <ProjectDetailRouter />,
+        element: <ProjectDetail />,
         loader: projectDetailLoader,
         errorElement: <ErrorPage />,
         handle: { title: (data) => data?.title ? `${data.title} | YI-DA TSAI` : "Project | YI-DA TSAI" },

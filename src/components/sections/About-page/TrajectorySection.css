@@ -48,7 +48,7 @@
   flex-direction: column;
   justify-content: center;     /* equal space above and below content */
   gap: var(--space-lg);        /* dots → desc gap */
-  padding: var(--space-md) 0;  /* safe breathing room, no left/right */
+  padding: var(--space-xl) 0 var(--space-md) 0;  /* safe breathing room, no left/right */
 }
 
 /* ── Scroll wrapper — track + timeline translate together ─────── */
