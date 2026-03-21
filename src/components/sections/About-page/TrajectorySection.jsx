@@ -129,7 +129,7 @@ export default function TrajectorySection() {
       }
 
       // End pause: hold at 100% for one extra scroll-wheel turn (same as HorizontalScroller)
-      const endPause    = window.innerHeight;
+      const endPause    = window.innerHeight * 0.3;
       const totalScroll = CONTENT_SCROLL + endPause;
       // Fraction of totalScroll that is actual content (0 → 1 maps to content, rest is pause)
       const contentFraction = CONTENT_SCROLL / totalScroll;
@@ -140,7 +140,7 @@ export default function TrajectorySection() {
           pin      : true,
           start    : "top top",
           end      : `+=${totalScroll}`,
-          scrub    : 1.5,
+          scrub    : 0.5,
           id       : "trajectory-scroll",
 
           onEnter() {

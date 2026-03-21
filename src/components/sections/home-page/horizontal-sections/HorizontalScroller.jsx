@@ -69,8 +69,8 @@ export default function HorizontalScroller() {
       gsap.set(scroller, { width: totalWidth });
 
       // ── Scroll distance constants ──────────────────────────────────
-      const startPauseH = VH * 0.5;
-      const endPauseH   = VH;
+      const startPauseH = VH * 0.2;
+      const endPauseH   = VH * 0.3;
 
       // Landscape section pause zone (2 image transitions × VH each)
       const landscapeIdx = sections.findIndex((s) => s.id === "landscape");
@@ -101,7 +101,7 @@ export default function HorizontalScroller() {
         scrollTrigger: {
           trigger: container,
           pin: true,
-          scrub: 1,
+          scrub: 0.5,
           start: "top top",
           end: () => `+=${totalScrollDistance}`,
           id: "horizontal-scroll",
