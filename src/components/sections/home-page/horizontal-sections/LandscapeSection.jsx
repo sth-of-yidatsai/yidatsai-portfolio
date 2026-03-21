@@ -56,7 +56,7 @@ function resolveSlide(cfg) {
 export default function LandscapeSection({ index, landscapeProgress = 0 }) {
   const slides = useMemo(() => LANDSCAPE_SLIDES.map(resolveSlide), []);
 
-  const { scrollClass } = useImageParallax({ stickyHorizontal: true });
+  const { scrollClass } = useImageParallax({ inStickySection: true });
 
   const NUM_TRANSITIONS = slides.length - 1; // 2
 

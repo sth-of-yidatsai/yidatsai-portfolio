@@ -46,7 +46,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;     /* equal space above and below content */
-  gap: var(--space-sm);        /* space between scroll-wrap and desc */
+  gap: var(--space-lg);        /* dots → desc gap */
   padding: var(--space-md) 0;  /* safe breathing room, no left/right */
 }
 
@@ -75,11 +75,7 @@
 /* ── Card ─────────────────────────────────────────────────────── */
 .ts__card {
   flex-shrink: 0;
-  width: clamp(
-    160px,
-    calc((100vw - var(--px-page) - 3 * var(--space-2xl)) / 4),
-    360px
-  );
+  width: var(--ts-card-w, 220px); /* set by JS: (vw − 2×px-page − gaps) / visible */
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
@@ -138,7 +134,7 @@
 /* ── Timeline row ─────────────────────────────────────────────── */
 .ts__timeline-row {
   flex-shrink: 0;
-  padding: var(--space-sm) 0 var(--space-sm) var(--px-page);
+  padding: var(--space-lg) 0 0 var(--px-page); /* top = image→dots gap; no bottom, ts__inner gap handles dots→desc */
 }
 
 /* ── Timeline container ───────────────────────────────────────── */
@@ -175,11 +171,7 @@
 /* ── Step — same width as .ts__card so dot centres align exactly ─ */
 .ts__step {
   flex-shrink: 0;
-  width: clamp(
-    160px,
-    calc((100vw - var(--px-page) - 3 * var(--space-2xl)) / 4),
-    360px
-  );
+  width: var(--ts-card-w, 220px); /* mirrors .ts__card — set by same JS calculation */
   position: relative;
   z-index: 2;
   display: flex;
@@ -231,18 +223,31 @@
   background: var(--gray-700);
 }
 
-/* ── Description ──────────────────────────────────────────────── */
-.ts__desc {
+/* ── Description wrapper — JS sets translateX, width matches card ─ */
+.ts__desc-wrap {
   flex-shrink: 0;
+  width: var(--ts-card-w, 220px); /* always equal to the card image width */
+  will-change: transform;
+}
+
+/* ── Description inner — re-keyed by React on card change → animation re-runs ─ */
+@keyframes ts-desc-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ts__desc {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  padding-left: var(--px-page);
-  padding-right: var(--px-page);
-  /* Width can extend past the card; min-height keeps layout stable across all 5 cards */
-  max-width: 580px;
-  min-height: 10rem;
-  transition: opacity 0.3s ease;
+  min-height: 8rem;
+  animation: ts-desc-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .ts__desc-title {
@@ -270,6 +275,17 @@
   color: var(--gray-500);
   margin: 0;
   line-height: 1.6;
+}
+
+/* ── Period — small, grey, italic ─────────────────────────────── */
+.ts__desc-period {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-10pt);
+  color: var(--gray-400);
+  font-style: italic;
+  margin: 0;
+  line-height: 1.4;
 }
 
 /* ── Custom horizontal scrollbar — mirrors HorizontalScroller ─── */
@@ -327,27 +343,17 @@ body.menu-open .ts__scrollbar {
     font-size: var(--fs-48pt);
   }
 
-  /* 3 cards visible on smaller screens — update both track and timeline gap */
+  /* Tighter gap on smaller screens; JS re-reads gapPx on resize and recomputes --ts-card-w */
   .ts__track,
   .ts__timeline {
     gap: var(--space-xl);
-  }
-
-  .ts__card,
-  .ts__step {
-    width: clamp(
-      140px,
-      calc((100vw - var(--px-page) - 2 * var(--space-xl)) / 3),
-      260px
-    );
   }
 
   .ts__year {
     font-size: var(--fs-28pt);
   }
 
-  .ts__desc {
-    max-width: 100%;
-    min-height: 8rem;
+  .ts__desc-wrap {
+    width: var(--ts-card-w, 140px);
   }
 }

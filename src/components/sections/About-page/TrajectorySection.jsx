@@ -1,4 +1,4 @@
-import { useRef, useState, useLayoutEffect, useEffect } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useImageParallax } from "../../../hooks/useImageParallax";
@@ -18,30 +18,35 @@ const CARDS = [
     image: "/images/about/01.webp",
     title: "Digital Experience Practice.",
     desc: "Continuously exploring the intersection of visual design and front-end development, creating interfaces that balance clarity, interaction, and aesthetics.",
+    period: "2024 — present",
   },
   {
     year: "2024",
     image: "/images/about/02.webp",
     title: "Transition into front-end development.",
     desc: "Shifted from visual design to web development, building a solid foundation in modern technologies and translating design thinking into functional interfaces.",
+    period: "2024/07 — present",
   },
   {
     year: "2024",
     image: "/images/about/03.webp",
     title: "Campmate — Bridging UI and system logic.",
     desc: "Led the design and implementation of key features including homepage, coupon system, and admin tools, connecting user experience with backend functionality.",
+    period: "2024/05 — 2024/06",
   },
   {
     year: "2022 — 2023",
     image: "/images/about/04.webp",
     title: "Visual design in practice.",
     desc: "Worked as a visual designer across branding and marketing projects, focusing on typography, layout, and delivering clear visual communication.",
+    period: "2022/08 — 2023/12",
   },
   {
     year: "2018 — 2022",
     image: "/images/about/05.webp",
     title: "NTUA — Visual Communication Design.",
     desc: "Developed a strong foundation in design principles, visual language, and creative thinking, shaping a multidisciplinary approach to design.",
+    period: "2018/09 — 2022/06",
   },
 ];
 
@@ -65,7 +70,7 @@ export default function TrajectorySection() {
   const [activeIndex,   setActiveIndex]   = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInSection,    setIsInSection]    = useState(false);
-  const { scrollClass } = useImageParallax({ stickyHorizontal: isInSection });
+  const { scrollClass } = useImageParallax({ inStickySection: isInSection });
 
   // ── GSAP pin + phase-based scroll ────────────────────────────────────────
   useLayoutEffect(() => {
@@ -80,17 +85,33 @@ export default function TrajectorySection() {
       ctx?.revert();
       stRef.current = null;
 
-      const cardW = track.firstElementChild?.offsetWidth ?? 220;
-      const gapPx = parseFloat(getComputedStyle(track).columnGap) || 128;
-      const half  = cardW / 2;
+      const n      = CARDS.length;     // total cards
+      const shown  = n - 1;           // cards visible at once (last one starts off-screen)
+      const gapCount = shown - 1;     // gaps between the visible cards
+
+      const gapPx    = parseFloat(getComputedStyle(track).columnGap) || 128;
+      // Read the resolved px value from the track's own padding-left (= --px-page after clamp)
+      const pxPagePx = parseFloat(getComputedStyle(track).paddingLeft) || 64;
+
+      // Fill viewport with `shown` cards, equal left/right page margin
+      const cardW = (window.innerWidth - 2 * pxPagePx - gapCount * gapPx) / shown;
+
+      // Apply as CSS variable so .ts__card and .ts__step always match
+      inner.style.setProperty('--ts-card-w', `${cardW}px`);
+
+      const half = cardW / 2;
 
       if (lineRef.current) {
         lineRef.current.style.left  = `${half}px`;
-        lineRef.current.style.width = `${4 * (cardW + gapPx)}px`;
+        lineRef.current.style.width = `${(n - 1) * (cardW + gapPx)}px`;
       }
       if (fillBarRef.current) {
         fillBarRef.current.style.left  = `${half}px`;
         fillBarRef.current.style.width = "0px";
+      }
+      // Position desc under card 0 on load
+      if (descRef.current) {
+        descRef.current.style.transform = `translateX(${pxPagePx}px)`;
       }
 
       // End pause: hold at 100% for one extra scroll-wheel turn (same as HorizontalScroller)
@@ -142,12 +163,17 @@ export default function TrajectorySection() {
             gsap.set(scrollWrap, { x });
 
             if (fillBarRef.current) {
-              fillBarRef.current.style.width = `${cp * 4 * (cardW + gapPx)}px`;
+              fillBarRef.current.style.width = `${cp * (n - 1) * (cardW + gapPx)}px`;
             }
 
             const idx = cp <= PHASE1_END
-              ? Math.min(3, Math.round((cp / PHASE1_END) * 3))
-              : 4;
+              ? Math.min(n - 2, Math.round((cp / PHASE1_END) * (n - 2)))
+              : n - 1;
+
+            // Translate desc to follow the active card (x = current scroll-wrap offset)
+            if (descRef.current) {
+              descRef.current.style.transform = `translateX(${pxPagePx + idx * (cardW + gapPx) + x}px)`;
+            }
 
             if (idx !== activeIdxRef.current) {
               activeIdxRef.current = idx;
@@ -172,14 +198,6 @@ export default function TrajectorySection() {
     };
   }, []);
 
-  // ── Fade description when active card changes ─────────────────────────────
-  useEffect(() => {
-    const el = descRef.current;
-    if (!el) return;
-    el.style.opacity = "0";
-    const t = setTimeout(() => { if (el) el.style.opacity = "1"; }, 120);
-    return () => clearTimeout(t);
-  }, [activeIndex]);
 
   // ── Scrollbar drag handlers ───────────────────────────────────────────────
   const handlePointerDown = (e) => {
@@ -279,11 +297,16 @@ export default function TrajectorySection() {
 
           </div>
 
-          {/* Active card description — fixed in pinned area, outside scroll-wrap */}
-          <div className="ts__desc" ref={descRef}>
-            <p className="ts__desc-title">{CARDS[activeIndex].title}</p>
-            <span className="ts-rule" />
-            <p className="ts__desc-body">{CARDS[activeIndex].desc}</p>
+          {/* Description wrapper — JS sets translateX to follow active card + Phase 2 offset.
+              Inner div uses key={activeIndex} so React remounts it on each change,
+              re-triggering the CSS slide-up animation automatically. */}
+          <div className="ts__desc-wrap" ref={descRef}>
+            <div className="ts__desc" key={activeIndex}>
+              <p className="ts__desc-title">{CARDS[activeIndex].title}</p>
+              <span className="ts-rule" />
+              <p className="ts__desc-body">{CARDS[activeIndex].desc}</p>
+              <p className="ts__desc-period">({CARDS[activeIndex].period})</p>
+            </div>
           </div>
 
         </div>
