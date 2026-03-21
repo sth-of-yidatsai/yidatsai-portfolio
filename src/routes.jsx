@@ -64,6 +64,7 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         handle: { title: (data) => data?.title ? `${data.title} | YI-DA TSAI` : "Project | YI-DA TSAI" },
       },
+      { path: "error-test", element: <ErrorPage />, handle: { title: () => "Error | YI-DA TSAI" } },
       { path: "*", element: <NotFound />, handle: { title: () => "Not Found | YI-DA TSAI" } },
     ],
   },

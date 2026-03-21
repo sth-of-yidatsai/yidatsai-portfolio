@@ -1,0 +1,99 @@
+.ep-page {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: var(--space-2xl) var(--px-page);
+  background: var(--gray-0);
+  font-family: var(--font-manrope), var(--font-cjk);
+}
+
+.ep-inner {
+  max-width: 560px;
+}
+
+/* ── Eyebrow ── */
+.ep-label {
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin: 0 0 var(--space-lg);
+}
+
+/* ── Heading ── */
+.ep-heading {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-extralight);
+  font-size: var(--fs-40pt);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--gray-800);
+  margin: 0 0 var(--space-md);
+}
+
+/* ── Divider ── */
+.ep-divider {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--gray-300);
+  margin: 0 0 var(--space-lg);
+}
+
+/* ── Body ── */
+.ep-body {
+  font-size: var(--fs-14pt);
+  font-weight: var(--fw-light);
+  color: var(--gray-500);
+  line-height: 1.6;
+  margin: 0 0 var(--space-xl);
+}
+
+/* ── Actions ── */
+.ep-actions {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.ep-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 var(--space-lg);
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border: 1px solid var(--gray-800);
+  cursor: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ep-btn::after {
+  display: none; /* suppress global a::after underline */
+}
+
+/* Primary — filled */
+.ep-btn--primary {
+  background: var(--gray-800);
+  color: var(--gray-0);
+}
+
+.ep-btn--primary:hover {
+  background: var(--gray-900);
+  border-color: var(--gray-900);
+}
+
+/* Secondary — outlined */
+.ep-btn--secondary {
+  background: transparent;
+  color: var(--gray-800);
+}
+
+.ep-btn--secondary:hover {
+  background: var(--gray-100);
+}
