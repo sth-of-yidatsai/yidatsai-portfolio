@@ -44,8 +44,8 @@ const CARDS = [
   {
     year: "2022",
     image: "/images/about/05.webp",
-    title: "NTUA — Visual Communication Design.",
-    desc: "Developed a strong foundation in design principles, visual language, and creative thinking, shaping a multidisciplinary approach to design.",
+    title: "NTUA — Visual Communication Design",
+    desc: "Studied at National Taiwan University of Arts, building a foundation in visual language, design principles, and creative thinking.",
     period: "2018/09 — 2022/06",
   },
 ];

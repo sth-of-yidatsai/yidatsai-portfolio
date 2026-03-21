@@ -27,16 +27,17 @@
   color: var(--gray-800);
   letter-spacing: 0.1em;
   line-height: 1.08;
-  margin: 0 0 var(--space-xs);
+  margin: 0 0 var(--space-lg) 0;
   text-transform: uppercase;
 }
 
 .ts__subtitle {
   font-family: var(--font-manrope);
-  font-weight: var(--fw-regular);
-  font-size: var(--fs-12pt);
-  color: var(--color-text-light);
-  margin: 0;
+  font-weight: var(--fw-light);
+  font-size: var(--fs-14pt);
+  color: var(--gray-600);
+  letter-spacing: 0.06em;
+  margin: 0 0 0 1.25rem;
 }
 
 /* ── Pinned viewport — 100vh, content vertically centred ─────── */
