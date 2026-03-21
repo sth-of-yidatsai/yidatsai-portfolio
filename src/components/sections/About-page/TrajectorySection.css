@@ -1,0 +1,353 @@
+/* ================================================================
+   TrajectorySection — about-page section
+   Pinned via GSAP ScrollTrigger (same pattern as HorizontalScroller).
+   Header scrolls normally above the 100vh pinned area.
+   Track + timeline share a scroll-wrap that translates together,
+   so dots always stay aligned with their cards.
+   Pinned content is vertically centred via justify-content: center.
+   ================================================================ */
+
+/* ── Outer section — GSAP adds the scroll spacer automatically ── */
+.ts {
+  position: relative;
+}
+
+/* ── Header — scrolls normally, above the pinned area ─────────── */
+.ts__header {
+  padding-top: var(--space-2xl);
+  padding-left: var(--px-page);
+  padding-right: var(--px-page);
+  padding-bottom: var(--space-lg);
+}
+
+.ts__title {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-extralight);
+  font-size: var(--fs-64pt);
+  color: var(--gray-800);
+  letter-spacing: 0.1em;
+  line-height: 1.08;
+  margin: 0 0 var(--space-xs);
+  text-transform: uppercase;
+}
+
+.ts__subtitle {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-12pt);
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+/* ── Pinned viewport — 100vh, content vertically centred ─────── */
+.ts__inner {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;     /* equal space above and below content */
+  gap: var(--space-sm);        /* space between scroll-wrap and desc */
+  padding: var(--space-md) 0;  /* safe breathing room, no left/right */
+}
+
+/* ── Scroll wrapper — track + timeline translate together ─────── */
+.ts__scroll-wrap {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+  /* no flex:1 — natural height lets justify-content centre the block */
+}
+
+/* ── Cards track ──────────────────────────────────────────────── */
+/*
+  gap = --space-2xl (128 px).
+  Width formula: 4 cards + 3 gaps fill the viewport after the left
+  margin, so card 5 starts just beyond the right edge.
+*/
+.ts__track {
+  display: flex;
+  align-items: flex-end;   /* bottoms flush → image base sits at timeline */
+  gap: var(--space-2xl);
+  padding-left: var(--px-page);
+  /* no flex:1 — natural height from card content */
+}
+
+/* ── Card ─────────────────────────────────────────────────────── */
+.ts__card {
+  flex-shrink: 0;
+  width: clamp(
+    160px,
+    calc((100vw - var(--px-page) - 3 * var(--space-2xl)) / 4),
+    360px
+  );
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* ── Year label ───────────────────────────────────────────────── */
+.ts__year {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-light);
+  font-size: var(--fs-40pt);
+  color: var(--gray-200);
+  line-height: 1;
+  margin: 0;
+  transition: color 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.ts__card--active .ts__year {
+  color: var(--gray-700);
+}
+
+/* ── Image wrapper — 3∶4 portrait, clips for parallax ────────── */
+.ts__img-wrap {
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* ── Image — slightly oversized to give parallax room ────────── */
+.ts__img {
+  width: 108%;
+  height: 108%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  margin: -4%;
+  filter: grayscale(1);
+  transition:
+    filter    0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.4s ease;
+  will-change: transform, filter;
+}
+
+.ts__card--active .ts__img {
+  filter: none;
+}
+
+/* Parallax scroll classes */
+.ts__img.scroll-vertical-up      { transform: translateY(-12px) translateZ(0); }
+.ts__img.scroll-vertical-down    { transform: translateY(12px)  translateZ(0); }
+.ts__img.scroll-horizontal-right { transform: translateX(16px)  translateZ(0); }
+.ts__img.scroll-horizontal-left  { transform: translateX(-16px) translateZ(0); }
+
+/* ── Timeline row ─────────────────────────────────────────────── */
+.ts__timeline-row {
+  flex-shrink: 0;
+  padding: var(--space-sm) 0 var(--space-sm) var(--px-page);
+}
+
+/* ── Timeline container ───────────────────────────────────────── */
+.ts__timeline {
+  position: relative;
+  display: flex;
+  gap: var(--space-2xl);   /* same gap as .ts__track */
+  align-items: flex-start;
+}
+
+/* ── Connecting line (left + width set by JS to span dot centres) ─ */
+.ts__tl-line {
+  position: absolute;
+  top: 10px;
+  height: 1px;
+  background: var(--gray-200);
+  z-index: 0;
+  /* left and width set by JS in setup() */
+}
+
+/* ── Fill bar (left set by JS, width driven by scroll progress) ── */
+.ts__timeline-fill {
+  position: absolute;
+  top: 10px;
+  height: 1.5px;
+  width: 0px;
+  background: var(--gray-700);
+  z-index: 1;
+  pointer-events: none;
+  transition: width 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  /* left set by JS in setup() */
+}
+
+/* ── Step — same width as .ts__card so dot centres align exactly ─ */
+.ts__step {
+  flex-shrink: 0;
+  width: clamp(
+    160px,
+    calc((100vw - var(--px-page) - 3 * var(--space-2xl)) / 4),
+    360px
+  );
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ts__dot-wrap {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* inactive dot */
+.ts__dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gray-400);
+  transition:
+    width        0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    height       0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    background   0.3s  ease,
+    border-color 0.3s  ease;
+}
+
+/* active dot — bullseye */
+.ts__step--active .ts__dot {
+  width: 20px;
+  height: 20px;
+  background: var(--gray-25);
+  border: 1.5px solid var(--gray-700);
+  position: relative;
+}
+
+.ts__step--active .ts__dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gray-700);
+}
+
+/* ── Description ──────────────────────────────────────────────── */
+.ts__desc {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding-left: var(--px-page);
+  padding-right: var(--px-page);
+  /* Width can extend past the card; min-height keeps layout stable across all 5 cards */
+  max-width: 580px;
+  min-height: 10rem;
+  transition: opacity 0.3s ease;
+}
+
+.ts__desc-title {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-12pt);
+  color: var(--gray-700);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Horizontal rule between title and body */
+.ts-rule {
+  display: block;
+  width: 2rem;
+  height: 1px;
+  background: var(--gray-400);
+  flex-shrink: 0;
+}
+
+.ts__desc-body {
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-12pt);
+  color: var(--gray-500);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── Custom horizontal scrollbar — mirrors HorizontalScroller ─── */
+.ts__scrollbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 6px;
+  background: var(--gray-100);
+  z-index: 1200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.ts__scrollbar--active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ts__scrollbar-thumb {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: var(--gray-800);
+  cursor: grab;
+  will-change: left;
+}
+
+.ts__scrollbar-thumb:active {
+  cursor: grabbing;
+}
+
+/* Hide when nav menu is open */
+body.menu-open .ts__scrollbar {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hide on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .ts__scrollbar {
+    display: none;
+  }
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .ts__header {
+    padding-top: var(--space-xl);
+  }
+
+  .ts__title {
+    font-size: var(--fs-48pt);
+  }
+
+  /* 3 cards visible on smaller screens — update both track and timeline gap */
+  .ts__track,
+  .ts__timeline {
+    gap: var(--space-xl);
+  }
+
+  .ts__card,
+  .ts__step {
+    width: clamp(
+      140px,
+      calc((100vw - var(--px-page) - 2 * var(--space-xl)) / 3),
+      260px
+    );
+  }
+
+  .ts__year {
+    font-size: var(--fs-28pt);
+  }
+
+  .ts__desc {
+    max-width: 100%;
+    min-height: 8rem;
+  }
+}

@@ -49,6 +49,12 @@ body.horizontal-scrolling .global-scrollbar {
   pointer-events: none;
 }
 
+/* Trajectory 水平滾動區域內隱藏全域滾動條 */
+body.trajectory-scrolling .global-scrollbar {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Projects 頁面停留在 SelectWork 區塊時隱藏滾動條 */
 body.in-select-work .global-scrollbar {
   opacity: 0;

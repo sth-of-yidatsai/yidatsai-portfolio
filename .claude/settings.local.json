@@ -16,7 +16,8 @@
       "Bash(mv project-003:*)",
       "Bash(npm uninstall:*)",
       "Bash(npm list:*)",
-      "Bash(python3 -c \":*)"
+      "Bash(python3 -c \":*)",
+      "Bash(xargs grep:*)"
     ]
   }
 }
