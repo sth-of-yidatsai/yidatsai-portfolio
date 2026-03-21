@@ -232,8 +232,8 @@
   color: var(--gray-900);
 }
 
-/* ── Large screens (≥ 1440 px) ── */
-@media (min-width: 1440px) {
+/* ── Large screens (≥ 1920 px) ── */
+@media (min-width: 1920px) {
   .nf-info {
     padding: var(--space-2xl) var(--px-page);
   }
