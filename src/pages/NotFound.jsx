@@ -16,7 +16,7 @@ function rgbToHex(r, g, b) {
 }
 
 /* ── Draggable OS-style window ── */
-function DraggableWindow({ title, children, initialX, initialY, zIndex, onFocus, onClose, visible = true }) {
+function DraggableWindow({ title, children, initialX, initialY, zIndex, onFocus, onClose, onDragMove, visible = true }) {
   const posRef = useRef({ x: initialX, y: initialY });
   const [pos, setPos] = useState({ x: initialX, y: initialY });
   const isDragging = useRef(false);
@@ -32,8 +32,11 @@ function DraggableWindow({ title, children, initialX, initialY, zIndex, onFocus,
   const onPointerMove = (e) => {
     if (!isDragging.current) return;
     const next = { x: e.clientX - dragStart.current.x, y: e.clientY - dragStart.current.y };
+    const dx = next.x - posRef.current.x;
+    const dy = next.y - posRef.current.y;
     posRef.current = next;
     setPos(next);
+    onDragMove?.(dx, dy);
   };
   const onPointerUp = (e) => {
     isDragging.current = false;
@@ -217,6 +220,17 @@ export default function NotFound() {
         });
 
         p.setTextColor = (hex) => { words.forEach((w) => (w.color = hex)); };
+
+        // called when the window is dragged — nudge letters in that direction
+        p.applyWindowImpulse = (dx, dy) => {
+          const SCALE = 0.22;
+          const MAX   = 10;
+          const ix = Math.max(-MAX, Math.min(MAX, dx * SCALE));
+          const iy = Math.max(-MAX, Math.min(MAX, dy * SCALE));
+          words.forEach((w) => {
+            if (w.active) { w.vx += ix; w.vy += iy; }
+          });
+        };
       };
 
       p.draw = () => {
@@ -396,6 +410,7 @@ export default function NotFound() {
         zIndex={topWindow === 'p5' ? 20 : 10}
         onFocus={() => setTopWindow('p5')}
         onClose={() => setShowP5(false)}
+        onDragMove={(dx, dy) => p5InstanceRef.current?.applyWindowImpulse?.(dx, dy)}
         visible={showP5}
       >
         <div ref={canvasHostRef} className="nf-canvas-host" />
