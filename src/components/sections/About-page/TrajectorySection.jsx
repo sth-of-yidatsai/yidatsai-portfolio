@@ -14,7 +14,7 @@ const CONTENT_SCROLL = 1600; // px of actual content scroll
 
 const CARDS = [
   {
-    year: "2026 —",
+    year: "2026",
     image: "/images/about/01.webp",
     title: "Digital Experience Practice.",
     desc: "Continuously exploring the intersection of visual design and front-end development, creating interfaces that balance clarity, interaction, and aesthetics.",
@@ -25,24 +25,24 @@ const CARDS = [
     image: "/images/about/02.webp",
     title: "Transition into front-end development.",
     desc: "Shifted from visual design to web development, building a solid foundation in modern technologies and translating design thinking into functional interfaces.",
-    period: "2024/07 — present",
+    period: "2024/09 — present",
   },
   {
     year: "2024",
     image: "/images/about/03.webp",
     title: "Campmate — Bridging UI and system logic.",
     desc: "Led the design and implementation of key features including homepage, coupon system, and admin tools, connecting user experience with backend functionality.",
-    period: "2024/05 — 2024/06",
+    period: "2024/05 — 2024/09",
   },
   {
-    year: "2022 — 2023",
+    year: "2024",
     image: "/images/about/04.webp",
     title: "Visual design in practice.",
     desc: "Worked as a visual designer across branding and marketing projects, focusing on typography, layout, and delivering clear visual communication.",
-    period: "2022/08 — 2023/12",
+    period: "2022/09 — 2024/03",
   },
   {
-    year: "2018 — 2022",
+    year: "2022",
     image: "/images/about/05.webp",
     title: "NTUA — Visual Communication Design.",
     desc: "Developed a strong foundation in design principles, visual language, and creative thinking, shaping a multidisciplinary approach to design.",
@@ -85,21 +85,35 @@ export default function TrajectorySection() {
       ctx?.revert();
       stRef.current = null;
 
-      const n      = CARDS.length;     // total cards
-      const shown  = n - 1;           // cards visible at once (last one starts off-screen)
+      const n        = CARDS.length;   // total cards
+      const shown    = n - 1;         // cards visible at once (last one starts off-screen)
       const gapCount = shown - 1;     // gaps between the visible cards
 
-      const gapPx    = parseFloat(getComputedStyle(track).columnGap) || 128;
       // Read the resolved px value from the track's own padding-left (= --px-page after clamp)
       const pxPagePx = parseFloat(getComputedStyle(track).paddingLeft) || 64;
 
-      // Fill viewport with `shown` cards, equal left/right page margin
-      const cardW = (window.innerWidth - 2 * pxPagePx - gapCount * gapPx) / shown;
+      // ── Image-first sizing ────────────────────────────────────────────────
+      // `shown` square images fill the viewport with a fixed visual gap
+      // between adjacent image edges. This prevents overlap at any screen width.
+      //
+      // Layout: pxPage + shown×imgW + gapCount×VISUAL_GAP = vw − pxPage
+      //   → imgW = (vw − 2×pxPage − gapCount×VISUAL_GAP) / shown
+      //
+      // Card column (cardW = imgW×3/4) is the structural unit; image overhangs
+      // by imgW/4 to the right. CSS column gap = VISUAL_GAP + imgW/4 so that
+      // the gap between the image right-edge and the next image left-edge is
+      // exactly VISUAL_GAP — no overlap possible.
+      const VISUAL_GAP = 24; // px between adjacent image edges
+      const imgW  = (window.innerWidth - 2 * pxPagePx - gapCount * VISUAL_GAP) / shown;
+      const cardW = imgW * (3 / 4);
+      const gapPx = VISUAL_GAP + imgW / 4; // CSS column gap
 
-      // Apply as CSS variable so .ts__card and .ts__step always match
+      // Apply CSS variables so cards, steps, img-wrap, desc-wrap and gaps always match
       inner.style.setProperty('--ts-card-w', `${cardW}px`);
+      inner.style.setProperty('--ts-img-w',  `${imgW}px`);
+      inner.style.setProperty('--ts-gap',    `${gapPx}px`);
 
-      const half = cardW / 2;
+      const half = imgW / 2;  // dot/line origin at image centre
 
       if (lineRef.current) {
         lineRef.current.style.left  = `${half}px`;
@@ -162,13 +176,14 @@ export default function TrajectorySection() {
             }
             gsap.set(scrollWrap, { x });
 
-            if (fillBarRef.current) {
-              fillBarRef.current.style.width = `${cp * (n - 1) * (cardW + gapPx)}px`;
-            }
-
             const idx = cp <= PHASE1_END
               ? Math.min(n - 2, Math.round((cp / PHASE1_END) * (n - 2)))
               : n - 1;
+
+            // Fill bar ends exactly at the active dot centre — CSS transition animates between steps
+            if (fillBarRef.current) {
+              fillBarRef.current.style.width = `${idx * (cardW + gapPx)}px`;
+            }
 
             // Translate desc to follow the active card (x = current scroll-wrap offset)
             if (descRef.current) {

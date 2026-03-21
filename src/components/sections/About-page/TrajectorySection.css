@@ -60,14 +60,14 @@
 
 /* ── Cards track ──────────────────────────────────────────────── */
 /*
-  gap = --space-2xl (128 px).
-  Width formula: 4 cards + 3 gaps fill the viewport after the left
-  margin, so card 5 starts just beyond the right edge.
+  gap = --ts-gap (set by JS).
+  imgW fills the viewport: shown × imgW + gapCount × VISUAL_GAP = vw − 2×pxPage.
+  CSS column gap = VISUAL_GAP + imgW/4 so image edges never overlap.
 */
 .ts__track {
   display: flex;
   align-items: flex-end;   /* bottoms flush → image base sits at timeline */
-  gap: var(--space-2xl);
+  gap: var(--ts-gap, var(--space-2xl));  /* JS reduces this to fit square images */
   padding-left: var(--px-page);
   /* no flex:1 — natural height from card content */
 }
@@ -97,10 +97,12 @@
   color: var(--gray-700);
 }
 
-/* ── Image wrapper — 3∶4 portrait, clips for parallax ────────── */
+/* ── Image wrapper — 1∶1 square, height same as old 3∶4 portrait ─
+   imgW (= cardW × 4/3) is computed in JS and stored as --ts-img-w,
+   so height (= imgW via 1:1) equals the original portrait height. */
 .ts__img-wrap {
-  aspect-ratio: 3 / 4;
-  width: 100%;
+  aspect-ratio: 1 / 1;
+  width: var(--ts-img-w, 294px);
   overflow: hidden;
   position: relative;
   flex-shrink: 0;
@@ -141,7 +143,7 @@
 .ts__timeline {
   position: relative;
   display: flex;
-  gap: var(--space-2xl);   /* same gap as .ts__track */
+  gap: var(--ts-gap, var(--space-2xl));   /* same gap as .ts__track — set by JS */
   align-items: flex-start;
 }
 
@@ -168,7 +170,9 @@
   /* left set by JS in setup() */
 }
 
-/* ── Step — same width as .ts__card so dot centres align exactly ─ */
+/* ── Step — same width as .ts__card so each step spans one card column ─
+   Dot is left-aligned then nudged right by imgW/2 − half-dot-box (10px)
+   so its centre aligns with the image centre, not the card column centre. */
 .ts__step {
   flex-shrink: 0;
   width: var(--ts-card-w, 220px); /* mirrors .ts__card — set by same JS calculation */
@@ -176,7 +180,8 @@
   z-index: 2;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-left: calc(var(--ts-img-w, 294px) / 2 - 10px);
 }
 
 .ts__dot-wrap {
@@ -223,10 +228,16 @@
   background: var(--gray-700);
 }
 
-/* ── Description wrapper — JS sets translateX, width matches card ─ */
+/* ── Description wrapper — fixed height prevents layout shift ─────
+   justify-content:center on ts__inner would shift everything up/down
+   when inner desc content changes height between cards.
+   Fixed height + overflow:hidden keeps the wrapper's layout footprint
+   constant regardless of how many lines each description renders.    */
 .ts__desc-wrap {
   flex-shrink: 0;
-  width: var(--ts-card-w, 220px); /* always equal to the card image width */
+  width: var(--ts-img-w, 294px); /* matches image width (cardW × 4/3) */
+  height: 14rem;                 /* fixed — accommodates the tallest desc */
+  overflow: hidden;
   will-change: transform;
 }
 
@@ -246,7 +257,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  min-height: 8rem;
   animation: ts-desc-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -257,6 +267,7 @@
   color: var(--gray-700);
   margin: 0;
   line-height: 1.4;
+  text-wrap: nowrap;
 }
 
 /* Horizontal rule between title and body */
@@ -343,10 +354,10 @@ body.menu-open .ts__scrollbar {
     font-size: var(--fs-48pt);
   }
 
-  /* Tighter gap on smaller screens; JS re-reads gapPx on resize and recomputes --ts-card-w */
+  /* JS re-reads the original gap on resize and recomputes --ts-gap */
   .ts__track,
   .ts__timeline {
-    gap: var(--space-xl);
+    gap: var(--ts-gap, var(--space-xl));
   }
 
   .ts__year {
@@ -354,6 +365,6 @@ body.menu-open .ts__scrollbar {
   }
 
   .ts__desc-wrap {
-    width: var(--ts-card-w, 140px);
+    width: var(--ts-img-w, 187px);
   }
 }
