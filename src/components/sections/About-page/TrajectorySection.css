@@ -161,7 +161,7 @@
 .ts__timeline-fill {
   position: absolute;
   top: 10px;
-  height: 1.5px;
+  height: 2px;
   width: 0px;
   background: var(--gray-700);
   z-index: 1;
