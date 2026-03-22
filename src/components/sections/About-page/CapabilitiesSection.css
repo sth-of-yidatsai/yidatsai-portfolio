@@ -1,0 +1,258 @@
+/* ================================================================
+   CapabilitiesSection — about-page section
+   Dark background, five capability rows with cursor-following image.
+   Uses global --px-page fluid margin, --font-hatton, color system.
+   ================================================================ */
+
+/* ── Outer section ─────────────────────────────────────────────── */
+.cs {
+  background: var(--gray-900);
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-2xl);
+  position: relative;
+  /* Capture pointer events for mouse tracking */
+}
+
+/* ── Header ────────────────────────────────────────────────────── */
+.cs__header {
+  padding-left: var(--px-page);
+  padding-right: var(--px-page);
+  padding-bottom: var(--space-xl);
+}
+
+.cs__subtitle {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin: 0 0 var(--space-md);
+}
+
+.cs__title {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-extralight);
+  font-size: var(--fs-56pt);
+  color: var(--gray-25);
+  line-height: 1.05;
+  margin: 0;
+}
+
+/* ── Rows container ────────────────────────────────────────────── */
+.cs__rows {
+  padding-left: var(--px-page);
+  padding-right: var(--px-page);
+}
+
+/* ── Single row ────────────────────────────────────────────────── */
+.cs__row {
+  display: grid;
+  grid-template-columns: 80px 1fr 360px;
+  align-items: center;
+  gap: var(--space-lg);
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  border-top: 1px solid var(--gray-700);
+  cursor: none;
+  transition: background 0.3s ease;
+}
+
+.cs__row:last-child {
+  border-bottom: 1px solid var(--gray-700);
+}
+
+/* ── Row number ────────────────────────────────────────────────── */
+.cs__num {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-regular);
+  color: var(--gray-600);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  align-self: flex-start;
+  padding-top: 0.2em;
+}
+
+/* ── Item title ────────────────────────────────────────────────── */
+.cs__item-title {
+  font-size: var(--fs-40pt);
+  margin: 0;
+  line-height: 1.1;
+  padding-left: var(--space-xl);
+}
+
+/* Clipping wrapper — overflow hidden crops the sliding spans */
+.cs__title-wrap {
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Normal state: ultralight upright — sits in flow, gives wrap its height */
+.cs__title-normal {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-extralight);
+  font-style: normal;
+  color: var(--gray-100);
+  display: block;
+  transform: translateY(0);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hover layer: light-italic — starts below, overlaid via absolute */
+.cs__title-hover {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-light);
+  font-style: italic;
+  color: var(--gray-0);
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(100%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+/* Hover: normal slides up out, italic slides up into view */
+.cs__row--hover .cs__title-normal {
+  transform: translateY(-100%);
+}
+
+.cs__row--hover .cs__title-hover {
+  transform: translateY(0);
+}
+
+/* ── Description column ────────────────────────────────────────── */
+.cs__desc {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.cs__desc-bullet {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: var(--gray-500);
+  flex-shrink: 0;
+  margin-top: 0.35em;
+  transition: background 0.3s ease;
+}
+
+.cs__row--hover .cs__desc-bullet {
+  background: var(--gray-300);
+}
+
+.cs__desc-text {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-regular);
+  color: var(--gray-400);
+  line-height: 1.55;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.cs__row--hover .cs__desc-text {
+  color: var(--gray-200);
+}
+
+/* ── Cursor-following image ─────────────────────────────────────
+   Fixed to viewport, offset so image is centred on cursor.
+   Width 320px → height = 320 × 4/3 ≈ 427px (3:4 portrait).
+   translate() set by JS → margin offsets centre on cursor. */
+.cs__img-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* Shift so image is centred on cursor: -width/2, -height/2 */
+  margin-left: -160px;
+  margin-top: -213px;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.cs__img-cursor--visible {
+  opacity: 1;
+}
+
+/* ── 3:4 portrait frame ─────────────────────────────────────────── */
+.cs__img-frame {
+  width: 320px;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Image — slightly oversized for parallax room ──────────────── */
+.cs__img {
+  width: 108%;
+  height: 108%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  margin: -4%;
+  transition: transform 0.4s ease;
+  will-change: transform;
+}
+
+/* Parallax scroll classes (mirrors TrajectorySection pattern) */
+.cs__img.scroll-vertical-up      { transform: translateY(-12px) translateZ(0); }
+.cs__img.scroll-vertical-down    { transform: translateY(12px)  translateZ(0); }
+.cs__img.scroll-horizontal-right { transform: translateX(16px)  translateZ(0); }
+.cs__img.scroll-horizontal-left  { transform: translateX(-16px) translateZ(0); }
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .cs__title {
+    font-size: var(--fs-48pt);
+  }
+
+  .cs__row {
+    grid-template-columns: 56px 1fr;
+    grid-template-rows: auto auto;
+    row-gap: var(--space-md);
+  }
+
+  .cs__desc {
+    grid-column: 1 / -1;
+  }
+
+  .cs__item-title {
+    font-size: var(--fs-32pt);
+    padding-left: var(--space-md);
+  }
+
+  .cs__img-frame {
+    width: 240px;
+  }
+
+  .cs__img-cursor {
+    margin-left: -120px;
+    margin-top: -160px;
+  }
+}
+
+@media (max-width: 600px) {
+  .cs__row {
+    grid-template-columns: 48px 1fr;
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
+  }
+
+  .cs__item-title {
+    font-size: var(--fs-28pt);
+  }
+
+  /* Hide cursor image on touch devices */
+  .cs__img-cursor {
+    display: none;
+  }
+}

@@ -1,0 +1,109 @@
+import { useRef, useState, useEffect, useCallback } from "react";
+import { useImageParallax } from "../../../hooks/useImageParallax";
+import "./CapabilitiesSection.css";
+
+const ITEMS = [
+  {
+    num: "01",
+    title: "Interface Design",
+    desc: "UI / UX design, layout systems, and interaction flow.",
+    image: "/images/about/01.webp",
+  },
+  {
+    num: "02",
+    title: "Web Development",
+    desc: "Frontend implementation with modern frameworks and responsive systems.",
+    image: "/images/about/02.webp",
+  },
+  {
+    num: "03",
+    title: "Brand & Visual Design",
+    desc: "Identity systems, typography, and visual language.",
+    image: "/images/about/03.webp",
+  },
+  {
+    num: "04",
+    title: "Editorial & Print",
+    desc: "Publication design, printed materials, and physical outputs.",
+    image: "/images/about/04.webp",
+  },
+  {
+    num: "05",
+    title: "Creative Direction",
+    desc: "Concept development, visual strategy, and cross-medium execution.",
+    image: "/images/about/05.webp",
+  },
+];
+
+export default function CapabilitiesSection() {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const imgWrapRef = useRef(null);
+  const rafRef = useRef(null);
+  const { scrollClass } = useImageParallax();
+
+  const handleMouseMove = useCallback((e) => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const x = e.clientX;
+    const y = e.clientY;
+    rafRef.current = requestAnimationFrame(() => {
+      if (imgWrapRef.current) {
+        imgWrapRef.current.style.transform = `translate(${x}px, ${y}px)`;
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  return (
+    <section className="cs" onMouseMove={handleMouseMove}>
+      {/* Header */}
+      <div className="cs__header">
+        <p className="cs__subtitle">Capabilities</p>
+        <h2 className="cs__title hatton-ultralight">Areas of Expertise</h2>
+      </div>
+
+      {/* Rows */}
+      <div className="cs__rows">
+        {ITEMS.map((item, i) => (
+          <div
+            key={i}
+            className={`cs__row${hoveredIndex === i ? " cs__row--hover" : ""}`}
+            onMouseEnter={() => setHoveredIndex(i)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            <span className="cs__num">({item.num})</span>
+            <h3 className="cs__item-title">
+              <span className="cs__title-wrap">
+                <span className="cs__title-normal">{item.title}</span>
+                <span className="cs__title-hover" aria-hidden="true">{item.title}</span>
+              </span>
+            </h3>
+            <div className="cs__desc">
+              <span className="cs__desc-bullet" aria-hidden="true" />
+              <p className="cs__desc-text">{item.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Cursor-following image (fixed, translates to mouse position) */}
+      <div
+        ref={imgWrapRef}
+        className={`cs__img-cursor${hoveredIndex !== null ? " cs__img-cursor--visible" : ""}`}
+      >
+        <div className="cs__img-frame">
+          <img
+            className={`cs__img ${scrollClass}`}
+            src={hoveredIndex !== null ? ITEMS[hoveredIndex].image : ITEMS[0].image}
+            alt=""
+            draggable="false"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
