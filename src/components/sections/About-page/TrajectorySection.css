@@ -23,21 +23,20 @@
 .ts__title {
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight);
-  font-size: var(--fs-64pt);
-  color: var(--gray-800);
-  letter-spacing: 0.1em;
-  line-height: 1.08;
-  margin: 0 0 var(--space-lg) 0;
-  text-transform: uppercase;
+  font-size: var(--fs-56pt);
+  color: var(--gray-700);
+  line-height: 1.05;
+  margin: 0;
 }
 
 .ts__subtitle {
   font-family: var(--font-manrope);
-  font-weight: var(--fw-light);
-  font-size: var(--fs-14pt);
-  color: var(--gray-600);
-  letter-spacing: 0.06em;
-  margin: 0 0 0 1.25rem;
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin: 0 0 var(--space-md);
 }
 
 /* ── Pinned viewport — 100vh, content vertically centred ─────── */

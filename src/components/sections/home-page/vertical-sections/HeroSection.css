@@ -11,8 +11,8 @@
 
 .hs-section.hero-section {
   width: 100vw;
-  background: var(--color-dark) !important;
-  color: var(--color-light);
+  background: var(--gray-900) !important;
+  color: var(--gray-50);
   position: relative;
   overflow: hidden;
 }

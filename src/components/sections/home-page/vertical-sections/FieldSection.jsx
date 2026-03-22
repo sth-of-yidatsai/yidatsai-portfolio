@@ -112,7 +112,7 @@ export default function FieldSection() {
             based in Taipei. <br />
             Bridging Visual and Digital Experiences.
             </p>
-            <p className="fs-bio-text">
+            <p className="fs-bio-text-sub">
             From visual language to digital interaction.
             </p>
           </div>

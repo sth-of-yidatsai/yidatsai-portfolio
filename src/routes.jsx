@@ -40,34 +40,30 @@ const router = createBrowserRouter([
         path: "projects",
         element: <Projects />,
         loader: projectsLoader,
-        errorElement: <ErrorPage />,
         handle: { title: () => "Projects | YI-DA TSAI" },
       },
       {
         path: "projects/page/:page",
         element: <Projects />,
         loader: projectsLoader,
-        errorElement: <ErrorPage />,
         handle: { title: () => "Projects | YI-DA TSAI" },
       },
       {
         path: "playground",
         element: <Playground />,
         loader: projectsLoader,
-        errorElement: <ErrorPage />,
         handle: { title: () => "Playground | YI-DA TSAI" },
       },
       {
         path: "projects/:id",
         element: <ProjectDetail />,
         loader: projectDetailLoader,
-        errorElement: <ErrorPage />,
         handle: { title: (data) => data?.title ? `${data.title} | YI-DA TSAI` : "Project | YI-DA TSAI" },
       },
-      { path: "error-test", element: <ErrorPage />, handle: { title: () => "Error | YI-DA TSAI" } },
       { path: "*", element: <NotFound />, handle: { title: () => "Not Found | YI-DA TSAI" } },
     ],
   },
+  { path: "error-test", element: <ErrorPage />, handle: { title: () => "Error | YI-DA TSAI" } },
 ]);
 
 export default router;

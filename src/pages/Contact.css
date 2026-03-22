@@ -5,7 +5,7 @@
 .contact-page {
   min-height: 100vh;
   padding-top: var(--space-2xl);
-  background: var(--color-bg);
+  background: var(--gray-25);
 }
 
 /* ── Hero header ──────────────────────────────────────────────── */
@@ -28,7 +28,6 @@
   font-weight: var(--fw-extralight);
   font-size: var(--fs-56pt);
   color: var(--gray-700);
-  letter-spacing: -0.02em;
   line-height: 1.05;
   margin: 0;
 }

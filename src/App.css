@@ -1,7 +1,7 @@
 /* App 層級的樣式 */
 #root {
   min-height: 100vh;
-  background-color: var(--color-bg);
+  background-color: var(--gray-25);
   display: flex;
   flex-direction: column;
   /* 確保不會阻斷子元素的 mix-blend-mode */

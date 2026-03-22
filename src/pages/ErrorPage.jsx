@@ -1,4 +1,5 @@
 import { useRouteError, Link } from "react-router-dom";
+import CustomCursor from "../components/CustomCursor";
 import "./ErrorPage.css";
 
 export default function ErrorPage() {
@@ -6,6 +7,8 @@ export default function ErrorPage() {
   console.error(error);
 
   return (
+    <>
+    <CustomCursor />
     <div className="ep-page">
       <div className="ep-inner">
         <p className="ep-label">Error</p>
@@ -28,5 +31,6 @@ export default function ErrorPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

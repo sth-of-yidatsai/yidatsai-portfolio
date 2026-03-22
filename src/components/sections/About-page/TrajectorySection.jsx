@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Phase 0 → PHASE1_END : cards 0–3 activate in sequence, track is static
 // Phase PHASE1_END → 1 : scroll-wrap shifts left to reveal card 4 (the 5th card)
-const PHASE1_END    = 0.72;
+const PHASE1_END = 0.72;
 const CONTENT_SCROLL = 1600; // px of actual content scroll
 // End pause (= VH) is added in setup() so the pin holds at 100% for one extra scroll
 
@@ -53,30 +53,30 @@ const CARDS = [
 const THUMB_PCT = 100 / CARDS.length; // 20% — one card's share of the timeline
 
 export default function TrajectorySection() {
-  const innerRef      = useRef(null);
+  const innerRef = useRef(null);
   const scrollWrapRef = useRef(null);
-  const trackRef      = useRef(null);
-  const lineRef       = useRef(null);
-  const fillBarRef    = useRef(null);
-  const descRef       = useRef(null);
-  const activeIdxRef  = useRef(0);
+  const trackRef = useRef(null);
+  const lineRef = useRef(null);
+  const fillBarRef = useRef(null);
+  const descRef = useRef(null);
+  const activeIdxRef = useRef(0);
 
   // Scrollbar refs
   const scrollbarRef = useRef(null);
-  const thumbRef     = useRef(null);
-  const stRef        = useRef(null); // stored ScrollTrigger instance
-  const dragRef      = useRef({ isDragging: false, startX: 0, startLeft: 0 });
+  const thumbRef = useRef(null);
+  const stRef = useRef(null); // stored ScrollTrigger instance
+  const dragRef = useRef({ isDragging: false, startX: 0, startLeft: 0 });
 
-  const [activeIndex,   setActiveIndex]   = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [isInSection,    setIsInSection]    = useState(false);
+  const [isInSection, setIsInSection] = useState(false);
   const { scrollClass } = useImageParallax({ inStickySection: isInSection });
 
   // ── GSAP pin + phase-based scroll ────────────────────────────────────────
   useLayoutEffect(() => {
-    const inner      = innerRef.current;
+    const inner = innerRef.current;
     const scrollWrap = scrollWrapRef.current;
-    const track      = trackRef.current;
+    const track = trackRef.current;
     if (!inner || !scrollWrap || !track) return;
 
     let ctx;
@@ -85,9 +85,9 @@ export default function TrajectorySection() {
       ctx?.revert();
       stRef.current = null;
 
-      const n        = CARDS.length;   // total cards
-      const shown    = n - 1;         // cards visible at once (last one starts off-screen)
-      const gapCount = shown - 1;     // gaps between the visible cards
+      const n = CARDS.length; // total cards
+      const shown = n - 1; // cards visible at once (last one starts off-screen)
+      const gapCount = shown - 1; // gaps between the visible cards
 
       // Read the resolved px value from the track's own padding-left (= --px-page after clamp)
       const pxPagePx = parseFloat(getComputedStyle(track).paddingLeft) || 64;
@@ -104,23 +104,24 @@ export default function TrajectorySection() {
       // the gap between the image right-edge and the next image left-edge is
       // exactly VISUAL_GAP — no overlap possible.
       const VISUAL_GAP = 24; // px between adjacent image edges
-      const imgW  = (window.innerWidth - 2 * pxPagePx - gapCount * VISUAL_GAP) / shown;
+      const imgW =
+        (window.innerWidth - 2 * pxPagePx - gapCount * VISUAL_GAP) / shown;
       const cardW = imgW * (3 / 4);
       const gapPx = VISUAL_GAP + imgW / 4; // CSS column gap
 
       // Apply CSS variables so cards, steps, img-wrap, desc-wrap and gaps always match
-      inner.style.setProperty('--ts-card-w', `${cardW}px`);
-      inner.style.setProperty('--ts-img-w',  `${imgW}px`);
-      inner.style.setProperty('--ts-gap',    `${gapPx}px`);
+      inner.style.setProperty("--ts-card-w", `${cardW}px`);
+      inner.style.setProperty("--ts-img-w", `${imgW}px`);
+      inner.style.setProperty("--ts-gap", `${gapPx}px`);
 
-      const half = imgW / 2;  // dot/line origin at image centre
+      const half = imgW / 2; // dot/line origin at image centre
 
       if (lineRef.current) {
-        lineRef.current.style.left  = `${half}px`;
+        lineRef.current.style.left = `${half}px`;
         lineRef.current.style.width = `${(n - 1) * (cardW + gapPx)}px`;
       }
       if (fillBarRef.current) {
-        fillBarRef.current.style.left  = `${half}px`;
+        fillBarRef.current.style.left = `${half}px`;
         fillBarRef.current.style.width = "0px";
       }
       // Position desc under card 0 on load
@@ -129,19 +130,19 @@ export default function TrajectorySection() {
       }
 
       // End pause: hold at 100% for one extra scroll-wheel turn (same as HorizontalScroller)
-      const endPause    = window.innerHeight * 0.2;
+      const endPause = window.innerHeight * 0.2;
       const totalScroll = CONTENT_SCROLL + endPause;
       // Fraction of totalScroll that is actual content (0 → 1 maps to content, rest is pause)
       const contentFraction = CONTENT_SCROLL / totalScroll;
 
       ctx = gsap.context(() => {
         const st = ScrollTrigger.create({
-          trigger  : inner,
-          pin      : true,
-          start    : "top top",
-          end      : `+=${totalScroll}`,
-          scrub    : 0.5,
-          id       : "trajectory-scroll",
+          trigger: inner,
+          pin: true,
+          start: "top top",
+          end: `+=${totalScroll}`,
+          scrub: 0.5,
+          id: "trajectory-scroll",
 
           onEnter() {
             setIsInSection(true);
@@ -176,9 +177,10 @@ export default function TrajectorySection() {
             }
             gsap.set(scrollWrap, { x });
 
-            const idx = cp <= PHASE1_END
-              ? Math.min(n - 2, Math.round((cp / PHASE1_END) * (n - 2)))
-              : n - 1;
+            const idx =
+              cp <= PHASE1_END
+                ? Math.min(n - 2, Math.round((cp / PHASE1_END) * (n - 2)))
+                : n - 1;
 
             // Fill bar ends exactly at the active dot centre — CSS transition animates between steps
             if (fillBarRef.current) {
@@ -202,7 +204,10 @@ export default function TrajectorySection() {
 
     setup();
 
-    const onResize = () => { setup(); ScrollTrigger.refresh(); };
+    const onResize = () => {
+      setup();
+      ScrollTrigger.refresh();
+    };
     window.addEventListener("resize", onResize);
 
     return () => {
@@ -213,12 +218,15 @@ export default function TrajectorySection() {
     };
   }, []);
 
-
   // ── Scrollbar drag handlers ───────────────────────────────────────────────
   const handlePointerDown = (e) => {
     const thumb = thumbRef.current;
     if (!thumb) return;
-    dragRef.current = { isDragging: true, startX: e.clientX, startLeft: thumb.offsetLeft };
+    dragRef.current = {
+      isDragging: true,
+      startX: e.clientX,
+      startLeft: thumb.offsetLeft,
+    };
     thumb.setPointerCapture?.(e.pointerId);
     e.preventDefault();
   };
@@ -228,12 +236,18 @@ export default function TrajectorySection() {
     const track = scrollbarRef.current;
     if (!track || !stRef.current) return;
     const trackW = track.getBoundingClientRect().width;
-    const thumbW = trackW * THUMB_PCT / 100;
-    const delta  = e.clientX - dragRef.current.startX;
-    const newLeft = Math.max(0, Math.min(trackW - thumbW, dragRef.current.startLeft + delta));
-    const progress = (trackW - thumbW) > 0 ? newLeft / (trackW - thumbW) : 0;
+    const thumbW = (trackW * THUMB_PCT) / 100;
+    const delta = e.clientX - dragRef.current.startX;
+    const newLeft = Math.max(
+      0,
+      Math.min(trackW - thumbW, dragRef.current.startLeft + delta),
+    );
+    const progress = trackW - thumbW > 0 ? newLeft / (trackW - thumbW) : 0;
     const st = stRef.current;
-    window.scrollTo({ top: st.start + progress * (st.end - st.start), behavior: "auto" });
+    window.scrollTo({
+      top: st.start + progress * (st.end - st.start),
+      behavior: "auto",
+    });
     e.preventDefault();
   };
 
@@ -247,31 +261,35 @@ export default function TrajectorySection() {
     if (e.target === thumbRef.current) return;
     const track = scrollbarRef.current;
     if (!track || !stRef.current) return;
-    const rect  = track.getBoundingClientRect();
-    const thumbW = rect.width * THUMB_PCT / 100;
+    const rect = track.getBoundingClientRect();
+    const thumbW = (rect.width * THUMB_PCT) / 100;
     const clickX = e.clientX - rect.left;
-    const newLeft = Math.max(0, Math.min(rect.width - thumbW, clickX - thumbW / 2));
-    const progress = (rect.width - thumbW) > 0 ? newLeft / (rect.width - thumbW) : 0;
+    const newLeft = Math.max(
+      0,
+      Math.min(rect.width - thumbW, clickX - thumbW / 2),
+    );
+    const progress =
+      rect.width - thumbW > 0 ? newLeft / (rect.width - thumbW) : 0;
     const st = stRef.current;
-    window.scrollTo({ top: st.start + progress * (st.end - st.start), behavior: "auto" });
+    window.scrollTo({
+      top: st.start + progress * (st.end - st.start),
+      behavior: "auto",
+    });
   };
 
   return (
     <>
       <section className="ts">
-
         {/* Header — scrolls normally, NOT part of the pinned 100vh */}
         <div className="ts__header">
-          <h2 className="ts__title">Trajectory</h2>
-          <p className="ts__subtitle">Selected Path of Practice</p>
+          <p className="ts__subtitle">Trajectory</p>
+          <h2 className="ts__title">Areas of Practice</h2>
         </div>
 
         {/* Pinned viewport — 100vh, content vertically centred */}
         <div className="ts__inner" ref={innerRef}>
-
           {/* Scroll wrapper — track + timeline translate together in Phase 2 */}
           <div className="ts__scroll-wrap" ref={scrollWrapRef}>
-
             {/* Cards track */}
             <div className="ts__track" ref={trackRef}>
               {CARDS.map((card, i) => (
@@ -309,7 +327,6 @@ export default function TrajectorySection() {
                 ))}
               </div>
             </div>
-
           </div>
 
           {/* Description wrapper — JS sets translateX to follow active card + Phase 2 offset.
@@ -323,7 +340,6 @@ export default function TrajectorySection() {
               <p className="ts__desc-period">({CARDS[activeIndex].period})</p>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -337,7 +353,7 @@ export default function TrajectorySection() {
           className="ts__scrollbar-thumb"
           ref={thumbRef}
           style={{
-            left : `${scrollProgress * (100 - THUMB_PCT)}%`,
+            left: `${scrollProgress * (100 - THUMB_PCT)}%`,
             width: `${THUMB_PCT}%`,
           }}
           onPointerDown={handlePointerDown}

@@ -183,6 +183,16 @@
   margin: 0;
 }
 
+.fs-bio-text-sub {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: var(--gray-300);
+  margin: 0;
+}
+
 /* ────────────────────────────────────────────────
    RWD
    ──────────────────────────────────────────────── */

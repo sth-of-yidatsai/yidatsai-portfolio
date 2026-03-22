@@ -3,12 +3,19 @@
   display: flex;
   align-items: center;
   padding: var(--space-2xl) var(--px-page);
-  background: var(--gray-0);
+  background: var(--gray-25);
   font-family: var(--font-manrope), var(--font-cjk);
 }
 
 .ep-inner {
-  max-width: 560px;
+  max-width: min(50vw, 560px);
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .ep-inner {
+    max-width: 100%;
+  }
 }
 
 /* ── Eyebrow ── */
@@ -62,6 +69,7 @@
   align-items: center;
   justify-content: center;
   height: 44px;
+  flex: 1;
   padding: 0 var(--space-lg);
   font-family: var(--font-manrope);
   font-size: var(--fs-12pt);

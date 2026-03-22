@@ -29,17 +29,17 @@
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight);
     font-size: var(--fs-40pt);
-  color: var(--gray-200);
+  color: var(--gray-25);
   margin: 0 0 var(--space-lg);
   letter-spacing: 0.03em;
 }
 
 .nf-desc {
   font-size: var(--fs-12pt);
-  color: var(--gray-400);
+  color: var(--gray-300);
   line-height: 1.55;
   margin: 0;
-  font-weight: var(--fw-light);
+  font-weight: var(--fw-regular);
 }
 
 /* ── Draggable window ── */
