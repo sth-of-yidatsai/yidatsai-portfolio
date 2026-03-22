@@ -34,7 +34,7 @@
 
 .all-work__masonry {
   display: flex;
-  gap: 32px;
+  gap: var(--space-xl);
   align-items: flex-start;
 }
 
@@ -43,10 +43,10 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: var(--space-lg);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .all-work__masonry {
     flex-direction: column;
   }

@@ -19,26 +19,28 @@ const sortedProjects = [...projectsData]
 const TOTAL = sortedProjects.length;
 const TOTAL_PAGES = Math.ceil(TOTAL / PAGE_SIZE);
 
-// ─── 雙欄 Masonry 排版計算 ────────────────────────────────────────────────────
-// 以「寬度 = 1 單位」估算每張卡片的視覺高度比例，用來平衡兩欄的總高度。
-// 演算法：每次將下一張卡片放入「目前較矮」的欄位（貪婪最短欄）。
-// 結果：兩欄各自獨立堆疊，不會因為混排高矮卡片而產生大片空白。
+// ─── 三欄 Masonry 排版計算 ────────────────────────────────────────────────────
+// 以「寬度 = 1 單位」估算每張卡片的視覺高度比例，用來平衡三欄的總高度。
+// 演算法：每次將下一張卡片放入「目前最矮」的欄位（貪婪最短欄）。
+// 結果：三欄各自獨立堆疊，不會因為混排高矮卡片而產生大片空白。
 const SIZE_HEIGHT = {
   landscape: 0.75,   // 4:3 — shorter
   portrait:  1.333,  // 3:4 — taller
   square:    1.0,    // 1:1 — medium
 };
 
+const COL_COUNT = 3;
+
 function buildLayout(projects) {
-  const left = [], right = [];
-  let leftH = 0, rightH = 0;
+  const cols = Array.from({ length: COL_COUNT }, () => []);
+  const heights = Array(COL_COUNT).fill(0);
   for (const p of projects) {
     const h = SIZE_HEIGHT[p.size] ?? 0.75;
-    // 放入較矮的欄位，讓兩欄高度盡量持平
-    if (leftH <= rightH) { left.push(p); leftH += h; }
-    else                 { right.push(p); rightH += h; }
+    const shortest = heights.indexOf(Math.min(...heights));
+    cols[shortest].push(p);
+    heights[shortest] += h;
   }
-  return { left, right };
+  return cols;
 }
 
 // ─── SEO <link> tag helpers ──────────────────────────────────────────────────
@@ -204,7 +206,7 @@ export default function AllWork() {
     [navigate]
   );
 
-  const { left, right } = buildLayout(visibleProjects);
+  const cols = buildLayout(visibleProjects);
 
   return (
     <section className="all-work">
@@ -213,28 +215,19 @@ export default function AllWork() {
       </div>
 
       <div className="all-work__masonry">
-        <div className="all-work__col">
-          {left.map((p) => (
-            <ProjectCard
-              key={p.id}
-              project={p}
-              scrollClass={scrollClass}
-              onClick={() => handleCardClick(p)}
-              cardRef={(el) => { cardRefsMap.current.set(p.id, el); }}
-            />
-          ))}
-        </div>
-        <div className="all-work__col">
-          {right.map((p) => (
-            <ProjectCard
-              key={p.id}
-              project={p}
-              scrollClass={scrollClass}
-              onClick={() => handleCardClick(p)}
-              cardRef={(el) => { cardRefsMap.current.set(p.id, el); }}
-            />
-          ))}
-        </div>
+        {cols.map((col, colIdx) => (
+          <div key={colIdx} className="all-work__col">
+            {col.map((p) => (
+              <ProjectCard
+                key={p.id}
+                project={p}
+                scrollClass={scrollClass}
+                onClick={() => handleCardClick(p)}
+                cardRef={(el) => { cardRefsMap.current.set(p.id, el); }}
+              />
+            ))}
+          </div>
+        ))}
       </div>
 
       <div ref={sentinelRef} className="all-work__sentinel" aria-hidden="true" />
