@@ -11,7 +11,7 @@ import './Footer.css';
  */
 const FOOTER_ROWS = [
   {
-    nav: { label: 'PROJECT', to: '/projects' },
+    nav: { label: 'PROJECTS', to: '/projects' },
     contact: { type: 'link', href: 'mailto:hello@yidatsai.com', text: 'hello@yidatsai.com' },
   },
   {

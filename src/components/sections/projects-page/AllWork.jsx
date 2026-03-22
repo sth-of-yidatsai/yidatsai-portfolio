@@ -209,7 +209,7 @@ export default function AllWork() {
   return (
     <section className="all-work">
       <div className="all-work__header">
-        <p className="all-work__eyebrow">All Works</p>
+        <p className="all-work__eyebrow">All Projects</p>
       </div>
 
       <div className="all-work__masonry">

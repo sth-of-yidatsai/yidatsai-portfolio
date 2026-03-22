@@ -249,7 +249,7 @@ export default function SelectWork() {
   return (
     <section className="select-work">
       <div className="select-work__header">
-        <p className="select-work__eyebrow">Selected Works</p>
+        <p className="select-work__eyebrow">Selected Projects</p>
       </div>
 
       <div

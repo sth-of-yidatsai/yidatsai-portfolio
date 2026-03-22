@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./Header.css";
 
 const NAV_LINKS = [
-  { number: "01", label: "PROJECT", to: "/projects" },
+  { number: "01", label: "PROJECTS", to: "/projects" },
   { number: "02", label: "PLAYGROUND", to: "/playground" },
   { number: "03", label: "ABOUT", to: "/about" },
   { number: "04", label: "CONTACT", to: "/contact" },
