@@ -1,0 +1,108 @@
+/* ================================================================
+   BioSection — About page hero
+   Dark background, three sticky scroll-driven blocks:
+     1. Text fill (word-by-word, dark → light)
+     2. Image zoom (portrait 4:3 → fullscreen)
+     3. Text fill (same effect)
+   Uses global --px-page fluid margin, --font-hatton, color system.
+   ================================================================ */
+
+/* ── Wrapper ─────────────────────────────────────────────────── */
+.bs {
+  background: var(--gray-900);
+}
+
+/* ── Shared: each block fills the viewport ───────────────────── */
+.bs__text-block,
+.bs__img-block {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--gray-900);
+  box-sizing: border-box;
+}
+
+/* ── Text block layout ───────────────────────────────────────── */
+.bs__text-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-lg);       /* label sits space-lg above text */
+  padding: var(--px-page);
+}
+
+/* ── Section label ───────────────────────────────────────────── */
+.bs__label {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin: 0;
+}
+
+/* ── Body text — spans full content width ────────────────────── */
+.bs__text {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-extralight);
+  font-size: var(--fs-56pt);
+  line-height: 1.2;
+  margin: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  color: var(--gray-500);
+}
+
+/* Each character is inline — spaces provide natural wrap points */
+.bs__char {
+  display: inline;
+  white-space: pre-wrap;
+}
+
+/* ── Image block layout ──────────────────────────────────────── */
+.bs__img-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Size is set by JS; starts portrait 4:3, grows to 100vw×100vh */
+.bs__img-wrap {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.bs__img {
+  width: 108%;
+  height: 108%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  margin: -4%;
+  transition: transform 0.4s ease;
+  will-change: transform;
+}
+
+/* Parallax scroll classes */
+.bs__img.scroll-vertical-up      { transform: translateY(-12px) translateZ(0); }
+.bs__img.scroll-vertical-down    { transform: translateY(12px)  translateZ(0); }
+.bs__img.scroll-horizontal-right { transform: translateX(16px)  translateZ(0); }
+.bs__img.scroll-horizontal-left  { transform: translateX(-16px) translateZ(0); }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .bs__text {
+    font-size: var(--fs-40pt);
+  }
+}
+
+@media (max-width: 600px) {
+  .bs__text {
+    font-size: var(--fs-32pt);
+    line-height: 1.15;
+  }
+}

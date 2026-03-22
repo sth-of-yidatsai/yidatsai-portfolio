@@ -35,27 +35,35 @@ const ITEMS = [
   },
 ];
 
+const EASE = 0.08; // lower = more lag (0.05 sluggish, 0.15 snappy)
+
 export default function CapabilitiesSection() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const imgWrapRef = useRef(null);
   const rafRef = useRef(null);
+  const targetRef = useRef({ x: 0, y: 0 });
+  const currentRef = useRef({ x: 0, y: 0 });
   const { scrollClass } = useImageParallax();
 
   const handleMouseMove = useCallback((e) => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    const x = e.clientX;
-    const y = e.clientY;
-    rafRef.current = requestAnimationFrame(() => {
-      if (imgWrapRef.current) {
-        imgWrapRef.current.style.transform = `translate(${x}px, ${y}px)`;
-      }
-    });
+    targetRef.current.x = e.clientX;
+    targetRef.current.y = e.clientY;
   }, []);
 
+  // Persistent lerp loop — runs while section is mounted
   useEffect(() => {
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const tick = () => {
+      const cur = currentRef.current;
+      const tgt = targetRef.current;
+      cur.x += (tgt.x - cur.x) * EASE;
+      cur.y += (tgt.y - cur.y) * EASE;
+      if (imgWrapRef.current) {
+        imgWrapRef.current.style.transform = `translate(${cur.x}px, ${cur.y}px)`;
+      }
+      rafRef.current = requestAnimationFrame(tick);
     };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
   return (
