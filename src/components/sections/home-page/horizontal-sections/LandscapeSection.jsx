@@ -143,9 +143,6 @@ export default function LandscapeSection({ index, landscapeProgress = 0, landsca
   const imgLeft   = imgL0 * (1 - fsp);
   const imgTop    = imgT0 * (1 - fsp);
 
-  // Short fade-in to conceal any sub-pixel discrepancy (e.g. active parallax translate)
-  const overlayOpacity = Math.min(1, fsp / 0.06);
-
   // Fade out UI in the first 40% of the fullscreen animation
   const uiOpacity = Math.max(0, 1 - fsp / 0.4);
 
@@ -206,7 +203,7 @@ export default function LandscapeSection({ index, landscapeProgress = 0, landsca
 
       {/* Fullscreen overlay — 3rd image grows from exact frame position to full section */}
       {showFullscreen && (
-        <div className="ls-fullscreen-overlay" style={{ clipPath: overlayClip, opacity: overlayOpacity }}>
+        <div className="ls-fullscreen-overlay" style={{ clipPath: overlayClip }}>
           <img
             src={lastSlide.image}
             alt={lastSlide.leftLabel}
