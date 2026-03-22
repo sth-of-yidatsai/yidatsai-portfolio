@@ -70,8 +70,8 @@ export default function HorizontalScroller() {
       gsap.set(scroller, { width: totalWidth });
 
       // ── Scroll distance constants ──────────────────────────────────
-      const startPauseH = VH * 0.2;
-      const endPauseH   = VH * 0.3;
+      const startPauseH = VH * 0.1;
+      const endPauseH   = VH * 0.2;
 
       // Landscape section pause zone (2 image transitions × VH each)
       const landscapeIdx = sections.findIndex((s) => s.id === "landscape");
