@@ -67,7 +67,7 @@
   font-family: var(--font-manrope);
   font-size: var(--fs-12pt);
   font-weight: var(--fw-regular);
-  color: var(--gray-600);
+  color: var(--gray-400);
   line-height: 1;
   letter-spacing: 0.04em;
   white-space: nowrap;
@@ -83,25 +83,27 @@
   padding-left: var(--space-xl);
 }
 
-/* Clipping wrapper — overflow hidden crops the sliding spans */
+/* Clipping wrapper — overflow hidden crops the sliding spans.
+   padding-bottom gives room for descenders so they are not clipped. */
 .cs__title-wrap {
   display: block;
   overflow: hidden;
   position: relative;
+  padding-bottom: 0.2em;
 }
 
-/* Normal state: ultralight upright — sits in flow, gives wrap its height */
+/* Normal state — sits in flow, gives wrap its height */
 .cs__title-normal {
-  font-family: var(--font-hatton);
+  font-family: var(--font-manrope);
   font-weight: var(--fw-extralight);
   font-style: normal;
-  color: var(--gray-100);
+  color: var(--gray-200);
   display: block;
   transform: translateY(0);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Hover layer: light-italic — starts below, overlaid via absolute */
+/* Hover layer: light-italic — starts below the padding gap so nothing peeks */
 .cs__title-hover {
   font-family: var(--font-hatton);
   font-weight: var(--fw-light);
@@ -112,14 +114,14 @@
   top: 0;
   left: 0;
   width: 100%;
-  transform: translateY(100%);
+  transform: translateY(125%);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
 
 /* Hover: normal slides up out, italic slides up into view */
 .cs__row--hover .cs__title-normal {
-  transform: translateY(-100%);
+  transform: translateY(calc(-100% - 0.2em));
 }
 
 .cs__row--hover .cs__title-hover {
@@ -139,7 +141,7 @@
   height: 7px;
   background: var(--gray-500);
   flex-shrink: 0;
-  margin-top: 0.35em;
+  margin-top: 0.6em;
   transition: background 0.3s ease;
 }
 
