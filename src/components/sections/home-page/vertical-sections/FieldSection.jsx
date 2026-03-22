@@ -108,7 +108,9 @@ export default function FieldSection() {
           </div>
           <div className="fs-bio-block">
             <p className="fs-bio-text">
-              A designer exploring the intersection of typography, material, and visual systems. Focused on creating thoughtful works that balance aesthetics and structure.
+            Multidisciplinary Designer <br />
+            based in Taipei. <br />
+            Bridging Visual and Digital Experiences.
             </p>
           </div>
         </div>

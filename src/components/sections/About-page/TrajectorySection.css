@@ -282,11 +282,12 @@
 
 .ts__desc-body {
   font-family: var(--font-manrope);
-  font-weight: var(--fw-regular);
   font-size: var(--fs-12pt);
+  font-weight: var(--fw-regular);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
   color: var(--gray-500);
   margin: 0;
-  line-height: 1.6;
 }
 
 /* ── Period — small, grey, italic ─────────────────────────────── */

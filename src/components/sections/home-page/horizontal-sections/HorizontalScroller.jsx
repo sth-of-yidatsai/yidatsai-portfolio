@@ -32,6 +32,7 @@ export default function HorizontalScroller() {
 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [landscapeProgress, setLandscapeProgress] = useState(0);
+  const [landscapeFullscreenProgress, setLandscapeFullscreenProgress] = useState(0);
   const [isInHorizontalSection, setIsInHorizontalSection] = useState(false);
   const colors = {
     track: getCSSVar("--gray-100", "#e0e0e0"),
@@ -74,7 +75,8 @@ export default function HorizontalScroller() {
 
       // Landscape section pause zone (2 image transitions × VH each)
       const landscapeIdx = sections.findIndex((s) => s.id === "landscape");
-      const landscapePauseH = landscapeIdx !== -1 ? VH * 2 : 0;
+      const landscapePauseH      = landscapeIdx !== -1 ? VH * 2 : 0;
+      const landscapeFullscreenH = landscapeIdx !== -1 ? VH * 1 : 0; // fullscreen expand phase
 
       // Horizontal distances split around landscape pause
       const horizBefore = landscapeIdx !== -1 ? landscapeIdx * VW : (sections.length - 1) * VW;
@@ -82,20 +84,22 @@ export default function HorizontalScroller() {
       const totalHoriz  = horizBefore + horizAfter;
 
       const totalScrollDistance =
-        startPauseH + horizBefore + landscapePauseH + horizAfter + endPauseH;
+        startPauseH + horizBefore + landscapePauseH + landscapeFullscreenH + horizAfter + endPauseH;
 
       // ── Normalised thresholds (fraction of totalScrollDistance) ───
-      const t1 = startPauseH / totalScrollDistance;                                              // end of start pause
-      const t2 = (startPauseH + horizBefore) / totalScrollDistance;                             // landscape centred
-      const t3 = (startPauseH + horizBefore + landscapePauseH) / totalScrollDistance;           // landscape pause ends
-      const t4 = (startPauseH + horizBefore + landscapePauseH + horizAfter) / totalScrollDistance; // end of horiz scroll
+      const t1  = startPauseH / totalScrollDistance;                                                                            // end of start pause
+      const t2  = (startPauseH + horizBefore) / totalScrollDistance;                                                           // landscape centred
+      const t3  = (startPauseH + horizBefore + landscapePauseH) / totalScrollDistance;                                         // image transitions done
+      const t3b = (startPauseH + horizBefore + landscapePauseH + landscapeFullscreenH) / totalScrollDistance;                  // fullscreen expand done
+      const t4  = (startPauseH + horizBefore + landscapePauseH + landscapeFullscreenH + horizAfter) / totalScrollDistance;     // end of horiz scroll
 
       // ── Duration fractions for GSAP timeline ──────────────────────
-      const d_start   = startPauseH   / totalScrollDistance;
-      const d_hBefore = horizBefore   / totalScrollDistance;
-      const d_lPause  = landscapePauseH / totalScrollDistance;
-      const d_hAfter  = horizAfter    / totalScrollDistance;
-      const d_end     = endPauseH     / totalScrollDistance;
+      const d_start      = startPauseH        / totalScrollDistance;
+      const d_hBefore    = horizBefore        / totalScrollDistance;
+      const d_lPause     = landscapePauseH    / totalScrollDistance;
+      const d_lFullscreen = landscapeFullscreenH / totalScrollDistance;
+      const d_hAfter     = horizAfter         / totalScrollDistance;
+      const d_end        = endPauseH          / totalScrollDistance;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -108,35 +112,47 @@ export default function HorizontalScroller() {
           onUpdate: (self) => {
             let hProgress = 0;
             let lProgress = 0;
+            let fsProgress = 0;
 
             if (self.progress <= t1) {
               // Start pause
               hProgress = 0;
               lProgress = 0;
+              fsProgress = 0;
             } else if (self.progress <= t2) {
               // Scrolling toward landscape
               const frac = (t2 - t1) > 0 ? (self.progress - t1) / (t2 - t1) : 0;
               hProgress  = totalHoriz > 0 ? frac * (horizBefore / totalHoriz) : 0;
               lProgress  = 0;
+              fsProgress = 0;
             } else if (self.progress <= t3) {
               // Landscape pause — image transitions
               hProgress  = totalHoriz > 0 ? horizBefore / totalHoriz : 0;
               lProgress  = (t3 - t2) > 0 ? (self.progress - t2) / (t3 - t2) : 0;
+              fsProgress = 0;
+            } else if (self.progress <= t3b) {
+              // Landscape fullscreen expand
+              hProgress  = totalHoriz > 0 ? horizBefore / totalHoriz : 0;
+              lProgress  = 1;
+              fsProgress = (t3b - t3) > 0 ? (self.progress - t3) / (t3b - t3) : 0;
             } else if (self.progress <= t4) {
               // Scrolling from landscape to end
-              const frac = (t4 - t3) > 0 ? (self.progress - t3) / (t4 - t3) : 0;
+              const frac = (t4 - t3b) > 0 ? (self.progress - t3b) / (t4 - t3b) : 0;
               hProgress  = totalHoriz > 0
                 ? horizBefore / totalHoriz + frac * (horizAfter / totalHoriz)
                 : frac;
               lProgress  = 1;
+              fsProgress = 1;
             } else {
               // End pause
-              hProgress = 1;
-              lProgress = 1;
+              hProgress  = 1;
+              lProgress  = 1;
+              fsProgress = 1;
             }
 
             setScrollProgress(hProgress);
             setLandscapeProgress(lProgress);
+            setLandscapeFullscreenProgress(fsProgress);
           },
           onEnter: () => {
             setIsInHorizontalSection(true);
@@ -173,7 +189,7 @@ export default function HorizontalScroller() {
           tl.to(
             scroller,
             { x: -(horizBefore + horizAfter), ease: "none", duration: d_hAfter },
-            `+=${d_lPause}`   // ← gap: starts d_lPause after Phase 2 ends
+            `+=${d_lPause + d_lFullscreen}`   // ← gap: landscape transitions + fullscreen expand
           );
         }
         // Phase 5: end pause
@@ -395,6 +411,7 @@ export default function HorizontalScroller() {
                       config={section}
                       index={index}
                       landscapeProgress={landscapeProgress}
+                      landscapeFullscreenProgress={landscapeFullscreenProgress}
                     />
                   );
                 case "projects":

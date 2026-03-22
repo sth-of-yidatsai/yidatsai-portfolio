@@ -172,6 +172,27 @@
   z-index: 1;
 }
 
+/* ── Fullscreen overlay ───────────────────────────────────────────── */
+
+/* Transparent container covering the full section; clips the growing image */
+.ls-fullscreen-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Image grows from frame bounds to full section via inline left/top/width/height */
+.ls-fullscreen-img {
+  position: absolute;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+  display: block;
+  will-change: left, top, width, height;
+}
+
 /* ── Caption ──────────────────────────────────────────────────────── */
 
 .ls-caption {
