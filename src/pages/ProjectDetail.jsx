@@ -1,24 +1,38 @@
-import React from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
+import BlockRenderer from '../components/blocks/BlockRenderer';
+import './ProjectDetail.css';
 
 export default function ProjectDetail() {
   const project = useLoaderData();
 
+  if (project.blocks) {
+    return (
+      <main className="project-detail project-detail--blocks">
+        <BlockRenderer blocks={project.blocks} project={project} />
+      </main>
+    );
+  }
+
+  // Fallback: no blocks defined — render plain image list
   return (
-    <div style={{ padding: '100px 24px', maxWidth: 1200, margin: '0 auto' }}>
-      <div style={{ marginBottom: 24 }}>
-        <Link to="/projects">← 返回作品牆</Link>
+    <main className="project-detail project-detail--fallback">
+      <div className="project-detail__back">
+        <Link to="/projects">← Back</Link>
       </div>
-      <h1 style={{ marginBottom: 8 }}>{project.title}</h1>
-      <div style={{ opacity: 0.6, marginBottom: 24 }}>{project.year}</div>
-      <div style={{ display: 'grid', gap: 24 }}>
+      <h1 className="project-detail__title">{project.title}</h1>
+      <p className="project-detail__year">{project.year}</p>
+      {project.description && (
+        <p className="project-detail__desc">{project.description}</p>
+      )}
+      <div className="project-detail__images">
         {project.images?.map((filename, idx) => (
-          <img key={idx} src={`/images/projects/${project.id}/${filename}`} alt={`${project.title} ${idx + 1}`} />
+          <img
+            key={idx}
+            src={`/images/projects/${project.id}/${filename}`}
+            alt={`${project.title} ${idx + 1}`}
+          />
         ))}
       </div>
-      <p style={{ marginTop: 24 }}>{project.description}</p>
-    </div>
+    </main>
   );
 }
-
-

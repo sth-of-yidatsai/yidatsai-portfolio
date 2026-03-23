@@ -1,0 +1,41 @@
+.project-detail--fallback {
+  padding: 120px var(--px-page) var(--space-2xl);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.project-detail__back {
+  margin-bottom: var(--space-xl);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.project-detail__title {
+  margin-bottom: var(--space-sm);
+}
+
+.project-detail__year {
+  color: var(--gray-400);
+  margin-bottom: var(--space-xl);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+.project-detail__desc {
+  max-width: var(--max-width-narrow);
+  color: var(--gray-600);
+  line-height: 1.8;
+  margin-bottom: var(--space-xl);
+}
+
+.project-detail__images {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.project-detail__images img {
+  width: 100%;
+  height: auto;
+  display: block;
+}

@@ -24,10 +24,65 @@
       "16.webp",
       "17.webp"
     ],
-    "description": "The diverse terrain and climates of Taiwan have given birth to a wide spectrum of plant life. Taiwan was once known as \"Formosa\", meaning \"beautiful island\" in Portuguese. Our hope is to take its meaning, interpret it, and create font designs showcasing Taiwan's flora and our precious island's biodiversity.",
+    "description": "Inspired by Taiwan’s diverse climate and terrain, this project transforms the idea of “Formosa” into a typographic expression. By integrating Latin letterforms with native flora, we reinterpret the island’s rich biodiversity through design.",
     "category": ["Editorial", "Book", "Typography", "Type Design"],
     "tags": ["Botanical", "Taiwan"],
-    "size": "portrait"
+    "size": "portrait",
+    "blocks": [
+      {
+        "type": "hero",
+        "image": "/images/projects/formosa-font/03.webp"
+      },
+      {
+        "type": "section-title",
+        "bg": "var(--linen-300)",
+        "color": "var(--gray-300)",
+        "fillColor": "var(--gray-900)"
+      },
+      {
+        "type": "full-image",
+        "src": "/images/projects/formosa-font/02.webp",
+        "alt": "Formosa Font spread"
+      },
+      {
+        "type": "quote",
+        "text": "Taiwan was once known as 'Formosa', meaning 'beautiful island' in Portuguese.",
+        "author": "Historical Record"
+      },
+      {
+        "type": "image-left-text-right",
+        "image": "/images/projects/formosa-font/06.webp",
+        "label": "Type Design",
+        "title": "Flora as Form",
+        "text": "Each character is inspired by the unique shapes of Taiwan's native flora, blending botanical illustration with typographic precision."
+      },
+      {
+        "type": "image-grid",
+        "images": [
+          "/images/projects/formosa-font/07.webp",
+          "/images/projects/formosa-font/08.webp",
+          "/images/projects/formosa-font/09.webp",
+          "/images/projects/formosa-font/10.webp",
+          "/images/projects/formosa-font/11.webp",
+          "/images/projects/formosa-font/12.webp"
+        ],
+        "columns": 3
+      },
+      {
+        "type": "image",
+        "src": "/images/projects/formosa-font/15.webp",
+        "bg": "var(--gray-100)",
+        "ratio": "1:1"
+      },
+      {
+        "type": "spacer",
+        "size": "xl"
+      },
+      {
+        "type": "text",
+        "content": "The diverse terrain and climates of Taiwan have given birth to a wide spectrum of plant life. Taiwan was once known as \"Formosa\", meaning \"beautiful island\" in Portuguese. Our hope is to take its meaning, interpret it, and create font designs showcasing Taiwan's flora and our precious island's biodiversity."
+      }
+    ]
   },
   {
     "id": "taiwan-glass-notebook",

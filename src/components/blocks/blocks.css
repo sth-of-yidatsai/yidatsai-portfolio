@@ -1,0 +1,555 @@
+/* ============================================================
+   BLOCK SYSTEM — 每個 block 是獨立 section，互不干擾
+   ============================================================ */
+
+/* ── HERO ── */
+.block--hero {
+  width: 100vw;
+  height: 100svh;
+  min-height: 600px;
+  background: var(--gray-900);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景圖（仿 carousel-slide，但固定單張）
+   inset: -20px 讓 bg 比 section 大，視差位移時不露出邊緣 */
+.block--hero__bg {
+  position: absolute;
+  inset: -20px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.block--hero__bg.scroll-vertical-up   { transform: translate3d(0, -8px, 0); }
+.block--hero__bg.scroll-vertical-down { transform: translate3d(0,  8px, 0); }
+
+/* 底部資訊欄 */
+.block--hero__info-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 72px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+}
+
+.block--hero__info-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(48px) saturate(180%) brightness(0.96);
+  -webkit-backdrop-filter: blur(48px) saturate(180%) brightness(0.96);
+  background: rgba(255, 255, 255, 0.04);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.block--hero__title-section,
+.block--hero__year-section,
+.block--hero__tag-section {
+  height: 100%;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 0 var(--space-md);
+  display: flex;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.block--hero__title-section {
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.block--hero__info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+}
+
+.block--hero__info-label {
+  font-size: var(--fs-8pt, 0.625rem);
+  font-weight: var(--fw-bold, 700);
+  color: var(--gray-50);
+  opacity: 0.45;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.block--hero__info-value {
+  font-size: var(--fs-12pt, 0.75rem);
+  font-weight: var(--fw-medium, 500);
+  color: var(--gray-50);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Tag list */
+.block--hero__tag-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--space-sm);
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+}
+
+.block--hero__tag-item {
+  color: var(--gray-50);
+  font-size: var(--fs-8pt, 0.625rem);
+  font-weight: var(--fw-medium, 500);
+  letter-spacing: 0.05em;
+  padding: var(--space-xs) 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  white-space: nowrap;
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .block--hero__info-panel {
+    height: 70px;
+  }
+}
+
+/* ── TEXT ── */
+.block--text {
+  padding: var(--space-xl) var(--px-page);
+}
+
+.block--text__inner {
+  max-width: var(--max-width-narrow);
+  margin: 0 auto;
+}
+
+.block--text--center .block--text__inner {
+  text-align: center;
+}
+
+.block--text__content {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--gray-600);
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+/* ── IMAGE (sticky zoom) ── */
+.block--image {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* inset:0 + margin:auto = 完美置中，不需要 transform */
+.block--image__wrap {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  overflow: hidden;
+}
+
+/* 仿 BioSection bs__img：108%×108% + margin -4% 建立視差緩衝 */
+.block--image__img {
+  width: 108%;
+  height: 108%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  margin: -4%;
+  transition: transform 0.4s ease;
+  will-change: transform;
+}
+
+.block--image__img.scroll-vertical-up   { transform: translateY(-8px) translateZ(0); }
+.block--image__img.scroll-vertical-down { transform: translateY(8px)  translateZ(0); }
+
+/* ── FULL IMAGE ── */
+.block--full-image {
+  width: 100%;
+  line-height: 0;
+}
+
+.block--full-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.block--full-image__caption {
+  padding: var(--space-sm) var(--px-page);
+  font-size: 0.78rem;
+  color: var(--gray-400);
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+}
+
+/* ── IMAGE LEFT TEXT RIGHT / IMAGE RIGHT TEXT LEFT ── */
+.block--image-left-text-right,
+.block--image-right-text-left {
+  padding: var(--space-xl) var(--px-page);
+}
+
+.block--split__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+.block--image-right-text-left .block--split__image {
+  order: 2;
+}
+
+.block--image-right-text-left .block--split__text {
+  order: 1;
+}
+
+.block--split__image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.block--split__text__label {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: var(--space-sm);
+}
+
+.block--split__text h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: var(--font-bold);
+  margin: 0 0 var(--space-md);
+  letter-spacing: -0.01em;
+}
+
+.block--split__text p {
+  color: var(--gray-600);
+  line-height: 1.8;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .block--split__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .block--image-right-text-left .block--split__image,
+  .block--image-right-text-left .block--split__text {
+    order: unset;
+  }
+}
+
+/* ── IMAGE GRID ── */
+.block--image-grid {
+  width: 100vw;
+  height: 120vh;
+  padding: 0;
+}
+
+.block--image-grid__inner {
+  display: grid;
+  gap: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.block--image-grid--2 .block--image-grid__inner { grid-template-columns: repeat(2, 1fr); }
+.block--image-grid--3 .block--image-grid__inner { grid-template-columns: repeat(3, 1fr); }
+.block--image-grid--4 .block--image-grid__inner { grid-template-columns: repeat(4, 1fr); }
+
+.block--image-grid__item {
+  height: 100%;
+  overflow: hidden;
+}
+
+.block--image-grid__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .block--image-grid--3 .block--image-grid__inner,
+  .block--image-grid--4 .block--image-grid__inner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .block--image-grid--2 .block--image-grid__inner,
+  .block--image-grid--3 .block--image-grid__inner,
+  .block--image-grid--4 .block--image-grid__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── QUOTE ── */
+.block--quote {
+  padding: var(--space-2xl) var(--px-page);
+}
+
+.block--quote__inner {
+  max-width: var(--max-width-narrow);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.block--quote__mark {
+  font-size: 5rem;
+  line-height: 0.5;
+  color: var(--gray-200);
+  font-family: var(--font-latin), serif;
+  display: block;
+  margin-bottom: var(--space-lg);
+}
+
+.block--quote__text {
+  font-size: clamp(1.1rem, 2.5vw, 1.75rem);
+  line-height: 1.55;
+  color: var(--gray-700);
+  font-weight: var(--font-light);
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.block--quote__author {
+  margin-top: var(--space-lg);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+}
+
+.block--quote__author::before {
+  content: "— ";
+}
+
+/* ── SECTION TITLE ── */
+.block--section-title {
+  padding: var(--space-xl) var(--px-page) var(--space-lg);
+}
+
+.block--section-title__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-top: var(--space-lg);
+}
+
+.block--section-title__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: var(--space-sm);
+}
+
+.block--section-title__title {
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-weight: var(--font-bold);
+  color: var(--gray-700);
+  margin: 0 0 var(--space-sm);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.block--section-title__subtitle {
+  color: var(--gray-500);
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── SECTION TITLE — sticky scroll-fill variant ── */
+.block--section-title--sticky {
+  background: var(--gray-900);
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-lg);
+  padding: var(--px-page);
+  box-sizing: border-box;
+}
+
+/* inner 不限寬，讓大字撐滿全版 */
+.block--section-title--sticky .block--section-title__inner {
+  max-width: none;
+  padding-top: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.block--section-title--sticky .block--section-title__label {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt, 0.7rem);
+  font-weight: var(--fw-semibold, 600);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin: 0;
+}
+
+/* Title — 與 BioSection bs__text 相同：Hatton ultralight fs-56pt */
+.block--section-title--sticky .block--section-title__title {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-extralight, 200);
+  font-size: var(--fs-56pt);
+  line-height: 1.2;
+  letter-spacing: normal;
+  margin: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Description — 同字體，稍小 */
+.block--section-title--sticky .block--section-title__subtitle {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-extralight, 200);
+  font-size: var(--fs-32pt, clamp(1.5rem, 3vw, 2.5rem));
+  line-height: 1.35;
+  margin: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* 各文字 span — inline 自然折行 */
+.block--section-title__char {
+  display: inline;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+  .block--section-title--sticky .block--section-title__title {
+    font-size: var(--fs-40pt, clamp(2rem, 6vw, 3rem));
+  }
+  .block--section-title--sticky .block--section-title__subtitle {
+    font-size: var(--fs-24pt, clamp(1.2rem, 2.5vw, 1.8rem));
+  }
+}
+
+@media (max-width: 600px) {
+  .block--section-title--sticky .block--section-title__title {
+    font-size: var(--fs-32pt, clamp(1.5rem, 5vw, 2.5rem));
+    line-height: 1.15;
+  }
+  .block--section-title--sticky .block--section-title__subtitle {
+    font-size: var(--fs-20pt, clamp(1rem, 3vw, 1.5rem));
+  }
+}
+
+/* ── SPACER ── */
+.block--spacer--sm {
+  height: 32px;
+}
+
+.block--spacer--md {
+  height: 64px;
+}
+
+.block--spacer--lg {
+  height: 128px;
+}
+
+.block--spacer--xl {
+  height: 200px;
+}
+
+/* ── VIDEO ── */
+.block--video {
+  padding: var(--space-lg) var(--px-page);
+}
+
+.block--video--wide {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.block--video--full {
+  padding: 0;
+}
+
+.block--video__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.block--video--wide .block--video__inner,
+.block--video--full .block--video__inner {
+  max-width: 100%;
+}
+
+.block--video__ratio {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+  background: var(--gray-800);
+}
+
+.block--video__ratio iframe,
+.block--video__ratio video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* ============================================================
+   PARALLAX — 全局視差圖片
+   父元素須設 overflow: hidden 才有裁切效果
+   ============================================================ */
+
+.block-parallax-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  /* scale(1.1) 四邊預留 5% 緩衝，translate ≤ 8px 絕對不會超出，永不露白 */
+  transform: scale(1.1) translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.block-parallax-img.scroll-vertical-up   { transform: scale(1.1) translate3d(0, -8px, 0); }
+.block-parallax-img.scroll-vertical-down { transform: scale(1.1) translate3d(0,  8px, 0); }
+
+/* overflow hidden — 各圖片容器 */
+.block--full-image,
+.block--split__image,
+.block--image-grid__item {
+  overflow: hidden;
+}
