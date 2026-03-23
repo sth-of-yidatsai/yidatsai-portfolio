@@ -1,6 +1,6 @@
 import HeroBlock from './HeroBlock';
 import TextBlock from './TextBlock';
-import ImageBlock from './ImageBlock';
+import LandscapeBlock from './LandscapeBlock';
 import FullImageBlock from './FullImageBlock';
 import ImageLeftTextRightBlock from './ImageLeftTextRightBlock';
 import ImageRightTextLeftBlock from './ImageRightTextLeftBlock';
@@ -13,7 +13,7 @@ import VideoBlock from './VideoBlock';
 const BLOCK_MAP = {
   'hero': HeroBlock,
   'text': TextBlock,
-  'image': ImageBlock,
+  'landscape': LandscapeBlock,
   'full-image': FullImageBlock,
   'image-left-text-right': ImageLeftTextRightBlock,
   'image-right-text-left': ImageRightTextLeftBlock,

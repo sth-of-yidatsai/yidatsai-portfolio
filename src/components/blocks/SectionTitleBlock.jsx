@@ -33,10 +33,11 @@ export default function SectionTitleBlock({
       ctx = gsap.context(() => {
         ScrollTrigger.create({
           trigger: section,
-          pin:     true,
-          start:   'top top',
-          end:     `+=${window.innerHeight * 1.8}`,
-          scrub:   0.6,
+          pin:          true,
+          anticipatePin: 1,
+          start:        'top top',
+          end:          `+=${window.innerHeight * 1.8}`,
+          scrub:        0.6,
           onUpdate(self) {
             const filled = Math.round(self.progress * chars.length);
             chars.forEach((c, i) => {

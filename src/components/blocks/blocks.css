@@ -152,42 +152,76 @@
   margin: 0;
 }
 
-/* ── IMAGE (sticky zoom) ── */
+/* ── IMAGE (3-phase sticky zoom, 固定 21:9) ── */
 .block--image {
   position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
   padding: 0;
 }
 
-/* inset:0 + margin:auto = 完美置中，不需要 transform */
-.block--image__wrap {
+/* GSAP 負責 width / height / scale；margin:auto + inset:0 置中 */
+.block--image__frame-wrap {
   position: absolute;
   inset: 0;
   margin: auto;
-  overflow: hidden;
+  transform-origin: center center;
 }
 
-/* 仿 BioSection bs__img：108%×108% + margin -4% 建立視差緩衝 */
-.block--image__img {
-  width: 108%;
-  height: 108%;
+/* 21:9 frame，裁切 overflow */
+.block--image__frame {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* img1 底圖，填滿 frame */
+.block--image__frame-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: center;
   display: block;
-  margin: -4%;
+  transform: scale(1.08) translateZ(0);
+  transform-origin: center;
   transition: transform 0.4s ease;
   will-change: transform;
 }
 
-.block--image__img.scroll-vertical-up   { transform: translateY(-8px) translateZ(0); }
-.block--image__img.scroll-vertical-down { transform: translateY(8px)  translateZ(0); }
+.block--image__frame-img.scroll-vertical-up   { transform: scale(1.08) translateY(-8px) translateZ(0); }
+.block--image__frame-img.scroll-vertical-down { transform: scale(1.08) translateY(8px)  translateZ(0); }
+
+/* img2 / img3：覆蓋在底圖上，GSAP 控制 scale；DOM 順序決定 z 層 */
+.block--image__cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 1;
+  transform-origin: center center;
+}
 
 /* ── FULL IMAGE ── */
 .block--full-image {
   width: 100%;
   line-height: 0;
+  /* 由下往上蓋住上一個 block 的進場效果（不動 layout，兼容 scroll-pin 區塊） */
+  position: relative;
+  z-index: 10;
+  transform: translateY(100vh);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.block--full-image--entered {
+  transform: translateY(0);
 }
 
 .block--full-image img {

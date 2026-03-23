@@ -59,20 +59,21 @@
       {
         "type": "image-grid",
         "images": [
-          "/images/projects/formosa-font/07.webp",
-          "/images/projects/formosa-font/08.webp",
+          "/images/projects/formosa-font/12.webp",
           "/images/projects/formosa-font/09.webp",
-          "/images/projects/formosa-font/10.webp",
-          "/images/projects/formosa-font/11.webp",
-          "/images/projects/formosa-font/12.webp"
+          "/images/projects/formosa-font/16.webp",
+          "/images/projects/formosa-font/17.webp"
         ],
-        "columns": 3
+        "columns": 2
       },
       {
-        "type": "image",
-        "src": "/images/projects/formosa-font/15.webp",
-        "bg": "var(--gray-100)",
-        "ratio": "1:1"
+        "type": "landscape",
+        "images": [
+          "/images/projects/formosa-font/11.webp",
+          "/images/projects/formosa-font/12.webp",
+          "/images/projects/formosa-font/13.webp"
+        ],
+        "bg": "var(--gray-900)"
       },
       {
         "type": "spacer",
