@@ -1,10 +1,80 @@
+import { useRef, useLayoutEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './blocks.css';
 
-export default function TextBlock({ content, align }) {
+gsap.registerPlugin(ScrollTrigger);
+
+export default function TextBlock({
+  label     = '',
+  text      = '',
+  content   = '',                    // backward compat
+  bg        = 'transparent',
+  color     = 'var(--gray-600)',
+  fillColor = 'var(--gray-900)',
+  align,
+}) {
+  const body    = text || content;
+  const chars   = [...body];
+
+  const sectionRef = useRef(null);
+  const charsRef   = useRef([]);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const charEls = charsRef.current.filter(Boolean);
+    if (!section || !charEls.length) return;
+
+    charEls.forEach(c => { c.style.color = color; });
+
+    let ctx;
+    const setup = () => {
+      ctx?.revert();
+      ctx = gsap.context(() => {
+        ScrollTrigger.create({
+          trigger: section,
+          pin:          true,
+          anticipatePin: 1,
+          start:        'top top',
+          end:          `+=${window.innerHeight * 1.8}`,
+          scrub:        0.6,
+          onUpdate(self) {
+            const filled = Math.round(self.progress * charEls.length);
+            charEls.forEach((c, i) => {
+              c.style.color = i < filled ? fillColor : color;
+            });
+          },
+        });
+      }, section);
+    };
+
+    setup();
+    window.addEventListener('resize', setup);
+    return () => {
+      window.removeEventListener('resize', setup);
+      ctx?.revert();
+    };
+  }, [color, fillColor]);
+
   return (
-    <section className={`block block--text${align === 'center' ? ' block--text--center' : ''}`}>
+    <section
+      className={`block block--text block--text--sticky${align === 'center' ? ' block--text--center' : ''}`}
+      ref={sectionRef}
+      style={{ background: bg }}
+    >
       <div className="block--text__inner">
-        <p className="block--text__content">{content}</p>
+        {label && <p className="block--text__label">{label}</p>}
+        <p className="block--text__content">
+          {chars.map((char, i) => (
+            <span
+              key={i}
+              className="block--text__char"
+              ref={el => { charsRef.current[i] = el; }}
+            >
+              {char}
+            </span>
+          ))}
+        </p>
       </div>
     </section>
   );

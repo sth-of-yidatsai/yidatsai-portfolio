@@ -76,12 +76,21 @@
         "bg": "var(--gray-900)"
       },
       {
-        "type": "spacer",
-        "size": "xl"
+        "type": "text",
+        "label": "Concept",
+        "bg": "var(--linen-300)",
+        "color": "var(--gray-300)",
+        "fillColor": "var(--gray-900)",
+        "text": "The diverse terrain and climates of Taiwan have given birth to a wide spectrum of plant life. Taiwan was once known as \"Formosa\", meaning \"beautiful island\" in Portuguese. Our hope is to take its meaning, interpret it, and create font designs showcasing Taiwan's flora and our precious island's biodiversity."
       },
       {
-        "type": "text",
-        "content": "The diverse terrain and climates of Taiwan have given birth to a wide spectrum of plant life. Taiwan was once known as \"Formosa\", meaning \"beautiful island\" in Portuguese. Our hope is to take its meaning, interpret it, and create font designs showcasing Taiwan's flora and our precious island's biodiversity."
+        "type": "carousel",
+        "images": [
+          "/images/projects/formosa-font/11.webp",
+          "/images/projects/formosa-font/12.webp",
+          "/images/projects/formosa-font/13.webp"
+        ],
+        "bg": "var(--gray-900)"
       }
     ]
   },

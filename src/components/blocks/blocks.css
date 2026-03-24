@@ -144,12 +144,81 @@
   text-align: center;
 }
 
+.block--text__label {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt, 0.7rem);
+  font-weight: var(--fw-semibold, 600);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: var(--space-sm);
+}
+
 .block--text__content {
   font-size: 1rem;
   line-height: 1.85;
   color: var(--gray-600);
   white-space: pre-wrap;
   margin: 0;
+}
+
+.block--text__char {
+  display: inline;
+  white-space: pre-wrap;
+}
+
+/* ── TEXT — sticky scroll-fill variant ── */
+.block--text--sticky {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--px-page);
+  box-sizing: border-box;
+}
+
+/* inner 不限寬，讓大字撐滿全版 */
+.block--text--sticky .block--text__inner {
+  max-width: none;
+  padding-top: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.block--text--sticky .block--text__label {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt, 0.7rem);
+  font-weight: var(--fw-semibold, 600);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin: 0;
+}
+
+/* 內文 — Hatton extralight，同 SectionTitle subtitle */
+.block--text--sticky .block--text__content {
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-extralight, 200);
+  font-size: var(--fs-32pt, clamp(1.5rem, 3vw, 2.5rem));
+  line-height: 1.35;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .block--text--sticky .block--text__content {
+    font-size: var(--fs-24pt, clamp(1.2rem, 2.5vw, 1.8rem));
+  }
+}
+
+@media (max-width: 600px) {
+  .block--text--sticky .block--text__content {
+    font-size: var(--fs-20pt, clamp(1rem, 3vw, 1.5rem));
+  }
 }
 
 /* ── IMAGE (3-phase sticky zoom, 固定 21:9) ── */
@@ -208,20 +277,35 @@
   transform-origin: center center;
 }
 
+/* ── CAROUSEL (full-screen opacity cross-fade, sticky) ── */
+.block--carousel {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.block--carousel__slides {
+  position: absolute;
+  inset: 0;
+}
+
+.block--carousel__slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  will-change: opacity;
+}
+
 /* ── FULL IMAGE ── */
 .block--full-image {
   width: 100%;
   line-height: 0;
-  /* 由下往上蓋住上一個 block 的進場效果（不動 layout，兼容 scroll-pin 區塊） */
-  position: relative;
-  z-index: 10;
-  transform: translateY(100vh);
-  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
-}
-
-.block--full-image--entered {
-  transform: translateY(0);
 }
 
 .block--full-image img {

@@ -1,3 +1,4 @@
+import CarouselBlock from './CarouselBlock';
 import HeroBlock from './HeroBlock';
 import TextBlock from './TextBlock';
 import LandscapeBlock from './LandscapeBlock';
@@ -11,6 +12,7 @@ import SpacerBlock from './SpacerBlock';
 import VideoBlock from './VideoBlock';
 
 const BLOCK_MAP = {
+  'carousel': CarouselBlock,
   'hero': HeroBlock,
   'text': TextBlock,
   'landscape': LandscapeBlock,
