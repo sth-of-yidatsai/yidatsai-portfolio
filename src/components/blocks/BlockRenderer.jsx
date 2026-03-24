@@ -1,3 +1,6 @@
+import { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CarouselBlock from './CarouselBlock';
 import HeroBlock from './HeroBlock';
 import TextBlock from './TextBlock';
@@ -10,6 +13,8 @@ import QuoteBlock from './QuoteBlock';
 import SectionTitleBlock from './SectionTitleBlock';
 import SpacerBlock from './SpacerBlock';
 import VideoBlock from './VideoBlock';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const BLOCK_MAP = {
   'carousel': CarouselBlock,
@@ -27,9 +32,47 @@ const BLOCK_MAP = {
 };
 
 export default function BlockRenderer({ blocks, project }) {
+  const containerRef = useRef(null);
+
+  // Production fix: GSAP ScrollTrigger measures element positions in useLayoutEffect,
+  // but images haven't loaded yet (height: auto → 0px). This causes pin spacers to be
+  // miscalculated, making blocks overlap. Refresh after all images have loaded.
+  useEffect(() => {
+    if (!blocks?.length) return;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    const imgs = Array.from(container.querySelectorAll('img'));
+    const unloaded = imgs.filter(img => !img.complete);
+
+    if (unloaded.length === 0) {
+      ScrollTrigger.refresh();
+      return;
+    }
+
+    let resolved = 0;
+    const check = () => {
+      resolved++;
+      if (resolved >= unloaded.length) ScrollTrigger.refresh();
+    };
+
+    unloaded.forEach(img => {
+      img.addEventListener('load', check, { once: true });
+      img.addEventListener('error', check, { once: true });
+    });
+
+    return () => {
+      unloaded.forEach(img => {
+        img.removeEventListener('load', check);
+        img.removeEventListener('error', check);
+      });
+    };
+  }, [blocks]);
+
   if (!blocks?.length) return null;
   return (
-    <>
+    <div ref={containerRef} style={{ display: 'contents' }}>
       {blocks.map((block, i) => {
         const Block = BLOCK_MAP[block.type];
         if (!Block) {
@@ -38,6 +81,6 @@ export default function BlockRenderer({ blocks, project }) {
         }
         return <Block key={i} project={project} {...block} />;
       })}
-    </>
+    </div>
   );
 }
