@@ -50,11 +50,15 @@
         "author": "Historical Record"
       },
       {
-        "type": "image-left-text-right",
+        "type": "image-right-text-left",
         "image": "/images/projects/formosa-font/06.webp",
-        "label": "Type Design",
+        "bg": "var(--linen-300)",
+        "color": "var(--gray-700)",
         "title": "Flora as Form",
-        "text": "Each character is inspired by the unique shapes of Taiwan's native flora, blending botanical illustration with typographic precision."
+        "text": [
+          "Each character is inspired by the unique shapes of Taiwan's native flora, blending botanical illustration with typographic precision.",
+          "Paragraph two text here."
+        ]
       },
       {
         "type": "image-grid",
@@ -65,15 +69,6 @@
           "/images/projects/formosa-font/17.webp"
         ],
         "columns": 2
-      },
-      {
-        "type": "landscape",
-        "images": [
-          "/images/projects/formosa-font/11.webp",
-          "/images/projects/formosa-font/12.webp",
-          "/images/projects/formosa-font/13.webp"
-        ],
-        "bg": "var(--gray-900)"
       },
       {
         "type": "text",
