@@ -13,6 +13,8 @@ import QuoteBlock from './QuoteBlock';
 import SectionTitleBlock from './SectionTitleBlock';
 import SpacerBlock from './SpacerBlock';
 import VideoBlock from './VideoBlock';
+import ImageSetABlock from './ImageSetABlock';
+import ImageSetBBlock from './ImageSetBBlock';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,6 +31,8 @@ const BLOCK_MAP = {
   'section-title': SectionTitleBlock,
   'spacer': SpacerBlock,
   'video': VideoBlock,
+  'image-set-a': ImageSetABlock,
+  'image-set-b': ImageSetBBlock,
 };
 
 export default function BlockRenderer({ blocks, project }) {

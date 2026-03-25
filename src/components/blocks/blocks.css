@@ -707,6 +707,119 @@
   display: block;
 }
 
+/* ── IMAGE SET A ── */
+.block--image-set-a {
+  width: 100%;
+  padding: var(--space-2xl) var(--px-page);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  box-sizing: border-box;
+}
+
+.block--image-set-a__item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.block--image-set-a__item--1 { flex: 0 0 57%; }
+.block--image-set-a__item--2 { flex: 0 0 18%; }
+.block--image-set-a__item--3 { flex: 0 0 18%; align-self: flex-start; }
+
+.block--image-set-a__img-wrap {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.block--image-set-a__img-wrap--5-7 { aspect-ratio: 5 / 7; }
+.block--image-set-a__img-wrap--7-5 { aspect-ratio: 7 / 5; }
+.block--image-set-a__img-wrap--1-1 { aspect-ratio: 1 / 1; }
+
+.block--image-set-a__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.block--image-set-a__label {
+  margin-top: var(--space-sm);
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt, 0.7rem);
+  font-weight: var(--fw-regular, 400);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 768px) {
+  .block--image-set-a {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .block--image-set-a__item--1 { flex: 0 0 100%; }
+  .block--image-set-a__item--2 { flex: 0 0 48%; }
+  .block--image-set-a__item--3 { flex: 0 0 48%; align-self: auto; }
+}
+
+/* ── IMAGE SET B ── */
+.block--image-set-b {
+  width: 100%;
+  padding: var(--space-2xl) var(--px-page);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  box-sizing: border-box;
+}
+
+.block--image-set-b__item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.block--image-set-b__item--1 { flex: 0 0 19%; }
+.block--image-set-b__item--2 { flex: 0 0 27%; align-self: flex-end; }
+.block--image-set-b__item--3 { flex: 0 0 48%; }
+
+.block--image-set-b__img-wrap {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.block--image-set-b__img-wrap--4-5 { aspect-ratio: 4 / 5; }
+.block--image-set-b__img-wrap--5-4 { aspect-ratio: 5 / 4; }
+
+.block--image-set-b__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.block--image-set-b__label {
+  margin-top: var(--space-sm);
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt, 0.7rem);
+  font-weight: var(--fw-regular, 400);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 768px) {
+  .block--image-set-b {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .block--image-set-b__item--1 { flex: 0 0 48%; }
+  .block--image-set-b__item--2 { flex: 0 0 48%; align-self: auto; }
+  .block--image-set-b__item--3 { flex: 0 0 100%; }
+}
+
 /* ============================================================
    PARALLAX — 全局視差圖片
    父元素須設 overflow: hidden 才有裁切效果
