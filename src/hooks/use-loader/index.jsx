@@ -29,6 +29,22 @@ export function LoaderProvider({
   const [show, setShow] = useState(true);
   const [isPageReady, setIsPageReady] = useState(false);
 
+  // ── Content gate：讓頁面元件（如 ProjectDetail）持有一把鑰匙，
+  //    直到非同步內容（圖片）預載完成才放行，避免 Loader 提前關閉。
+  //    使用 ref 計數器避免 setState batching 競態問題。
+  const gateCountRef = useRef(0);
+  const [contentReady, setContentReady] = useState(true);
+
+  const waitForContent = useCallback(() => {
+    gateCountRef.current += 1;
+    setContentReady(false);
+  }, []);
+
+  const signalContentReady = useCallback(() => {
+    gateCountRef.current = Math.max(0, gateCountRef.current - 1);
+    if (gateCountRef.current === 0) setContentReady(true);
+  }, []);
+
   // 記住當下這次等待應該用哪個最小時間
   const minTimeRef = useRef(minLoadTime);
   // 標記是否是首次掛載（第一次 pathname effect 不要觸發路由切換邏輯）
@@ -80,9 +96,10 @@ export function LoaderProvider({
     };
   }, [location.pathname, routeMinLoadTime]);
 
-  // ── 頁面準備好後等最小時間，再隱藏 loader ──────────────────────────
+  // ── 頁面準備好 + 內容 gate 全部放行後，等最小時間再隱藏 loader ──────
+  const allReady = isPageReady && contentReady;
   useEffect(() => {
-    if (!isPageReady) return;
+    if (!allReady) return;
 
     const timer = setTimeout(() => {
       setLoading(false);
@@ -90,7 +107,7 @@ export function LoaderProvider({
     }, minTimeRef.current);
 
     return () => clearTimeout(timer);
-  }, [isPageReady]);
+  }, [allReady]);
 
   const showLoader = useCallback(() => {
     setLoading(true);
@@ -108,6 +125,8 @@ export function LoaderProvider({
     showLoader,
     hideLoader,
     isPageReady,
+    waitForContent,
+    signalContentReady,
   };
 
   return (

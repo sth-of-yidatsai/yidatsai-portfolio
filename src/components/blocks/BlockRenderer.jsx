@@ -40,17 +40,16 @@ const BLOCK_MAP = {
 export default function BlockRenderer({ blocks, project }) {
   const containerRef = useRef(null);
 
-  // Production fix: GSAP ScrollTrigger measures element positions in useLayoutEffect,
-  // but images haven't loaded yet (height: auto → 0px). This causes pin spacers to be
-  // miscalculated, making blocks overlap. Refresh after all images have loaded.
+  // Safety net: 圖片應已由 ProjectDetail 預載完畢（img.complete === true），
+  // 此處只是保險—如有任何圖片仍未就緒，等它們全部載入後 refresh 一次。
   useEffect(() => {
     if (!blocks?.length) return;
-
     const container = containerRef.current;
     if (!container) return;
 
-    const imgs = Array.from(container.querySelectorAll('img'));
-    const unloaded = imgs.filter(img => !img.complete);
+    const unloaded = Array.from(container.querySelectorAll('img')).filter(
+      (img) => !img.complete
+    );
 
     if (unloaded.length === 0) {
       ScrollTrigger.refresh();
@@ -59,17 +58,14 @@ export default function BlockRenderer({ blocks, project }) {
 
     let resolved = 0;
     const check = () => {
-      resolved++;
-      if (resolved >= unloaded.length) ScrollTrigger.refresh();
+      if (++resolved >= unloaded.length) ScrollTrigger.refresh();
     };
-
-    unloaded.forEach(img => {
+    unloaded.forEach((img) => {
       img.addEventListener('load', check, { once: true });
       img.addEventListener('error', check, { once: true });
     });
-
     return () => {
-      unloaded.forEach(img => {
+      unloaded.forEach((img) => {
         img.removeEventListener('load', check);
         img.removeEventListener('error', check);
       });
