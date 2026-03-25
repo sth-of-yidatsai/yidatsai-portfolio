@@ -492,21 +492,37 @@
 /* ── QUOTE ── */
 .block--quote {
   padding: var(--space-2xl) var(--px-page);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .block--quote__inner {
+  width: 100%;
   max-width: var(--max-width-narrow);
   margin: 0 auto;
   text-align: center;
 }
 
-.block--quote__mark {
-  font-size: 5rem;
-  line-height: 0.5;
-  color: var(--gray-200);
-  font-family: var(--font-latin), serif;
+.block--quote__image-wrap {
+  margin: 0 auto var(--space-lg);
+}
+
+.block--quote__image {
   display: block;
-  margin-bottom: var(--space-lg);
+  margin: 0 auto;
+  max-width: 80%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.block--quote__mark {
+  display: block;
+  width: 2rem;
+  height: auto;
+  color: var(--gray-200);
+  margin: var(--space-xl) auto;
 }
 
 .block--quote__text {
@@ -818,6 +834,63 @@
   .block--image-set-b__item--1 { flex: 0 0 48%; }
   .block--image-set-b__item--2 { flex: 0 0 48%; align-self: auto; }
   .block--image-set-b__item--3 { flex: 0 0 100%; }
+}
+
+/* ── IMAGE SET C ── */
+.block--image-set-c {
+  width: 100%;
+  padding: var(--space-2xl) var(--px-page);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  box-sizing: border-box;
+}
+
+.block--image-set-c__item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.block--image-set-c__item--1 { flex: 0 0 28%; }
+.block--image-set-c__item--2 { flex: 0 0 22%; align-self: flex-end; }
+.block--image-set-c__item--3 { flex: 0 0 43%; }
+
+.block--image-set-c__img-wrap {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.block--image-set-c__img-wrap--5-4 { aspect-ratio: 5 / 4; }
+.block--image-set-c__img-wrap--4-5 { aspect-ratio: 4 / 5; }
+.block--image-set-c__img-wrap--1-1 { aspect-ratio: 1 / 1; }
+
+.block--image-set-c__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.block--image-set-c__label {
+  margin-top: var(--space-sm);
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt, 0.7rem);
+  font-weight: var(--fw-regular, 400);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 768px) {
+  .block--image-set-c {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .block--image-set-c__item--1 { flex: 0 0 48%; }
+  .block--image-set-c__item--2 { flex: 0 0 48%; align-self: auto; }
+  .block--image-set-c__item--3 { flex: 0 0 100%; }
 }
 
 /* ============================================================

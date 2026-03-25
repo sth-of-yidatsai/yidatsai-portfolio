@@ -15,6 +15,7 @@ import SpacerBlock from './SpacerBlock';
 import VideoBlock from './VideoBlock';
 import ImageSetABlock from './ImageSetABlock';
 import ImageSetBBlock from './ImageSetBBlock';
+import ImageSetCBlock from './ImageSetCBlock';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,6 +34,7 @@ const BLOCK_MAP = {
   'video': VideoBlock,
   'image-set-a': ImageSetABlock,
   'image-set-b': ImageSetBBlock,
+  'image-set-c': ImageSetCBlock,
 };
 
 export default function BlockRenderer({ blocks, project }) {
