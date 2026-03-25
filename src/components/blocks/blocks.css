@@ -325,8 +325,8 @@
 /* ── IMAGE LEFT TEXT RIGHT (full-screen split) ── */
 .block--image-left-text-right {
   width: 100vw;
-  height: 100svh;
-  min-height: 600px;
+  height: 60vh;
+  min-height: 500px;
   display: flex;
   padding: 0;
   overflow: hidden;
@@ -416,8 +416,8 @@
 /* ── IMAGE RIGHT TEXT LEFT ── */
 .block--image-right-text-left {
   width: 100vw;
-  height: 100svh;
-  min-height: 600px;
+  height: 60vh;
+  min-height: 500px;
   display: flex;
   padding: 0;
   overflow: hidden;
