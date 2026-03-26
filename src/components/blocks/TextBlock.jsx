@@ -38,15 +38,18 @@ function TextBlock({
           start:        'top top',
           end:          `+=${window.innerHeight * 1.8}`,
           scrub:        true,
+          // Only update the chars that actually change state (O(delta) not O(N))
           onUpdate: (() => {
-            let lastFilled = -1;
+            let lastFilled = 0;
             return (self) => {
               const filled = Math.round(self.progress * charEls.length);
               if (filled === lastFilled) return;
+              if (filled > lastFilled) {
+                for (let i = lastFilled; i < filled; i++) charEls[i].style.color = fillColor;
+              } else {
+                for (let i = filled; i < lastFilled; i++) charEls[i].style.color = color;
+              }
               lastFilled = filled;
-              charEls.forEach((c, i) => {
-                c.style.color = i < filled ? fillColor : color;
-              });
             };
           })(),
         });

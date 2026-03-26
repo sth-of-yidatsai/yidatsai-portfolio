@@ -79,6 +79,8 @@ function CarouselBlock({ images = [] }) {
             src={img1}
             alt=""
             className="block--carousel__slide"
+            loading="lazy"
+            decoding="async"
           />
         )}
         {img2 && (
@@ -87,6 +89,8 @@ function CarouselBlock({ images = [] }) {
             src={img2}
             alt=""
             className="block--carousel__slide"
+            loading="lazy"
+            decoding="async"
           />
         )}
         {img3 && (
@@ -95,6 +99,8 @@ function CarouselBlock({ images = [] }) {
             src={img3}
             alt=""
             className="block--carousel__slide"
+            loading="lazy"
+            decoding="async"
           />
         )}
       </div>

@@ -175,6 +175,7 @@ body[data-scroll="vertical-down"] .block--hero__bg { transform: translate3d(0,  
   justify-content: center;
   padding: var(--px-page);
   box-sizing: border-box;
+  contain: paint;
 }
 
 /* inner 不限寬，讓大字撐滿全版 */
@@ -600,6 +601,7 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   gap: var(--space-lg);
   padding: var(--px-page);
   box-sizing: border-box;
+  contain: paint;
 }
 
 /* inner 不限寬，讓大字撐滿全版 */

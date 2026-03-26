@@ -38,15 +38,18 @@ function SectionTitleBlock({
           start:        'top top',
           end:          `+=${window.innerHeight * 1.8}`,
           scrub:        true,
+          // Only update the chars that actually change state (O(delta) not O(N))
           onUpdate: (() => {
-            let lastFilled = -1;
+            let lastFilled = 0;
             return (self) => {
               const filled = Math.round(self.progress * chars.length);
               if (filled === lastFilled) return;
+              if (filled > lastFilled) {
+                for (let i = lastFilled; i < filled; i++) chars[i].style.color = fillColor;
+              } else {
+                for (let i = filled; i < lastFilled; i++) chars[i].style.color = color;
+              }
               lastFilled = filled;
-              chars.forEach((c, i) => {
-                c.style.color = i < filled ? fillColor : color;
-              });
             };
           })(),
         });

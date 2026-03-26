@@ -42,6 +42,8 @@ function LandscapeBlock({ images = [], bg = "var(--gray-25)" }) {
       if (img3El)
         gsap.set(img3El, { scale: 0, transformOrigin: "center center" });
 
+      const animEls = [frameWrap, img2El, img3El].filter(Boolean);
+
       ctx = gsap.context(() => {
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -51,10 +53,22 @@ function LandscapeBlock({ images = [], bg = "var(--gray-25)" }) {
             start: "top top",
             end: `+=${vh * 1.8}`,
             scrub: true,
-            onEnter()     { section.classList.add('is-pinned'); },
-            onLeave()     { section.classList.remove('is-pinned'); },
-            onEnterBack() { section.classList.add('is-pinned'); },
-            onLeaveBack() { section.classList.remove('is-pinned'); },
+            onEnter() {
+              section.classList.add('is-pinned');
+              gsap.set(animEls, { willChange: 'transform' });
+            },
+            onLeave() {
+              section.classList.remove('is-pinned');
+              gsap.set(animEls, { willChange: 'auto' });
+            },
+            onEnterBack() {
+              section.classList.add('is-pinned');
+              gsap.set(animEls, { willChange: 'transform' });
+            },
+            onLeaveBack() {
+              section.classList.remove('is-pinned');
+              gsap.set(animEls, { willChange: 'auto' });
+            },
           },
         });
 
@@ -99,6 +113,8 @@ function LandscapeBlock({ images = [], bg = "var(--gray-25)" }) {
               src={img1}
               alt=""
               className="block--image__frame-img"
+              loading="lazy"
+              decoding="async"
             />
           )}
 
@@ -109,6 +125,8 @@ function LandscapeBlock({ images = [], bg = "var(--gray-25)" }) {
               src={img2}
               alt=""
               className="block--image__cover-img"
+              loading="lazy"
+              decoding="async"
             />
           )}
 
@@ -119,6 +137,8 @@ function LandscapeBlock({ images = [], bg = "var(--gray-25)" }) {
               src={img3}
               alt=""
               className="block--image__cover-img"
+              loading="lazy"
+              decoding="async"
             />
           )}
         </div>
