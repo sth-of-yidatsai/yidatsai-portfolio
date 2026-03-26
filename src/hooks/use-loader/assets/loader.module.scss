@@ -1,212 +1,99 @@
-/* 預設載入器樣式 */
-.loader-bg {
+/* ============================================================
+   Global Page Loader
+   ============================================================ */
+
+/**
+ * Curtain overlay — sits above everything, exits by sliding upward.
+ * .loader--exit triggers the translateY(0 → -100%) curtain-up reveal.
+ */
+.loader {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  inset: 0;
+  background-color: var(--gray-900, #0a0a0a);
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transform: translateY(0);
+  /* Curtain exit: strong ease-in-out — slow start, blazing sweep, slow settle */
+  transition: transform 1s cubic-bezier(0.87, 0, 0.13, 1);
+  will-change: transform;
 }
 
-.loader-bg--show {
-  opacity: 1;
-  visibility: visible;
+.loader--exit {
+  transform: translateY(-100%);
 }
 
-.loader-bg--hide {
-  opacity: 0;
-  visibility: hidden;
+/* Pause letter animations so they don't glitch mid-roll while the curtain moves */
+.loader--exit .rolling-top,
+.loader--exit .rolling-bottom {
+  animation-play-state: paused;
 }
 
-.loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+/* ── Rolling text ─────────────────────────────────────────── */
+
+.rolling-text {
+  display: inline-flex;
+  column-gap: 0.01em;
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-medium);
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  letter-spacing: 0.2em;
+  color: var(--gray-25, #fafafa);
+  line-height: 1;
+  user-select: none;
 }
 
-.loader-dots {
-  display: flex;
-  gap: 0.5rem;
+/**
+ * Each letter is a clipped container holding two spans:
+ *   .rolling-top    — the "live" letter, positioned normally inside the clip
+ *   .rolling-bottom — a duplicate, positioned immediately below the clip (top: 100%)
+ *
+ * Both animate with the same translateY keyframe.
+ * When translateY = -100%: top exits above clip, bottom slides into view from below.
+ * Instant snap-back creates a seamless loop — same as footer nav hover, but looping.
+ */
+.rolling-letter {
+  display: inline-block;
+  position: relative;
+  clip-path: inset(0 0 1px 0);
+  line-height: inherit;
 }
 
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #ffffff;
-  animation: dotPulse 1.5s infinite ease-in-out;
+.rolling-top,
+.rolling-bottom {
+  display: block;
+  /* stagger via CSS custom property --i set on each .rolling-letter */
+  animation: loader-roll 1.6s cubic-bezier(0.4, 0, 0.6, 1)
+    calc(var(--i) * 0.038s) infinite both;
 }
 
-.dot:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.dot:nth-child(2) {
-  animation-delay: 0.15s;
-}
-
-.dot:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-@keyframes dotPulse {
-  0%, 60%, 100% {
-    transform: scale(1);
-    opacity: 0.3;
-  }
-  30% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-}
-
-.loader-text {
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-/* 簡約載入器樣式 */
-.simple-loader-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255, 255, 255, 0.9);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.simple-loader-bg--show {
-  opacity: 1;
-  visibility: visible;
-}
-
-.simple-loader-bg--hide {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.simple-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* 文字動畫專用載入器樣式 */
-.text-loader-bg {
+.rolling-bottom {
   position: absolute;
-  top: 0;
+  top: 100%;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: transparent;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  pointer-events: none;
 }
 
-.text-loader-bg--show {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: all;
-}
-
-.text-loader-bg--hide {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.text-loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.text-loader-dots {
-  display: flex;
-  gap: 0.4rem;
-}
-
-.text-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--color-secondary, var(--gray-100, #e0e0e0));
-  opacity: 0.3;
-  animation: textDotPulse 1.5s infinite ease-in-out;
-}
-
-.text-dot:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.text-dot:nth-child(2) {
-  animation-delay: 0.15s;
-}
-
-.text-dot:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-@keyframes textDotPulse {
-  0%, 60%, 100% {
-    transform: scale(1);
-    opacity: 0.3;
+/**
+ * Keyframe breakdown:
+ *   0–8%    hold   — all letters visible simultaneously (wave has settled)
+ *   8–40%   roll   — both spans translate to -100% (top exits top, bottom enters from below)
+ *   40–41%  snap   — steps(1,end): value stays at -100% until 41%, then jumps to 0
+ *   41–100% hold   — top visible again; bottom hidden at 100%
+ */
+@keyframes loader-roll {
+  0%, 8% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
   }
-  30% {
-    transform: scale(1.2);
-    opacity: 0.8;
+  40% {
+    transform: translateY(-100%);
+    animation-timing-function: steps(1, end);
   }
-}
-
-/* 響應式設計 */
-@media screen and (max-width: 480px) {
-  .loader-container {
-    gap: 0.8rem;
+  41% {
+    transform: translateY(0);
   }
-  
-  .dot {
-    width: 10px;
-    height: 10px;
-  }
-  
-  .loader-text {
-    font-size: 0.9rem;
-  }
-  
-  .simple-spinner {
-    width: 30px;
-    height: 30px;
-    border-width: 3px;
+  100% {
+    transform: translateY(0);
   }
 }
