@@ -63,7 +63,15 @@ export function ScrollDetectionProvider({ children }) {
         isInHorizontalSection: isInHorizontal,
       });
 
+      // 直接寫入 body attribute — 繞過 React batching，讓 CSS 立即響應，
+      // 消除 ParallaxImg / HeroBlock 等多個元件因 context 更新而觸發的 re-render。
+      const attr = isInHorizontal
+        ? (horizontalDirection ? `horizontal-${horizontalDirection}` : null)
+        : (verticalDirection   ? `vertical-${verticalDirection}`     : null);
+      if (attr) document.body.dataset.scroll = attr;
+
       timeoutRef.current = setTimeout(() => {
+        delete document.body.dataset.scroll;
         dispatch({ type: 'STOP' });
       }, 300);
     };

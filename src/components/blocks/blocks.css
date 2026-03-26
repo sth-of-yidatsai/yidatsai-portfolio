@@ -25,8 +25,8 @@
   will-change: transform;
 }
 
-.block--hero__bg.scroll-vertical-up   { transform: translate3d(0, -8px, 0); }
-.block--hero__bg.scroll-vertical-down { transform: translate3d(0,  8px, 0); }
+body[data-scroll="vertical-up"]   .block--hero__bg { transform: translate3d(0, -8px, 0); }
+body[data-scroll="vertical-down"] .block--hero__bg { transform: translate3d(0,  8px, 0); }
 
 /* 底部資訊欄 */
 .block--hero__info-panel {
@@ -262,8 +262,10 @@
   will-change: transform;
 }
 
-.block--image__frame-img.scroll-vertical-up   { transform: scale(1.08) translateY(-8px) translateZ(0); }
-.block--image__frame-img.scroll-vertical-down { transform: scale(1.08) translateY(8px)  translateZ(0); }
+body[data-scroll="vertical-up"]   .block--image__frame-img { transform: scale(1.08) translateY(-8px) translateZ(0); }
+body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.08) translateY(8px)  translateZ(0); }
+/* pin 動畫期間停用視差，.is-pinned 由 LandscapeBlock 的 onEnter/onLeave 控制 */
+.block--image.is-pinned .block--image__frame-img { transform: scale(1.08) translateZ(0); }
 
 /* img2 / img3：覆蓋在底圖上，GSAP 控制 scale；DOM 順序決定 z 層 */
 .block--image__cover-img {
@@ -299,7 +301,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  will-change: opacity;
+  /* will-change 由 onEnter/onLeave 動態管理，避免離開後持續佔用 GPU layer */
 }
 
 /* ── FULL IMAGE ── */
@@ -918,8 +920,8 @@
   will-change: transform;
 }
 
-.block-parallax-img.scroll-vertical-up   { transform: scale(1.1) translate3d(0, -8px, 0); }
-.block-parallax-img.scroll-vertical-down { transform: scale(1.1) translate3d(0,  8px, 0); }
+body[data-scroll="vertical-up"]   .block-parallax-img { transform: scale(1.1) translate3d(0, -8px, 0); }
+body[data-scroll="vertical-down"] .block-parallax-img { transform: scale(1.1) translate3d(0,  8px, 0); }
 
 /* overflow hidden — 各圖片容器 */
 .block--full-image,

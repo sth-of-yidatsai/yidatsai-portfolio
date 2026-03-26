@@ -37,7 +37,7 @@ export default function SectionTitleBlock({
           anticipatePin: 1,
           start:        'top top',
           end:          `+=${window.innerHeight * 1.8}`,
-          scrub:        0.6,
+          scrub:        true,
           onUpdate(self) {
             const filled = Math.round(self.progress * chars.length);
             chars.forEach((c, i) => {

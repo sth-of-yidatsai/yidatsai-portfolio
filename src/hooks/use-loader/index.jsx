@@ -96,6 +96,18 @@ export function LoaderProvider({
     };
   }, [location.pathname, routeMinLoadTime]);
 
+  // ── Loader 顯示時鎖定 body 滾動 ──────────────────────────────────────
+  // 確保 BlockRenderer 掛載、GSAP useLayoutEffect 執行時 scrollY = 0，
+  // 避免 pin spacer 的 start/end 位置因非零 scrollY 而計算錯誤。
+  useEffect(() => {
+    if (show) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [show]);
+
   // ── 頁面準備好 + 內容 gate 全部放行後，等最小時間再隱藏 loader ──────
   const allReady = isPageReady && contentReady;
   useEffect(() => {

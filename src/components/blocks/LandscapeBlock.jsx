@@ -1,7 +1,6 @@
-import { useRef, useLayoutEffect, useState } from "react";
+import { useRef, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useImageParallax } from "../../hooks/useImageParallax";
 import "./blocks.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,9 +14,6 @@ export default function LandscapeBlock({ images = [], bg = "var(--gray-25)" }) {
   const frameWrapRef = useRef(null);
   const img2Ref = useRef(null);
   const img3Ref = useRef(null);
-
-  const [isInSection, setIsInSection] = useState(false);
-  const { scrollClass } = useImageParallax({ inStickySection: isInSection });
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -54,19 +50,11 @@ export default function LandscapeBlock({ images = [], bg = "var(--gray-25)" }) {
             anticipatePin: 1,
             start: "top top",
             end: `+=${vh * 1.8}`,
-            scrub: 0.6,
-            onEnter() {
-              setIsInSection(true);
-            },
-            onLeave() {
-              setIsInSection(false);
-            },
-            onEnterBack() {
-              setIsInSection(true);
-            },
-            onLeaveBack() {
-              setIsInSection(false);
-            },
+            scrub: true,
+            onEnter()     { section.classList.add('is-pinned'); },
+            onLeave()     { section.classList.remove('is-pinned'); },
+            onEnterBack() { section.classList.add('is-pinned'); },
+            onLeaveBack() { section.classList.remove('is-pinned'); },
           },
         });
 
@@ -110,9 +98,7 @@ export default function LandscapeBlock({ images = [], bg = "var(--gray-25)" }) {
             <img
               src={img1}
               alt=""
-              className={["block--image__frame-img", scrollClass]
-                .filter(Boolean)
-                .join(" ")}
+              className="block--image__frame-img"
             />
           )}
 

@@ -27,11 +27,13 @@ export default function CarouselBlock({ images = [] }) {
       const vh = window.innerHeight;
 
       // Initial states: img1 visible, img2/img3 hidden
-      gsap.set(img1El, { opacity: 1 });
-      if (img2El) gsap.set(img2El, { opacity: 0 });
-      if (img3El) gsap.set(img3El, { opacity: 0 });
+      gsap.set(img1El, { opacity: 1, willChange: 'auto' });
+      if (img2El) gsap.set(img2El, { opacity: 0, willChange: 'auto' });
+      if (img3El) gsap.set(img3El, { opacity: 0, willChange: 'auto' });
 
       ctx = gsap.context(() => {
+        const slides = [img1El, img2El, img3El].filter(Boolean);
+
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
@@ -39,7 +41,11 @@ export default function CarouselBlock({ images = [] }) {
             anticipatePin: 1,
             start: "top top",
             end: `+=${vh * 2}`,
-            scrub: 0.6,
+            scrub: true,
+            onEnter()     { gsap.set(slides, { willChange: 'opacity' }); },
+            onLeave()     { gsap.set(slides, { willChange: 'auto' }); },
+            onEnterBack() { gsap.set(slides, { willChange: 'opacity' }); },
+            onLeaveBack() { gsap.set(slides, { willChange: 'auto' }); },
           },
         });
 

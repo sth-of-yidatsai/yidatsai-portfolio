@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CarouselBlock from './CarouselBlock';
@@ -38,43 +38,24 @@ const BLOCK_MAP = {
 };
 
 export default function BlockRenderer({ blocks, project }) {
-  const containerRef = useRef(null);
-
-  // Safety net: 圖片應已由 ProjectDetail 預載完畢（img.complete === true），
-  // 此處只是保險—如有任何圖片仍未就緒，等它們全部載入後 refresh 一次。
-  useEffect(() => {
+  // ── 在首次 paint 前修正所有 pin spacer 位置 ──────────────────────────
+  //
+  // 問題：各 block 的 GSAP useLayoutEffect 依序執行，每個 block 在初始化時
+  //      都會插入 pin spacer，導致後續 block 量測到的位置被前面的 spacer 偏移。
+  //      結果是 pin 的 start/end 全部計算錯誤，捲動時產生跳動。
+  //
+  // 修正：React 保證父元件的 useLayoutEffect 在所有子元件之後執行。
+  //      在這裡呼叫 ScrollTrigger.refresh() 時，所有 block 已完成初始化
+  //      且 pin spacer 已全部插入，refresh 重新量測正確位置。
+  //      因為仍在 useLayoutEffect（首次 paint 之前），不觸發 CLS。
+  useLayoutEffect(() => {
     if (!blocks?.length) return;
-    const container = containerRef.current;
-    if (!container) return;
-
-    const unloaded = Array.from(container.querySelectorAll('img')).filter(
-      (img) => !img.complete
-    );
-
-    if (unloaded.length === 0) {
-      ScrollTrigger.refresh();
-      return;
-    }
-
-    let resolved = 0;
-    const check = () => {
-      if (++resolved >= unloaded.length) ScrollTrigger.refresh();
-    };
-    unloaded.forEach((img) => {
-      img.addEventListener('load', check, { once: true });
-      img.addEventListener('error', check, { once: true });
-    });
-    return () => {
-      unloaded.forEach((img) => {
-        img.removeEventListener('load', check);
-        img.removeEventListener('error', check);
-      });
-    };
+    ScrollTrigger.refresh();
   }, [blocks]);
 
   if (!blocks?.length) return null;
   return (
-    <div ref={containerRef} style={{ display: 'contents' }}>
+    <div style={{ display: 'contents' }}>
       {blocks.map((block, i) => {
         const Block = BLOCK_MAP[block.type];
         if (!Block) {

@@ -1,14 +1,12 @@
-import { useImageParallax } from '../../hooks/useImageParallax';
 import './blocks.css';
 
 export default function HeroBlock({ image, project = {} }) {
   const { title, year, category = [], tags = [] } = project;
-  const { scrollClass } = useImageParallax();
 
   return (
     <section className="block block--hero">
       <div
-        className={['block--hero__bg', scrollClass].filter(Boolean).join(' ')}
+        className="block--hero__bg"
         style={{ backgroundImage: image ? `url(${image})` : undefined }}
       />
 
