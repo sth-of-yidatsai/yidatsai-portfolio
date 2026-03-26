@@ -16,6 +16,9 @@
     />
   </head>
   <body>
+    <!-- Static pre-loader shield: covers the page before JS/React loads,
+         preventing a flash of page content. Removed by the Loader component on mount. -->
+    <div id="loader-shield" style="position:fixed;inset:0;background:#0a0a0a;z-index:10000;pointer-events:none;"></div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
 

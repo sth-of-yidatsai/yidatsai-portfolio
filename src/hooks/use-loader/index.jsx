@@ -4,6 +4,7 @@ import React, {
   useState,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
 } from "react";
 import { useLocation } from "react-router-dom";
@@ -68,7 +69,10 @@ export function LoaderProvider({
   }, [minLoadTime]);
 
   // ── 路由切換 ────────────────────────────────────────────────────────
-  useEffect(() => {
+  // useLayoutEffect：在 DOM 更新後、瀏覽器 paint 前同步執行。
+  // setShow(true) 必須在 paint 前完成，確保 Loader 覆蓋層和新頁面在同一幀被畫出，
+  // 避免新頁面先被 paint 一幀再被 Loader 蓋住（視覺閃爍）。
+  useLayoutEffect(() => {
     // 首次掛載時跳過（由上方 initial load effect 處理）
     if (isInitialLoad.current) {
       isInitialLoad.current = false;

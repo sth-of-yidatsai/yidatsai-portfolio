@@ -3,8 +3,7 @@
    ============================================================ */
 
 /**
- * Curtain overlay — sits above everything, exits by sliding upward.
- * .loader--exit triggers the translateY(0 → -100%) curtain-up reveal.
+ * Overlay — covers the full viewport instantly, exits by sliding upward.
  */
 .loader {
   position: fixed;
@@ -15,16 +14,19 @@
   align-items: center;
   justify-content: center;
   transform: translateY(0);
-  /* Curtain exit: strong ease-in-out — slow start, blazing sweep, slow settle */
-  transition: transform 1s cubic-bezier(0.87, 0, 0.13, 1);
   will-change: transform;
 }
 
+/**
+ * EXIT — curtain rises upward, revealing the page from bottom to top.
+ * Strong symmetric ease: builds momentum then gracefully exits.
+ */
 .loader--exit {
   transform: translateY(-100%);
+  transition: transform 1s cubic-bezier(0.87, 0, 0.13, 1);
 }
 
-/* Pause letter animations so they don't glitch mid-roll while the curtain moves */
+/* Freeze letter animations while the curtain is rising */
 .loader--exit .rolling-top,
 .loader--exit .rolling-bottom {
   animation-play-state: paused;
@@ -45,13 +47,13 @@
 }
 
 /**
- * Each letter is a clipped container holding two spans:
- *   .rolling-top    — the "live" letter, positioned normally inside the clip
- *   .rolling-bottom — a duplicate, positioned immediately below the clip (top: 100%)
+ * Each letter is a clipped container with two spans:
+ *   .rolling-top    — the live letter, inside clip bounds
+ *   .rolling-bottom — duplicate positioned immediately below the clip (top: 100%)
  *
- * Both animate with the same translateY keyframe.
+ * Both animate with the same translateY keyframe (same technique as footer nav hover).
  * When translateY = -100%: top exits above clip, bottom slides into view from below.
- * Instant snap-back creates a seamless loop — same as footer nav hover, but looping.
+ * Instant snap at 41% creates a seamless loop.
  */
 .rolling-letter {
   display: inline-block;
@@ -63,7 +65,6 @@
 .rolling-top,
 .rolling-bottom {
   display: block;
-  /* stagger via CSS custom property --i set on each .rolling-letter */
   animation: loader-roll 1.6s cubic-bezier(0.4, 0, 0.6, 1)
     calc(var(--i) * 0.038s) infinite both;
 }
@@ -75,11 +76,10 @@
 }
 
 /**
- * Keyframe breakdown:
- *   0–8%    hold   — all letters visible simultaneously (wave has settled)
- *   8–40%   roll   — both spans translate to -100% (top exits top, bottom enters from below)
- *   40–41%  snap   — steps(1,end): value stays at -100% until 41%, then jumps to 0
- *   41–100% hold   — top visible again; bottom hidden at 100%
+ * 0 – 8%   : hold — all letters visible simultaneously
+ * 8 – 40%  : roll — both spans move to -100% (top exits, bottom enters from below)
+ * 40 – 41% : snap — steps(1,end) jumps from -100% back to 0 in ~16ms
+ * 41 – 100%: hold — top visible, bottom hidden at top:100%
  */
 @keyframes loader-roll {
   0%, 8% {
