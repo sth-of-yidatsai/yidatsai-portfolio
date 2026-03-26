@@ -20,9 +20,8 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translate3d(0, 0, 0);
-  will-change: transform;
 }
 
 body[data-scroll="vertical-up"]   .block--hero__bg { transform: translate3d(0, -8px, 0); }
@@ -230,6 +229,7 @@ body[data-scroll="vertical-down"] .block--hero__bg { transform: translate3d(0,  
   transform: translateZ(0);
   backface-visibility: hidden;
   padding: 0;
+  contain: layout paint;
 }
 
 /* GSAP 負責 width / height / scale；margin:auto + inset:0 置中 */
@@ -258,8 +258,7 @@ body[data-scroll="vertical-down"] .block--hero__bg { transform: translate3d(0,  
   display: block;
   transform: scale(1.08) translateZ(0);
   transform-origin: center;
-  transition: transform 0.4s ease;
-  will-change: transform;
+  transition: transform 0.3s ease;
 }
 
 body[data-scroll="vertical-up"]   .block--image__frame-img { transform: scale(1.08) translateY(-8px) translateZ(0); }
@@ -287,6 +286,7 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   overflow: hidden;
   transform: translateZ(0);
   backface-visibility: hidden;
+  contain: layout paint;
 }
 
 .block--carousel__slides {
@@ -308,7 +308,8 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
 .block--full-image {
   width: 100%;
   line-height: 0;
-  contain: layout;
+  min-height: 40vh;
+  contain: layout paint;
 }
 
 .block--full-image img {
@@ -333,7 +334,7 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   display: flex;
   padding: 0;
   overflow: hidden;
-  contain: layout;
+  contain: layout paint;
 }
 
 .block--split-full__image {
@@ -347,7 +348,6 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   height: 100%;
   object-fit: cover;
   display: block;
-  will-change: transform;
 }
 
 .block--split-full__text {
@@ -426,7 +426,7 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   display: flex;
   padding: 0;
   overflow: hidden;
-  contain: layout;
+  contain: layout paint;
 }
 
 @media (max-width: 768px) {
@@ -455,7 +455,7 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   width: 100vw;
   height: 120vh;
   padding: 0;
-  contain: layout;
+  contain: layout paint;
 }
 
 .block--image-grid__inner {
@@ -503,7 +503,7 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   display: flex;
   align-items: center;
   justify-content: center;
-  contain: layout;
+  contain: layout paint;
 }
 
 .block--quote__inner {
@@ -691,7 +691,7 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
 /* ── VIDEO ── */
 .block--video {
   padding: var(--space-lg) var(--px-page);
-  contain: layout;
+  contain: layout paint;
 }
 
 .block--video--wide {
@@ -741,7 +741,7 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   justify-content: space-between;
   gap: var(--space-lg);
   box-sizing: border-box;
-  contain: layout;
+  contain: layout paint;
 }
 
 .block--image-set-a__item {
@@ -799,7 +799,7 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   justify-content: space-between;
   gap: var(--space-lg);
   box-sizing: border-box;
-  contain: layout;
+  contain: layout paint;
 }
 
 .block--image-set-b__item {
@@ -856,7 +856,7 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   justify-content: space-between;
   gap: var(--space-lg);
   box-sizing: border-box;
-  contain: layout;
+  contain: layout paint;
 }
 
 .block--image-set-c__item {
@@ -914,14 +914,26 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   display: block;
   width: 100%;
   height: auto;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  /* scale(1.1) 四邊預留 5% 緩衝，translate ≤ 8px 絕對不會超出，永不露白 */
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   transform: scale(1.1) translate3d(0, 0, 0);
-  will-change: transform;
 }
 
 body[data-scroll="vertical-up"]   .block-parallax-img { transform: scale(1.1) translate3d(0, -8px, 0); }
 body[data-scroll="vertical-down"] .block-parallax-img { transform: scale(1.1) translate3d(0,  8px, 0); }
+
+/* will-change 僅在捲動期間啟用，避免所有圖片永久佔用 GPU layer */
+body[data-scroll] .block-parallax-img,
+body[data-scroll] .block--hero__bg { will-change: transform; }
+
+/* 視差圖片在明確高度容器內需填滿 — 覆蓋基礎 height:auto */
+.block--image-set-a__img-wrap .block-parallax-img,
+.block--image-set-b__img-wrap .block-parallax-img,
+.block--image-set-c__img-wrap .block-parallax-img,
+.block--image-grid__item .block-parallax-img,
+.block--split-full__image .block-parallax-img {
+  height: 100%;
+  object-fit: cover;
+}
 
 /* overflow hidden — 各圖片容器 */
 .block--full-image,

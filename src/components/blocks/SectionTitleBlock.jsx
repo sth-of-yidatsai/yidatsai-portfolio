@@ -38,12 +38,17 @@ export default function SectionTitleBlock({
           start:        'top top',
           end:          `+=${window.innerHeight * 1.8}`,
           scrub:        true,
-          onUpdate(self) {
-            const filled = Math.round(self.progress * chars.length);
-            chars.forEach((c, i) => {
-              c.style.color = i < filled ? fillColor : color;
-            });
-          },
+          onUpdate: (() => {
+            let lastFilled = -1;
+            return (self) => {
+              const filled = Math.round(self.progress * chars.length);
+              if (filled === lastFilled) return;
+              lastFilled = filled;
+              chars.forEach((c, i) => {
+                c.style.color = i < filled ? fillColor : color;
+              });
+            };
+          })(),
         });
       }, section);
     };

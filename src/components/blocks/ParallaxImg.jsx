@@ -7,5 +7,5 @@ import './blocks.css';
  */
 export default function ParallaxImg({ src, alt = '', className = '' }) {
   const cls = ['block-parallax-img', className].filter(Boolean).join(' ');
-  return <img src={src} alt={alt} className={cls} />;
+  return <img src={src} alt={alt} className={cls} loading="lazy" decoding="async" />;
 }
