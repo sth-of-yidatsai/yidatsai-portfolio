@@ -1,7 +1,8 @@
+import { memo } from "react";
 import ParallaxImg from './ParallaxImg';
 import "./blocks.css";
 
-export default function ImageLeftTextRightBlock({
+function ImageLeftTextRightBlock({
   image,
   imageAlt,
   bg,
@@ -33,3 +34,5 @@ export default function ImageLeftTextRightBlock({
     </section>
   );
 }
+
+export default memo(ImageLeftTextRightBlock);

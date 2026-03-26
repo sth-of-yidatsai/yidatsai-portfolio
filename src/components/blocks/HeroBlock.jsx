@@ -1,6 +1,7 @@
+import { memo } from "react";
 import './blocks.css';
 
-export default function HeroBlock({ image, project = {} }) {
+function HeroBlock({ image, project = {} }) {
   const { title, year, category = [], tags = [] } = project;
 
   return (
@@ -60,3 +61,5 @@ export default function HeroBlock({ image, project = {} }) {
     </section>
   );
 }
+
+export default memo(HeroBlock);

@@ -1,7 +1,8 @@
+import { memo } from "react";
 import ParallaxImg from './ParallaxImg';
 import './blocks.css';
 
-export default function ImageGridBlock({ images = [], columns = 2 }) {
+function ImageGridBlock({ images = [], columns = 2 }) {
   const cols = Math.min(Math.max(columns, 2), 4);
 
   return (
@@ -16,3 +17,5 @@ export default function ImageGridBlock({ images = [], columns = 2 }) {
     </section>
   );
 }
+
+export default memo(ImageGridBlock);

@@ -1,7 +1,8 @@
+import { memo } from "react";
 import ParallaxImg from './ParallaxImg';
 import './blocks.css';
 
-export default function FullImageBlock({ src, alt, caption }) {
+function FullImageBlock({ src, alt, caption }) {
   return (
     <section className="block block--full-image">
       <ParallaxImg src={src} alt={alt} />
@@ -9,3 +10,5 @@ export default function FullImageBlock({ src, alt, caption }) {
     </section>
   );
 }
+
+export default memo(FullImageBlock);

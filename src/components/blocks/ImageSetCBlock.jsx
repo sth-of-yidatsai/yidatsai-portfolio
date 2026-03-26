@@ -1,7 +1,8 @@
+import { memo } from "react";
 import ParallaxImg from './ParallaxImg';
 import './blocks.css';
 
-export default function ImageSetCBlock({ images = [], bg, color }) {
+function ImageSetCBlock({ images = [], bg, color }) {
   const items = images.slice(0, 3).map(img =>
     typeof img === 'string' ? { src: img, label: '' } : img
   );
@@ -44,3 +45,5 @@ export default function ImageSetCBlock({ images = [], bg, color }) {
     </section>
   );
 }
+
+export default memo(ImageSetCBlock);

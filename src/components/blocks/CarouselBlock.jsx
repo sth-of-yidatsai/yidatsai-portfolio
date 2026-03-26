@@ -1,11 +1,11 @@
-import { useRef, useLayoutEffect } from "react";
+import { memo, useRef, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./blocks.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function CarouselBlock({ images = [] }) {
+function CarouselBlock({ images = [] }) {
   const [img1, img2, img3] = images;
 
   const sectionRef = useRef(null);
@@ -101,3 +101,4 @@ export default function CarouselBlock({ images = [] }) {
     </section>
   );
 }
+export default memo(CarouselBlock);

@@ -1,11 +1,11 @@
-import { useRef, useLayoutEffect } from 'react';
+import { memo, useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './blocks.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function TextBlock({
+function TextBlock({
   label     = '',
   text      = '',
   content   = '',                    // backward compat
@@ -84,3 +84,5 @@ export default function TextBlock({
     </section>
   );
 }
+
+export default memo(TextBlock);

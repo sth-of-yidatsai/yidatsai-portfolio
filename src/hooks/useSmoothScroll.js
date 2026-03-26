@@ -1,17 +1,21 @@
 import { useEffect } from "react";
+import { gsap } from "gsap";
 
 /**
- * 全域超平滑滾動 Hook (v2)
+ * 全域超平滑滾動 Hook (v3)
  *
- * 核心修正：原版 lerp 是 frame-based（currentY += diff * ease），
- * 導致 120Hz 螢幕每秒跑兩倍、動畫快兩倍，60Hz 體感偏慢。
+ * v3 核心改進：從 requestAnimationFrame 改用 gsap.ticker
  *
- * 改用 frame-rate independent lerp：
- *   factor = 1 - exp(-easePerSecond × dt)
- * 無論 60 / 120 / 144 Hz，相同物理時間走完相同比例距離。
+ * 問題根源（v2）：
+ *   useSmoothScroll 用獨立 rAF，GSAP ScrollTrigger 也有自己的 ticker（rAF）。
+ *   兩個 rAF 執行順序每幀不固定：若 GSAP ticker 先跑，它讀到的是
+ *   上一幀的 scrollY（smooth scroll 還沒更新），導致動畫位置永遠落後
+ *   一幀 ≈ 16.7ms，在 pin 邊界造成視覺抖動（scrub: true 無 lerp 緩衝）。
  *
- * easePerSecond ≈ 3.7 等效於原版 ease=0.03 在 120Hz 的手感，
- * 讓各螢幕體感與 4K/120Hz 一致。
+ * 解法：
+ *   透過 gsap.ticker.add(tick) 把 scroll lerp 掛進 GSAP 的更新循環，
+ *   確保「smooth scroll 更新 scrollY → GSAP ScrollTrigger 讀值 → 渲染」
+ *   全部在同一個 tick 內完成，消除跨幀 desync。
  *
  * @param {object}  opts
  * @param {number}  opts.easePerSecond  - lerp 強度，預設 4
@@ -24,10 +28,10 @@ export default function useSmoothScroll({
   useEffect(() => {
     if (disabled) return;
 
-    let targetY       = window.scrollY;
-    let currentY      = window.scrollY;
-    let rafId         = null;
-    let lastTimestamp = null;
+    let targetY     = window.scrollY;
+    let currentY    = window.scrollY;
+    let activeEase  = easePerSecond;
+    let isActive    = false;
 
     const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
@@ -36,41 +40,37 @@ export default function useSmoothScroll({
 
     const onWheel = (e) => {
       e.preventDefault();
-      targetY = clamp(targetY + e.deltaY, 0, maxScrollY());
-      if (!rafId) {
-        lastTimestamp = null;
-        rafId = requestAnimationFrame(tick);
-      }
+      targetY    = clamp(targetY + e.deltaY, 0, maxScrollY());
+      activeEase = easePerSecond;
+      isActive   = true;
     };
 
-    const tick = (timestamp) => {
-      if (!lastTimestamp) lastTimestamp = timestamp;
+    // GSAP ticker callback：(time: seconds, deltaTime: ms, frame: number)
+    // 在 GSAP 內部 ScrollTrigger 更新之前執行，確保同幀內 scrollY 已是最新值
+    const tick = (_time, deltaTime) => {
+      if (!isActive) return;
 
-      // dt 上限 50ms 防止分頁切換後跳幀
-      const dt = Math.min(timestamp - lastTimestamp, 50) / 1000; // seconds
-      lastTimestamp = timestamp;
-
+      // dt 上限 50ms 防止分頁切換後跳幀（GSAP lagSmoothing 亦有類似保護）
+      const dt   = Math.min(deltaTime / 1000, 0.05);
       const diff = targetY - currentY;
 
       if (Math.abs(diff) < 0.5) {
-        currentY = targetY;
+        currentY   = targetY;
+        activeEase = easePerSecond;
+        isActive   = false;
         window.scrollTo(0, currentY);
-        rafId = null;
-        lastTimestamp = null;
         return;
       }
 
       // Frame-rate independent lerp：factor = 1 - e^(-k * dt)
-      // k = easePerSecond，保證相同秒數走完相同比例距離，與幀率無關
-      const factor = 1 - Math.exp(-easePerSecond * dt);
+      const factor = 1 - Math.exp(-activeEase * dt);
       currentY += diff * factor;
       window.scrollTo(0, currentY);
-      rafId = requestAnimationFrame(tick);
     };
 
     // 鍵盤 / 捲軸拖曳等外部捲動：直接同步兩值
     const onScroll = () => {
-      if (!rafId) {
+      if (!isActive) {
         targetY  = window.scrollY;
         currentY = window.scrollY;
       }
@@ -79,53 +79,23 @@ export default function useSmoothScroll({
     // 讓外部程式碼透過 CustomEvent 注入目標位置（e.g. Header 錨點跳轉）
     // detail: { top: number, easePerSecond?: number }
     const onScrollTo = (e) => {
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-      }
-
-      const jumpEase = e.detail.easePerSecond ?? easePerSecond;
-      targetY       = clamp(e.detail.top, 0, maxScrollY());
-      currentY      = window.scrollY;
-      lastTimestamp = null;
-
-      const jumpTick = (timestamp) => {
-        if (!lastTimestamp) lastTimestamp = timestamp;
-
-        const dt = Math.min(timestamp - lastTimestamp, 50) / 1000;
-        lastTimestamp = timestamp;
-
-        const diff = targetY - currentY;
-
-        if (Math.abs(diff) < 0.5) {
-          currentY = targetY;
-          window.scrollTo(0, currentY);
-          rafId = null;
-          lastTimestamp = null;
-          return;
-        }
-
-        const factor = 1 - Math.exp(-jumpEase * dt);
-        currentY += diff * factor;
-        window.scrollTo(0, currentY);
-        rafId = requestAnimationFrame(jumpTick);
-      };
-
-      rafId = requestAnimationFrame(jumpTick);
+      targetY    = clamp(e.detail.top, 0, maxScrollY());
+      currentY   = window.scrollY;
+      activeEase = e.detail.easePerSecond ?? easePerSecond;
+      isActive   = true;
     };
 
     window.addEventListener("wheel",          onWheel,    { passive: false });
     window.addEventListener("scroll",         onScroll,   { passive: true  });
     window.addEventListener("smoothScrollTo", onScrollTo);
+    gsap.ticker.add(tick);
 
     return () => {
       window.removeEventListener("wheel",          onWheel);
       window.removeEventListener("scroll",         onScroll);
       window.removeEventListener("smoothScrollTo", onScrollTo);
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-      }
+      gsap.ticker.remove(tick);
+      isActive = false;
     };
   }, [easePerSecond, disabled]);
 }

@@ -1,11 +1,11 @@
-import { useRef, useLayoutEffect } from 'react';
+import { memo, useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './blocks.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function SectionTitleBlock({
+function SectionTitleBlock({
   project = {},
   bg        = 'var(--gray-900)',
   color     = 'var(--gray-600)',   // 填色前（暗）
@@ -101,3 +101,5 @@ export default function SectionTitleBlock({
     </section>
   );
 }
+
+export default memo(SectionTitleBlock);

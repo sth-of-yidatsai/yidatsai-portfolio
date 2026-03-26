@@ -1,6 +1,7 @@
+import { memo } from "react";
 import './blocks.css';
 
-export default function VideoBlock({ src, poster, layout }) {
+function VideoBlock({ src, poster, layout }) {
   const cls = layout === 'full' ? ' block--video--full'
     : layout === 'wide' ? ' block--video--wide'
     : '';
@@ -26,3 +27,4 @@ export default function VideoBlock({ src, poster, layout }) {
     </section>
   );
 }
+export default memo(VideoBlock);

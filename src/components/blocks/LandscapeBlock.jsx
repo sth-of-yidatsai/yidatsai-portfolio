@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect } from "react";
+import { memo, useRef, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./blocks.css";
@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ASPECT = 21 / 9;
 
-export default function LandscapeBlock({ images = [], bg = "var(--gray-25)" }) {
+function LandscapeBlock({ images = [], bg = "var(--gray-25)" }) {
   const [img1, img2, img3] = images;
 
   const sectionRef = useRef(null);
@@ -126,3 +126,5 @@ export default function LandscapeBlock({ images = [], bg = "var(--gray-25)" }) {
     </section>
   );
 }
+
+export default memo(LandscapeBlock);

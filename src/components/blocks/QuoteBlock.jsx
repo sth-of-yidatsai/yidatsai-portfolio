@@ -1,6 +1,7 @@
+import { memo } from "react";
 import './blocks.css';
 
-export default function QuoteBlock({ text, author, image }) {
+function QuoteBlock({ text, author, image }) {
   return (
     <section className="block block--quote">
       <div className="block--quote__inner">
@@ -18,3 +19,4 @@ export default function QuoteBlock({ text, author, image }) {
     </section>
   );
 }
+export default memo(QuoteBlock);
