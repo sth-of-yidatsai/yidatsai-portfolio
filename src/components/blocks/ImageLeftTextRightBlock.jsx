@@ -1,5 +1,4 @@
 import { memo } from "react";
-import ParallaxImg from './ParallaxImg';
 import "./blocks.css";
 
 function ImageLeftTextRightBlock({
@@ -15,7 +14,7 @@ function ImageLeftTextRightBlock({
   return (
     <section className="block block--image-left-text-right">
       <div className="block--split-full__image">
-        <ParallaxImg src={image} alt={imageAlt || ""} />
+        <img src={image} alt={imageAlt || ""} className="block--split-full__img" />
       </div>
       <div
         className="block--split-full__text"

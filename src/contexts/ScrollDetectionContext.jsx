@@ -10,6 +10,13 @@ const initial = {
 function reducer(state, action) {
   switch (action.type) {
     case 'WHEEL':
+      // 方向未改變時回傳同一個 reference，避免 Provider re-render 與 GC 壓力
+      if (
+        state.isScrolling === true &&
+        state.horizontalDirection === action.horizontalDirection &&
+        state.verticalDirection === action.verticalDirection &&
+        state.isInHorizontalSection === action.isInHorizontalSection
+      ) return state;
       return {
         isScrolling: true,
         horizontalDirection: action.horizontalDirection,
@@ -65,10 +72,13 @@ export function ScrollDetectionProvider({ children }) {
 
       // 直接寫入 body attribute — 繞過 React batching，讓 CSS 立即響應，
       // 消除 ParallaxImg / HeroBlock 等多個元件因 context 更新而觸發的 re-render。
+      // 只在值真正改變時寫入，避免重複 setAttribute 觸發不必要的 style recalc。
       const attr = isInHorizontal
         ? (horizontalDirection ? `horizontal-${horizontalDirection}` : null)
         : (verticalDirection   ? `vertical-${verticalDirection}`     : null);
-      if (attr) document.body.dataset.scroll = attr;
+      if (attr && document.body.dataset.scroll !== attr) {
+        document.body.dataset.scroll = attr;
+      }
 
       timeoutRef.current = setTimeout(() => {
         delete document.body.dataset.scroll;

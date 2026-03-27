@@ -1,5 +1,4 @@
 import { memo } from "react";
-import ParallaxImg from './ParallaxImg';
 import './blocks.css';
 
 function ImageGridBlock({ images = [], columns = 2 }) {
@@ -10,7 +9,11 @@ function ImageGridBlock({ images = [], columns = 2 }) {
       <div className="block--image-grid__inner">
         {images.map((src, i) => (
           <div key={i} className="block--image-grid__item">
-            <ParallaxImg src={typeof src === 'string' ? src : src.src} alt={`image ${i + 1}`} />
+            <img
+              src={typeof src === 'string' ? src : src.src}
+              alt={`image ${i + 1}`}
+              className="block--image-grid__img"
+            />
           </div>
         ))}
       </div>

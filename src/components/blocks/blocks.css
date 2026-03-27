@@ -20,8 +20,11 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translate3d(0, 0, 0);
+  /* 靜態 will-change：避免 body[data-scroll] 300ms timeout 刪除 attr 時
+     GPU layer 被 de-promoted，與 smooth scroll 同幀造成間歇性頓點 */
+  will-change: transform;
 }
 
 body[data-scroll="vertical-up"]   .block--hero__bg { transform: translate3d(0, -8px, 0); }
@@ -230,7 +233,6 @@ body[data-scroll="vertical-down"] .block--hero__bg { transform: translate3d(0,  
   transform: translateZ(0);
   backface-visibility: hidden;
   padding: 0;
-  contain: layout paint;
 }
 
 /* GSAP 負責 width / height / scale；margin:auto + inset:0 置中 */
@@ -259,13 +261,22 @@ body[data-scroll="vertical-down"] .block--hero__bg { transform: translate3d(0,  
   display: block;
   transform: scale(1.08) translateZ(0);
   transform-origin: center;
-  transition: transform 0.3s ease;
+}
+
+/* pin 動畫期間停用視差，.is-pinned 由 LandscapeBlock 的 onEnter/onLeave 控制 */
+.block--image.is-pinned .block--image__frame-img {
+  transform: scale(1.08) translateZ(0);
+}
+
+/* 視差：僅在未 pin 時啟用 transition，避免 pin 進入/離開時 CSS transition 與 GSAP 衝突 */
+.block--image:not(.is-pinned) .block--image__frame-img {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body[data-scroll="vertical-up"]   .block--image__frame-img { transform: scale(1.08) translateY(-8px) translateZ(0); }
 body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.08) translateY(8px)  translateZ(0); }
-/* pin 動畫期間停用視差，.is-pinned 由 LandscapeBlock 的 onEnter/onLeave 控制 */
-.block--image.is-pinned .block--image__frame-img { transform: scale(1.08) translateZ(0); }
+body[data-scroll="vertical-up"]   .block--image.is-pinned .block--image__frame-img,
+body[data-scroll="vertical-down"] .block--image.is-pinned .block--image__frame-img { transform: scale(1.08) translateZ(0); }
 
 /* img2 / img3：覆蓋在底圖上，GSAP 控制 scale；DOM 順序決定 z 層 */
 .block--image__cover-img {
@@ -287,7 +298,6 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   overflow: hidden;
   transform: translateZ(0);
   backface-visibility: hidden;
-  contain: layout paint;
 }
 
 .block--carousel__slides {
@@ -302,7 +312,11 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   height: 100%;
   object-fit: cover;
   display: block;
-  /* will-change 由 onEnter/onLeave 動態管理，避免離開後持續佔用 GPU layer */
+}
+
+/* 非第一張 slide 初始隱藏，由 BlockRenderer ScrollManager 控制 opacity */
+.block--carousel__slide:not(:first-child) {
+  opacity: 0;
 }
 
 /* ── FULL IMAGE ── */
@@ -317,6 +331,7 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   width: 100%;
   height: auto;
   display: block;
+  min-height: 40vh; /* prevent 0→height CLS before image decodes */
 }
 
 .block--full-image__caption {
@@ -916,16 +931,16 @@ body[data-scroll="vertical-down"] .block--image__frame-img { transform: scale(1.
   display: block;
   width: 100%;
   height: auto;
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   transform: scale(1.1) translate3d(0, 0, 0);
 }
 
 body[data-scroll="vertical-up"]   .block-parallax-img { transform: scale(1.1) translate3d(0, -8px, 0); }
 body[data-scroll="vertical-down"] .block-parallax-img { transform: scale(1.1) translate3d(0,  8px, 0); }
 
-/* will-change 僅在捲動期間啟用，避免所有圖片永久佔用 GPU layer */
-body[data-scroll] .block-parallax-img,
-body[data-scroll] .block--hero__bg { will-change: transform; }
+/* will-change：hero bg 已改為靜態（見 .block--hero__bg 定義），
+   parallax img 由 ParallaxImg.jsx 內 IntersectionObserver 逐個管理，
+   避免所有圖片同時被提升為 GPU layer */
 
 /* 視差圖片在明確高度容器內需填滿 — 覆蓋基礎 height:auto */
 .block--image-set-a__img-wrap .block-parallax-img,

@@ -7,5 +7,7 @@ import './blocks.css';
  */
 export default function ParallaxImg({ src, alt = '', className = '' }) {
   const cls = ['block-parallax-img', className].filter(Boolean).join(' ');
-  return <img src={src} alt={alt} className={cls} loading="lazy" decoding="async" />;
+  // 不加 loading="lazy"：ProjectDetail 的 preloader 已將所有圖片預載到 HTTP cache，
+  // lazy 只會讓 <img> 延遲「激活」，造成捲到時才出現的空白幀，反而更慢。
+  return <img src={src} alt={alt} className={cls} />;
 }

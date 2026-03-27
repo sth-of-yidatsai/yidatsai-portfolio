@@ -1,5 +1,4 @@
 import { memo } from "react";
-import ParallaxImg from './ParallaxImg';
 import './blocks.css';
 
 function ImageSetABlock({ images = [], bg, color }) {
@@ -15,7 +14,7 @@ function ImageSetABlock({ images = [], bg, color }) {
       {items[0] && (
         <div className="block--image-set-a__item block--image-set-a__item--1">
           <div className="block--image-set-a__img-wrap block--image-set-a__img-wrap--7-5">
-            <ParallaxImg src={items[0].src} alt="" />
+            <img src={items[0].src} alt="" className="block--image-set-a__img" />
           </div>
           {items[0].label && (
             <span className="block--image-set-a__label">{items[0].label}</span>
@@ -25,7 +24,7 @@ function ImageSetABlock({ images = [], bg, color }) {
       {items[1] && (
         <div className="block--image-set-a__item block--image-set-a__item--2">
           <div className="block--image-set-a__img-wrap block--image-set-a__img-wrap--1-1">
-            <ParallaxImg src={items[1].src} alt="" />
+            <img src={items[1].src} alt="" className="block--image-set-a__img" />
           </div>
           {items[1].label && (
             <span className="block--image-set-a__label">{items[1].label}</span>
@@ -35,7 +34,7 @@ function ImageSetABlock({ images = [], bg, color }) {
       {items[2] && (
         <div className="block--image-set-a__item block--image-set-a__item--3">
           <div className="block--image-set-a__img-wrap block--image-set-a__img-wrap--1-1">
-            <ParallaxImg src={items[2].src} alt="" />
+            <img src={items[2].src} alt="" className="block--image-set-a__img" />
           </div>
           {items[2].label && (
             <span className="block--image-set-a__label">{items[2].label}</span>

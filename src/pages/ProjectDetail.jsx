@@ -29,14 +29,15 @@ function collectBlockImages(blocks) {
 
 function preloadImages(urls) {
   return Promise.all(
-    urls.map(
-      (url) =>
-        new Promise((resolve) => {
-          const img = new Image();
-          img.onload = img.onerror = resolve;
-          img.src = url;
-        })
-    )
+    urls.map((url) => {
+      const img = new Image();
+      img.src = url;
+      // decode() = compressed → GPU-ready pixels。
+      // onload だけでは HTTP cache に乗るまでしか待たない。
+      // decode() まで待つことでローダー中に全画像を展開済みにし、
+      // スクロール中の main-thread decode（= frame drop）を排除する。
+      return img.decode().catch(() => {});
+    })
   );
 }
 
