@@ -5,15 +5,24 @@ import './TitleBlock.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FILL_COLOR  = 'var(--gray-50)';
-const EMPTY_COLOR = 'var(--gray-500)';
+const DEFAULT_FILL_COLOR  = 'var(--gray-50)';
+const DEFAULT_EMPTY_COLOR = 'var(--gray-500)';
 
-function TitleBlock({ title = '', description = '' }) {
+function TitleBlock({
+  title = '',
+  description = '',
+  bgColor,
+  emptyColor,
+  fillColor,
+}) {
   const sectionRef  = useRef(null);
   const titleCharsRef = useRef([]);
   const descCharsRef  = useRef([]);
 
   useLayoutEffect(() => {
+    const FILL_COLOR  = fillColor  ?? DEFAULT_FILL_COLOR;
+    const EMPTY_COLOR = emptyColor ?? DEFAULT_EMPTY_COLOR;
+
     const section    = sectionRef.current;
     const titleChars = titleCharsRef.current.filter(Boolean);
     const descChars  = descCharsRef.current.filter(Boolean);
@@ -48,10 +57,14 @@ function TitleBlock({ title = '', description = '' }) {
       window.removeEventListener('resize', setup);
       ctx?.revert();
     };
-  }, []);
+  }, [fillColor, emptyColor]);
 
   return (
-    <section className="block block--title" ref={sectionRef}>
+    <section
+      className="block block--title"
+      ref={sectionRef}
+      style={bgColor ? { background: bgColor } : undefined}
+    >
       <div className="block--title__inner">
         <p className="block--title__label">Title</p>
 

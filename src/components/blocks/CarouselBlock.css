@@ -1,7 +1,7 @@
 .block--carousel {
   position: relative;
-  width: 100vw;
-  height: 65vh;
+  width: 100svw;
+  height: 80svh;
   overflow: hidden;
 }
 

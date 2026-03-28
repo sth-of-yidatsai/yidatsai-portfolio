@@ -1,0 +1,112 @@
+.block--glyph {
+  padding: var(--space-xl) var(--px-page);
+  box-sizing: border-box;
+}
+
+/* ── Section heading ── */
+.block--glyph__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: var(--space-lg);
+}
+
+.block--glyph__header-label {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-8pt);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin: 0;
+}
+
+.block--glyph__header-title {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-24pt);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.04em;
+
+  color: var(--gray-800);
+  margin: 0;
+}
+
+/* ── Multi-font: label per group ── */
+.block--glyph__font-group + .block--glyph__font-group {
+  margin-top: var(--space-xl);
+}
+
+.block--glyph__font-name {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gray-800);
+  margin: 0;
+}
+
+/* ── Grid ── */
+.block--glyph__grid {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  border-top:  1px solid var(--gray-200);
+  border-left: 1px solid var(--gray-200);
+}
+
+.block--glyph__cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.45rem 0.4rem 0.55rem;
+  border-right:  1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+  min-height: 5rem;
+  box-sizing: border-box;
+}
+
+/* ── Small reference label (top-left, system font) ── */
+.block--glyph__label {
+  position: absolute;
+  top: 0.3rem;
+  left: 0.35rem;
+  font-family: var(--font-manrope);
+  font-size: 0.5rem;
+  font-weight: var(--fw-regular);
+  color: var(--gray-400);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ── Large glyph (custom font) ── */
+.block--glyph__char {
+  display: block;
+  font-size: var(--fs-28pt);
+  font-weight: 300;
+  color: var(--gray-800);
+  line-height: 1;
+  text-align: center;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .block--glyph__grid {
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .block--glyph__grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .block--glyph__cell {
+    min-height: 3.5rem;
+  }
+
+  .block--glyph__char {
+    font-size: var(--fs-20pt);
+  }
+}

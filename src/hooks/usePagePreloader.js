@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useLoader } from './use-loader/index.jsx';
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLoader } from "./use-loader/index.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,7 +26,7 @@ export function usePagePreloader(imageUrls = [], timeoutMs = 10_000) {
       if (signaledRef.current) return;
       signaledRef.current = true;
       // 圖片尺寸確定後重算 GSAP pin spacer，避免 TitleBlock 等固定動畫位置錯誤
-      // ScrollTrigger.refresh();
+      ScrollTrigger.refresh();
       signalContentReady(); // 釋放 gate → loader 可關閉
     };
 
@@ -39,7 +39,7 @@ export function usePagePreloader(imageUrls = [], timeoutMs = 10_000) {
         img.src = url;
         // decode() 等到 GPU-ready 像素層完成，消除捲動時主執行緒解碼造成的掉幀
         return img.decode().catch(() => {});
-      })
+      }),
     ).then(done);
 
     return () => {
