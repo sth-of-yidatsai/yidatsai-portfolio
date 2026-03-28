@@ -1,5 +1,5 @@
 .block--imgset1 {
-  padding: var(--space-2xl) var(--px-page);
+  padding: var(--space-2xl) var(--px-page) 0 var(--px-page);
   box-sizing: border-box;
   contain: layout paint;
 }

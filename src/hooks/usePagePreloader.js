@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
  *
  * @param {string[]} imageUrls - 需要預載的圖片 URL 陣列
  */
-export function usePagePreloader(imageUrls = []) {
+export function usePagePreloader(imageUrls = [], timeoutMs = 10_000) {
   const { waitForContent, signalContentReady } = useLoader();
   const signaledRef = useRef(false);
 
@@ -31,7 +31,7 @@ export function usePagePreloader(imageUrls = []) {
     };
 
     // 10 秒 failsafe：慢速網路不會讓 loader 永遠卡住
-    const timeout = setTimeout(done, 10_000);
+    const timeout = setTimeout(done, timeoutMs);
 
     Promise.all(
       imageUrls.map((url) => {

@@ -1,5 +1,5 @@
 .block--quote {
-  padding: var(--space-2xl) var(--px-page);
+  padding: var(--space-2xl) var(--px-page) 0 var(--px-page);
   min-height: 60vh;
   display: flex;
   align-items: center;

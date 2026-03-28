@@ -1,7 +1,7 @@
-import HeroBlock from "../../components/blocks/formosa-font/HeroBlock";
-import TitleBlock from "../../components/blocks/formosa-font/TitleBlock";
-import ImgSet1Block from "../../components/blocks/formosa-font/ImgSet1Block";
-import QuoteBlock from "../../components/blocks/formosa-font/QuoteBlock";
+import HeroBlock from "../../components/blocks/HeroBlock";
+import TitleBlock from "../../components/blocks/TitleBlock";
+import ImgSet1Block from "../../components/blocks/ImgSet1Block";
+import QuoteBlock from "../../components/blocks/QuoteBlock";
 import projects from "../../data/projects.json";
 import { usePagePreloader } from "../../hooks/usePagePreloader";
 
