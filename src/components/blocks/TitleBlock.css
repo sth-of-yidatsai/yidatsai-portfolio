@@ -30,7 +30,7 @@
 .block--title__title {
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight, 200);
-  font-size: var(--fs-56pt, clamp(2.5rem, 7vw, 5rem));
+  font-size: var(--fs-48pt);
   line-height: 1.2;
   color: var(--gray-500);
   margin: 0;
@@ -41,7 +41,7 @@
 .block--title__description {
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight, 200);
-  font-size: var(--fs-32pt, clamp(1.5rem, 3vw, 2.5rem));
+  font-size: var(--fs-32pt);
   line-height: 1.35;
   color: var(--gray-500);
   margin: 0;

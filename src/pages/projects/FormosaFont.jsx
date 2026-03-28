@@ -1,13 +1,13 @@
 import HeroBlock from "../../components/blocks/HeroBlock";
 import TitleBlock from "../../components/blocks/TitleBlock";
-import ImgSet1Block from "../../components/blocks/ImgSet1Block";
+import CarouselBlock from "../../components/blocks/CarouselBlock";
+import ImgSet3aBlock from "../../components/blocks/ImgSet3aBlock";
 import QuoteBlock from "../../components/blocks/QuoteBlock";
 import projects from "../../data/projects.json";
 import { usePagePreloader } from "../../hooks/usePagePreloader";
 
 const BASE = "/images/projects/formosa-font";
 const project = projects.find((p) => p.id === "formosa-font");
-
 const PRELOAD_IMAGES = [
   `${BASE}/cover.webp`,
   ...project.images.map((f) => `${BASE}/${f}`),
@@ -23,9 +23,7 @@ export default function FormosaFont() {
 
       <TitleBlock title={project.title} description={project.description} />
 
-      <ImgSet1Block
-        bg="var(--gray-25)"
-        color="var(--gray-700)"
+      <ImgSet3aBlock
         items={[
           {
             src: `${BASE}/03.webp`,
@@ -49,6 +47,16 @@ export default function FormosaFont() {
         text="Taiwan was once known as 'Formosa', meaning 'beautiful island' in Portuguese."
         author="Historical Record"
         image={`${BASE}/title.svg`}
+      />
+
+      <CarouselBlock
+        images={[
+          `${BASE}/13.webp`,
+          `${BASE}/14.webp`,
+          `${BASE}/12.webp`,
+          `${BASE}/15.webp`,
+          `${BASE}/18.webp`,
+        ]}
       />
     </main>
   );

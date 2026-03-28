@@ -7,7 +7,7 @@ function QuoteBlock({ text, author, image }) {
       <div className="block--quote__inner">
         {image && (
           <div className="block--quote__image-wrap">
-            <img className="block--quote__image" src={image} alt="" />
+            <img className="block--quote__image" src={image} alt="" loading="eager" />
           </div>
         )}
         <svg className="block--quote__mark" viewBox="0 0 80 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

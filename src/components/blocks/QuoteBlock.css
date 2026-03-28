@@ -1,5 +1,5 @@
 .block--quote {
-  padding: var(--space-2xl) var(--px-page) 0 var(--px-page);
+  padding: var(--space-xl) var(--px-page);
   min-height: 60vh;
   display: flex;
   align-items: center;
@@ -35,20 +35,22 @@
 }
 
 .block--quote__text {
-  font-size: clamp(1.1rem, 2.5vw, 1.75rem);
-  line-height: 1.55;
-  color: var(--gray-700);
-  font-weight: var(--font-light);
-  letter-spacing: 0.01em;
+  font-family: var(--font-hatton);
+  font-weight: var(--fw-extralight);
+  font-size: var(--fs-28pt);
+  letter-spacing: 0.02em;
+  color: var(--gray-800);
   margin: 0;
+  line-height: 1.8;
 }
 
 .block--quote__author {
   margin-top: var(--space-lg);
-  font-size: 0.78rem;
+  font-size: var(--fs-10pt);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gray-400);
+  font-weight: var(--font-bold);
 }
 
 .block--quote__author::before {

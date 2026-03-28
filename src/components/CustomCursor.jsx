@@ -61,7 +61,9 @@ const CustomCursor = () => {
 
     // 以 pointermove 為準來偵測 hover 狀態，避免 pointerout 在子節點間移動造成誤判
 
-    const animate = () => {
+    let lastTime = performance.now();
+
+    const animate = (now) => {
       const cursorEl = cursorRef.current;
       const dotEl = dotRef.current;
       if (!cursorEl || !dotEl) {
@@ -69,18 +71,23 @@ const CustomCursor = () => {
         return;
       }
 
+      // delta time（秒），限制最大值避免分頁切換後的大跳動
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+
       const target = targetRef.current;
       const current = currentRef.current;
       const dotCurrent = dotCurrentRef.current;
 
-      // 慣性跟隨：主游標較慢、dot 較快
-      const mainEase = 0.2;
-      const dotEase = 0.35;
+      // frame-rate 無關的 lerp：alpha = 1 - e^(-lambda * dt)
+      // mainLambda=12 / dotLambda=25 大致等同 60fps 時 0.18 / 0.34 的感覺
+      const mainAlpha = 1 - Math.exp(-12 * dt);
+      const dotAlpha = 1 - Math.exp(-25 * dt);
 
-      current.x += (target.x - current.x) * mainEase;
-      current.y += (target.y - current.y) * mainEase;
-      dotCurrent.x += (target.x - dotCurrent.x) * dotEase;
-      dotCurrent.y += (target.y - dotCurrent.y) * dotEase;
+      current.x += (target.x - current.x) * mainAlpha;
+      current.y += (target.y - current.y) * mainAlpha;
+      dotCurrent.x += (target.x - dotCurrent.x) * dotAlpha;
+      dotCurrent.y += (target.y - dotCurrent.y) * dotAlpha;
 
       // 保守限制數值，避免 NaN 或極端跳動
       const cx = easeClamp(current.x, -10000, 10000);
