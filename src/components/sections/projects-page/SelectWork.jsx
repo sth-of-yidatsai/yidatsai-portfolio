@@ -246,6 +246,8 @@ export default function SelectWork() {
     navigate(`/projects/${card.id}`);
   };
 
+
+
   return (
     <section className="select-work">
       <div className="select-work__header">
@@ -266,10 +268,11 @@ export default function SelectWork() {
           style={{ transform: `translateX(${-offset}px)` }}
         >
           {displayCards.map((card, i) => (
-            <div
+            <a
               key={i}
               className="select-work__card-wrap"
-              onClick={() => handleCardClick(card)}
+              href={`/projects/${card.id}`}
+              onClick={(e) => { e.preventDefault(); handleCardClick(card); }}
               data-clickable
             >
               <div className="select-work__card">
@@ -294,7 +297,7 @@ export default function SelectWork() {
                 </div>
               </div>
               <span className="select-work__card-number">{card.number}</span>
-            </div>
+            </a>
           ))}
         </div>
       </div>

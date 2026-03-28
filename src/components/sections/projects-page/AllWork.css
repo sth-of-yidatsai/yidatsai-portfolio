@@ -54,6 +54,10 @@
 
 /* ── Card Wrap ───────────────────────────────────────────────────────────── */
 
+.all-work__card-wrap::after {
+  display: none;
+}
+
 .all-work__card-wrap {
   display: block;
   cursor: none;

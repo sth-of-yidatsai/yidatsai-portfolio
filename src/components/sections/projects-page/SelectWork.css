@@ -71,6 +71,10 @@
   gap: var(--space-sm);
 }
 
+.select-work__card-wrap::after {
+  display: none;
+}
+
 /* ── Card ────────────────────────────────────────────────────────────────── */
 
 .select-work__card {

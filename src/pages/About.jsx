@@ -1,7 +1,7 @@
 import React from "react";
-import BioSection from "../components/sections/About-page/BioSection";
-import TrajectorySection from "../components/sections/About-page/TrajectorySection";
-import CapabilitiesSection from "../components/sections/About-page/CapabilitiesSection";
+import BioSection from "../components/sections/about-page/BioSection";
+import TrajectorySection from "../components/sections/about-page/TrajectorySection";
+import CapabilitiesSection from "../components/sections/about-page/CapabilitiesSection";
 import "./About.css";
 import { usePagePreloader } from "../hooks/usePagePreloader";
 

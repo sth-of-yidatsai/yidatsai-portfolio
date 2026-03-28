@@ -215,29 +215,6 @@ img {
 a {
   color: var(--gray-700);
   text-decoration: none;
-  position: relative;
-  transition: color 0.3s ease;
-}
-
-a:hover {
-  color: var(--gray-200);
-}
-
-a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 1px;
-  background: var(--gray-200);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-
-a:hover::after {
-  transform: scaleX(1);
 }
 
 /* 圖片 */

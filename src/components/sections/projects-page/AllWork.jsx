@@ -75,10 +75,11 @@ const ProjectCard = memo(function ProjectCard({ project, scrollClass, onClick, c
   const orderNum = `(${String(project.order).padStart(3, "0")})`;
 
   return (
-    <div
+    <a
       ref={cardRef}
       className={`all-work__card-wrap all-work__card-wrap--${project.size}`}
-      onClick={onClick}
+      href={`/projects/${project.id}`}
+      onClick={(e) => { e.preventDefault(); onClick(); }}
       data-clickable
     >
       <div className="all-work__card">
@@ -97,7 +98,7 @@ const ProjectCard = memo(function ProjectCard({ project, scrollClass, onClick, c
         <span className="all-work__caption-title">{project.title}</span>
         <span className="all-work__caption-num">{orderNum}</span>
       </div>
-    </div>
+    </a>
   );
 });
 
@@ -217,6 +218,7 @@ export default function AllWork() {
     (project) => navigate(`/projects/${project.id}`),
     [navigate]
   );
+
 
   const cols = buildLayout(visibleProjects);
 

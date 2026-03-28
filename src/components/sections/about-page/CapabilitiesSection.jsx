@@ -67,7 +67,7 @@ export default function CapabilitiesSection() {
   }, []);
 
   return (
-    <section className="cs" onMouseMove={handleMouseMove}>
+    <section className="cs" onMouseMove={handleMouseMove} onMouseLeave={() => setHoveredIndex(null)}>
       {/* Header */}
       <div className="cs__header">
         <p className="cs__subtitle">Capabilities</p>
