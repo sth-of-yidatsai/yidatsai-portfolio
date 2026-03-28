@@ -1,5 +1,5 @@
-import { Outlet, useMatches } from "react-router-dom";
-import { useEffect } from "react";
+import { Outlet, useMatches, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,6 +11,8 @@ import { Providers } from "./providers";
 
 function App() {
   const matches = useMatches();
+  const location = useLocation();
+  const lenisRef = useRef(null);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -19,6 +21,7 @@ function App() {
       orientation: "vertical",
       smoothWheel: true,
     });
+    lenisRef.current = lenis;
 
     // Lenis scroll → ScrollTrigger 同步更新（解決 pin spacer 偏差）
     lenis.on("scroll", ScrollTrigger.update);
@@ -31,8 +34,21 @@ function App() {
     return () => {
       gsap.ticker.remove(onTick);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
+
+  // 路由切換後重新計算頁面高度，避免 Lenis 的 limit 卡在 0
+  useEffect(() => {
+    const lenis = lenisRef.current;
+    if (!lenis) return;
+    // 等 React 將新頁面的 DOM render 完畢再 resize
+    const rafId = requestAnimationFrame(() => {
+      lenis.resize();
+      ScrollTrigger.refresh();
+    });
+    return () => cancelAnimationFrame(rafId);
+  }, [location.pathname]);
 
   useEffect(() => {
     const match = [...matches].reverse().find((m) => m.handle?.title);
