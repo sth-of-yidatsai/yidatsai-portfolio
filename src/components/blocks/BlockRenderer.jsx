@@ -17,8 +17,6 @@ import ImageSetABlock from './ImageSetABlock';
 import ImageSetBBlock from './ImageSetBBlock';
 import ImageSetCBlock from './ImageSetCBlock';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const BLOCK_MAP = {
   'carousel':              CarouselBlock,
   'hero':                  HeroBlock,
@@ -46,12 +44,12 @@ function setupCharFill(section, charSelector, scrollEnd) {
   chars.forEach(c => { c.style.color = color; });
   let lastFilled = 0;
   ScrollTrigger.create({
-    trigger:      section,
-    pin:          true,
+    trigger:       section,
+    pin:           true,
     anticipatePin: 1,
-    start:        'top top',
-    end:          `+=${scrollEnd}`,
-    scrub:        true,
+    start:         'top top',
+    end:           `+=${scrollEnd}`,
+    scrub:         true,
     onUpdate: (self) => {
       const filled = Math.round(self.progress * chars.length);
       if (filled === lastFilled) return;
@@ -77,12 +75,12 @@ function setupCarousel(section, vh) {
 
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger:      section,
-      pin:          true,
+      trigger:       section,
+      pin:           true,
       anticipatePin: 1,
-      start:        'top top',
-      end:          `+=${vh * 2}`,
-      scrub:        true,
+      start:         'top top',
+      end:           `+=${vh * 2}`,
+      scrub:         true,
       onEnter()     { gsap.set(slides, { willChange: 'opacity' }); },
       onLeave()     { gsap.set(slides, { willChange: 'auto' }); },
       onEnterBack() { gsap.set(slides, { willChange: 'opacity' }); },
@@ -103,9 +101,9 @@ function setupLandscape(section, vh) {
   if (!frameWrap) return;
   const [img2, img3] = [...section.querySelectorAll('.block--image__cover-img')];
 
-  const vw       = section.offsetWidth;
-  const frameW   = vw * 0.62;
-  const frameH   = frameW / LANDSCAPE_ASPECT;
+  const vw         = section.offsetWidth;
+  const frameW     = vw * 0.62;
+  const frameH     = frameW / LANDSCAPE_ASPECT;
   const finalScale = Math.max(vw / frameW, vh / frameH) * 1.02;
 
   gsap.set(frameWrap, { width: frameW, height: frameH, scale: 1 });
@@ -116,12 +114,12 @@ function setupLandscape(section, vh) {
 
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger:      section,
-      pin:          true,
+      trigger:       section,
+      pin:           true,
       anticipatePin: 1,
-      start:        'top top',
-      end:          `+=${vh * 1.8}`,
-      scrub:        true,
+      start:         'top top',
+      end:           `+=${vh * 1.8}`,
+      scrub:         true,
       onEnter()     { section.classList.add('is-pinned');    gsap.set(animEls, { willChange: 'transform' }); },
       onLeave()     { section.classList.remove('is-pinned'); gsap.set(animEls, { willChange: 'auto' }); },
       onEnterBack() { section.classList.add('is-pinned');    gsap.set(animEls, { willChange: 'transform' }); },
@@ -161,10 +159,8 @@ export default function BlockRenderer({ blocks, project }) {
     if (!blocks?.length || !containerRef.current) return;
     const container = containerRef.current;
 
-    // 單一 context 涵蓋所有動畫，確保 ScrollTrigger 全部量測完畢後一次初始化
     let ctx = setupAll(container);
 
-    // 單一 resize handler，debounce 後統一 rebuild
     let resizeRaf;
     const onResize = () => {
       cancelAnimationFrame(resizeRaf);

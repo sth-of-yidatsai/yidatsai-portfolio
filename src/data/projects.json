@@ -34,10 +34,10 @@
         "image": "/images/projects/formosa-font/03.webp"
       },
       {
-        "type": "section-title",
-        "bg": "var(--linen-300)",
-        "color": "var(--gray-300)",
-        "fillColor": "var(--gray-900)"
+        "type": "quote",
+        "text": "Taiwan was once known as 'Formosa', meaning 'beautiful island' in Portuguese.",
+        "author": "Historical Record",
+        "image": "/images/projects/formosa-font/title.svg"
       },
       {
         "type": "image-set-b",
@@ -59,12 +59,6 @@
         ]
       },
       {
-        "type": "quote",
-        "text": "Taiwan was once known as 'Formosa', meaning 'beautiful island' in Portuguese.",
-        "author": "Historical Record",
-        "image": "/images/projects/formosa-font/title.svg"
-      },
-      {
         "type": "image-set-a",
         "images": [
           {
@@ -84,53 +78,42 @@
         "color": "var(--gray-700)"
       },
       {
-        "type": "carousel",
-        "images": [
-          "/images/projects/formosa-font/11.webp",
-          "/images/projects/formosa-font/12.webp",
-          "/images/projects/formosa-font/13.webp"
-        ],
-        "bg": "var(--gray-900)"
-      },
-      {
-        "type": "image-set-c",
-        "bg": "var(--gray-25)",
-        "color": "var(--gray-700)",
+        "type": "image-set-a",
         "images": [
           {
             "src": "/images/projects/formosa-font/02.webp",
             "label": "Typography"
           },
           {
-            "src": "/images/projects/formosa-font/05.webp",
+            "src": "/images/projects/formosa-font/12.webp",
             "label": "Typography"
           },
           {
-            "src": "/images/projects/formosa-font/06.webp",
+            "src": "/images/projects/formosa-font/05.webp",
             "label": "Typography"
           }
-        ]
-      },
-      {
-        "type": "image-left-text-right",
-        "image": "/images/projects/formosa-font/11.webp",
-        "bg": "var(--gray-900)",
-        "color": "var(--gray-200)",
-        "title": "Flora as Form",
-        "text": [
-          "Each character is inspired by the unique shapes of Taiwan's native flora, blending botanical illustration with typographic precision.",
-          "Paragraph two text here."
-        ]
-      },
-      {
-        "type": "image-grid",
-        "images": [
-          "/images/projects/formosa-font/12.webp",
-          "/images/projects/formosa-font/09.webp",
-          "/images/projects/formosa-font/16.webp",
-          "/images/projects/formosa-font/16.webp"
         ],
-        "columns": 2
+        "bg": "var(--gray-25)",
+        "color": "var(--gray-700)"
+      },
+      {
+        "type": "image-set-a",
+        "images": [
+          {
+            "src": "/images/projects/formosa-font/10.webp",
+            "label": "Typography"
+          },
+          {
+            "src": "/images/projects/formosa-font/01.webp",
+            "label": "Typography"
+          },
+          {
+            "src": "/images/projects/formosa-font/09.webp",
+            "label": "Typography"
+          }
+        ],
+        "bg": "var(--gray-25)",
+        "color": "var(--gray-700)"
       }
     ]
   },
