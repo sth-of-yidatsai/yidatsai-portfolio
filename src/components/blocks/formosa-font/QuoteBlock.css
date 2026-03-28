@@ -1,0 +1,56 @@
+.block--quote {
+  padding: var(--space-2xl) var(--px-page);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  contain: layout paint;
+}
+
+.block--quote__inner {
+  width: 100%;
+  max-width: var(--max-width-narrow);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.block--quote__image-wrap {
+  margin: 0 auto var(--space-lg);
+}
+
+.block--quote__image {
+  display: block;
+  margin: 0 auto;
+  max-width: 80%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.block--quote__mark {
+  display: block;
+  width: 2rem;
+  height: auto;
+  color: var(--gray-200);
+  margin: var(--space-xl) auto;
+}
+
+.block--quote__text {
+  font-size: clamp(1.1rem, 2.5vw, 1.75rem);
+  line-height: 1.55;
+  color: var(--gray-700);
+  font-weight: var(--font-light);
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.block--quote__author {
+  margin-top: var(--space-lg);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+}
+
+.block--quote__author::before {
+  content: "— ";
+}

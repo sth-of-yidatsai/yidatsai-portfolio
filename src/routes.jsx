@@ -7,7 +7,7 @@ import About from "./pages/About.jsx";
 import Projects from "./pages/Projects.jsx";
 import Playground from "./pages/Playground.jsx";
 import Contact from "./pages/Contact.jsx";
-import ProjectDetail from "./pages/ProjectDetail.jsx";
+import ProjectPage from "./pages/ProjectPage.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 
@@ -56,7 +56,7 @@ const router = createBrowserRouter([
       },
       {
         path: "projects/:id",
-        element: <ProjectDetail />,
+        element: <ProjectPage />,
         loader: projectDetailLoader,
         handle: { title: (data) => data?.title ? `${data.title} | YI-DA TSAI` : "Project | YI-DA TSAI" },
       },

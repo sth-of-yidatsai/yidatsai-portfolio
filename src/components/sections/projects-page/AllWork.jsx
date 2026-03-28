@@ -182,6 +182,18 @@ export default function AllWork() {
     return () => observer.disconnect();
   }, [visibleProjects.length]);
 
+  // ── Notify Lenis to recalculate scroll bounds after new content renders ───
+  // Lenis's ResizeObserver watches document.documentElement's clientHeight
+  // (viewport size), NOT scrollHeight. Dynamic content additions increase
+  // scrollHeight but not clientHeight, so Lenis never updates its limit
+  // automatically — scroll gets capped at the pre-load maximum.
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [visibleCount]);
+
   // ── Infinite scroll sentinel ──────────────────────────────────────────────
   useEffect(() => {
     if (!hasMore) return;
@@ -199,7 +211,7 @@ export default function AllWork() {
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [hasMore]);
+  }, [visibleCount, hasMore]);
 
   const handleCardClick = useCallback(
     (project) => navigate(`/projects/${project.id}`),
