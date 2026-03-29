@@ -1,4 +1,4 @@
-import { Outlet, useMatches, useLocation } from "react-router-dom";
+import { Outlet, useMatches } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
@@ -11,7 +11,6 @@ import { Providers } from "./providers";
 
 function App() {
   const matches = useMatches();
-  const location = useLocation();
   const lenisRef = useRef(null);
 
   useEffect(() => {
@@ -38,17 +37,19 @@ function App() {
     };
   }, []);
 
-  // 路由切換後重新計算頁面高度，避免 Lenis 的 limit 卡在 0
+  // loader 隱藏後（overflow:'' 恢復）重新計算頁面高度。
+  // 路由切換時 overflow:hidden 會讓 scrollHeight = window.innerHeight，
+  // 此時呼叫 resize/refresh 會拿到錯誤數值；
+  // 改為等 LoaderProvider 確認 overflow 已還原才執行。
   useEffect(() => {
-    const lenis = lenisRef.current;
-    if (!lenis) return;
-    // 等 React 將新頁面的 DOM render 完畢再 resize
-    const rafId = requestAnimationFrame(() => {
-      lenis.resize();
+    const handler = () => {
+      const lenis = lenisRef.current;
+      if (lenis) lenis.resize();
       ScrollTrigger.refresh();
-    });
-    return () => cancelAnimationFrame(rafId);
-  }, [location.pathname]);
+    };
+    window.addEventListener('loader:hidden', handler);
+    return () => window.removeEventListener('loader:hidden', handler);
+  }, []);
 
   useEffect(() => {
     const match = [...matches].reverse().find((m) => m.handle?.title);

@@ -108,6 +108,11 @@ export function LoaderProvider({
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
+      // overflow 恢復後，body 的真實 scrollHeight 才正確。
+      // 通知 Lenis / ScrollTrigger 在下一幀重新計算 limit 與 pin spacer。
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new CustomEvent('loader:hidden'));
+      });
     }
     return () => { document.body.style.overflow = ''; };
   }, [show]);

@@ -33,14 +33,16 @@ export function usePagePreloader(imageUrls = [], timeoutMs = 10_000) {
     // 10 秒 failsafe：慢速網路不會讓 loader 永遠卡住
     const timeout = setTimeout(done, timeoutMs);
 
-    Promise.all(
-      imageUrls.map((url) => {
+    Promise.all([
+      // decode() 等到 GPU-ready 像素層完成，消除捲動時主執行緒解碼造成的掉幀
+      ...imageUrls.map((url) => {
         const img = new Image();
         img.src = url;
-        // decode() 等到 GPU-ready 像素層完成，消除捲動時主執行緒解碼造成的掉幀
         return img.decode().catch(() => {});
       }),
-    ).then(done);
+      // 等字型載入完成，避免字型 reflow 讓 TitleBlock pin spacer 計算錯誤
+      document.fonts.ready,
+    ]).then(done);
 
     return () => {
       clearTimeout(timeout);
