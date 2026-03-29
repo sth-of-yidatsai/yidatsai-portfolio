@@ -145,6 +145,10 @@
   transform: translate3d(0, 0, 0);
 }
 
+/* Suppress hover overlay while dragging */
+.select-work__viewport.is-dragging .select-work__card:hover .select-work__card-overlay {
+  transform: translate3d(0, 100%, 0);
+}
 
 /* ── Overlay Typography ──────────────────────────────────────────────────── */
 

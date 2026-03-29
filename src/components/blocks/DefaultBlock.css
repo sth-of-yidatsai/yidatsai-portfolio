@@ -1,0 +1,26 @@
+.block--default {
+  padding: var(--space-xl) var(--px-page);
+  box-sizing: border-box;
+}
+
+.block--default__grid {
+  columns: 2;
+  column-gap: var(--space-lg);
+}
+
+.block--default__item {
+  break-inside: avoid;
+  margin-bottom: var(--space-lg);
+  overflow: hidden;
+}
+
+.block--default__item img {
+  width: 100%;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .block--default__grid {
+    columns: 1;
+  }
+}

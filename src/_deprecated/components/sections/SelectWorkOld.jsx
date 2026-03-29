@@ -56,12 +56,18 @@ export default function SelectWork() {
 
   const trackRef = useRef(null);
   const offsetRef = useRef(0);
+  const draggingRef = useRef(false);
+  const dragStartX = useRef(0);
+  const dragStartOffset = useRef(0);
+  const didDrag = useRef(false);
   const autoTimer = useRef(null);
+  const endDragRef = useRef(null);
   const carouselDirRef = useRef(""); // tracks last set direction to skip redundant setState
   const carouselParallaxTimer = useRef(null);
 
   const [offset, setOffset] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [carouselDirection, setCarouselDirection] = useState(""); // "left" | "right" | ""
 
   // Activate carousel parallax in given direction
@@ -146,7 +152,97 @@ export default function SelectWork() {
     return () => clearInterval(autoTimer.current);
   }, [startAutoAdvance]);
 
+  // Global mouseup to end drag even if released outside viewport
+  endDragRef.current = () => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    setIsDragging(false);
+    const step = getStep();
+    if (!step) return;
+    const snapped = Math.max(
+      0,
+      Math.min(
+        Math.round(offsetRef.current / step),
+        displayCards.length - 1
+      )
+    );
+    animateTo(snapped * step);
+    startAutoAdvance();
+  };
+
+  useEffect(() => {
+    const handler = () => endDragRef.current?.();
+    window.addEventListener("mouseup", handler);
+    return () => window.removeEventListener("mouseup", handler);
+  }, []);
+
+  // ── Mouse drag ──────────────────────────────────────────────────────────
+  const onMouseDown = (e) => {
+    draggingRef.current = true;
+    setIsDragging(true);
+    didDrag.current = false;
+    dragStartX.current = e.clientX;
+    dragStartOffset.current = offsetRef.current;
+    clearInterval(autoTimer.current);
+    setIsAnimating(false);
+  };
+
+  const onMouseMove = (e) => {
+    if (!draggingRef.current) return;
+    const dx = dragStartX.current - e.clientX;
+    if (Math.abs(dx) > 5) {
+      didDrag.current = true;
+      applyCarouselParallax(dx > 0 ? "left" : "right");
+    }
+    const max = (displayCards.length - 1) * getStep();
+    const newOffset = Math.max(0, Math.min(dragStartOffset.current + dx, max));
+    offsetRef.current = newOffset;
+    setOffset(newOffset);
+  };
+
+  // ── Touch drag ──────────────────────────────────────────────────────────
+  const onTouchStart = (e) => {
+    draggingRef.current = true;
+    setIsDragging(true);
+    didDrag.current = false;
+    dragStartX.current = e.touches[0].clientX;
+    dragStartOffset.current = offsetRef.current;
+    clearInterval(autoTimer.current);
+    setIsAnimating(false);
+  };
+
+  const onTouchMove = (e) => {
+    if (!draggingRef.current) return;
+    const dx = dragStartX.current - e.touches[0].clientX;
+    if (Math.abs(dx) > 5) {
+      didDrag.current = true;
+      applyCarouselParallax(dx > 0 ? "left" : "right");
+    }
+    const max = (displayCards.length - 1) * getStep();
+    const newOffset = Math.max(0, Math.min(dragStartOffset.current + dx, max));
+    offsetRef.current = newOffset;
+    setOffset(newOffset);
+  };
+
+  const onTouchEnd = () => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    setIsDragging(false);
+    const step = getStep();
+    if (!step) return;
+    const snapped = Math.max(
+      0,
+      Math.min(
+        Math.round(offsetRef.current / step),
+        displayCards.length - 1
+      )
+    );
+    animateTo(snapped * step);
+    startAutoAdvance();
+  };
+
   const handleCardClick = (card) => {
+    if (didDrag.current) return;
     navigate(`/projects/${card.id}`);
   };
 
@@ -158,7 +254,14 @@ export default function SelectWork() {
         <p className="select-work__eyebrow">Selected Projects</p>
       </div>
 
-      <div className="select-work__viewport">
+      <div
+        className={`select-work__viewport${isDragging ? " is-dragging" : ""}`}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <div
           ref={trackRef}
           className={`select-work__track${isAnimating ? " is-animating" : ""}`}

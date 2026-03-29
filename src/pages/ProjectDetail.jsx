@@ -1,28 +1,22 @@
-import { Link, useLoaderData } from 'react-router-dom';
-import './ProjectDetail.css';
+import { useLoaderData } from "react-router-dom";
+import HeroBlock from "../components/blocks/HeroBlock";
+import TitleBlock from "../components/blocks/TitleBlock";
+import DefaultBlock from "../components/blocks/DefaultBlock";
+import DiscoverMoreBlock from "../components/blocks/DiscoverMoreBlock";
 
 export default function ProjectDetail() {
   const project = useLoaderData();
+  const base = `/images/projects/${project.id}`;
 
   return (
-    <main className="project-detail project-detail--fallback">
-      <div className="project-detail__back">
-        <Link to="/projects">← Back</Link>
-      </div>
-      <h1 className="project-detail__title">{project.title}</h1>
-      <p className="project-detail__year">{project.year}</p>
-      {project.description && (
-        <p className="project-detail__desc">{project.description}</p>
-      )}
-      <div className="project-detail__images">
-        {project.images?.map((filename, idx) => (
-          <img
-            key={idx}
-            src={`/images/projects/${project.id}/${filename}`}
-            alt={`${project.title} ${idx + 1}`}
-          />
-        ))}
-      </div>
+    <main className="project-detail project-detail--blocks">
+      <HeroBlock image={`${base}/${project.cover}`} project={project} />
+
+      <TitleBlock title={project.title} description={project.description} />
+
+      <DefaultBlock images={project.images ?? []} baseUrl={base} />
+
+      <DiscoverMoreBlock currentId={project.id} />
     </main>
   );
 }
