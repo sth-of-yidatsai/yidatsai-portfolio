@@ -54,18 +54,18 @@ export default function FormosaFont() {
         items={[
           {
             src: `${BASE}/03.webp`,
-            title: "Formosa Font",
-            subtitle: "Book Cover",
+            title: "Botanical Typeface Series",
+            subtitle: "(01)",
           },
           {
             src: `${BASE}/06.webp`,
-            title: "Typography",
-            subtitle: "Type Design",
+            title: "Cover Design",
+            subtitle: "(02)",
           },
           {
             src: `${BASE}/07.webp`,
-            title: "Botanical",
-            subtitle: "Illustration",
+            title: "Back Cover Design  ",
+            subtitle: "(03)",
           },
         ]}
       />
@@ -90,18 +90,18 @@ export default function FormosaFont() {
         items={[
           {
             src: `${BASE}/05.webp`,
-            title: "Formosa Font",
-            subtitle: "Book Cover",
+            title: "Spine",
+            subtitle: "(04)",
           },
           {
             src: `${BASE}/10.webp`,
-            title: "Typography",
-            subtitle: "Type Design",
+            title: "Foil Stamping",
+            subtitle: "(05)",
           },
           {
             src: `${BASE}/11.webp`,
-            title: "Botanical",
-            subtitle: "Illustration",
+            title: "Gold Foil Detail",
+            subtitle: "(06)",
           },
         ]}
       />
@@ -109,13 +109,13 @@ export default function FormosaFont() {
         items={[
           {
             src: `${BASE}/17.webp`,
-            title: "Formosa Font",
-            subtitle: "Book Cover",
+            title: "Interior",
+            subtitle: "(07)",
           },
           {
             src: `${BASE}/13.webp`,
-            title: "Typography",
-            subtitle: "Type Design",
+            title: "Paper Texture",
+            subtitle: "(08)",
           },
         ]}
       />
