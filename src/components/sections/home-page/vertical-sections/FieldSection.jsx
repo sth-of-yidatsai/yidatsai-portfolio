@@ -60,6 +60,7 @@ export default function FieldSection() {
                 src={images[0].src}
                 alt={images[0].label}
                 className={`fs-image ${scrollClass}`}
+                loading="eager"
               />
             </div>
           </div>
@@ -74,6 +75,7 @@ export default function FieldSection() {
                 src={images[1].src}
                 alt={images[1].label}
                 className={`fs-image ${scrollClass}`}
+                loading="eager"
               />
             </div>
           </div>
@@ -88,6 +90,7 @@ export default function FieldSection() {
                 src={images[2].src}
                 alt={images[2].label}
                 className={`fs-image ${scrollClass}`}
+                loading="eager"
               />
             </div>
           </div>
@@ -126,6 +129,7 @@ export default function FieldSection() {
                 src={images[3].src}
                 alt={images[3].label}
                 className={`fs-image ${scrollClass}`}
+                loading="eager"
               />
             </div>
           </div>

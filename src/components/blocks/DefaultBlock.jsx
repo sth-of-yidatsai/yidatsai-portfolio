@@ -10,7 +10,7 @@ function DefaultBlock({ images = [], baseUrl = '' }) {
             <img
               src={`${baseUrl}/${filename}`}
               alt={`image ${i + 1}`}
-              loading={i < 2 ? 'eager' : 'lazy'}
+              loading="eager"
               decoding="async"
             />
           </div>
