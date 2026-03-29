@@ -7,6 +7,8 @@ import ImgSet3bBlock from "../../components/blocks/ImgSet3bBlock";
 import ImgTextBlock from "../../components/blocks/ImgTextBlock";
 import QuoteBlock from "../../components/blocks/QuoteBlock";
 import GlyphBlock from "../../components/blocks/GlyphBlock";
+import DiscoverMoreBlock from "../../components/blocks/DiscoverMoreBlock";
+import SpaceBlock from "../../components/blocks/SpaceBlock";
 import projects from "../../data/projects.json";
 import { usePagePreloader } from "../../hooks/usePagePreloader";
 
@@ -135,6 +137,10 @@ export default function FormosaFont() {
       <GlyphBlock fonts={FONT_LILIUM} title="Lilium" />
       <GlyphBlock fonts={FONT_MELASTOMA} title="Melastoma" />
       <GlyphBlock fonts={FONT_LYCOPODIUM} title="Lycopodium" />
+
+      <SpaceBlock space="var(--space-xl)" />
+
+      <DiscoverMoreBlock currentId="formosa-font" />
     </main>
   );
 }

@@ -1,0 +1,120 @@
+/* ── DiscoverMoreBlock ─────────────────────────────────────────────────────── */
+
+.block--discover-more {
+  width: 100%;
+  background: var(--gray-900);
+  padding: var(--space-xl) var(--px-page) 0;
+  box-sizing: border-box;
+}
+
+.block--discover-more::after {
+  content: '';
+  display: block;
+  margin-top: var(--space-xl);
+  border-top: 1px solid var(--gray-500);
+}
+
+/* ── Heading ─────────────────────────────────────────────────────────────── */
+
+.discover-more__heading {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-14pt);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: var(--space-lg);
+}
+
+/* ── 3-column grid ───────────────────────────────────────────────────────── */
+
+.discover-more__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+/* ── Card Wrap ───────────────────────────────────────────────────────────── */
+
+.discover-more__card-wrap {
+  display: block;
+  cursor: none;
+  text-decoration: none;
+}
+
+.discover-more__card-wrap::after {
+  display: none;
+}
+
+/* ── Card image container ────────────────────────────────────────────────── */
+
+.discover-more__card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  aspect-ratio: 4 / 5;
+}
+
+.discover-more__card-img-wrapper {
+  position: absolute;
+  inset: -5%;
+  width: 110%;
+  height: 110%;
+}
+
+.discover-more__card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: scale(1);
+  transition: transform 1.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* ── Hover: slow elegant scale-up ────────────────────────────────────────── */
+
+.discover-more__card-wrap:hover .discover-more__card-img {
+  transform: scale(1.07);
+}
+
+/* ── Caption ─────────────────────────────────────────────────────────────── */
+
+.discover-more__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 10px;
+}
+
+.discover-more__caption-num {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-10pt);
+  font-weight: var(--fw-regular);
+  color: var(--gray-400);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.04em;
+}
+
+.discover-more__caption-title {
+  font-family: var(--font-manrope), var(--font-cjk);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-12pt);
+  color: var(--gray-100);
+  line-height: 1.4;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .discover-more__grid {
+    grid-template-columns: 1fr;
+  }
+}

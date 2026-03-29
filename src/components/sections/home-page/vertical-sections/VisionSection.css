@@ -10,6 +10,13 @@
   padding-top: var(--space-2xl);
 }
 
+.vs-section::after {
+  content: '';
+  display: block;
+  margin: 0 var(--px-page);
+  border-top: 1px solid var(--gray-500);
+}
+
 .vs-inner {
   max-width: var(--max-width);
   margin: 0 auto;
