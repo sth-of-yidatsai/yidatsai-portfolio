@@ -14,24 +14,18 @@ html {
   height: 100vh;
   overflow: hidden;
   background: transparent;
-  /* GPU 加速優化 */
-  will-change: transform;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  /* 不加 will-change/transform-style：GSAP pin 機制在 Firefox 下
+     與這些屬性衝突，會導致 pin spacer 計算錯誤 */
 }
 
 /* 水平滾動器 */
 .hs-scroller {
   display: flex;
   height: 100%;
+  /* GSAP 動畫目標：will-change 保留；移除 transform-style preserve-3d
+     避免 Firefox 合成層問題 */
   will-change: transform;
-  /* GPU 加速和抗鋸齒優化 - 防止水平滾動時邊緣閃爍 */
   backface-visibility: hidden;
-  transform-style: preserve-3d;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 /* Section 樣式現在在 sections/SectionBase.css 中定義 */

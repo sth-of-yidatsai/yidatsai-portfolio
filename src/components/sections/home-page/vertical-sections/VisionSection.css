@@ -190,6 +190,8 @@
   height: 75vh;
   width: auto;
   max-width: 100%;
+  /* 限制重繪範圍到 SVG 本身，避免 filter 動畫溢出影響父容器 */
+  contain: layout paint;
 }
 
 /* Circle fill blend — overlapping areas brighten slightly */
@@ -203,6 +205,7 @@
   transform-box: fill-box;
   transform-origin: center;
   cursor: pointer;
+  will-change: filter;
   transition: filter 0.70s ease-out;
 }
 

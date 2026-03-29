@@ -108,6 +108,7 @@ export default function HorizontalScroller() {
           scrub: 0.5,
           start: "top top",
           end: () => `+=${totalScrollDistance}`,
+          invalidateOnRefresh: true,
           id: "horizontal-scroll",
           onUpdate: (self) => {
             let hProgress = 0;

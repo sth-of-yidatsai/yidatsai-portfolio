@@ -151,7 +151,7 @@ function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
       <g className={`vs-shape vs-shape-${id}`}>
 
         {/* Layer 1 · Atmospheric halo */}
-        <circle cx={cx} cy={cy} r={R + 90}
+        <circle cx={cx} cy={cy} r={R + 60}
           fill="url(#glow-atm)"
           filter="url(#vs-f-atm)"
           pointerEvents="none"
@@ -288,8 +288,8 @@ export default function VisionSection() {
               >
                 <defs>
 
-                  <filter id="vs-f-atm" x="-100%" y="-100%" width="300%" height="300%">
-                    <feGaussianBlur stdDeviation="42" />
+                  <filter id="vs-f-atm" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="28" />
                   </filter>
 
                   <radialGradient id="glow-atm" cx="50%" cy="50%" r="50%"
