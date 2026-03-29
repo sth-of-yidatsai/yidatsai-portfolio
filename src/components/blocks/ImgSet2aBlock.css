@@ -80,6 +80,19 @@
   margin: 0;
 }
 
+/* ── Reverse ── */
+.block--imgset2a--reverse {
+  padding: var(--space-xl) var(--px-page) var(--space-xl) 0;
+}
+
+.block--imgset2a__grid--reverse {
+  flex-direction: row-reverse;
+}
+
+.block--imgset2a__grid--reverse .block--imgset2a__item--b .block--imgset2a__caption {
+  text-align: right;
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .block--imgset2a {

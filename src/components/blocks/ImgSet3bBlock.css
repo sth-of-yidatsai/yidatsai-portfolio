@@ -8,7 +8,7 @@
 .block--imgset3b__grid {
   display: flex;
   gap: var(--space-lg);
-  align-items: stretch;
+  align-items: flex-start;
 }
 
 /* Left column — 40% wide, items constrained to ~55% of that */
@@ -30,7 +30,7 @@
   align-self: flex-end;
 }
 
-/* C: large, fills remaining width and matches left col height */
+/* C: large, fills remaining width */
 .block--imgset3b__item--c {
   flex: 1;
   display: flex;
@@ -39,8 +39,7 @@
 }
 
 .block--imgset3b__item--c .block--imgset3b__img-wrap {
-  flex: 1;
-  min-height: 0;
+  aspect-ratio: 3 / 4;
 }
 
 /* ── Image item ── */
@@ -95,6 +94,11 @@
   text-transform: uppercase;
   color: var(--gray-500);
   margin: 0;
+}
+
+/* ── Reverse ── */
+.block--imgset3b__grid--reverse {
+  flex-direction: row-reverse;
 }
 
 /* ── Responsive ── */

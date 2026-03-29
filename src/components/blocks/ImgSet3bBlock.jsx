@@ -22,14 +22,14 @@ function ImgItem({ item, modifier }) {
   );
 }
 
-function ImgSet3bBlock({ items = [], bg, color }) {
+function ImgSet3bBlock({ items = [], bg, color, reverse }) {
   const [a, b, c] = items;
   return (
     <section
       className="block block--imgset3b"
       style={{ background: bg, color }}
     >
-      <div className="block--imgset3b__grid">
+      <div className={`block--imgset3b__grid${reverse ? ' block--imgset3b__grid--reverse' : ''}`}>
         <div className="block--imgset3b__left">
           {a && <ImgItem item={a} modifier="a" />}
           {b && <ImgItem item={b} modifier="b" />}

@@ -14,6 +14,7 @@ function TitleBlock({
   bgColor,
   emptyColor,
   fillColor,
+  labelColor,
 }) {
   const sectionRef  = useRef(null);
   const titleCharsRef = useRef([]);
@@ -66,7 +67,7 @@ function TitleBlock({
       style={bgColor ? { background: bgColor } : undefined}
     >
       <div className="block--title__inner">
-        <p className="block--title__label">Title</p>
+        <p className="block--title__label" style={labelColor ? { color: labelColor } : undefined}>Title</p>
 
         <h2 className="block--title__title">
           {[...title].map((char, i) => (

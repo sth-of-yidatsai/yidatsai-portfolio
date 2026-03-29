@@ -1,0 +1,42 @@
+.block--imgset1a {
+  padding: var(--space-xl) 0;
+  box-sizing: border-box;
+}
+
+.block--imgset1a__img-wrap {
+  width: 100svw;
+  overflow: hidden;
+}
+
+.block--imgset1a__img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.block--imgset1a__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: var(--space-sm) var(--px-page) 0;
+}
+
+.block--imgset1a__title {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-12pt);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gray-800);
+  margin: 0;
+}
+
+.block--imgset1a__subtitle {
+  font-family: var(--font-manrope);
+  font-size: var(--fs-8pt);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin: 0;
+}

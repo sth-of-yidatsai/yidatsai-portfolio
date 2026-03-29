@@ -1,13 +1,13 @@
 import { memo } from 'react';
 import './ImgSet3aBlock.css';
 
-function ImgSet3aBlock({ items = [], bg, color }) {
+function ImgSet3aBlock({ items = [], bg, color, reverse }) {
   return (
     <section
       className="block block--imgset3a"
       style={{ background: bg, color }}
     >
-      <div className="block--imgset3a__grid">
+      <div className={`block--imgset3a__grid${reverse ? ' block--imgset3a__grid--reverse' : ''}`}>
         {items.map((item, i) => (
           <div key={i} className="block--imgset3a__item">
             <div className="block--imgset3a__img-wrap">

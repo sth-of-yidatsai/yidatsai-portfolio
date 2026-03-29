@@ -15,9 +15,9 @@ import "./SelectWork.css";
 // Define which project and which image index appears in each card slot.
 const SELECTED_WORKS = [
   "formosa-font",
-  "taiwan-glass-notebook",
+  "patterned-glass-notebook",
   "foucault-book-binding",
-  "taiwan-glass-notebook",
+  "patterned-glass-notebook",
   "foucault-book-binding",
 ];
 // ───────────────────────────────────────────────────────────────────────────

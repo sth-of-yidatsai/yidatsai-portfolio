@@ -1,14 +1,14 @@
 import { memo } from 'react';
 import './ImgSet2aBlock.css';
 
-function ImgSet2aBlock({ items = [], bg, color }) {
+function ImgSet2aBlock({ items = [], bg, color, reverse }) {
   const [a, b] = items;
   return (
     <section
-      className="block block--imgset2a"
+      className={`block block--imgset2a${reverse ? ' block--imgset2a--reverse' : ''}`}
       style={{ background: bg, color }}
     >
-      <div className="block--imgset2a__grid">
+      <div className={`block--imgset2a__grid${reverse ? ' block--imgset2a__grid--reverse' : ''}`}>
         {a && (
           <div className="block--imgset2a__item block--imgset2a__item--a">
             <div className="block--imgset2a__img-wrap">

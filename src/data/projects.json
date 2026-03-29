@@ -22,16 +22,17 @@
       "14.webp",
       "15.webp",
       "16.webp",
-      "17.webp"
+      "17.webp",
+      "18.webp"
     ],
     "description": "Inspired by Taiwan’s diverse climate and terrain, this project transforms the idea of “Formosa” into a typographic expression. By integrating Latin letterforms with native flora, we reinterpret the island’s rich biodiversity through design.",
     "category": ["Editorial", "Book", "Typography", "Type Design"],
     "tags": ["Botanical", "Taiwan"],
-    "size": "portrait"
+    "size": "square"
   },
   {
-    "id": "taiwan-glass-notebook",
-    "title": "Taiwan Patterned Glass Notebook & Box",
+    "id": "patterned-glass-notebook",
+    "title": "Patterned Glass — Notebook & Box Design",
     "year": 2024,
     "order": 2,
     "cover": "cover.webp",
@@ -53,7 +54,7 @@
       "15.webp",
       "16.webp"
     ],
-    "description": "The notebook design comprises of three components: an outer box, a notebook, and a bookmark. The outer box is made of patterned glass with brass accents, which gives it a unique and elegant look. The notebook is bound with an exposed spine, making writing convenient. The notebook uses toned gray acid-free paper, which is of high quality and suitable for various dry and wet media. It is perfect for writing and drawing. The notebook also comes with a bookmark that features the same traditional patterned glass design using embossed printing.",
+    "description": "This project reinterprets the fading craft of patterned glass through a contemporary object. Combining a glass outer box, an exposed binding notebook, and an embossed bookmark, it preserves texture, memory, and the tactile quality of traditional craftsmanship.",
     "category": ["Product", "Graphic", "Photography"],
     "tags": ["Notebook", "Taiwan", "Glass"],
     "size": "portrait"

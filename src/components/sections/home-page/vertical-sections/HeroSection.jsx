@@ -17,9 +17,9 @@ export default function HeroSection({ index }) {
   const carouselConfig = React.useMemo(
     () => [
       { projectId: "formosa-font",          image: "cover.webp" },
-      { projectId: "taiwan-glass-notebook", image: "01.webp"    },
+      { projectId: "patterned-glass-notebook", image: "01.webp"    },
       { projectId: "foucault-book-binding", image: "02.webp"    },
-      { projectId: "taiwan-glass-notebook", image: "03.webp"    },
+      { projectId: "patterned-glass-notebook", image: "03.webp"    },
       { projectId: "formosa-font",          image: "04.webp"    },
     ],
     []

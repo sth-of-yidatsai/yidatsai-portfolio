@@ -14,10 +14,10 @@ function LineRoll({ children }) {
 
 // ── 圖片配置 ── 統一管理，方便置換
 const fieldConfig = [
-  { projectId: "taiwan-glass-notebook", image: "cover.webp", label: "(Product Design)" },
-  { projectId: "taiwan-glass-notebook", image: "02.webp",    label: "(Graphic Design)"  },
-  { projectId: "taiwan-glass-notebook", image: "04.webp",    label: "(Typography)"      },
-  { projectId: "taiwan-glass-notebook", image: "02.webp",    label: "(Poster Design)"   },
+  { projectId: "patterned-glass-notebook", image: "cover.webp", label: "(Product Design)" },
+  { projectId: "patterned-glass-notebook", image: "02.webp",    label: "(Graphic Design)"  },
+  { projectId: "patterned-glass-notebook", image: "04.webp",    label: "(Typography)"      },
+  { projectId: "patterned-glass-notebook", image: "02.webp",    label: "(Poster Design)"   },
 ];
 
 export default function FieldSection() {
