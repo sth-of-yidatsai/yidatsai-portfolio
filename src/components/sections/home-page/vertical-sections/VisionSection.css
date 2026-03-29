@@ -190,8 +190,8 @@
   height: 75vh;
   width: auto;
   max-width: 100%;
-  /* 限制重繪範圍到 SVG 本身，避免 filter 動畫溢出影響父容器 */
-  contain: layout paint;
+  /* contain: paint 會裁切 hover drop-shadow 溢出，不能加 */
+  contain: layout;
 }
 
 /* Circle fill blend — overlapping areas brighten slightly */
@@ -217,7 +217,11 @@
   100% { transform: translate(  0px,   0px); }
 }
 
-.vs-shape { transform-box: fill-box; transform-origin: center; }
+.vs-shape {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform;
+}
 
 /* Drift always runs — paused during hover/leave so it resumes from the same position */
 .vs-shape-aes { animation: vs-drift 7.2s ease-in-out infinite; }

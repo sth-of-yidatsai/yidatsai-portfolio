@@ -147,17 +147,20 @@ function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
     >
+      {/* Atmospheric halo — static, NOT in vs-shape.
+          Keeping blur out of the drift animation eliminates per-frame
+          feGaussianBlur recomputation in Firefox. Pure radial gradient
+          provides sufficient soft falloff without the filter. */}
+      <circle cx={cx} cy={cy} r={R + 70}
+        fill="url(#glow-atm)"
+        pointerEvents="none"
+        className="vs-halo"
+      />
+
       {/* Inner shape group — idle drift applies here only (text excluded) */}
       <g className={`vs-shape vs-shape-${id}`}>
 
-        {/* Layer 1 · Atmospheric halo */}
-        <circle cx={cx} cy={cy} r={R + 60}
-          fill="url(#glow-atm)"
-          filter="url(#vs-f-atm)"
-          pointerEvents="none"
-        />
-
-        {/* Layer 2 · vision-circle.svg */}
+        {/* vision-circle.svg */}
         <image
           href={visionCircle}
           x={cx - R} y={cy - R}
@@ -288,15 +291,11 @@ export default function VisionSection() {
               >
                 <defs>
 
-                  <filter id="vs-f-atm" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="28" />
-                  </filter>
-
                   <radialGradient id="glow-atm" cx="50%" cy="50%" r="50%"
                     gradientUnits="objectBoundingBox">
-                    <stop offset="0%"   stopColor="#cccccc" stopOpacity="0.28" />
-                    <stop offset="28%"  stopColor="#888888" stopOpacity="0.12" />
-                    <stop offset="62%"  stopColor="#444444" stopOpacity="0.04" />
+                    <stop offset="0%"   stopColor="#cccccc" stopOpacity="0.22" />
+                    <stop offset="35%"  stopColor="#888888" stopOpacity="0.10" />
+                    <stop offset="70%"  stopColor="#444444" stopOpacity="0.03" />
                     <stop offset="100%" stopColor="#000000" stopOpacity="0"    />
                   </radialGradient>
 
