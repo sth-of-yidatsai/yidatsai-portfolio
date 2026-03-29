@@ -12,6 +12,7 @@
   width: 100%;
   height: auto;
   display: block;
+  aspect-ratio: auto 3 / 2;
 }
 
 .block--imgset1a__caption {
