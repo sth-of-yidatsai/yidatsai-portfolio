@@ -2,12 +2,11 @@ import HeroBlock from "../../components/blocks/HeroBlock";
 import TitleBlock from "../../components/blocks/TitleBlock";
 import ImgSet2aBlock from "../../components/blocks/ImgSet2aBlock";
 import ImgSet2bBlock from "../../components/blocks/ImgSet2bBlock";
-import ImgSet3aBlock from "../../components/blocks/ImgSet3aBlock";
 import ImgSet3bBlock from "../../components/blocks/ImgSet3bBlock";
-import ImgSet1bBlock from "../../components/blocks/ImgSet1bBlock";
+import ImgSet1aBlock from "../../components/blocks/ImgSet1aBlock";
 import ImgTextBlock from "../../components/blocks/ImgTextBlock";
 import QuoteBlock from "../../components/blocks/QuoteBlock";
-import CarouselBlock from "../../components/blocks/CarouselBlock";
+import ImgSet4aBlock from "../../components/blocks/ImgSet4aBlock";
 import DiscoverMoreBlock from "../../components/blocks/DiscoverMoreBlock";
 import projects from "../../data/projects.json";
 import { usePagePreloader } from "../../hooks/usePagePreloader";
@@ -25,7 +24,7 @@ export default function FoucaultBookBinding() {
 
   return (
     <main className="project-detail project-detail--blocks">
-      <HeroBlock image={`${BASE}/08.webp`} project={project} />
+      <HeroBlock image={`${BASE}/01.webp`} project={project} />
 
       <TitleBlock
         title={project.title}
@@ -35,119 +34,93 @@ export default function FoucaultBookBinding() {
         fillColor="var(--gray-900)"
       />
 
-      <ImgSet2aBlock
+      <ImgSet3bBlock
         items={[
           {
-            src: `${BASE}/01.webp`,
-            title: "The Order of Things",
+            src: `${BASE}/06.webp`,
+            title: "Cover Detail",
             subtitle: "(01)",
           },
           {
-            src: `${BASE}/02.webp`,
-            title: "The Archaeology of Knowledge",
+            src: `${BASE}/17.webp`,
+            title: "Typography",
             subtitle: "(02)",
+          },
+          {
+            src: `${BASE}/03.webp`,
+            title: "Spine Design",
+            subtitle: "(03)",
           },
         ]}
       />
 
       <QuoteBlock
-        text="The work of an intellectual is not to mould the political will of others; it is, through the analyses that he does in his own field, to re-examine evidence and assumptions."
+        text="Order is, at one and the same time, that which is given in things and that which must be discovered."
         author="Michel Foucault"
+        image={`${BASE}/title.svg`}
       />
 
-      <ImgSet3aBlock
+      <ImgSet2aBlock
         items={[
           {
-            src: `${BASE}/03.webp`,
-            title: "Cover Detail",
-            subtitle: "(03)",
-          },
-          {
-            src: `${BASE}/04.webp`,
-            title: "Typography",
+            src: `${BASE}/12.webp`,
+            title: "The Order of Things",
             subtitle: "(04)",
           },
           {
-            src: `${BASE}/05.webp`,
-            title: "Spine Design",
+            src: `${BASE}/08.webp`,
+            title: "The Archaeology of Knowledge",
             subtitle: "(05)",
           },
-        ]}
-      />
-
-      <ImgSet1bBlock
-        src={`${BASE}/06.webp`}
-        title="Structural Form"
-        subtitle="(06)"
-      />
-
-      <ImgSet3bBlock
-        items={[
-          {
-            src: `${BASE}/09.webp`,
-            title: "Interior Layout",
-            subtitle: "(07)",
-          },
-          {
-            src: `${BASE}/10.webp`,
-            title: "Text Setting",
-            subtitle: "(08)",
-          },
-          {
-            src: `${BASE}/11.webp`,
-            title: "Page Detail",
-            subtitle: "(09)",
-          },
-        ]}
-      />
-
-      <CarouselBlock
-        images={[
-          `${BASE}/12.webp`,
-          `${BASE}/13.webp`,
-          `${BASE}/14.webp`,
-          `${BASE}/15.webp`,
-          `${BASE}/16.webp`,
         ]}
       />
 
       <ImgSet2bBlock
         items={[
           {
-            src: `${BASE}/17.webp`,
-            title: "Binding Structure",
-            subtitle: "(10)",
+            src: `${BASE}/04.webp`,
+            title: "The Order of Things",
+            subtitle: "(07)",
           },
           {
-            src: `${BASE}/18.webp`,
-            title: "Material Detail",
-            subtitle: "(11)",
-          },
-        ]}
-      />
-
-      <ImgSet2aBlock
-        items={[
-          {
-            src: `${BASE}/19.webp`,
-            title: "Book as Object",
-            subtitle: "(12)",
-          },
-          {
-            src: `${BASE}/20.webp`,
-            title: "Complete Set",
-            subtitle: "(13)",
+            src: `${BASE}/05.webp`,
+            title: "The Archaeology of Knowledge",
+            subtitle: "(06)",
           },
         ]}
         reverse
       />
 
+      <ImgSet4aBlock
+        images={[`${BASE}/18.webp`, `${BASE}/13.webp`]}
+        title="Structural Form"
+        subtitle="(08)"
+      />
+
+      <ImgSet1aBlock
+        src={`${BASE}/10.webp`}
+        title="Structural Form"
+        subtitle="(09)"
+        reverse
+      />
+
+      <ImgSet4aBlock
+        images={[
+          `${BASE}/14.webp`,
+          `${BASE}/19.webp`,
+          `${BASE}/20.webp`,
+          `${BASE}/15.webp`,
+        ]}
+        title="Structural Form"
+        subtitle="(10)"
+      />
+
       <ImgTextBlock
-        image={`${BASE}/07.webp`}
-        title="Michel Foucault Book Binding Design"
+        image={`${BASE}/02.webp`}
+        title="Michel Foucault Book Design"
         text={[
-          "This editorial project brings together two landmark works by French philosopher Michel Foucault: \"The Order of Things\" (1966) and \"The Archaeology of Knowledge\" (1969).",
-          "The binding design reflects Foucault's intellectual rigor — structured, systematic, and attentive to the archaeology of ideas beneath the surface of language.",
+          "This work traces the underlying structures through which knowledge is formed and understood.",
+          "Through form, hierarchy, and composition, it reflects a quiet order embedded within systems of thought.",
         ]}
         bgColor="var(--gray-100)"
         textColor="var(--gray-600)"
