@@ -16,6 +16,9 @@
   width: 100%;
   height: auto;
   display: block;
+  /* 圖片未載入前以 4/5 佔位，防止 height=0 導致 GSAP/Lenis 算錯頁面高度。
+     auto 關鍵字確保圖片載入後切換回真實比例，不影響最終視覺。 */
+  aspect-ratio: auto 4 / 5;
 }
 
 .block--imgset1b__caption {
