@@ -1,11 +1,12 @@
 import { memo } from 'react';
+import { buildSrcSet } from '../../utils/imgSrcSet';
 import './ImgSet1bBlock.css';
 
 function ImgSet1bBlock({ src, title, subtitle, reverse }) {
   return (
     <section className={`block block--imgset1b${reverse ? ' block--imgset1b--reverse' : ''}`}>
       <div className="block--imgset1b__img-wrap">
-        <img src={src} alt={title ?? ''} loading="lazy" decoding="async" />
+        <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 100vw, 1200px" alt={title ?? ''} loading="lazy" decoding="async" />
       </div>
       {(title || subtitle) && (
         <div className="block--imgset1b__caption">

@@ -1,23 +1,42 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./FieldSection.css";
 import { useImageParallax } from "../../../../hooks/useImageParallax";
+import { buildSrcSet } from "../../../../utils/imgSrcSet";
 
 /** 與 header-overlay-logo 相同的 line-roll 結構 */
 function LineRoll({ children }) {
   return (
     <span className="line-roll">
       <span className="line-roll-top">{children}</span>
-      <span className="line-roll-bottom" aria-hidden="true">{children}</span>
+      <span className="line-roll-bottom" aria-hidden="true">
+        {children}
+      </span>
     </span>
   );
 }
 
 // ── 圖片配置 ── 統一管理，方便置換
 const fieldConfig = [
-  { projectId: "patterned-glass-notebook", image: "cover.webp", label: "(Product Design)" },
-  { projectId: "patterned-glass-notebook", image: "02.webp",    label: "(Graphic Design)"  },
-  { projectId: "patterned-glass-notebook", image: "04.webp",    label: "(Typography)"      },
-  { projectId: "patterned-glass-notebook", image: "02.webp",    label: "(Poster Design)"   },
+  {
+    projectId: "patterned-glass-notebook",
+    image: "11.webp",
+    label: "(Product Design)",
+  },
+  {
+    projectId: "patterned-glass-notebook",
+    image: "02.webp",
+    label: "(Graphic Design)",
+  },
+  {
+    projectId: "patterned-glass-notebook",
+    image: "04.webp",
+    label: "(Typography)",
+  },
+  {
+    projectId: "patterned-glass-notebook",
+    image: "02.webp",
+    label: "(Poster Design)",
+  },
 ];
 
 export default function FieldSection() {
@@ -42,7 +61,7 @@ export default function FieldSection() {
           observer.disconnect();
         }
       },
-      { rootMargin: "-30% 0px -30% 0px", threshold: 0 }
+      { rootMargin: "-30% 0px -30% 0px", threshold: 0 },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -51,7 +70,6 @@ export default function FieldSection() {
   return (
     <section className="fs-section">
       <div className="fs-grid">
-
         {/* Image 1 — Product Design (landscape, top-left, spans full height) */}
         <div className="fs-image-block fs-image-1">
           <div className="fs-image-frame">
@@ -59,6 +77,8 @@ export default function FieldSection() {
               <img
                 src={images[0].src}
                 alt={images[0].label}
+                srcSet={buildSrcSet(images[0].src)}
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className={`fs-image ${scrollClass}`}
                 loading="eager"
               />
@@ -74,6 +94,8 @@ export default function FieldSection() {
               <img
                 src={images[1].src}
                 alt={images[1].label}
+                srcSet={buildSrcSet(images[1].src)}
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className={`fs-image ${scrollClass}`}
                 loading="eager"
               />
@@ -89,6 +111,8 @@ export default function FieldSection() {
               <img
                 src={images[2].src}
                 alt={images[2].label}
+                srcSet={buildSrcSet(images[2].src)}
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className={`fs-image ${scrollClass}`}
                 loading="eager"
               />
@@ -111,12 +135,12 @@ export default function FieldSection() {
           </div>
           <div className="fs-bio-block">
             <p className="fs-bio-text">
-            Multidisciplinary Designer <br />
-            based in Taipei. <br />
-            Bridging Visual and Digital Experiences.
+              Multidisciplinary Designer <br />
+              based in Taipei. <br />
+              Bridging Visual and Digital Experiences.
             </p>
             <p className="fs-bio-text-sub">
-            From visual language to digital interaction.
+              From visual language to digital interaction.
             </p>
           </div>
         </div>
@@ -128,6 +152,8 @@ export default function FieldSection() {
               <img
                 src={images[3].src}
                 alt={images[3].label}
+                srcSet={buildSrcSet(images[3].src)}
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className={`fs-image ${scrollClass}`}
                 loading="eager"
               />
@@ -135,7 +161,6 @@ export default function FieldSection() {
           </div>
           <span className="fs-image-label">{images[3].label}</span>
         </div>
-
       </div>
     </section>
   );

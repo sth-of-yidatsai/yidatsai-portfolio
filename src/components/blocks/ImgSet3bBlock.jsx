@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { buildSrcSet } from '../../utils/imgSrcSet';
 import './ImgSet3bBlock.css';
 
 function ImgItem({ item, modifier }) {
@@ -7,6 +8,8 @@ function ImgItem({ item, modifier }) {
       <div className="block--imgset3b__img-wrap">
         <img
           src={item.src}
+          srcSet={buildSrcSet(item.src)}
+          sizes="(max-width: 768px) 100vw, 33vw"
           alt={item.title ?? ''}
           loading="eager"
           decoding="async"

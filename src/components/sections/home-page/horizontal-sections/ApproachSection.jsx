@@ -1,6 +1,7 @@
 import React from "react";
 import "./ApproachSection.css";
 import { useImageParallax } from "../../../../hooks/useImageParallax";
+import { buildSrcSet } from "../../../../utils/imgSrcSet";
 
 // ── 圖片配置 ── 統一管理，方便置換
 const approachConfig = {
@@ -27,6 +28,8 @@ export default function ApproachSection({ index }) {
               <div className="as-image-wrapper">
                 <img
                   src={leftSrc}
+                  srcSet={buildSrcSet(leftSrc)}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   alt="Design approach"
                   className={`as-image ${scrollClass}`}
                 />
@@ -60,6 +63,8 @@ export default function ApproachSection({ index }) {
           <div className="as-right-image-wrapper">
             <img
               src={rightSrc}
+              srcSet={buildSrcSet(rightSrc)}
+              sizes="(max-width: 768px) 100vw, 50vw"
               alt="Design work"
               className={`as-right-image ${scrollClass}`}
             />

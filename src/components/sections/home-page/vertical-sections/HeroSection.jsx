@@ -16,13 +16,13 @@ export default function HeroSection({ index }) {
   // 輪播配置 - 指定專案ID和圖片索引
   const carouselConfig = React.useMemo(
     () => [
-      { projectId: "formosa-font",          image: "cover.webp" },
-      { projectId: "patterned-glass-notebook", image: "01.webp"    },
-      { projectId: "foucault-book-binding", image: "02.webp"    },
-      { projectId: "patterned-glass-notebook", image: "03.webp"    },
-      { projectId: "formosa-font",          image: "04.webp"    },
+      { projectId: "formosa-font", image: "06.webp" },
+      { projectId: "patterned-glass-notebook", image: "01.webp" },
+      { projectId: "foucault-book-binding", image: "02.webp" },
+      { projectId: "patterned-glass-notebook", image: "03.webp" },
+      { projectId: "formosa-font", image: "04.webp" },
     ],
-    []
+    [],
   );
 
   // 根據配置獲取圖片和專案資訊
@@ -124,7 +124,7 @@ export default function HeroSection({ index }) {
         setIsFadingOut(false);
       }, completeDelay);
     },
-    [isTransitioning, blindsCount]
+    [isTransitioning, blindsCount],
   );
 
   // 自動輪播

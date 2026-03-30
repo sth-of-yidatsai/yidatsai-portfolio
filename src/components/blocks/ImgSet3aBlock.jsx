@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { buildSrcSet } from '../../utils/imgSrcSet';
 import './ImgSet3aBlock.css';
 
 function ImgSet3aBlock({ items = [], bg, color, reverse }) {
@@ -13,6 +14,8 @@ function ImgSet3aBlock({ items = [], bg, color, reverse }) {
             <div className="block--imgset3a__img-wrap">
               <img
                 src={item.src}
+                srcSet={buildSrcSet(item.src)}
+                sizes="(max-width: 768px) 100vw, 33vw"
                 alt={item.title ?? ''}
                 loading="eager"
                 decoding="async"

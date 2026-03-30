@@ -1,4 +1,5 @@
 import { memo, useState, useEffect, useCallback, useRef } from 'react';
+import { buildSrcSet } from '../../utils/imgSrcSet';
 import './CarouselBlock.css';
 
 function CarouselBlock({ images = [], interval = 5000 }) {
@@ -37,6 +38,8 @@ function CarouselBlock({ images = [], interval = 5000 }) {
           <img
             key={i}
             src={src}
+            srcSet={buildSrcSet(src)}
+            sizes="100vw"
             alt=""
             className={[
               'block--carousel__slide',

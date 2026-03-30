@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { buildSrcSet } from '../../utils/imgSrcSet';
 import './ImgTextBlock.css';
 
 function ImgTextBlock({
@@ -15,7 +16,7 @@ function ImgTextBlock({
 
   const imgPanel = (
     <div className="block--imgtxt__image">
-      <img src={image} alt={imageAlt} loading="eager" decoding="async" />
+      <img src={image} srcSet={buildSrcSet(image)} sizes="(max-width: 768px) 100vw, 50vw" alt={imageAlt} loading="eager" decoding="async" />
     </div>
   );
 

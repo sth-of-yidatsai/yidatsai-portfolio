@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback, memo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import projectsData from "../../../data/projects.json";
 import { useImageParallax } from "../../../hooks/useImageParallax";
+import { buildSrcSet } from "../../../utils/imgSrcSet";
 import "./AllWork.css";
 
 // ─── Config ─────────────────────────────────────────────────────────────────
@@ -86,6 +87,8 @@ const ProjectCard = memo(function ProjectCard({ project, scrollClass, onClick, c
         <div className="all-work__card-img-wrapper">
           <img
             src={imgSrc}
+            srcSet={buildSrcSet(imgSrc)}
+            sizes="(max-width: 768px) 100vw, 33vw"
             alt={project.title}
             className={`all-work__card-img${scrollClass ? ` ${scrollClass}` : ""}`}
             loading="lazy"

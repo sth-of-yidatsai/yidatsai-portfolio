@@ -133,6 +133,8 @@ function StickyImage() {
         <img
           className={`bs__img${scrollClass ? ` ${scrollClass}` : ""}`}
           src="/images/about/01.webp"
+          srcSet="/images/about/01-800.webp 800w, /images/about/01-1200.webp 1200w, /images/about/01.webp 1600w"
+          sizes="100vw"
           alt=""
           draggable="false"
         />

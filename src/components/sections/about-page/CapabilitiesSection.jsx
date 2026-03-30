@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useImageParallax } from "../../../hooks/useImageParallax";
+import { buildSrcSet } from "../../../utils/imgSrcSet";
 import "./CapabilitiesSection.css";
 
 const ITEMS = [
@@ -104,12 +105,19 @@ export default function CapabilitiesSection() {
         className={`cs__img-cursor${hoveredIndex !== null ? " cs__img-cursor--visible" : ""}`}
       >
         <div className="cs__img-frame">
-          <img
-            className={`cs__img ${scrollClass}`}
-            src={hoveredIndex !== null ? ITEMS[hoveredIndex].image : ITEMS[0].image}
-            alt=""
-            draggable="false"
-          />
+          {(() => {
+            const src = hoveredIndex !== null ? ITEMS[hoveredIndex].image : ITEMS[0].image;
+            return (
+              <img
+                className={`cs__img ${scrollClass}`}
+                src={src}
+                srcSet={buildSrcSet(src)}
+                sizes="(max-width: 768px) 100vw, 40vw"
+                alt=""
+                draggable="false"
+              />
+            );
+          })()}
         </div>
       </div>
     </section>

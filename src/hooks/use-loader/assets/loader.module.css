@@ -1,0 +1,100 @@
+@charset "UTF-8";
+/* ============================================================
+   Global Page Loader
+   ============================================================ */
+/**
+ * Overlay — covers the full viewport instantly, exits by sliding upward.
+ */
+.loader {
+  position: fixed;
+  inset: 0;
+  background-color: var(--gray-900, #0a0a0a);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(0);
+  will-change: transform;
+}
+
+/**
+ * EXIT — curtain rises upward, revealing the page from bottom to top.
+ * Strong symmetric ease: builds momentum then gracefully exits.
+ */
+.loader--exit {
+  transform: translateY(-100%);
+  transition: transform 1s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+/* Freeze letter animations while the curtain is rising */
+.loader--exit .rolling-top,
+.loader--exit .rolling-bottom {
+  animation-play-state: paused;
+}
+
+/* ── Rolling text ─────────────────────────────────────────── */
+.rolling-text {
+  display: inline-flex;
+  -moz-column-gap: 0.01em;
+       column-gap: 0.01em;
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-medium);
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  letter-spacing: 0.2em;
+  color: var(--gray-25, #fafafa);
+  line-height: 1;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+/**
+ * Each letter is a clipped container with two spans:
+ *   .rolling-top    — the live letter, inside clip bounds
+ *   .rolling-bottom — duplicate positioned immediately below the clip (top: 100%)
+ *
+ * Both animate with the same translateY keyframe (same technique as footer nav hover).
+ * When translateY = -100%: top exits above clip, bottom slides into view from below.
+ * Instant snap at 41% creates a seamless loop.
+ */
+.rolling-letter {
+  display: inline-block;
+  position: relative;
+  clip-path: inset(0 0 1px 0);
+  line-height: inherit;
+}
+
+.rolling-top,
+.rolling-bottom {
+  display: block;
+  animation: loader-roll 1.6s cubic-bezier(0.4, 0, 0.6, 1) calc(var(--i) * 0.038s) infinite both;
+}
+
+.rolling-bottom {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+/**
+ * 0 – 8%   : hold — all letters visible simultaneously
+ * 8 – 40%  : roll — both spans move to -100% (top exits, bottom enters from below)
+ * 40 – 41% : snap — steps(1,end) jumps from -100% back to 0 in ~16ms
+ * 41 – 100%: hold — top visible, bottom hidden at top:100%
+ */
+@keyframes loader-roll {
+  0%, 8% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
+  }
+  40% {
+    transform: translateY(-100%);
+    animation-timing-function: steps(1, end);
+  }
+  41% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}/*# sourceMappingURL=loader.module.css.map */
