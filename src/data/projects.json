@@ -64,7 +64,7 @@
     "title": "Foucault — A Study in Knowledge & Order",
     "year": 2024,
     "order": 3,
-    "cover": "cover.webp",
+    "cover": "01.webp",
     "images": [
       "01.webp",
       "02.webp",
@@ -84,8 +84,7 @@
       "16.webp",
       "17.webp",
       "18.webp",
-      "19.webp",
-      "20.webp"
+      "19.webp"
     ],
     "description": "This editorial design reinterprets two seminal works by Michel Foucault—The Order of Things and The Archaeology of Knowledge. The project explores how systems of knowledge are constructed, organized, and transformed over time, translating abstract philosophical structures into a visual language of form, hierarchy, and material.",
     "category": ["Editorial", "Book", "Poster"],

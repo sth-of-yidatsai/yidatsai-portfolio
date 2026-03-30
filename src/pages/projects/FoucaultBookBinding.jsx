@@ -42,7 +42,7 @@ export default function FoucaultBookBinding() {
             subtitle: "(01)",
           },
           {
-            src: `${BASE}/17.webp`,
+            src: `${BASE}/16.webp`,
             title: "Typography",
             subtitle: "(02)",
           },
@@ -63,12 +63,12 @@ export default function FoucaultBookBinding() {
       <ImgSet2aBlock
         items={[
           {
-            src: `${BASE}/12.webp`,
+            src: `${BASE}/11.webp`,
             title: "The Order of Things",
             subtitle: "(04)",
           },
           {
-            src: `${BASE}/08.webp`,
+            src: `${BASE}/07.webp`,
             title: "The Archaeology of Knowledge",
             subtitle: "(05)",
           },
@@ -92,13 +92,13 @@ export default function FoucaultBookBinding() {
       />
 
       <ImgSet4aBlock
-        images={[`${BASE}/18.webp`, `${BASE}/13.webp`]}
+        images={[`${BASE}/17.webp`, `${BASE}/12.webp`]}
         title="Structural Form"
         subtitle="(08)"
       />
 
       <ImgSet1aBlock
-        src={`${BASE}/10.webp`}
+        src={`${BASE}/09.webp`}
         title="Structural Form"
         subtitle="(09)"
         reverse
@@ -106,10 +106,10 @@ export default function FoucaultBookBinding() {
 
       <ImgSet4aBlock
         images={[
-          `${BASE}/14.webp`,
+          `${BASE}/13.webp`,
+          `${BASE}/18.webp`,
           `${BASE}/19.webp`,
-          `${BASE}/20.webp`,
-          `${BASE}/15.webp`,
+          `${BASE}/14.webp`,
         ]}
         title="Structural Form"
         subtitle="(10)"
