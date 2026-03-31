@@ -1,16 +1,16 @@
 export const SITE = {
-  name: "YI-DA TSAI",
+  name: "Yi-Da Tsai 蔡易達",
   baseUrl: "https://yidatsai.com",
   defaultDescription:
-    "Yi-Da Tsai is a UIUX designer and frontend developer based in Taipei, Taiwan, specializing in web design, typography, and interactive experiences.",
+    "Yi-Da Tsai (蔡易達) is a visual designer and frontend developer based in Taipei, Taiwan, specializing in typography, editorial design, and digital experiences.",
   defaultOgImage: "https://yidatsai.com/images/og-default.jpg",
 };
 
 export const PAGE_META = {
   home: {
-    title: "YI-DA TSAI",
+    title: "Yi-Da Tsai 蔡易達｜Visual Designer & Frontend Developer",
     description:
-      "Yi-Da Tsai is a UIUX designer and frontend developer based in Taipei, Taiwan, specializing in web design, typography, and interactive experiences.",
+      "Yi-Da Tsai (蔡易達) is a visual designer and frontend developer based in Taipei, Taiwan, specializing in typography, editorial design, and digital experiences.",
     ogImage: "https://yidatsai.com/images/og-default.jpg",
   },
   about: {
@@ -62,6 +62,7 @@ export function buildProjectJsonLd(project) {
     creator: {
       "@type": "Person",
       name: "Yi-Da Tsai",
+      alternateName: "蔡易達",
       url: SITE.baseUrl,
     },
     dateCreated: String(project.year),
