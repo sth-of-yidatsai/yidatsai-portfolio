@@ -156,12 +156,12 @@
 }
 
 .hero-prev-button:hover img {
-  transform: translateX(-4px) scale(1.1);
+  transform: scale(1.1);
   opacity: 1;
 }
 
 .hero-next-button:hover img {
-  transform: translateX(4px) scale(1.1);
+  transform: scale(1.1);
   opacity: 1;
 }
 

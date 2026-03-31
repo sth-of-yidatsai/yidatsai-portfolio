@@ -16,11 +16,11 @@ export default function HeroSection({ index }) {
   // 輪播配置 - 指定專案ID和圖片索引
   const carouselConfig = React.useMemo(
     () => [
-      { projectId: "formosa-font", image: "06.webp" },
-      { projectId: "patterned-glass-notebook", image: "01.webp" },
-      { projectId: "foucault-book-binding", image: "02.webp" },
-      { projectId: "patterned-glass-notebook", image: "03.webp" },
-      { projectId: "formosa-font", image: "04.webp" },
+      { projectId: "foucault-book-binding", image: "03.webp" },
+      { projectId: "formosa-font", image: "15.webp" },
+      { projectId: "patterned-glass-notebook", image: "08.webp" },
+      { projectId: "formosa-font", image: "13.webp" },
+      { projectId: "foucault-book-binding", image: "01.webp" },
     ],
     [],
   );
