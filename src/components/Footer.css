@@ -236,23 +236,20 @@
 .footer-lang-btn.clickable:hover   { transform: none !important; }
 
 /* ============================================================
-   Col 4 · Badge + copyright
+   Col 4 · Badge
    ============================================================ */
 .footer-right {
-  /* subgrid: inherit the 4 row tracks from footer-inner
-     → badge rows 1-3, copyright row 4 (same row as lang toggle) */
   display: grid;
-  grid-template-rows: subgrid;
+  place-items: center;
   padding-left: var(--space-2xl);
 }
 
 /* ── Badge — spans rows 1-3, centred ── */
 .footer-badge {
-  grid-row: 1 / 4;
   align-self: center;
   justify-self: center;
   width: 100%;
-  max-width: 220px;
+  max-width: 240px;
   height: auto;
   display: block;
 }
@@ -293,6 +290,12 @@
 
 .footer-copyright {
   margin: 0;
+  font-family: var(--font-manrope);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-12pt);
+  color: var(--gray-400);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 /* ============================================================
@@ -325,16 +328,28 @@
   }
 
   .footer-inner {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
   }
 
-  .footer-logo  { grid-column: 1; grid-row: auto; font-size: clamp(3rem, 12vw, 5rem); }
-  .footer-mid   { grid-column: 1; grid-row: auto; }
-  .footer-right { grid-column: 1; grid-row: auto; align-items: flex-start; }
+  /* Row 1: logo (left) + lottie (right), same height */
+  .footer-logo  { grid-column: 1; grid-row: 1; font-size: clamp(3rem, 12vw, 5rem); align-self: stretch; }
+  .footer-right {
+    grid-column: 2; grid-row: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    align-self: stretch;
+    padding-left: 0;
+  }
+  .footer-badge {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+  }
 
-  .footer-copyright-wrap { text-align: left; }
-  .footer-copyright      { text-align: left; }
+  /* Row 2: nav + contact spans full width */
+  .footer-mid   { grid-column: 1 / 3; grid-row: 2; }
 }
 
 /* xs ≤ 480px */
@@ -347,15 +362,7 @@
     font-size: clamp(2.5rem, 10vw, 3.5rem);
   }
 
-  .footer-right {
-    padding-left: 0;
-  }
-
   .footer-badge {
     max-width: 160px;
-  }
-
-  .footer-lang-btn {
-    width: 72px;
   }
 }

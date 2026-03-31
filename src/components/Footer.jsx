@@ -1,6 +1,5 @@
-import { Fragment, useContext, useRef } from 'react';
+import { Fragment, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { LanguageContext } from '../contexts/LanguageContext';
 import Lottie from 'lottie-react';
 import footerCircleAnimation from '../assets/icons/FooterCircle.json';
 import './Footer.css';
@@ -24,7 +23,7 @@ const FOOTER_ROWS = [
   },
   {
     nav: { label: 'CONTACT', to: '/contact' },
-    contact: { type: 'toggle' },
+    contact: { type: 'copyright' },
   },
 ];
 
@@ -56,32 +55,6 @@ function RollingText({ children }) {
   );
 }
 
-/* ── Language toggle with sliding white pill ─────────────────────── */
-
-function LanguageToggle({ language, setLanguage }) {
-  return (
-    <div className="footer-lang-toggle" role="group" aria-label="Language">
-      <span
-        className="footer-lang-indicator"
-        style={{ transform: language === 'zh' ? 'translateX(100%)' : 'translateX(0)' }}
-        aria-hidden="true"
-      />
-      <button
-        className={`footer-lang-btn clickable${language === 'en' ? ' active' : ''}`}
-        onClick={() => setLanguage('en')}
-      >
-        English
-      </button>
-      <button
-        className={`footer-lang-btn clickable${language === 'zh' ? ' active' : ''}`}
-        onClick={() => setLanguage('zh')}
-      >
-        中文
-      </button>
-    </div>
-  );
-}
-
 /* ── Footer badge — Lottie, paused by default, plays on hover ─────── */
 
 function FooterBadgeLottie() {
@@ -109,7 +82,6 @@ function FooterBadgeLottie() {
 const CURRENT_YEAR = new Date().getFullYear();
 
 export default function Footer() {
-  const { language, setLanguage } = useContext(LanguageContext);
   const year = CURRENT_YEAR;
 
   return (
@@ -145,18 +117,17 @@ export default function Footer() {
                   </a>
                 </div>
               ) : (
-                <LanguageToggle language={language} setLanguage={setLanguage} />
+                <div className="footer-contact-row">
+                  <p className="footer-copyright">Yida Tsai © 2020–{year}</p>
+                </div>
               )}
             </Fragment>
           ))}
         </div>
 
-        {/* Col 4 — badge + copyright */}
+        {/* Col 4 — badge */}
         <div className="footer-right">
           <FooterBadgeLottie />
-          <div className="footer-copyright-wrap">
-            <p className="footer-copyright">Yida Tsai © 2020–{year}</p>
-          </div>
         </div>
 
       </div>

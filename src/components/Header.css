@@ -446,10 +446,17 @@ body.menu-open {
 @media (max-width: 768px) {
   .header-bar {
     padding: 0 var(--space-md);
+    margin-top: var(--space-lg);
+  }
+
+  .header-hamburger {
+    margin-right: var(--space-md);
+
   }
 
   .header-bar-logo {
-    font-size: 1.8rem;
+    font-size: 2.4rem;
+    margin-top: 6px;
   }
 
   .header-overlay-logo {
@@ -460,9 +467,9 @@ body.menu-open {
     height: 60vh;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-end;
+    justify-content: center;
     gap: var(--space-xl);
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-xl) var(--space-md);
   }
 
   .header-overlay-glass {
