@@ -1,6 +1,5 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
 import "./LandscapeSection.css";
-import { useImageParallax } from "../../../../hooks/useImageParallax";
 import { buildSrcSet } from "../../../../utils/imgSrcSet";
 import cornerSvg from "../../../../assets/icons/landscape-section-corner.svg";
 import centerSvg from "../../../../assets/icons/landscape-section-center.svg";
@@ -62,8 +61,6 @@ export default function LandscapeSection({
   landscapeFullscreenProgress = 0,
 }) {
   const slides = useMemo(() => LANDSCAPE_SLIDES.map(resolveSlide), []);
-
-  const { scrollClass } = useImageParallax({ inStickySection: true });
 
   // Refs for measuring the actual frame position inside the section
   const sectionRef = useRef(null);
@@ -143,15 +140,11 @@ export default function LandscapeSection({
   const ctBottom = (VH - fr.top - fr.height) * (1 - fsp);
   const overlayClip = `inset(${ctTop}px ${ctRight}px ${ctBottom}px ${ctLeft}px)`;
 
-  // ── Overlay image: start at 110% of frame (matches parallax-wrapper bleed) → full ──
-  // The parallax wrapper is inset:-5% / 110% × 110%, so image zoom in the frame is
-  // relative to 1.1× the frame size. Starting the overlay at the same scale prevents
-  // the zoom-level jump at the moment the overlay appears.
-  const BLEED = 0.05;
-  const imgW0 = fr.width * (1 + 2 * BLEED); // 110% of frame width
-  const imgH0 = fr.height * (1 + 2 * BLEED); // 110% of frame height
-  const imgL0 = fr.left - fr.width * BLEED; // left edge with bleed
-  const imgT0 = fr.top - fr.height * BLEED; // top  edge with bleed
+  // ── Overlay image: start at frame bounds → full ──
+  const imgW0 = fr.width;
+  const imgH0 = fr.height;
+  const imgL0 = fr.left;
+  const imgT0 = fr.top;
   const imgWidth = imgW0 + (VW - imgW0) * fsp;
   const imgHeight = imgH0 + (VH - imgH0) * fsp;
   const imgLeft = imgL0 * (1 - fsp);
@@ -227,7 +220,7 @@ export default function LandscapeSection({
           />
 
           <div ref={frameRef} className="ls-image-frame">
-            <div className={`ls-image-parallax-wrapper ${scrollClass}`}>
+            <div className="ls-image-parallax-wrapper">
               {/* Base image — current slide */}
               <img
                 src={baseSlide.image}

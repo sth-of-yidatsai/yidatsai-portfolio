@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./FieldSection.css";
-import { useImageParallax } from "../../../../hooks/useImageParallax";
 import { buildSrcSet } from "../../../../utils/imgSrcSet";
 
 /** 與 header-overlay-logo 相同的 line-roll 結構 */
@@ -40,8 +39,6 @@ const fieldConfig = [
 ];
 
 export default function FieldSection() {
-  const { scrollClass } = useImageParallax();
-
   const images = fieldConfig.map((cfg) => ({
     src: `/images/projects/${cfg.projectId}/${cfg.image}`,
     label: cfg.label,
@@ -79,7 +76,7 @@ export default function FieldSection() {
                 alt={images[0].label}
                 srcSet={buildSrcSet(images[0].src)}
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className={`fs-image ${scrollClass}`}
+                className="fs-image"
                 loading="eager"
               />
             </div>
@@ -96,7 +93,7 @@ export default function FieldSection() {
                 alt={images[1].label}
                 srcSet={buildSrcSet(images[1].src)}
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className={`fs-image ${scrollClass}`}
+                className="fs-image"
                 loading="eager"
               />
             </div>
@@ -113,7 +110,7 @@ export default function FieldSection() {
                 alt={images[2].label}
                 srcSet={buildSrcSet(images[2].src)}
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className={`fs-image ${scrollClass}`}
+                className="fs-image"
                 loading="eager"
               />
             </div>
@@ -154,7 +151,7 @@ export default function FieldSection() {
                 alt={images[3].label}
                 srcSet={buildSrcSet(images[3].src)}
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className={`fs-image ${scrollClass}`}
+                className="fs-image"
                 loading="eager"
               />
             </div>

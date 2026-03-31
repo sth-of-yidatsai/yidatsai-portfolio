@@ -135,23 +135,13 @@
   overflow: hidden;
 }
 
-/* Parallax wrapper — extra 10% bleed on each side allows image to shift */
+/* Image wrapper */
 .ls-image-parallax-wrapper {
   position: absolute;
-  inset: -5%;
-  width: 110%;
-  height: 110%;
-  will-change: transform;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform: translateZ(0);
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
-
-.ls-image-parallax-wrapper.scroll-horizontal-right { transform: translateX(16px)  translateZ(0); }
-.ls-image-parallax-wrapper.scroll-horizontal-left  { transform: translateX(-16px) translateZ(0); }
-.ls-image-parallax-wrapper.scroll-vertical-up      { transform: translateY(-12px) translateZ(0); }
-.ls-image-parallax-wrapper.scroll-vertical-down    { transform: translateY(12px)  translateZ(0); }
 
 /* Base and incoming images both fill the wrapper */
 .ls-image {

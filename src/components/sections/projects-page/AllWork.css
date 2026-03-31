@@ -116,14 +116,13 @@
 /* square → 1:1 */
 .all-work__card-wrap--square    .all-work__card { aspect-ratio: 1 / 1; }
 
-/* ── Parallax image wrapper ──────────────────────────────────────────────── */
+/* ── Image wrapper ───────────────────────────────────────────────────────── */
 
-/* Oversized wrapper gives room for parallax translation */
 .all-work__card-img-wrapper {
   position: absolute;
-  inset: -5%;
-  width: 110%;
-  height: 110%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .all-work__card-img {
@@ -132,39 +131,15 @@
   object-fit: cover;
   display: block;
   pointer-events: none;
-  will-change: transform;
-  backface-visibility: hidden;
-  transform: translate3d(0, 0, 0) scale(1);
-  /* easeOutCubic — fast initial response, long elegant deceleration */
+  transform: scale(1);
   transition: transform 1.6s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 /* ── Hover: slow elegant scale-up ────────────────────────────────────────── */
 
 .all-work__card-wrap:hover .all-work__card-img {
-  transform: translate3d(0, 0, 0) scale(1.07);
+  transform: scale(1.07);
 }
-
-/* Preserve scale when parallax classes are active */
-.all-work__card-wrap:hover .all-work__card-img.scroll-horizontal-right {
-  transform: translate3d(16px, 0, 0) scale(1.07);
-}
-.all-work__card-wrap:hover .all-work__card-img.scroll-horizontal-left {
-  transform: translate3d(-16px, 0, 0) scale(1.07);
-}
-.all-work__card-wrap:hover .all-work__card-img.scroll-vertical-up {
-  transform: translate3d(0, -12px, 0) scale(1.07);
-}
-.all-work__card-wrap:hover .all-work__card-img.scroll-vertical-down {
-  transform: translate3d(0, 12px, 0) scale(1.07);
-}
-
-/* ── Parallax classes ────────────────────────────────────────────────────── */
-
-.all-work__card-img.scroll-horizontal-right { transform: translate3d(16px,  0, 0) scale(1); }
-.all-work__card-img.scroll-horizontal-left  { transform: translate3d(-16px, 0, 0) scale(1); }
-.all-work__card-img.scroll-vertical-up      { transform: translate3d(0, -12px, 0) scale(1); }
-.all-work__card-img.scroll-vertical-down    { transform: translate3d(0,  12px, 0) scale(1); }
 
 /* ── Caption ─────────────────────────────────────────────────────────────── */
 

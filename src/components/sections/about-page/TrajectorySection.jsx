@@ -1,7 +1,6 @@
 import { useRef, useState, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useImageParallax } from "../../../hooks/useImageParallax";
 import "./TrajectorySection.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -70,7 +69,6 @@ export default function TrajectorySection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInSection, setIsInSection] = useState(false);
-  const { scrollClass } = useImageParallax({ inStickySection: isInSection });
 
   // ── GSAP pin + phase-based scroll ────────────────────────────────────────
   useLayoutEffect(() => {
@@ -300,7 +298,7 @@ export default function TrajectorySection() {
                   <p className="ts__year">{card.year}</p>
                   <div className="ts__img-wrap">
                     <img
-                      className={`ts__img ${scrollClass}`}
+                      className="ts__img"
                       src={card.image}
                       alt={card.title}
                       draggable="false"

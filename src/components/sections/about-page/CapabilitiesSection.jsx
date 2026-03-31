@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect, useCallback } from "react";
-import { useImageParallax } from "../../../hooks/useImageParallax";
 import { buildSrcSet } from "../../../utils/imgSrcSet";
 import "./CapabilitiesSection.css";
 
@@ -44,7 +43,6 @@ export default function CapabilitiesSection() {
   const rafRef = useRef(null);
   const targetRef = useRef({ x: 0, y: 0 });
   const currentRef = useRef({ x: 0, y: 0 });
-  const { scrollClass } = useImageParallax();
 
   const handleMouseMove = useCallback((e) => {
     targetRef.current.x = e.clientX;
@@ -109,7 +107,7 @@ export default function CapabilitiesSection() {
             const src = hoveredIndex !== null ? ITEMS[hoveredIndex].image : ITEMS[0].image;
             return (
               <img
-                className={`cs__img ${scrollClass}`}
+                className="cs__img"
                 src={src}
                 srcSet={buildSrcSet(src)}
                 sizes="(max-width: 768px) 100vw, 40vw"

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, useCallback, memo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import projectsData from "../../../data/projects.json";
-import { useImageParallax } from "../../../hooks/useImageParallax";
 import { buildSrcSet } from "../../../utils/imgSrcSet";
 import "./AllWork.css";
 
@@ -67,7 +66,7 @@ function removeAllLinkTags() {
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
-const ProjectCard = memo(function ProjectCard({ project, scrollClass, onClick, cardRef }) {
+const ProjectCard = memo(function ProjectCard({ project, onClick, cardRef }) {
   const imgSrc =
     project.cover === "placeholder.webp"
       ? `/images/projects/placeholder.webp`
@@ -90,7 +89,7 @@ const ProjectCard = memo(function ProjectCard({ project, scrollClass, onClick, c
             srcSet={buildSrcSet(imgSrc)}
             sizes="(max-width: 768px) 100vw, 33vw"
             alt={project.title}
-            className={`all-work__card-img${scrollClass ? ` ${scrollClass}` : ""}`}
+            className="all-work__card-img"
             loading="lazy"
             draggable={false}
           />
@@ -110,7 +109,6 @@ const ProjectCard = memo(function ProjectCard({ project, scrollClass, onClick, c
 export default function AllWork() {
   const navigate = useNavigate();
   const { page: pageParam } = useParams();
-  const { scrollClass } = useImageParallax();
 
   const initialPage = Math.max(
     1,
@@ -238,7 +236,6 @@ export default function AllWork() {
               <ProjectCard
                 key={p.id}
                 project={p}
-                scrollClass={scrollClass}
                 onClick={() => handleCardClick(p)}
                 cardRef={(el) => { cardRefsMap.current.set(p.id, el); }}
               />

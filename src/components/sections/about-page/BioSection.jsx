@@ -1,7 +1,6 @@
-import { useRef, useLayoutEffect, useState } from "react";
+import { useRef, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useImageParallax } from "../../../hooks/useImageParallax";
 import "./BioSection.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -74,8 +73,6 @@ function StickyText({ text }) {
 function StickyImage() {
   const sectionRef  = useRef(null);
   const imgWrapRef  = useRef(null);
-  const [isInSection, setIsInSection] = useState(false);
-  const { scrollClass } = useImageParallax({ inStickySection: isInSection });
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -103,10 +100,6 @@ function StickyImage() {
             start:    "top top",
             end:      `+=${vh * 1.0}`,   // ← reduced from 1.8
             scrub:    0.6,
-            onEnter()      { setIsInSection(true);  },
-            onLeave()      { setIsInSection(false); },
-            onEnterBack()  { setIsInSection(true);  },
-            onLeaveBack()  { setIsInSection(false); },
           },
         });
 
@@ -131,7 +124,7 @@ function StickyImage() {
     <section className="bs__img-block" ref={sectionRef}>
       <div className="bs__img-wrap" ref={imgWrapRef}>
         <img
-          className={`bs__img${scrollClass ? ` ${scrollClass}` : ""}`}
+          className="bs__img"
           src="/images/about/01.webp"
           srcSet="/images/about/01-800.webp 800w, /images/about/01-1200.webp 1200w, /images/about/01.webp 1600w"
           sizes="100vw"

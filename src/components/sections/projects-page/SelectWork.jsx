@@ -8,7 +8,6 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import projectsData from "../../../data/projects.json";
-import { useImageParallax } from "../../../hooks/useImageParallax";
 import "./SelectWork.css";
 
 // ─── Work Selection Config ──────────────────────────────────────────────────
@@ -44,7 +43,6 @@ function buildCards(config, data) {
 
 export default function SelectWork() {
   const navigate = useNavigate();
-  const { scrollClass } = useImageParallax();
   const cards = useMemo(() => buildCards(SELECTED_WORKS, projectsData), []);
   const N = cards.length;
 
@@ -57,30 +55,9 @@ export default function SelectWork() {
   const trackRef = useRef(null);
   const offsetRef = useRef(0);
   const autoTimer = useRef(null);
-  const carouselDirRef = useRef(""); // tracks last set direction to skip redundant setState
-  const carouselParallaxTimer = useRef(null);
 
   const [offset, setOffset] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [carouselDirection, setCarouselDirection] = useState(""); // "left" | "right" | ""
-
-  // Activate carousel parallax in given direction
-  const applyCarouselParallax = useCallback((dir) => {
-    clearTimeout(carouselParallaxTimer.current);
-    if (carouselDirRef.current !== dir) {
-      carouselDirRef.current = dir;
-      setCarouselDirection(dir);
-    }
-  }, []);
-
-  // Clear carousel parallax after optional delay
-  const clearCarouselParallax = useCallback((delay = 0) => {
-    clearTimeout(carouselParallaxTimer.current);
-    carouselParallaxTimer.current = setTimeout(() => {
-      carouselDirRef.current = "";
-      setCarouselDirection("");
-    }, delay);
-  }, []);
 
   const getStep = useCallback(() => {
     const card = trackRef.current?.querySelector(".select-work__card-wrap");
@@ -90,17 +67,12 @@ export default function SelectWork() {
   // Animate to a target offset, then silently teleport to equivalent middle-set position
   const animateTo = useCallback(
     (targetOffset) => {
-      // Apply parallax in the direction of travel
-      const dir = targetOffset > offsetRef.current ? "left" : "right";
-      applyCarouselParallax(dir);
-
       offsetRef.current = targetOffset;
       setOffset(targetOffset);
       setIsAnimating(true);
 
       setTimeout(() => {
         setIsAnimating(false);
-        clearCarouselParallax(0);
 
         const step = getStep();
         if (!step) return;
@@ -118,7 +90,7 @@ export default function SelectWork() {
         }
       }, ANIM_MS);
     },
-    [getStep, N, applyCarouselParallax, clearCarouselParallax]
+    [getStep, N]
   );
 
   const startAutoAdvance = useCallback(() => {
@@ -177,13 +149,7 @@ export default function SelectWork() {
                   <img
                     src={card.image}
                     alt={card.title}
-                    className={`select-work__card-img${
-                      carouselDirection
-                        ? ` scroll-horizontal-${carouselDirection}`
-                        : scrollClass
-                        ? ` ${scrollClass}`
-                        : ""
-                    }`}
+                    className="select-work__card-img"
                     draggable={false}
                   />
                 </div>
