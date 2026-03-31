@@ -70,29 +70,15 @@ body.menu-open .hs-horizontal-scrollbar {
 }
 
 @media (hover: none) and (pointer: coarse) {
-  /* 行動裝置可隱藏，避免與原生行為衝突 */
+  /* 行動裝置隱藏水平滾動條，避免與原生行為衝突 */
   .hs-horizontal-scrollbar {
     display: none;
   }
 }
 
-/* 響應式設計 */
-@media (max-width: 768px) {
-  .hs-horizontal-scrollbar {
-    width: 80%;
-    bottom: 1rem;
-  }
-}
-
-/* 移動設備觸控優化 */
-@media (max-width: 768px) {
-  .hs-container {
-    /* 改善移動設備的觸控體驗 */
-    touch-action: pan-y; /* 允許垂直滑動來觸發水平滾動 */
-  }
-
-  .hs-scroller {
-    /* 確保移動設備上的平滑滾動 */
-    -webkit-overflow-scrolling: touch;
-  }
+/* ── 垂直 fallback 容器（md ≤ 1024px，由 JSX 條件渲染） ── */
+.hs-vertical {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }

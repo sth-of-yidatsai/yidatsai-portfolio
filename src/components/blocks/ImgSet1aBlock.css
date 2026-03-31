@@ -41,3 +41,14 @@
   color: var(--gray-500);
   margin: 0;
 }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .block--imgset1a {
+    padding: var(--space-lg) 0;
+  }
+
+  .block--imgset1a__caption {
+    padding: var(--space-sm) var(--space-md) 0;
+  }
+}

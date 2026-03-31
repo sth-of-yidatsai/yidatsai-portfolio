@@ -19,8 +19,23 @@
   display: block;
 }
 
+/* md ≤ 1024px: 保持 2 欄，但已夠窄 */
+@media (max-width: 1024px) {
+  .block--default {
+    padding: var(--space-lg) var(--px-page);
+  }
+}
+
+/* sm ≤ 768px: 單欄 */
 @media (max-width: 768px) {
   .block--default__grid {
     columns: 1;
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .block--default {
+    padding: var(--space-lg) var(--space-md);
   }
 }

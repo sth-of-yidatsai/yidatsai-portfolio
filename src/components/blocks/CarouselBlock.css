@@ -93,3 +93,21 @@
 .block--carousel__dot:hover:not(.is-active) {
   color: rgba(255, 255, 255, 0.75);
 }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .block--carousel {
+    height: 60svh;
+  }
+
+  .block--carousel__nav {
+    right: var(--space-md);
+    gap: var(--space-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .block--carousel {
+    height: 50svh;
+  }
+}

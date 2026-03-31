@@ -46,9 +46,29 @@
   gap: var(--space-lg);
 }
 
+/* md ≤ 1024px: 2欄已足夠，調整間距 */
+@media (max-width: 1024px) {
+  .all-work__masonry {
+    gap: var(--space-lg);
+  }
+}
+
+/* sm ≤ 768px: 單欄 */
 @media (max-width: 768px) {
   .all-work__masonry {
     flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .all-work {
+    padding: var(--space-lg) var(--px-page);
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .all-work {
+    padding: var(--space-lg) var(--space-md);
   }
 }
 

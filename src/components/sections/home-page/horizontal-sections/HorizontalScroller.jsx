@@ -39,29 +39,33 @@ export default function HorizontalScroller() {
     thumb: getCSSVar("--gray-800", "#1a1a1a"),
   };
 
-  // 檢測是否為移動設備
-  const [isMobile, setIsMobile] = useState(false);
+  // 檢測是否為平板/手機（≤1024px），切換至垂直佈局
+  const [isTablet, setIsTablet] = useState(() => window.innerWidth <= 1024);
+  // 檢測是否為手機（≤768px），僅用於觸控敏感度調整
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
 
   useEffect(() => {
-    const checkMobile = () => {
+    const checkBreakpoints = () => {
       const width = window.innerWidth;
-      setIsMobile(width <= 768); // 僅用於觸控敏感度調整
+      setIsTablet(width <= 1024);
+      setIsMobile(width <= 768);
     };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    window.addEventListener("resize", checkBreakpoints);
+    return () => window.removeEventListener("resize", checkBreakpoints);
   }, []);
 
   // 使用導入的 section 配置
   const sections = sectionConfigs;
 
   useLayoutEffect(() => {
+    if (isTablet) return; // 平板/手機使用垂直佈局，跳過 GSAP
+
     const container = containerRef.current;
     const scroller = scrollerRef.current;
     if (!container || !scroller) return;
 
-    // 所有設備都啟用水平滾動，但移動設備有優化的觸控處理
+    // 桌面：啟用水平滾動（觸控設備有優化的觸控處理）
 
     const ctx = gsap.context(() => {
       const VW = window.innerWidth;
@@ -301,7 +305,7 @@ export default function HorizontalScroller() {
       container.removeEventListener("touchmove", handleTouchMove);
       container.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [isInHorizontalSection, isMobile]); // 保留isMobile依賴用於觸控敏感度
+  }, [isInHorizontalSection, isMobile, isTablet]); // 保留isMobile依賴用於觸控敏感度
 
   // 自訂滾動條處理 - 修正為只計算水平滾動區域內的進度
   const handlePointerDown = (e) => {
@@ -395,7 +399,35 @@ export default function HorizontalScroller() {
     }
   };
 
-  // 所有設備都使用水平滾動，但移動設備有優化的觸控體驗
+  // 平板/手機：垂直堆疊版面
+  if (isTablet) {
+    return (
+      <div className="hs-vertical">
+        {sections.map((section, index) => {
+          switch (section.id) {
+            case "approach":
+              return <ApproachSection key={section.id} config={section} index={index} />;
+            case "landscape":
+              return (
+                <LandscapeSection
+                  key={section.id}
+                  config={section}
+                  index={index}
+                  landscapeProgress={1}
+                  landscapeFullscreenProgress={0}
+                />
+              );
+            case "projects":
+              return <ProjectsSection key={section.id} config={section} index={index} />;
+            default:
+              return null;
+          }
+        })}
+      </div>
+    );
+  }
+
+  // 桌面：水平滾動版面
   return (
     <>
       <section ref={containerRef} className="hs-container">

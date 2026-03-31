@@ -94,6 +94,15 @@
 }
 
 /* ── Responsive ── */
+
+/* md ≤ 1024px: item--a 放大佔比 */
+@media (max-width: 1024px) {
+  .block--imgset2a__item--a {
+    flex: 0 0 33%;
+  }
+}
+
+/* sm ≤ 768px: 改垂直堆疊 */
 @media (max-width: 768px) {
   .block--imgset2a {
     padding-right: var(--px-page);
@@ -110,5 +119,16 @@
 
   .block--imgset2a__item--b .block--imgset2a__img-wrap {
     aspect-ratio: 4 / 3;
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .block--imgset2a {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .block--imgset2a__item--a {
+    width: 70%;
   }
 }

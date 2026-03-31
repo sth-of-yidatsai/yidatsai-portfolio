@@ -31,3 +31,31 @@
   line-height: 1.05;
   margin: 0;
 }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .contact-title {
+    font-size: var(--fs-48pt);
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-page {
+    padding-top: var(--space-xl);
+  }
+
+  .contact-title {
+    font-size: var(--fs-36pt);
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-hero {
+    padding: 0 var(--space-md) var(--space-lg);
+  }
+
+  .contact-title {
+    font-size: var(--fs-28pt);
+  }
+}

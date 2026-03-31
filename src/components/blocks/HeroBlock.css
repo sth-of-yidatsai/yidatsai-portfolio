@@ -111,8 +111,30 @@
   display: inline-block;
 }
 
+@media (max-width: 1024px) {
+  .block--hero__title-section,
+  .block--hero__year-section,
+  .block--hero__tag-section {
+    padding: 0 var(--space-sm);
+  }
+}
+
 @media (max-width: 768px) {
   .block--hero__info-panel {
     height: 70px;
+  }
+
+  .block--hero__tag-section {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .block--hero__info-panel {
+    height: 60px;
+  }
+
+  .block--hero__year-section {
+    display: none;
   }
 }

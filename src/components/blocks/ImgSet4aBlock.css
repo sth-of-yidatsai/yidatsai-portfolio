@@ -60,9 +60,26 @@
 }
 
 /* ── Responsive ── */
+
+/* md ≤ 1024px: 放寬最大寬度 */
+@media (max-width: 1024px) {
+  .block--imgset4a__grid,
+  .block--imgset4a__caption {
+    max-width: 90%;
+  }
+}
+
+/* sm ≤ 768px: 全寬 */
 @media (max-width: 768px) {
   .block--imgset4a__grid,
   .block--imgset4a__caption {
     max-width: 100%;
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .block--imgset4a {
+    padding: var(--space-lg) var(--space-md);
   }
 }

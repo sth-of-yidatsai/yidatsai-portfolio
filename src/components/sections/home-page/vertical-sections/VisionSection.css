@@ -339,12 +339,14 @@
 }
 
 /* ── Responsive ── */
-@media (max-width: 768px) {
+
+/* md ≤ 1024px：浮動文字欄在平板上位置會出血，改為垂直堆疊 */
+@media (max-width: 1024px) {
   .vs-title {
     font-size: var(--fs-48pt);
   }
 
-  /* On mobile: no sticky, stack diagram then text blocks */
+  /* 取消 sticky，改垂直排版 */
   .vs-scroll-zone {
     height: auto;
   }
@@ -385,12 +387,26 @@
   .vs-svg {
     height: auto;
     width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
   }
 }
 
-@media (max-width: 480px) {
+/* sm ≤ 768px */
+@media (max-width: 768px) {
   .vs-title {
     font-size: var(--fs-36pt);
+  }
+
+  .vs-sticky-panel {
+    padding: 0 var(--space-md) var(--space-xl);
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .vs-title {
+    font-size: var(--fs-28pt);
   }
 
   .vs-diagram-wrap {

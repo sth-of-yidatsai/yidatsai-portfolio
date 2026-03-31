@@ -102,6 +102,15 @@
 }
 
 /* ── Responsive ── */
+
+/* md ≤ 1024px: 收窄左欄 */
+@media (max-width: 1024px) {
+  .block--imgset3b__left {
+    flex: 0 0 35%;
+  }
+}
+
+/* sm ≤ 768px: 改垂直堆疊 */
 @media (max-width: 768px) {
   .block--imgset3b__grid {
     flex-direction: column;
@@ -127,5 +136,12 @@
   .block--imgset3b__item--c .block--imgset3b__img-wrap {
     flex: none;
     aspect-ratio: 5 / 4;
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .block--imgset3b {
+    padding: var(--space-lg) var(--space-md);
   }
 }

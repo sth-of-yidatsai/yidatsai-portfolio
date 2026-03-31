@@ -113,8 +113,27 @@
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 
+/* md ≤ 1024px: 2 欄 */
+@media (max-width: 1024px) {
+  .discover-more__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* sm ≤ 768px: 單欄 */
 @media (max-width: 768px) {
   .discover-more__grid {
     grid-template-columns: 1fr;
+  }
+
+  .block--discover-more {
+    padding: var(--space-lg) var(--px-page) 0;
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .block--discover-more {
+    padding: var(--space-lg) var(--space-md) 0;
   }
 }

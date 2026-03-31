@@ -93,9 +93,24 @@
 .bs__img.scroll-horizontal-left  { transform: translateX(-16px) translateZ(0); }
 
 /* ── Responsive ──────────────────────────────────────────────── */
+
+/* md ≤ 1024px */
+@media (max-width: 1024px) {
+  .bs__text {
+    font-size: var(--fs-48pt);
+  }
+}
+
 @media (max-width: 900px) {
   .bs__text {
     font-size: var(--fs-40pt);
+  }
+}
+
+/* sm ≤ 768px */
+@media (max-width: 768px) {
+  .bs__text-block {
+    padding: var(--space-xl) var(--px-page);
   }
 }
 
@@ -103,5 +118,16 @@
   .bs__text {
     font-size: var(--fs-32pt);
     line-height: 1.15;
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .bs__text {
+    font-size: var(--fs-28pt);
+  }
+
+  .bs__text-block {
+    padding: var(--space-lg) var(--space-md);
   }
 }

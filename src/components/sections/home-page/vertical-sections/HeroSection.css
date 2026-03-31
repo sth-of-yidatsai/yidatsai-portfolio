@@ -341,7 +341,18 @@
 }
 
 
-/* Hero Section 手機響應式 */
+/* ── Responsive ── */
+
+/* md ≤ 1024px */
+@media (max-width: 1024px) {
+  .hero-title-section,
+  .hero-year-section,
+  .hero-tag-section {
+    padding: 0 var(--space-sm);
+  }
+}
+
+/* sm ≤ 768px */
 @media (max-width: 768px) {
   .hero-project-info-panel {
     height: 70px;
@@ -355,7 +366,7 @@
     flex: 0 0 50px;
   }
 
-.hero-nav-button img {
+  .hero-nav-button img {
     width: 18px;
     height: 18px;
     min-width: 18px;
@@ -364,5 +375,27 @@
 
   .hero-tag-item {
     padding: 2px var(--space-xs);
+  }
+
+  /* 隱藏 tag 欄位，省出空間 */
+  .hero-tag-section {
+    display: none;
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .hero-project-info-panel {
+    height: 60px;
+  }
+
+  .hero-nav-button {
+    width: 44px;
+    min-width: 44px;
+    flex: 0 0 44px;
+  }
+
+  .hero-year-section {
+    display: none;
   }
 }

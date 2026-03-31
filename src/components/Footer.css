@@ -336,3 +336,26 @@
   .footer-copyright-wrap { text-align: left; }
   .footer-copyright      { text-align: left; }
 }
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .footer {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .footer-logo {
+    font-size: clamp(2.5rem, 10vw, 3.5rem);
+  }
+
+  .footer-right {
+    padding-left: 0;
+  }
+
+  .footer-badge {
+    max-width: 160px;
+  }
+
+  .footer-lang-btn {
+    width: 72px;
+  }
+}

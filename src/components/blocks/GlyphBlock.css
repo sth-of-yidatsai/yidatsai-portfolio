@@ -91,9 +91,15 @@
 }
 
 /* ── Responsive ── */
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .block--glyph__grid {
     grid-template-columns: repeat(10, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .block--glyph__grid {
+    grid-template-columns: repeat(8, 1fr);
   }
 }
 
@@ -108,5 +114,23 @@
 
   .block--glyph__char {
     font-size: var(--fs-20pt);
+  }
+}
+
+@media (max-width: 480px) {
+  .block--glyph {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .block--glyph__grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .block--glyph__cell {
+    min-height: 3rem;
+  }
+
+  .block--glyph__char {
+    font-size: var(--fs-18pt);
   }
 }

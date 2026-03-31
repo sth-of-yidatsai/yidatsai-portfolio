@@ -206,3 +206,55 @@
   user-select: none;
   overflow: hidden;
 }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+
+/* md ≤ 1024px */
+@media (max-width: 1024px) {
+  .ls-section {
+    height: auto;
+    padding: var(--space-2xl) 0;
+  }
+
+  .ls-image-frame {
+    width: 80vw;
+    height: 50vw;
+  }
+
+  /* 側邊標籤收窄，縮小間距 */
+  .ls-label-left  { left:  4vw; }
+  .ls-label-right { right: 4vw; }
+}
+
+/* sm ≤ 768px：隱藏側標籤，圖片框放大 */
+@media (max-width: 768px) {
+  .ls-section {
+    padding: var(--space-xl) 0;
+  }
+
+  .ls-side-label {
+    display: none;
+  }
+
+  .ls-image-frame {
+    width: 90vw;
+    height: 60vw;
+  }
+
+  .ls-deco-tl, .ls-deco-tr, .ls-deco-bl, .ls-deco-br,
+  .ls-deco-tc, .ls-deco-bc {
+    display: none;
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .ls-image-frame {
+    width: 95vw;
+    height: 65vw;
+  }
+
+  .ls-content {
+    gap: var(--space-md);
+  }
+}

@@ -54,6 +54,12 @@
   white-space: pre-wrap;
 }
 
+@media (max-width: 1024px) {
+  .block--title {
+    padding: var(--space-xl) var(--px-page);
+  }
+}
+
 @media (max-width: 900px) {
   .block--title__title {
     font-size: var(--fs-40pt, clamp(2rem, 6vw, 3rem));
@@ -70,5 +76,19 @@
   }
   .block--title__description {
     font-size: var(--fs-20pt, clamp(1rem, 3vw, 1.5rem));
+  }
+}
+
+@media (max-width: 480px) {
+  .block--title {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .block--title__title {
+    font-size: var(--fs-28pt);
+  }
+
+  .block--title__description {
+    font-size: var(--fs-18pt);
   }
 }

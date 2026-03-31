@@ -161,4 +161,46 @@
 .as-right-image.scroll-vertical-up      { transform: translateY(-12px) translateZ(0); }
 .as-right-image.scroll-vertical-down    { transform: translateY(12px)  translateZ(0); }
 
+/* ── Responsive ──────────────────────────────────────────────────── */
 
+/* md ≤ 1024px：左右 50vw 改為上下堆疊 */
+@media (max-width: 1024px) {
+  .as-section {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .as-left {
+    width: 100%;
+    height: auto;
+    padding: var(--space-2xl) var(--px-page) var(--space-xl);
+  }
+
+  .as-right {
+    width: 100%;
+    height: 60vw;
+    max-height: 70vh;
+  }
+}
+
+/* sm ≤ 768px */
+@media (max-width: 768px) {
+  .as-left {
+    padding: var(--space-xl) var(--px-page);
+  }
+
+  .as-small-image {
+    width: clamp(120px, 30vw, 200px);
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .as-left {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .as-right {
+    height: 55vw;
+  }
+}

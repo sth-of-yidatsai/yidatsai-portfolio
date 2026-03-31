@@ -56,3 +56,25 @@
 .block--quote__author::before {
   content: "— ";
 }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .block--quote {
+    padding: var(--space-lg) var(--px-page);
+    min-height: 40vh;
+  }
+
+  .block--quote__text {
+    font-size: var(--fs-22pt);
+  }
+}
+
+@media (max-width: 480px) {
+  .block--quote {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .block--quote__text {
+    font-size: var(--fs-18pt);
+  }
+}

@@ -618,6 +618,66 @@
 }
 
 /* ── Responsive ───────────────────────────────────────────────── */
+
+/* md ≤ 1024px：label + 欄位改單欄 */
+@media (max-width: 1024px) {
+  .cf__row {
+    grid-template-columns: 1fr;
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-sm);
+    background-image: none; /* 移除分隔線（已無左右欄） */
+  }
+
+  .cf__label {
+    padding-right: 0;
+    padding-bottom: var(--space-sm);
+  }
+
+  .cf__fields--split {
+    flex-direction: column;
+    background-image: none;
+  }
+
+  .cf__input {
+    border-bottom: 1px solid var(--gray-200);
+    padding-left: 0;
+  }
+
+  .cf__interest-groups {
+    flex-wrap: wrap;
+    padding-left: 0;
+  }
+
+  .cf__interest-group {
+    flex: 1 1 40%;
+  }
+
+  .cf__timeline-grid {
+    flex-wrap: wrap;
+  }
+
+  .cf__timeline-btn {
+    flex: 1 1 40%;
+    border: 1px solid var(--gray-200);
+    margin: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  .cf__textarea {
+    padding-left: 0;
+  }
+
+  .cf__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cf__note {
+    text-align: left;
+    flex: none;
+  }
+}
+
 @media (max-width: 900px) {
   .cf__row {
     grid-template-columns: 1fr;
@@ -694,5 +754,21 @@
   .cf__budget-tier-cell,
   .cf__budget-price-cell {
     display: none;
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .cf {
+    padding: 0 var(--space-md) var(--space-xl);
+  }
+
+  .cf__send-btn {
+    width: 80px;
+    height: 80px;
+  }
+
+  .cf__send-text {
+    font-size: var(--fs-14pt);
   }
 }

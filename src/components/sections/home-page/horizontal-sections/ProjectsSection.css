@@ -168,7 +168,9 @@
 }
 
 /* 響應式設計 */
-@media (max-width: 768px) {
+
+/* md ≤ 1024px：4 欄改垂直堆疊 */
+@media (max-width: 1024px) {
   .fullscreen-projects-content {
     flex-direction: column;
     height: 400vh;
@@ -207,6 +209,14 @@
     bottom: 2rem;
     left: 1.5rem;
     right: 1.5rem;
+  }
+}
+
+/* sm ≤ 768px */
+@media (max-width: 768px) {
+  .project-block-number-large {
+    font-size: var(--fs-40pt);
+    margin-top: var(--space-lg);
   }
 }
 

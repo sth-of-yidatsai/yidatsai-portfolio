@@ -346,13 +346,21 @@ body.menu-open .ts__scrollbar {
 }
 
 /* ── Responsive ───────────────────────────────────────────────── */
+
+/* md ≤ 1024px */
+@media (max-width: 1024px) {
+  .ts__title {
+    font-size: var(--fs-48pt);
+  }
+}
+
 @media (max-width: 900px) {
   .ts__header {
     padding-top: var(--space-xl);
   }
 
   .ts__title {
-    font-size: var(--fs-48pt);
+    font-size: var(--fs-40pt);
   }
 
   /* JS re-reads the original gap on resize and recomputes --ts-gap */
@@ -367,5 +375,32 @@ body.menu-open .ts__scrollbar {
 
   .ts__desc-wrap {
     width: var(--ts-img-w, 187px);
+  }
+}
+
+/* sm ≤ 768px */
+@media (max-width: 768px) {
+  .ts__title {
+    font-size: var(--fs-32pt);
+  }
+
+  .ts__year {
+    font-size: var(--fs-22pt);
+  }
+
+  .ts__header {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .ts__title {
+    font-size: var(--fs-28pt);
+  }
+
+  .ts__inner {
+    padding: var(--space-lg) 0 var(--space-sm) 0;
   }
 }

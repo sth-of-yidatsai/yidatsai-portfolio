@@ -71,10 +71,19 @@
 }
 
 /* ── Responsive ── */
+
+/* md ≤ 1024px: 縮短高度 */
+@media (max-width: 1024px) {
+  .block--imgtxt {
+    height: 65svh;
+  }
+}
+
+/* sm ≤ 768px: 垂直堆疊 */
 @media (max-width: 768px) {
   .block--imgtxt {
     flex-direction: column;
-    min-height: auto;
+    height: auto;
   }
 
   /* reverse: on mobile always show image first */
@@ -93,5 +102,12 @@
     width: 100%;
     padding: var(--space-xl) var(--px-page);
     align-items: flex-start;
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .block--imgtxt__text {
+    padding: var(--space-lg) var(--space-md);
   }
 }
