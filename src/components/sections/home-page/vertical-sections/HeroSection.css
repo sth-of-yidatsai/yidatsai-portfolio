@@ -141,7 +141,7 @@
   box-shadow: none;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  flex: 0 0 72px; /* 固定64px寬度，不伸縮 */
+  flex: 0 0 72px;
 }
 
 .hero-nav-button img {

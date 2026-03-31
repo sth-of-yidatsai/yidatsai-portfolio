@@ -39,17 +39,17 @@ export default function FoucaultBookBinding() {
         items={[
           {
             src: `${BASE}/06.webp`,
-            title: "Cover Detail",
+            title: "Exposed Smyth Sewn Binding",
             subtitle: "(01)",
           },
           {
             src: `${BASE}/16.webp`,
-            title: "Typography",
+            title: "The order of things",
             subtitle: "(02)",
           },
           {
             src: `${BASE}/20.webp`,
-            title: "Spine Design",
+            title: "Structural Order",
             subtitle: "(03)",
           },
         ]}
@@ -65,12 +65,12 @@ export default function FoucaultBookBinding() {
         items={[
           {
             src: `${BASE}/11.webp`,
-            title: "The Order of Things",
+            title: "The Archaeology of Knowledge",
             subtitle: "(04)",
           },
           {
             src: `${BASE}/07.webp`,
-            title: "The Archaeology of Knowledge",
+            title: "Typographic Hierarchy",
             subtitle: "(05)",
           },
         ]}
@@ -80,12 +80,12 @@ export default function FoucaultBookBinding() {
         items={[
           {
             src: `${BASE}/04.webp`,
-            title: "The Order of Things",
+            title: "Poster Design",
             subtitle: "(07)",
           },
           {
             src: `${BASE}/05.webp`,
-            title: "The Archaeology of Knowledge",
+            title: "Systematic Arrangement",
             subtitle: "(06)",
           },
         ]}
@@ -94,13 +94,13 @@ export default function FoucaultBookBinding() {
 
       <ImgSet4aBlock
         images={[`${BASE}/17.webp`, `${BASE}/12.webp`]}
-        title="Structural Form"
+        title="System of Thought"
         subtitle="(08)"
       />
 
       <ImgSet1aBlock
         src={`${BASE}/09.webp`}
-        title="Structural Form"
+        title="Between text and structure"
         subtitle="(09)"
         reverse
       />
@@ -112,7 +112,7 @@ export default function FoucaultBookBinding() {
           `${BASE}/19.webp`,
           `${BASE}/14.webp`,
         ]}
-        title="Structural Form"
+        title="Knowledge Mapping"
         subtitle="(10)"
       />
 
