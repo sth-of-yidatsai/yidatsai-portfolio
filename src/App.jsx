@@ -1,5 +1,6 @@
 import { Outlet, useMatches } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useMeta } from "./hooks/useMeta";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,6 +13,8 @@ import { Providers } from "./providers";
 function App() {
   const matches = useMatches();
   const lenisRef = useRef(null);
+  const [currentMeta, setCurrentMeta] = useState({});
+  useMeta(currentMeta);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -55,6 +58,13 @@ function App() {
     const match = [...matches].reverse().find((m) => m.handle?.title);
     if (match) {
       document.title = match.handle.title(match.data);
+    }
+  }, [matches]);
+
+  useEffect(() => {
+    const match = [...matches].reverse().find((m) => m.handle?.meta);
+    if (match) {
+      setCurrentMeta(match.handle.meta(match.data));
     }
   }, [matches]);
 

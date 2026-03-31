@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yidatsai.com/sitemap.xml
