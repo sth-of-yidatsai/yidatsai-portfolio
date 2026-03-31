@@ -39,7 +39,7 @@
   column-gap: 0.01em;
   font-family: var(--font-manrope);
   font-weight: var(--fw-medium);
-  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  font-size: var(--fs-16pt);
   letter-spacing: 0.2em;
   color: var(--gray-25, #fafafa);
   line-height: 1;
