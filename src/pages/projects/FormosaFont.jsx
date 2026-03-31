@@ -11,6 +11,7 @@ import DiscoverMoreBlock from "../../components/blocks/DiscoverMoreBlock";
 import SpaceBlock from "../../components/blocks/SpaceBlock";
 import projects from "../../data/projects.json";
 import { usePagePreloader } from "../../hooks/usePagePreloader";
+import { pickResponsiveSrc } from "../../utils/imgSrcSet";
 
 const BASE = "/images/projects/formosa-font";
 const FONT_BASE = "/images/fonts/formosa-fonts";
@@ -30,8 +31,7 @@ const FONT_LYCOPODIUM = [
 ];
 const project = projects.find((p) => p.id === "formosa-font");
 const PRELOAD_IMAGES = [
-  `${BASE}/cover.webp`,
-  ...project.images.map((f) => `${BASE}/${f}`),
+  pickResponsiveSrc(`${BASE}/04.webp`), // HeroBlock (CSS background)
   `${BASE}/title.svg`,
 ];
 

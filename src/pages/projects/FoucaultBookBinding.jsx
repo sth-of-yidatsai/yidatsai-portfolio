@@ -10,13 +10,14 @@ import ImgSet4aBlock from "../../components/blocks/ImgSet4aBlock";
 import DiscoverMoreBlock from "../../components/blocks/DiscoverMoreBlock";
 import projects from "../../data/projects.json";
 import { usePagePreloader } from "../../hooks/usePagePreloader";
+import { pickResponsiveSrc } from "../../utils/imgSrcSet";
 
 const BASE = "/images/projects/foucault-book-binding";
 
 const project = projects.find((p) => p.id === "foucault-book-binding");
 const PRELOAD_IMAGES = [
-  `${BASE}/cover.webp`,
-  ...project.images.map((f) => `${BASE}/${f}`),
+  pickResponsiveSrc(`${BASE}/01.webp`), // HeroBlock (CSS background)
+  `${BASE}/title.svg`,
 ];
 
 export default function FoucaultBookBinding() {
@@ -47,7 +48,7 @@ export default function FoucaultBookBinding() {
             subtitle: "(02)",
           },
           {
-            src: `${BASE}/03.webp`,
+            src: `${BASE}/20.webp`,
             title: "Spine Design",
             subtitle: "(03)",
           },

@@ -11,13 +11,14 @@ import DiscoverMoreBlock from "../../components/blocks/DiscoverMoreBlock";
 import SpaceBlock from "../../components/blocks/SpaceBlock";
 import projects from "../../data/projects.json";
 import { usePagePreloader } from "../../hooks/usePagePreloader";
+import { pickResponsiveSrc } from "../../utils/imgSrcSet";
 
 const BASE = "/images/projects/patterned-glass-notebook";
 
 const project = projects.find((p) => p.id === "patterned-glass-notebook");
 const PRELOAD_IMAGES = [
-  `${BASE}/cover.webp`,
-  ...project.images.map((f) => `${BASE}/${f}`),
+  pickResponsiveSrc(`${BASE}/08.webp`), // HeroBlock (CSS background)
+  `${BASE}/title.svg`,
 ];
 
 export default function PatternedGlassNotebook() {
