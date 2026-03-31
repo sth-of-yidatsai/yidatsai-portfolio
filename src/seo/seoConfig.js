@@ -2,7 +2,7 @@ export const SITE = {
   name: "YI-DA TSAI",
   baseUrl: "https://yidatsai.com",
   defaultDescription:
-    "Yi-Da Tsai is a graphic designer specializing in editorial design, typography, and visual communication.",
+    "Yi-Da Tsai is a UIUX designer and frontend developer based in Taipei, Taiwan, specializing in web design, typography, and interactive experiences.",
   defaultOgImage: "https://yidatsai.com/images/og-default.jpg",
 };
 
@@ -10,7 +10,7 @@ export const PAGE_META = {
   home: {
     title: "YI-DA TSAI",
     description:
-      "Yi-Da Tsai is a graphic designer specializing in editorial design, typography, and visual communication.",
+      "Yi-Da Tsai is a UIUX designer and frontend developer based in Taipei, Taiwan, specializing in web design, typography, and interactive experiences.",
     ogImage: "https://yidatsai.com/images/og-default.jpg",
   },
   about: {
