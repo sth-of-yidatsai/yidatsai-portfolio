@@ -173,13 +173,15 @@
   padding: 8px 0;
   display: flex;
   align-items: center;
+  align-self: center;
 }
 
 .footer-contact-link {
-  display: inline;
+  display: block;
   font-family: var(--font-manrope);
   font-weight: var(--fw-regular);
   font-size: var(--fs-12pt);
+  line-height: 1;
   color: var(--gray-400);
   text-decoration: none;
   transition: color 0.3s ease;
@@ -293,6 +295,7 @@
   font-family: var(--font-manrope);
   font-weight: var(--fw-regular);
   font-size: var(--fs-12pt);
+  line-height: 1;
   color: var(--gray-400);
   letter-spacing: 0.02em;
   white-space: nowrap;
