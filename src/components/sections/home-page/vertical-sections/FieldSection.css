@@ -32,17 +32,17 @@
   width: 100%;
 }
 
-.fs-image-wrapper {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
+/* Image is absolutely positioned and 120% tall — GSAP moves it -15% yPercent,
+   so at scroll start it sits 0% (top aligned) and at end it's at -15%.
+   The 20% extra height covers the full travel range with no gap. */
 .fs-image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 120%;
   object-fit: cover;
+  will-change: transform;
 }
 
 .fs-image-label {

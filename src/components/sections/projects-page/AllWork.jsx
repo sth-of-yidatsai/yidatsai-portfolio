@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback, memo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import projectsData from "../../../data/projects.json";
 import { buildSrcSet } from "../../../utils/imgSrcSet";
+import { useParallaxRef } from "../../../hooks/useParallaxRef";
 import "./AllWork.css";
 
 // ─── Config ─────────────────────────────────────────────────────────────────
@@ -73,6 +74,7 @@ const ProjectCard = memo(function ProjectCard({ project, onClick, cardRef }) {
       : `/images/projects/${project.id}/${project.cover}`;
 
   const orderNum = `(${String(project.order).padStart(3, "0")})`;
+  const [frameRef, imgRef] = useParallaxRef(12);
 
   return (
     <a
@@ -82,18 +84,17 @@ const ProjectCard = memo(function ProjectCard({ project, onClick, cardRef }) {
       onClick={(e) => { e.preventDefault(); onClick(); }}
       data-clickable
     >
-      <div className="all-work__card">
-        <div className="all-work__card-img-wrapper">
-          <img
-            src={imgSrc}
-            srcSet={buildSrcSet(imgSrc)}
-            sizes="(max-width: 768px) 100vw, 33vw"
-            alt={project.title}
-            className="all-work__card-img"
-            loading="lazy"
-            draggable={false}
-          />
-        </div>
+      <div ref={frameRef} className="all-work__card">
+        <img
+          ref={imgRef}
+          src={imgSrc}
+          srcSet={buildSrcSet(imgSrc)}
+          sizes="(max-width: 768px) 100vw, 33vw"
+          alt={project.title}
+          className="all-work__card-img"
+          loading="lazy"
+          draggable={false}
+        />
       </div>
 
       <div className="all-work__caption">

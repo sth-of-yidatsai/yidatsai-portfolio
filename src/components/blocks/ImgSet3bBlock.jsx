@@ -1,12 +1,15 @@
 import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
+import { useParallaxRef } from '../../hooks/useParallaxRef';
 import './ImgSet3bBlock.css';
 
 function ImgItem({ item, modifier }) {
+  const [frameRef, imgRef] = useParallaxRef(12);
   return (
     <div className={`block--imgset3b__item block--imgset3b__item--${modifier}`}>
-      <div className="block--imgset3b__img-wrap">
+      <div ref={frameRef} className="block--imgset3b__img-wrap">
         <img
+          ref={imgRef}
           src={item.src}
           srcSet={buildSrcSet(item.src)}
           sizes="(max-width: 768px) 100vw, 33vw"

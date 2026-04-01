@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./HeroSection.css";
 import projectsData from "../../../../data/projects.json";
 import leftArrowIcon from "../../../../assets/icons/keyboard_arrow_left_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 import rightArrowIcon from "../../../../assets/icons/keyboard_arrow_right_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 
 export default function HeroSection({ index }) {
+  const sectionRef = useRef(null);
+  const isVisibleRef = useRef(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [animationPhase, setAnimationPhase] = useState("idle"); // 'idle', 'exit', 'enter'
   const [previousIndex, setPreviousIndex] = useState(0);
@@ -127,10 +129,22 @@ export default function HeroSection({ index }) {
     [isTransitioning, blindsCount],
   );
 
+  // 監測 Hero 是否在視口內，離開後暫停自動輪播避免佔用 GPU
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { isVisibleRef.current = entry.isIntersecting; },
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   // 自動輪播
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isTransitioning) {
+      if (!isTransitioning && isVisibleRef.current) {
         const newIndex = (currentImageIndex + 1) % images.length;
         triggerImageTransition(newIndex);
       }
@@ -155,7 +169,7 @@ export default function HeroSection({ index }) {
   };
 
   return (
-    <div className={`hs-section hero-section hs-section-${index}`}>
+    <div ref={sectionRef} className={`hs-section hero-section hs-section-${index}`}>
       {/* 輪播背景 */}
       <div className="hero-carousel-container">
         {images.map((image, imgIndex) => (

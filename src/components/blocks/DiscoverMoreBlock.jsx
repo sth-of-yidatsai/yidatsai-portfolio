@@ -1,6 +1,7 @@
 import { memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import projectsData from "../../data/projects.json";
+import { useParallaxRef } from "../../hooks/useParallaxRef";
 import "./DiscoverMoreBlock.css";
 
 function pickProjects(currentId) {
@@ -29,6 +30,7 @@ const DiscoverMoreCard = memo(function DiscoverMoreCard({ project, onClick }) {
       : `/images/projects/${project.id}/${project.cover}`;
 
   const orderNum = `(${String(project.order).padStart(3, "0")})`;
+  const [frameRef, imgRef] = useParallaxRef(12);
 
   return (
     <a
@@ -40,16 +42,15 @@ const DiscoverMoreCard = memo(function DiscoverMoreCard({ project, onClick }) {
       }}
       data-clickable
     >
-      <div className="discover-more__card">
-        <div className="discover-more__card-img-wrapper">
-          <img
-            src={imgSrc}
-            alt={project.title}
-            className="discover-more__card-img"
-            loading="lazy"
-            draggable={false}
-          />
-        </div>
+      <div ref={frameRef} className="discover-more__card">
+        <img
+          ref={imgRef}
+          src={imgSrc}
+          alt={project.title}
+          className="discover-more__card-img"
+          loading="lazy"
+          draggable={false}
+        />
       </div>
       <div className="discover-more__caption">
         <span className="discover-more__caption-num">{orderNum}</span>

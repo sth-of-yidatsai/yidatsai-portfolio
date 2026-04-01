@@ -22,11 +22,14 @@
 }
 
 .block--imgset4a__img-wrap img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 120%;
   object-fit: cover;
   display: block;
-  aspect-ratio: 1 / 1;
+  will-change: transform;
 }
 
 /* ── Single caption below grid ── */

@@ -61,11 +61,15 @@
 .block--imgset3b__item--b .block--imgset3b__img-wrap { aspect-ratio: 1 / 1; }
 
 .block--imgset3b__img-wrap img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 120%;
   max-width: 100%;
   object-fit: cover;
   display: block;
+  will-change: transform;
 }
 
 /* ── Caption ── */

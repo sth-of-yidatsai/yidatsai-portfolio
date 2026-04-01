@@ -55,29 +55,16 @@
   aspect-ratio: 4 / 5;
 }
 
-.discover-more__card-img-wrapper {
-  position: absolute;
-  inset: -5%;
-  width: 110%;
-  height: 110%;
-}
-
 .discover-more__card-img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 120%;
   object-fit: cover;
   display: block;
   pointer-events: none;
   will-change: transform;
-  backface-visibility: hidden;
-  transform: scale(1);
-  transition: transform 1.6s cubic-bezier(0.33, 1, 0.68, 1);
-}
-
-/* ── Hover: slow elegant scale-up ────────────────────────────────────────── */
-
-.discover-more__card-wrap:hover .discover-more__card-img {
-  transform: scale(1.07);
 }
 
 /* ── Caption ─────────────────────────────────────────────────────────────── */

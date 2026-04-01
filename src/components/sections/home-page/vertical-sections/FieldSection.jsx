@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./FieldSection.css";
 import { buildSrcSet } from "../../../../utils/imgSrcSet";
+import { useParallaxRef } from "../../../../hooks/useParallaxRef";
 
 /** 與 header-overlay-logo 相同的 line-roll 結構 */
 function LineRoll({ children }) {
@@ -44,6 +45,11 @@ export default function FieldSection() {
     label: cfg.label,
   }));
 
+  const [frame1, img1] = useParallaxRef();
+  const [frame2, img2] = useParallaxRef();
+  const [frame3, img3] = useParallaxRef();
+  const [frame4, img4] = useParallaxRef();
+
   // ── fs-name 進入畫面中央時觸發 line-roll 動畫 ──
   const nameRef = useRef(null);
   const [isNameInView, setIsNameInView] = useState(false);
@@ -69,51 +75,48 @@ export default function FieldSection() {
       <div className="fs-grid">
         {/* Image 1 — Product Design (landscape, top-left, spans full height) */}
         <div className="fs-image-block fs-image-1">
-          <div className="fs-image-frame">
-            <div className="fs-image-wrapper">
-              <img
-                src={images[0].src}
-                alt={images[0].label}
-                srcSet={buildSrcSet(images[0].src)}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="fs-image"
-                loading="eager"
-              />
-            </div>
+          <div ref={frame1} className="fs-image-frame">
+            <img
+              ref={img1}
+              src={images[0].src}
+              alt={images[0].label}
+              srcSet={buildSrcSet(images[0].src)}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="fs-image"
+              loading="eager"
+            />
           </div>
           <span className="fs-image-label">{images[0].label}</span>
         </div>
 
         {/* Image 2 — Graphic Design (portrait, top-right) */}
         <div className="fs-image-block fs-image-2">
-          <div className="fs-image-frame">
-            <div className="fs-image-wrapper">
-              <img
-                src={images[1].src}
-                alt={images[1].label}
-                srcSet={buildSrcSet(images[1].src)}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="fs-image"
-                loading="eager"
-              />
-            </div>
+          <div ref={frame2} className="fs-image-frame">
+            <img
+              ref={img2}
+              src={images[1].src}
+              alt={images[1].label}
+              srcSet={buildSrcSet(images[1].src)}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="fs-image"
+              loading="eager"
+            />
           </div>
           <span className="fs-image-label">{images[1].label}</span>
         </div>
 
         {/* Image 3 — Typography (portrait, mid-left) */}
         <div className="fs-image-block fs-image-3">
-          <div className="fs-image-frame">
-            <div className="fs-image-wrapper">
-              <img
-                src={images[2].src}
-                alt={images[2].label}
-                srcSet={buildSrcSet(images[2].src)}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="fs-image"
-                loading="eager"
-              />
-            </div>
+          <div ref={frame3} className="fs-image-frame">
+            <img
+              ref={img3}
+              src={images[2].src}
+              alt={images[2].label}
+              srcSet={buildSrcSet(images[2].src)}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="fs-image"
+              loading="eager"
+            />
           </div>
           <span className="fs-image-label">{images[2].label}</span>
         </div>
@@ -144,17 +147,16 @@ export default function FieldSection() {
 
         {/* Image 4 — Poster Design (large, right) */}
         <div className="fs-image-block fs-image-4">
-          <div className="fs-image-frame">
-            <div className="fs-image-wrapper">
-              <img
-                src={images[3].src}
-                alt={images[3].label}
-                srcSet={buildSrcSet(images[3].src)}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="fs-image"
-                loading="eager"
-              />
-            </div>
+          <div ref={frame4} className="fs-image-frame">
+            <img
+              ref={img4}
+              src={images[3].src}
+              alt={images[3].label}
+              srcSet={buildSrcSet(images[3].src)}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="fs-image"
+              loading="eager"
+            />
           </div>
           <span className="fs-image-label">{images[3].label}</span>
         </div>
