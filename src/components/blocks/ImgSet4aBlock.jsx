@@ -4,7 +4,7 @@ import { useParallaxRef } from '../../hooks/useParallaxRef';
 import './ImgSet4aBlock.css';
 
 function ImgWrap({ src }) {
-  const [frameRef, imgRef] = useParallaxRef(12);
+  const [frameRef, imgRef] = useParallaxRef(8);
   return (
     <div ref={frameRef} className="block--imgset4a__img-wrap">
       <img ref={imgRef} src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 50vw, 25vw" alt="" loading="eager" decoding="async" />

@@ -4,7 +4,7 @@ import { useParallaxRef } from '../../hooks/useParallaxRef';
 import './ImgSet3aBlock.css';
 
 function ImgItem({ item }) {
-  const [frameRef, imgRef] = useParallaxRef(12);
+  const [frameRef, imgRef] = useParallaxRef(8);
   return (
     <div className="block--imgset3a__item">
       <div ref={frameRef} className="block--imgset3a__img-wrap">

@@ -5,8 +5,8 @@ import './ImgSet2aBlock.css';
 
 function ImgSet2aBlock({ items = [], bg, color, reverse }) {
   const [a, b] = items;
-  const [frameA, imgA] = useParallaxRef(12);
-  const [frameB, imgB] = useParallaxRef(12);
+  const [frameA, imgA] = useParallaxRef(8);
+  const [frameB, imgB] = useParallaxRef(8);
   return (
     <section
       className={`block block--imgset2a${reverse ? ' block--imgset2a--reverse' : ''}`}

@@ -19,7 +19,7 @@ gsap.registerPlugin(ScrollTrigger);
  * @param {number} yRange  Total vertical travel as % of image's own height (default: 15).
  *                         With height:120%, a yRange of 15 → 18% of container travel.
  */
-export function useParallaxRef(yRange = 15) {
+export function useParallaxRef(yRange = 8) {
   const containerRef = useRef(null);
   const targetRef    = useRef(null);
 

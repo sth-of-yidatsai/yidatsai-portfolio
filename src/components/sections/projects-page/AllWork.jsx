@@ -74,7 +74,7 @@ const ProjectCard = memo(function ProjectCard({ project, onClick, cardRef }) {
       : `/images/projects/${project.id}/${project.cover}`;
 
   const orderNum = `(${String(project.order).padStart(3, "0")})`;
-  const [frameRef, imgRef] = useParallaxRef(12);
+  const [frameRef, imgRef] = useParallaxRef(8);
 
   return (
     <a

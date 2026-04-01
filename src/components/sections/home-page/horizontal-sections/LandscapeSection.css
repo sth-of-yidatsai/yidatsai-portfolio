@@ -135,12 +135,14 @@
   overflow: hidden;
 }
 
-/* Image wrapper */
+/* Image wrapper — horizontal overhang for parallax travel */
 .ls-image-parallax-wrapper {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  left: -8%;
+  width: 116%;
   height: 100%;
+  will-change: transform;
 }
 
 /* Base and incoming images both fill the wrapper */

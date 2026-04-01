@@ -14,7 +14,7 @@ function ImgTextBlock({
   textColor,
 }) {
   const paragraphs = Array.isArray(text) ? text : text ? [text] : [];
-  const [frameRef, imgRef] = useParallaxRef(12);
+  const [frameRef, imgRef] = useParallaxRef(8);
 
   const imgPanel = (
     <div ref={frameRef} className="block--imgtxt__image">

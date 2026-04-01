@@ -1,8 +1,9 @@
-import React, { useMemo, useRef, useState, useEffect } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import "./LandscapeSection.css";
 import { buildSrcSet } from "../../../../utils/imgSrcSet";
 import cornerSvg from "../../../../assets/icons/landscape-section-corner.svg";
 import centerSvg from "../../../../assets/icons/landscape-section-center.svg";
+import { useHorizontalParallaxRef } from "../../../../hooks/useHorizontalParallaxRef";
 
 /** 逐字捲動（從下方捲入），用於圖片切換時的文字動畫 */
 function RollingText({ children }) {
@@ -62,9 +63,16 @@ export default function LandscapeSection({
 }) {
   const slides = useMemo(() => LANDSCAPE_SLIDES.map(resolveSlide), []);
 
+  const [parallaxFrameRef, parallaxWrapperRef] = useHorizontalParallaxRef(5);
+
   // Refs for measuring the actual frame position inside the section
   const sectionRef = useRef(null);
+  // frameRef combines measurement ref + parallax container ref via callback
   const frameRef = useRef(null);
+  const setFrameRef = (el) => {
+    frameRef.current = el;
+    parallaxFrameRef.current = el;
+  };
   const [frameRect, setFrameRect] = useState(null);
 
   useEffect(() => {
@@ -219,8 +227,8 @@ export default function LandscapeSection({
             draggable={false}
           />
 
-          <div ref={frameRef} className="ls-image-frame">
-            <div className="ls-image-parallax-wrapper">
+          <div ref={setFrameRef} className="ls-image-frame">
+            <div ref={parallaxWrapperRef} className="ls-image-parallax-wrapper">
               {/* Base image — current slide */}
               <img
                 src={baseSlide.image}

@@ -57,9 +57,13 @@
 }
 
 .as-image {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top:  -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
   object-fit: cover;
+  will-change: transform;
 }
 
 /* ── Text block ── */
@@ -126,9 +130,13 @@
 }
 
 .as-right-image {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top:  -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
   object-fit: cover;
+  will-change: transform;
 }
 
 /* ── Responsive ──────────────────────────────────────────────────── */

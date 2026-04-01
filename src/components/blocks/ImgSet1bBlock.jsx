@@ -4,7 +4,7 @@ import { useParallaxRef } from '../../hooks/useParallaxRef';
 import './ImgSet1bBlock.css';
 
 function ImgSet1bBlock({ src, title, subtitle, reverse }) {
-  const [frameRef, imgRef] = useParallaxRef(12);
+  const [frameRef, imgRef] = useParallaxRef(8);
   return (
     <section className={`block block--imgset1b${reverse ? ' block--imgset1b--reverse' : ''}`}>
       <div ref={frameRef} className="block--imgset1b__img-wrap">

@@ -438,7 +438,7 @@ export default function HorizontalScroller() {
             const renderSection = () => {
               switch (section.id) {
                 case "approach":
-                  return <ApproachSection config={section} index={index} />;
+                  return <ApproachSection config={section} index={index} pinContainerRef={containerRef} />;
                 case "landscape":
                   return (
                     <LandscapeSection
