@@ -23,20 +23,19 @@
   aspect-ratio: 4 / 5;
   overflow: hidden;
   position: relative;
-  /* promote to GPU layer before images enter viewport */
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  transform: translateY(clamp(20px, 3vw, 60px));
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.block--imgset3a__img-wrap.is-revealed {
+  transform: translateY(0);
 }
 
 .block--imgset3a__img-wrap img {
-  position: absolute;
-  top: -10%;
-  left: 0;
   width: 100%;
-  height: 120%;
+  height: 100%;
   object-fit: cover;
   display: block;
-  will-change: transform;
 }
 
 /* ── Caption ── */

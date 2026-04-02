@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HorizontalScroller.css";
@@ -438,7 +438,7 @@ export default function HorizontalScroller() {
             const renderSection = () => {
               switch (section.id) {
                 case "approach":
-                  return <ApproachSection config={section} index={index} pinContainerRef={containerRef} />;
+                  return <ApproachSection config={section} index={index} />;
                 case "landscape":
                   return (
                     <LandscapeSection

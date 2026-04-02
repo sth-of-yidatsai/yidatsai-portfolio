@@ -7,7 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = join(__dirname, '..', 'public');
 const INPUT_DIR = join(PUBLIC_DIR, 'images');
 const OUTPUT_MANIFEST = join(__dirname, '..', 'src', 'data', 'imageWidths.json');
-const WIDTHS = [800, 1200, 1600];
+const WIDTHS = [800, 1200, 1600, 2400, 3200];
 const QUALITY = 85;
 
 async function findWebpFiles(dir) {

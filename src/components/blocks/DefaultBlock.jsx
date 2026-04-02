@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { buildSrcSet } from '../../utils/imgSrcSet';
 import './DefaultBlock.css';
 
 function DefaultBlock({ images = [], baseUrl = '' }) {
@@ -9,6 +10,8 @@ function DefaultBlock({ images = [], baseUrl = '' }) {
           <div key={i} className="block--default__item">
             <img
               src={`${baseUrl}/${filename}`}
+              srcSet={buildSrcSet(`${baseUrl}/${filename}`)}
+              sizes="(max-width: 768px) 100vw, 50vw"
               alt={`image ${i + 1}`}
               loading="eager"
               decoding="async"

@@ -1,14 +1,14 @@
 import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
-import { useParallaxRef } from '../../hooks/useParallaxRef';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 import './ImgSet2bBlock.css';
 
 function ImgItem({ item, modifier }) {
-  const [frameRef, imgRef] = useParallaxRef(8);
+  const revealRef = useScrollReveal();
   return (
     <div className={`block--imgset2b__item block--imgset2b__item--${modifier}`}>
-      <div ref={frameRef} className="block--imgset2b__img-wrap">
-        <img ref={imgRef} src={item.src} srcSet={buildSrcSet(item.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={item.title ?? ''} loading="lazy" decoding="async" />
+      <div ref={revealRef} className="block--imgset2b__img-wrap">
+        <img src={item.src} srcSet={buildSrcSet(item.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={item.title ?? ''} loading="lazy" decoding="async" />
       </div>
       {(item.title || item.subtitle) && (
         <div className="block--imgset2b__caption">

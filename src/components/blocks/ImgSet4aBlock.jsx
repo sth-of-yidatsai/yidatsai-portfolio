@@ -1,13 +1,13 @@
 import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
-import { useParallaxRef } from '../../hooks/useParallaxRef';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 import './ImgSet4aBlock.css';
 
 function ImgWrap({ src }) {
-  const [frameRef, imgRef] = useParallaxRef(8);
+  const revealRef = useScrollReveal();
   return (
-    <div ref={frameRef} className="block--imgset4a__img-wrap">
-      <img ref={imgRef} src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 50vw, 25vw" alt="" loading="eager" decoding="async" />
+    <div ref={revealRef} className="block--imgset4a__img-wrap">
+      <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 50vw, 25vw" alt="" loading="eager" decoding="async" />
     </div>
   );
 }

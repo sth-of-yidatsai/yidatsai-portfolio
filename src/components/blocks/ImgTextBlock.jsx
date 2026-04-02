@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
-import { useParallaxRef } from '../../hooks/useParallaxRef';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 import './ImgTextBlock.css';
 
 function ImgTextBlock({
@@ -14,11 +14,11 @@ function ImgTextBlock({
   textColor,
 }) {
   const paragraphs = Array.isArray(text) ? text : text ? [text] : [];
-  const [frameRef, imgRef] = useParallaxRef(8);
+  const revealRef = useScrollReveal();
 
   const imgPanel = (
-    <div ref={frameRef} className="block--imgtxt__image">
-      <img ref={imgRef} src={image} srcSet={buildSrcSet(image)} sizes="(max-width: 768px) 100vw, 50vw" alt={imageAlt} loading="eager" decoding="async" />
+    <div ref={revealRef} className="block--imgtxt__image">
+      <img src={image} srcSet={buildSrcSet(image)} sizes="(max-width: 768px) 100vw, 50vw" alt={imageAlt} loading="eager" decoding="async" />
     </div>
   );
 

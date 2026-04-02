@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { buildSrcSet } from '../../utils/imgSrcSet';
 import './QuoteBlock.css';
 
 function QuoteBlock({ text, author, image }) {
@@ -7,7 +8,7 @@ function QuoteBlock({ text, author, image }) {
       <div className="block--quote__inner">
         {image && (
           <div className="block--quote__image-wrap">
-            <img className="block--quote__image" src={image} alt="" loading="eager" />
+            <img className="block--quote__image" src={image} srcSet={buildSrcSet(image)} sizes="(max-width: 768px) 80vw, 50vw" alt="" loading="eager" />
           </div>
         )}
         <svg className="block--quote__mark" viewBox="0 0 200 183.66" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

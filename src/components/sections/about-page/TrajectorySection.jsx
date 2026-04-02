@@ -1,6 +1,7 @@
 import { useRef, useState, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { buildSrcSet } from "../../../utils/imgSrcSet";
 import "./TrajectorySection.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -300,6 +301,8 @@ export default function TrajectorySection() {
                     <img
                       className="ts__img"
                       src={card.image}
+                      srcSet={buildSrcSet(card.image)}
+                      sizes="(max-width: 768px) 100vw, 50vw"
                       alt={card.title}
                       draggable="false"
                     />

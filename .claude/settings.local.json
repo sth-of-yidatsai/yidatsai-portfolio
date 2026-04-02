@@ -24,7 +24,8 @@
       "Bash(node -e \"const d=require\\(''./src/data/projects.json''\\); const p=d.find\\(x=>x.id===''formosa-font''\\); p.blocks.forEach\\(\\(b,i\\)=>{ if\\(b.type===''section-title''||b.type===''text''\\) console.log\\(i, b.type, \\(p.title+'' ''+\\(p.description||''''\\)\\).length, ''chars''\\); }\\);\")",
       "Bash(node -e \"const d=require\\(''./src/data/projects.json''\\); const p=d.find\\(x=>x.id===''formosa-font''\\); p.blocks.forEach\\(\\(b,i\\)=>console.log\\(i, b.type, b.variant||''''\\)\\)\")",
       "Bash(python3 -c \"import json; d=json.load\\(open\\(''src/data/projects.json''\\)\\); p=next\\(x for x in d if x[''id'']==''formosa-font''\\); [print\\(i, b[''type''], b.get\\(''variant'',''''\\)\\) for i,b in enumerate\\(p[''blocks'']\\)]\")",
-      "Bash(node -e \"const d=require\\(''./src/data/projects.json''\\); const p=d.find\\(x=>x.id===''formosa-font''\\); p.blocks.forEach\\(\\(b,i\\)=>console.log\\(i, b.type, JSON.stringify\\(Object.keys\\(b\\).filter\\(k=>k!==''type''\\)\\)\\)\\)\")"
+      "Bash(node -e \"const d=require\\(''./src/data/projects.json''\\); const p=d.find\\(x=>x.id===''formosa-font''\\); p.blocks.forEach\\(\\(b,i\\)=>console.log\\(i, b.type, JSON.stringify\\(Object.keys\\(b\\).filter\\(k=>k!==''type''\\)\\)\\)\\)\")",
+      "Bash(curl -s \"https://locomotive.ca/en\")"
     ]
   }
 }

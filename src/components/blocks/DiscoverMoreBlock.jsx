@@ -1,6 +1,7 @@
 import { memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import projectsData from "../../data/projects.json";
+import { buildSrcSet } from "../../utils/imgSrcSet";
 import { useParallaxRef } from "../../hooks/useParallaxRef";
 import "./DiscoverMoreBlock.css";
 
@@ -46,6 +47,8 @@ const DiscoverMoreCard = memo(function DiscoverMoreCard({ project, onClick }) {
         <img
           ref={imgRef}
           src={imgSrc}
+          srcSet={buildSrcSet(imgSrc)}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           alt={project.title}
           className="discover-more__card-img"
           loading="lazy"

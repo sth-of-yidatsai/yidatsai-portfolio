@@ -1,6 +1,7 @@
 import { useRef, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { buildSrcSet } from "../../../utils/imgSrcSet";
 import "./BioSection.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -126,7 +127,7 @@ function StickyImage() {
         <img
           className="bs__img"
           src="/images/about/01.webp"
-          srcSet="/images/about/01-800.webp 800w, /images/about/01-1200.webp 1200w, /images/about/01.webp 1600w"
+          srcSet={buildSrcSet("/images/about/01.webp")}
           sizes="100vw"
           alt=""
           draggable="false"

@@ -1,8 +1,7 @@
-import widths from '../data/imageWidths.json';
 
 /**
- * Given a WebP image path, returns a srcset string with 800w, 1200w, 1600w variants
- * plus the original at its actual pixel width (from imageWidths.json manifest).
+ * Given a WebP image path, returns a srcset string with 800w, 1200w, 1600w, 2400w, 3200w variants
+ * plus the original at its actual pixel width (from imageWidths.json manifest) if > 3200px.
  * SVG paths and null/undefined values return null (no srcset).
  *
  * Example:
@@ -14,12 +13,12 @@ export function buildSrcSet(src) {
   const dot = src.lastIndexOf('.');
   const base = src.slice(0, dot);
   const ext = src.slice(dot);
-  const originalWidth = widths[src];
   return [
     `${base}-800${ext} 800w`,
     `${base}-1200${ext} 1200w`,
     `${base}-1600${ext} 1600w`,
-    originalWidth ? `${src} ${originalWidth}w` : null,
+    `${base}-2400${ext} 2400w`,
+    `${base}-3200${ext} 3200w`,
   ].filter(Boolean).join(', ');
 }
 
@@ -39,5 +38,7 @@ export function pickResponsiveSrc(src) {
   if (needed <= 900)  return `${base}-800${ext}`;
   if (needed <= 1400) return `${base}-1200${ext}`;
   if (needed <= 1800) return `${base}-1600${ext}`;
+  if (needed <= 2600) return `${base}-2400${ext}`;
+  if (needed <= 3400) return `${base}-3200${ext}`;
   return src;
 }

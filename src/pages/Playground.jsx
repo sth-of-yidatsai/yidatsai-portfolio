@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 import { useNavigate } from "react-router-dom";
 import projectsRaw from "../data/projects.json";
+import { buildSrcSet } from "../utils/imgSrcSet";
 import "./Playground.css";
 
 gsap.registerPlugin(CustomEase);
@@ -240,6 +241,11 @@ export default function Playground() {
         const img = document.createElement("img");
         img.src = imageUrl;
         img.alt = title;
+        const srcSet = buildSrcSet(imageUrl);
+        if (srcSet) {
+          img.srcset = srcSet;
+          img.sizes = `${itemSize.width}px`;
+        }
         imageContainer.appendChild(img);
         item.appendChild(imageContainer);
 
@@ -303,6 +309,11 @@ export default function Playground() {
     expanded.style.height = `${itemHeight}px`;
     const img = document.createElement("img");
     img.src = imgSrc;
+    const expandedSrcSet = buildSrcSet(imgSrc);
+    if (expandedSrcSet) {
+      img.srcset = expandedSrcSet;
+      img.sizes = "100vw";
+    }
     img.classList.add("clickable");
     img.setAttribute("data-clickable", "true");
     expanded.appendChild(img);

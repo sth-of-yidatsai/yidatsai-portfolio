@@ -18,7 +18,7 @@ function App() {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      lerp: 0.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       smoothWheel: true,
@@ -50,8 +50,8 @@ function App() {
       if (lenis) lenis.resize();
       ScrollTrigger.refresh();
     };
-    window.addEventListener('loader:hidden', handler);
-    return () => window.removeEventListener('loader:hidden', handler);
+    window.addEventListener("loader:hidden", handler);
+    return () => window.removeEventListener("loader:hidden", handler);
   }, []);
 
   useEffect(() => {

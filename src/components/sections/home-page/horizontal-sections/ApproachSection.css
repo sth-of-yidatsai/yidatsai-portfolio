@@ -49,21 +49,21 @@
   aspect-ratio: 1 / 1;
 }
 
-.as-image-wrapper {
+.as-image-parallax-wrapper {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  left: -8%;
+  width: 116%;
   height: 100%;
+  will-change: transform;
 }
 
 .as-image {
   position: absolute;
-  top:  -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  will-change: transform;
 }
 
 /* ── Text block ── */
@@ -122,21 +122,21 @@
   overflow: hidden;
 }
 
-.as-right-image-wrapper {
+.as-right-image-parallax-wrapper {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  left: -8%;
+  width: 116%;
   height: 100%;
+  will-change: transform;
 }
 
 .as-right-image {
   position: absolute;
-  top:  -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  will-change: transform;
 }
 
 /* ── Responsive ──────────────────────────────────────────────────── */

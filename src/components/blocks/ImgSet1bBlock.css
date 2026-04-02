@@ -8,21 +8,25 @@
 
 /* ── Default: right edge bleeds to screen ── */
 .block--imgset1b__img-wrap {
-  width: 80svw;
-  aspect-ratio: 4 / 1;
-  overflow: hidden;
+  width: 80%;
+  aspect-ratio: 16 / 9;
   position: relative;
+  transform: translateY(clamp(20px, 3vw, 60px));
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.block--imgset1b__img-wrap.is-loaded {
+  aspect-ratio: unset;
+}
+
+.block--imgset1b__img-wrap.is-revealed {
+  transform: translateY(0);
 }
 
 .block--imgset1b__img-wrap img {
-  position: absolute;
-  top: -10%;
-  left: 0;
   width: 100%;
-  height: 120%;
-  object-fit: cover;
+  height: auto;
   display: block;
-  will-change: transform;
 }
 
 .block--imgset1b__caption {

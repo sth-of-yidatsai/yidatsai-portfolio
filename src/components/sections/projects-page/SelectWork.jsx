@@ -8,6 +8,7 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import projectsData from "../../../data/projects.json";
+import { buildSrcSet } from "../../../utils/imgSrcSet";
 import "./SelectWork.css";
 
 // ─── Work Selection Config ──────────────────────────────────────────────────
@@ -148,6 +149,8 @@ export default function SelectWork() {
                 <div className="select-work__card-img-wrapper">
                   <img
                     src={card.image}
+                    srcSet={buildSrcSet(card.image)}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     alt={card.title}
                     className="select-work__card-img"
                     draggable={false}

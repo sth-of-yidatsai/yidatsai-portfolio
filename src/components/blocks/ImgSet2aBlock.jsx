@@ -1,12 +1,12 @@
 import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
-import { useParallaxRef } from '../../hooks/useParallaxRef';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 import './ImgSet2aBlock.css';
 
 function ImgSet2aBlock({ items = [], bg, color, reverse }) {
   const [a, b] = items;
-  const [frameA, imgA] = useParallaxRef(8);
-  const [frameB, imgB] = useParallaxRef(8);
+  const revealA = useScrollReveal();
+  const revealB = useScrollReveal();
   return (
     <section
       className={`block block--imgset2a${reverse ? ' block--imgset2a--reverse' : ''}`}
@@ -15,8 +15,8 @@ function ImgSet2aBlock({ items = [], bg, color, reverse }) {
       <div className={`block--imgset2a__grid${reverse ? ' block--imgset2a__grid--reverse' : ''}`}>
         {a && (
           <div className="block--imgset2a__item block--imgset2a__item--a">
-            <div ref={frameA} className="block--imgset2a__img-wrap">
-              <img ref={imgA} src={a.src} srcSet={buildSrcSet(a.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={a.title ?? ''} loading="eager" decoding="async" />
+            <div ref={revealA} className="block--imgset2a__img-wrap">
+              <img src={a.src} srcSet={buildSrcSet(a.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={a.title ?? ''} loading="eager" decoding="async" />
             </div>
             {(a.title || a.subtitle) && (
               <div className="block--imgset2a__caption">
@@ -28,8 +28,8 @@ function ImgSet2aBlock({ items = [], bg, color, reverse }) {
         )}
         {b && (
           <div className="block--imgset2a__item block--imgset2a__item--b">
-            <div ref={frameB} className="block--imgset2a__img-wrap">
-              <img ref={imgB} src={b.src} srcSet={buildSrcSet(b.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={b.title ?? ''} loading="eager" decoding="async" />
+            <div ref={revealB} className="block--imgset2a__img-wrap">
+              <img src={b.src} srcSet={buildSrcSet(b.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={b.title ?? ''} loading="eager" decoding="async" />
             </div>
             {(b.title || b.subtitle) && (
               <div className="block--imgset2a__caption">
