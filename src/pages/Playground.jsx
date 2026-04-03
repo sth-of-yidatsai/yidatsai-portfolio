@@ -20,6 +20,15 @@ const SIZE_DIMS = {
 };
 const DEFAULT_DIMS = { width: 360, height: 480 }; // fallback（同 portrait）
 
+// 依螢幕寬度決定卡片縮放比例
+const getDeviceScale = () => {
+  const w = window.innerWidth;
+  if (w < 480) return 0.58;
+  if (w < 768) return 0.70;
+  if (w < 1024) return 0.82;
+  return 1.0;
+};
+
 // Sort descending by order，並補上缺少的 size
 let _pi = 0;
 const projectsData = [...projectsRaw]
@@ -130,8 +139,12 @@ export default function Playground() {
   };
 
   const getItemSize = (project) => {
-    // 依照 project.size 回傳對應尺寸，與 AllWork 相同邏輯
-    return SIZE_DIMS[project?.size] || DEFAULT_DIMS;
+    const scale = getDeviceScale();
+    const dims = SIZE_DIMS[project?.size] || DEFAULT_DIMS;
+    return {
+      width: Math.round(dims.width * scale),
+      height: Math.round(dims.height * scale),
+    };
   };
 
   // 已移除標題進場顯示
@@ -482,13 +495,26 @@ export default function Playground() {
 
     const settings = settingsRef.current;
     const s = stateRef.current;
-    s.itemGap = settings.itemGap;
     s.columns = 4;
-    // cellWidth / cellHeight 以最大可能尺寸計算，確保不同比例卡片不重疊
-    const maxCardWidth = Math.max(...Object.values(SIZE_DIMS).map((d) => d.width), DEFAULT_DIMS.width);
-    const maxCardHeight = Math.max(...Object.values(SIZE_DIMS).map((d) => d.height), DEFAULT_DIMS.height);
-    s.cellWidth = maxCardWidth + settings.itemGap;
-    s.cellHeight = maxCardHeight + 80 + settings.itemGap; // +80 for caption
+
+    // 依目前螢幕尺寸重新計算格子大小（含縮放比例）
+    const initLayoutState = () => {
+      const scale = getDeviceScale();
+      const gap = Math.round(settings.itemGap * scale);
+      const maxCardWidth = Math.round(
+        Math.max(...Object.values(SIZE_DIMS).map((d) => d.width), DEFAULT_DIMS.width) * scale
+      );
+      const maxCardHeight = Math.round(
+        Math.max(...Object.values(SIZE_DIMS).map((d) => d.height), DEFAULT_DIMS.height) * scale
+      );
+      s.cellWidth = maxCardWidth + gap;
+      // caption 高度不跟著卡片縮放（文字以 CSS px 渲染，不受 scale 影響），
+      // 固定保留 130px 避免多行標題壓到下方卡片
+      s.cellHeight = maxCardHeight + 130 + gap;
+      settings.offsetY = Math.round(320 * scale);
+    };
+
+    initLayoutState();
 
     // 初次渲染
     updateVisibleItems();
@@ -557,6 +583,16 @@ export default function Playground() {
           ease: "power2.out",
         });
       } else {
+        // 重新計算 RWD 縮放後的格子尺寸，清除舊卡片並重繪
+        initLayoutState();
+        const canvas = canvasRef.current;
+        if (canvas) {
+          s.visibleItems.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el && el.parentNode === canvas) canvas.removeChild(el);
+          });
+          s.visibleItems.clear();
+        }
         updateVisibleItems();
       }
     };
