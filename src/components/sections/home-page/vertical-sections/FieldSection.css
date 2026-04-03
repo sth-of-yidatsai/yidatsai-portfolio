@@ -186,12 +186,12 @@
 /* ── Mobile ≤ 768px — 雙欄重排 ── */
 @media (max-width: 768px) {
   .fs-section {
-    padding: var(--space-lg) var(--px-page) var(--space-lg);
+    padding: var(--space-xl) var(--px-page) var(--space-lg);
   }
 
   .fs-grid {
     grid-template-columns: 1fr 1fr;
-    row-gap: var(--space-lg);
+    row-gap: var(--space-xl);
   }
 
   /* 清除桌機版定位 */

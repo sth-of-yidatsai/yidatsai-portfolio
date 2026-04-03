@@ -401,7 +401,7 @@
 @media (max-width: 768px) {
   /* 縮小 section 頂部間距，與其他 section 一致 */
   .vs-section {
-    padding-top: var(--space-lg);
+    padding-top: var(--space-xl);
   }
 
   .vs-header {

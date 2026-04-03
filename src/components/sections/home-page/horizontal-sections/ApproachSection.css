@@ -163,11 +163,11 @@
 /* sm ≤ 768px */
 @media (max-width: 768px) {
   .as-left {
-    padding: var(--space-md) var(--px-page) var(--space-lg);
+    padding: var(--space-md) var(--px-page) var(--space-xl);
   }
 
   .as-left-content {
-    gap: var(--space-lg);
+    gap: var(--space-xl);
   }
 
   .as-small-image {
