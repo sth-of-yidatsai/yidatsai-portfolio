@@ -1,5 +1,6 @@
 import React from "react";
 import projects from "../../../../data/projects.json";
+import { pickResponsiveSrc } from "../../../../utils/imgSrcSet";
 import "./ProjectsSection.css";
 
 export default function ProjectsSection({ index }) {
@@ -60,7 +61,7 @@ export default function ProjectsSection({ index }) {
               key={blockNumber}
               className="fullscreen-project-block"
               style={{
-                "--project-bg-image": `url(${imagePath})`,
+                "--project-bg-image": `url(${pickResponsiveSrc(imagePath)})`,
               }}
             >
               <div className="project-block-overlay">

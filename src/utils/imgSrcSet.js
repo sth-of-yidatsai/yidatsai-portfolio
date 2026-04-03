@@ -39,6 +39,5 @@ export function pickResponsiveSrc(src) {
   if (needed <= 1400) return `${base}-1200${ext}`;
   if (needed <= 1800) return `${base}-1600${ext}`;
   if (needed <= 2600) return `${base}-2400${ext}`;
-  if (needed <= 3400) return `${base}-3200${ext}`;
-  return src;
+  return `${base}-3200${ext}`;
 }
