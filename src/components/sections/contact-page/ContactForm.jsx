@@ -3,56 +3,88 @@ import emailjs from "@emailjs/browser";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import "./ContactForm.css";
 
-const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID  || "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
-const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  || "YOUR_PUBLIC_KEY";
+const EMAILJS_SERVICE_ID =
+  import.meta.env.VITE_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
+const EMAILJS_TEMPLATE_ID =
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
+const EMAILJS_PUBLIC_KEY =
+  import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
 
 // Rate limit: max 3 submissions per hour
-const RATE_LIMIT_MAX   = 3;
-const RATE_LIMIT_MS    = 60 * 60 * 1000;
-const RATE_LIMIT_KEY   = "cf_submissions";
+const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_MS = 60 * 60 * 1000;
+const RATE_LIMIT_KEY = "cf_submissions";
 
 // Toast auto-dismiss timing (ms)
 const TOAST_VISIBLE_MS = 5500;
-const TOAST_REMOVE_MS  = 6500;
+const TOAST_REMOVE_MS = 6500;
 
 // ── Set true to preview toast style, false in production ──────────────────────
 const PREVIEW_TOAST = false;
 
 const INTEREST_GROUPS = [
-  { group: "Brand",   items: ["Logo Design", "Brand Identity", "Brand Strategy", "Rebranding"] },
-  { group: "Graphic", items: ["Packaging Design", "Print Design", "Editorial Design", "Campaign Visuals"] },
-  { group: "Digital", items: ["Website Design", "UI / UX Design", "Landing Page", "Design System"] },
-  { group: "Extras",  items: ["Social Media", "Motion Graphics", "3D Visual"] },
-  { group: "Other",   items: ["Not sure yet"] },
+  {
+    group: "Brand",
+    items: ["Logo Design", "Brand Identity", "Brand Strategy", "Rebranding"],
+  },
+  {
+    group: "Graphic",
+    items: [
+      "Packaging Design",
+      "Print Design",
+      "Editorial Design",
+      "Campaign Visuals",
+    ],
+  },
+  {
+    group: "Digital",
+    items: [
+      "Website Design",
+      "UI / UX Design",
+      "Landing Page",
+      "Design System",
+    ],
+  },
+  { group: "Extras", items: ["Social Media", "Motion Graphics", "3D Visual"] },
+  { group: "Other", items: ["Not sure yet"] },
 ];
 
 // ─── Budget weight system ─────────────────────────────────────────────────────
 
 const INTEREST_WEIGHTS = {
-  "Logo Design":       1,
-  "Brand Identity":    3,
-  "Brand Strategy":    3,
-  "Rebranding":        3,
-  "Packaging Design":  2,
-  "Print Design":      1,
-  "Editorial Design":  2,
-  "Campaign Visuals":  2,
-  "Website Design":    3,
-  "UI / UX Design":    3,
-  "Landing Page":      2,
-  "Design System":     3,
-  "Social Media":      1,
-  "Motion Graphics":   2,
-  "3D Visual":         2,
-  "Not sure yet":      0,
+  "Logo Design": 1,
+  "Brand Identity": 3,
+  "Brand Strategy": 3,
+  Rebranding: 3,
+  "Packaging Design": 2,
+  "Print Design": 1,
+  "Editorial Design": 2,
+  "Campaign Visuals": 2,
+  "Website Design": 3,
+  "UI / UX Design": 3,
+  "Landing Page": 2,
+  "Design System": 3,
+  "Social Media": 1,
+  "Motion Graphics": 2,
+  "3D Visual": 2,
+  "Not sure yet": 0,
 };
 
-const CATEGORY_MULTIPLIERS = { Brand: 1.2, Graphic: 1.0, Digital: 1.1, Extras: 0.8, Other: 1.0 };
+const CATEGORY_MULTIPLIERS = {
+  Brand: 1.2,
+  Graphic: 1.0,
+  Digital: 1.1,
+  Extras: 0.8,
+  Other: 1.0,
+};
 
 // item → group lookup (built once at module level)
 const ITEM_GROUP = {};
-INTEREST_GROUPS.forEach(({ group, items }) => items.forEach((item) => { ITEM_GROUP[item] = group; }));
+INTEREST_GROUPS.forEach(({ group, items }) =>
+  items.forEach((item) => {
+    ITEM_GROUP[item] = group;
+  }),
+);
 
 // minimum budget index forced by certain high-value items
 const MIN_BUDGET_FOR = { "Brand Identity": 2, "Brand Strategy": 2 };
@@ -64,8 +96,12 @@ function suggestBudgetIndex(selectedItems) {
     const m = CATEGORY_MULTIPLIERS[ITEM_GROUP[item]] ?? 1.0;
     return sum + w * m;
   }, 0);
-  const minIdx = selectedItems.reduce((mx, item) => Math.max(mx, MIN_BUDGET_FOR[item] ?? 0), 0);
-  let idx = score <= 2 ? 0 : score <= 4 ? 1 : score <= 6 ? 2 : score <= 8 ? 3 : 4;
+  const minIdx = selectedItems.reduce(
+    (mx, item) => Math.max(mx, MIN_BUDGET_FOR[item] ?? 0),
+    0,
+  );
+  let idx =
+    score <= 2 ? 0 : score <= 4 ? 1 : score <= 6 ? 2 : score <= 8 ? 3 : 4;
   return Math.max(idx, minIdx);
 }
 
@@ -130,15 +166,16 @@ const MIN_THUMB_H = 24;
 
 function CustomSelect({ name, value, options, onChange, disabled = false }) {
   const [open, setOpen] = useState(false);
-  const rootRef  = useRef(null);
-  const listRef  = useRef(null);
+  const rootRef = useRef(null);
+  const listRef = useRef(null);
   const thumbRef = useRef(null);
 
   // ── Close on outside click ──────────────────────────────────────
   useEffect(() => {
     if (!open) return;
     function onPointer(e) {
-      if (rootRef.current && !rootRef.current.contains(e.target)) setOpen(false);
+      if (rootRef.current && !rootRef.current.contains(e.target))
+        setOpen(false);
     }
     document.addEventListener("pointerdown", onPointer);
     return () => document.removeEventListener("pointerdown", onPointer);
@@ -147,23 +184,31 @@ function CustomSelect({ name, value, options, onChange, disabled = false }) {
   // ── Close on Escape ─────────────────────────────────────────────
   useEffect(() => {
     if (!open) return;
-    function onKey(e) { if (e.key === "Escape") setOpen(false); }
+    function onKey(e) {
+      if (e.key === "Escape") setOpen(false);
+    }
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
   // ── Custom thumb sync + wheel capture ──────────────────────────
   useEffect(() => {
-    const list  = listRef.current;
+    const list = listRef.current;
     const thumb = thumbRef.current;
     if (!list || !thumb || !open) return;
 
     const updateThumb = () => {
       const { scrollTop, scrollHeight, clientHeight } = list;
-      const ratio      = scrollHeight > clientHeight ? scrollTop / (scrollHeight - clientHeight) : 0;
-      const thumbH     = Math.max(MIN_THUMB_H, (clientHeight / scrollHeight) * clientHeight);
-      const maxTop     = clientHeight - thumbH;
-      thumb.style.height    = `${thumbH}px`;
+      const ratio =
+        scrollHeight > clientHeight
+          ? scrollTop / (scrollHeight - clientHeight)
+          : 0;
+      const thumbH = Math.max(
+        MIN_THUMB_H,
+        (clientHeight / scrollHeight) * clientHeight,
+      );
+      const maxTop = clientHeight - thumbH;
+      thumb.style.height = `${thumbH}px`;
       thumb.style.transform = `translateY(${ratio * maxTop}px)`;
     };
 
@@ -176,15 +221,18 @@ function CustomSelect({ name, value, options, onChange, disabled = false }) {
 
     updateThumb();
     list.addEventListener("scroll", updateThumb, { passive: true });
-    list.addEventListener("wheel",  onWheel,     { passive: false });
+    list.addEventListener("wheel", onWheel, { passive: false });
     return () => {
       list.removeEventListener("scroll", updateThumb);
-      list.removeEventListener("wheel",  onWheel);
+      list.removeEventListener("wheel", onWheel);
     };
   }, [open]);
 
   return (
-    <div className={`cf__csel${disabled ? " cf__csel--disabled" : ""}`} ref={rootRef}>
+    <div
+      className={`cf__csel${disabled ? " cf__csel--disabled" : ""}`}
+      ref={rootRef}
+    >
       <button
         type="button"
         className={`cf__csel-trigger${open ? " cf__csel-trigger--open" : ""}`}
@@ -194,7 +242,9 @@ function CustomSelect({ name, value, options, onChange, disabled = false }) {
         aria-disabled={disabled}
       >
         <span className="cf__csel-value">{value}</span>
-        <span className="cf__csel-arrow" aria-hidden="true">&#x25BE;</span>
+        <span className="cf__csel-arrow" aria-hidden="true">
+          &#x25BE;
+        </span>
       </button>
 
       {open && (
@@ -205,7 +255,10 @@ function CustomSelect({ name, value, options, onChange, disabled = false }) {
                 <button
                   type="button"
                   className={`cf__csel-option${opt === value ? " cf__csel-option--selected" : ""}`}
-                  onClick={() => { onChange(name, opt); setOpen(false); }}
+                  onClick={() => {
+                    onChange(name, opt);
+                    setOpen(false);
+                  }}
                 >
                   {opt}
                 </button>
@@ -235,7 +288,7 @@ const initialForm = {
   budgetIndex: 1,
   timeline: "",
   message: "",
-  honeypot: "",       // hidden anti-bot field
+  honeypot: "", // hidden anti-bot field
 };
 
 // ─── Rate limit helpers ───────────────────────────────────────────────────────
@@ -263,13 +316,13 @@ function recordSubmission() {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function ContactForm() {
-  const [form, setForm]           = useState(initialForm);
-  const [status, setStatus]       = useState("idle"); // idle | sending | success | error | rate-limited
+  const [form, setForm] = useState(initialForm);
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error | rate-limited
   const [toastVisible, setToastVisible] = useState(false);
   const [isBudgetLocked, setIsBudgetLocked] = useState(false);
-  const { executeRecaptcha }      = useGoogleReCaptcha();
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
-  const budgetDotsRef             = useRef(null);
+  const budgetDotsRef = useRef(null);
 
   // Auto-dismiss toast (skipped in preview mode)
   useEffect(() => {
@@ -277,8 +330,11 @@ export default function ContactForm() {
     if (status === "idle" || status === "sending") return;
 
     setToastVisible(true);
-    const hideTimer   = setTimeout(() => setToastVisible(false), TOAST_VISIBLE_MS);
-    const resetTimer  = setTimeout(() => setStatus("idle"),      TOAST_REMOVE_MS);
+    const hideTimer = setTimeout(
+      () => setToastVisible(false),
+      TOAST_VISIBLE_MS,
+    );
+    const resetTimer = setTimeout(() => setStatus("idle"), TOAST_REMOVE_MS);
 
     return () => {
       clearTimeout(hideTimer);
@@ -306,25 +362,30 @@ export default function ContactForm() {
     setForm((prev) => {
       const next = { ...prev, [name]: value };
       // mutual exclusion: selecting a specific county locks region, and vice versa
-      if (name === "locationCounty" && value !== "Taiwan") next.locationRegion = "International";
-      if (name === "locationRegion" && value !== "International") next.locationCounty = "Taiwan";
+      if (name === "locationCounty" && value !== "Taiwan")
+        next.locationRegion = "International";
+      if (name === "locationRegion" && value !== "International")
+        next.locationCounty = "Taiwan";
       return next;
     });
   }, []);
 
-  const handleInterest = useCallback((label) => {
-    setForm((prev) => {
-      const has = prev.interests.includes(label);
-      const newInterests = has
-        ? prev.interests.filter((i) => i !== label)
-        : [...prev.interests, label];
-      const next = { ...prev, interests: newInterests };
-      if (!isBudgetLocked && newInterests.length > 0) {
-        next.budgetIndex = suggestBudgetIndex(newInterests);
-      }
-      return next;
-    });
-  }, [isBudgetLocked]);
+  const handleInterest = useCallback(
+    (label) => {
+      setForm((prev) => {
+        const has = prev.interests.includes(label);
+        const newInterests = has
+          ? prev.interests.filter((i) => i !== label)
+          : [...prev.interests, label];
+        const next = { ...prev, interests: newInterests };
+        if (!isBudgetLocked && newInterests.length > 0) {
+          next.budgetIndex = suggestBudgetIndex(newInterests);
+        }
+        return next;
+      });
+    },
+    [isBudgetLocked],
+  );
 
   const handleBudgetClick = useCallback((i) => {
     setIsBudgetLocked(true);
@@ -340,14 +401,22 @@ export default function ContactForm() {
       if (!el) return null;
       const rect = el.getBoundingClientRect();
       const ratio = (clientX - rect.left) / rect.width;
-      return Math.max(0, Math.min(BUDGET_STEPS.length - 1, Math.round(ratio * (BUDGET_STEPS.length - 1))));
+      return Math.max(
+        0,
+        Math.min(
+          BUDGET_STEPS.length - 1,
+          Math.round(ratio * (BUDGET_STEPS.length - 1)),
+        ),
+      );
     };
 
     const apply = (clientX) => {
       const idx = getIdx(clientX);
       if (idx === null) return;
       setIsBudgetLocked(true);
-      setForm((prev) => (prev.budgetIndex === idx ? prev : { ...prev, budgetIndex: idx }));
+      setForm((prev) =>
+        prev.budgetIndex === idx ? prev : { ...prev, budgetIndex: idx },
+      );
     };
 
     const startX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -412,26 +481,27 @@ export default function ContactForm() {
             : `$${budgetValue.toLocaleString()}`;
 
         const templateParams = {
-          from_name:  `${form.firstName} ${form.lastName}`,
+          from_name: `${form.firstName} ${form.lastName}`,
           from_email: form.email,
-          phone:      form.phone    || "—",
-          company:    form.company  || "—",
-          location:   form.locationCounty !== "Taiwan"
-            ? form.locationCounty
-            : form.locationRegion !== "International"
-              ? form.locationRegion
-              : "—",
-          interests:  form.interests.length ? form.interests.join(", ") : "—",
-          budget:     budgetLabel,
-          timeline:   form.timeline || "—",
-          message:    form.message  || "—",
+          phone: form.phone || "—",
+          company: form.company || "—",
+          location:
+            form.locationCounty !== "Taiwan"
+              ? form.locationCounty
+              : form.locationRegion !== "International"
+                ? form.locationRegion
+                : "—",
+          interests: form.interests.length ? form.interests.join(", ") : "—",
+          budget: budgetLabel,
+          timeline: form.timeline || "—",
+          message: form.message || "—",
         };
 
         await emailjs.send(
           EMAILJS_SERVICE_ID,
           EMAILJS_TEMPLATE_ID,
           templateParams,
-          { publicKey: EMAILJS_PUBLIC_KEY }
+          { publicKey: EMAILJS_PUBLIC_KEY },
         );
 
         recordSubmission();
@@ -442,7 +512,7 @@ export default function ContactForm() {
         setStatus("error");
       }
     },
-    [form, executeRecaptcha]
+    [form, executeRecaptcha],
   );
 
   // ─── Derived ───────────────────────────────────────────────────────────────
@@ -454,33 +524,34 @@ export default function ContactForm() {
       : `$\u00a0${budgetValue.toLocaleString()}`;
 
   const toastMessage =
-    status === "success"      ? "Message sent! I\u2019ll get back to you soon."
-    : status === "error"      ? "Something went wrong. Please try again or email hello@yidatsai.com directly."
-    : status === "rate-limited" ? "Too many submissions. Please try again later."
-    : "";
+    status === "success"
+      ? "Message sent! I\u2019ll get back to you soon."
+      : status === "error"
+        ? "Something went wrong. Please try again or email hello@yidatsai.com directly."
+        : status === "rate-limited"
+          ? "Too many submissions. Please try again later."
+          : "";
 
-  const toastType =
-    status === "success" ? "success"
-    : "error";
+  const toastType = status === "success" ? "success" : "error";
 
   // ─── Render ────────────────────────────────────────────────────────────────
 
   return (
     <section className="cf">
-
       {/* ── Toast notification (fixed, outside layout flow) ── */}
       {(PREVIEW_TOAST || (status !== "idle" && status !== "sending")) && (
         <div
-          className={`cf__toast cf__toast--${PREVIEW_TOAST ? "success" : toastType}${(PREVIEW_TOAST || toastVisible) ? " cf__toast--visible" : ""}`}
+          className={`cf__toast cf__toast--${PREVIEW_TOAST ? "success" : toastType}${PREVIEW_TOAST || toastVisible ? " cf__toast--visible" : ""}`}
           role="status"
           aria-live="polite"
         >
-          {PREVIEW_TOAST ? "Message sent! I\u2019ll get back to you soon." : toastMessage}
+          {PREVIEW_TOAST
+            ? "Message sent! I\u2019ll get back to you soon."
+            : toastMessage}
         </div>
       )}
 
       <form className="cf__form" onSubmit={handleSubmit} noValidate>
-
         {/* ── Honeypot (hidden from real users, bots fill it) ── */}
         <div className="cf__honeypot" aria-hidden="true">
           <input
@@ -638,7 +709,9 @@ export default function ContactForm() {
                 {/* animated fill — width driven by budgetIndex */}
                 <span
                   className="cf__budget-fill"
-                  style={{ width: `${(form.budgetIndex / (BUDGET_STEPS.length - 1)) * 80}%` }}
+                  style={{
+                    width: `${(form.budgetIndex / (BUDGET_STEPS.length - 1)) * 80}%`,
+                  }}
                 />
                 {BUDGET_STEPS.map((v, i) => (
                   <button
@@ -668,7 +741,9 @@ export default function ContactForm() {
                 ))}
               </div>
               {/* description line */}
-              <p className="cf__budget-desc">{BUDGET_DESCS[form.budgetIndex]} (All prices are in USD)</p>
+              <p className="cf__budget-desc">
+                {BUDGET_DESCS[form.budgetIndex]}
+              </p>
             </div>
           </div>
         </div>
@@ -710,7 +785,8 @@ export default function ContactForm() {
         {/* ── Footer: note ── */}
         <div className="cf__footer">
           <p className="cf__note">
-            Fields marked with * are required. Other information is optional but will help us better understand your needs.
+            Fields marked with * are required. Other information is optional but
+            will help us better understand your needs.
           </p>
         </div>
 
@@ -727,7 +803,6 @@ export default function ContactForm() {
             </span>
           </button>
         </div>
-
       </form>
     </section>
   );

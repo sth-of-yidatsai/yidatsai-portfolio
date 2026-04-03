@@ -42,7 +42,7 @@
 
 @media (max-width: 768px) {
   .contact-page {
-    padding-top: var(--space-xl);
+    padding-top: var(--space-2xl);
   }
 
   .contact-title {
@@ -52,7 +52,7 @@
 
 @media (max-width: 480px) {
   .contact-hero {
-    padding: 0 var(--space-md) var(--space-lg);
+    padding: 0 var(--px-page) var(--space-lg);
   }
 
   .contact-title {
