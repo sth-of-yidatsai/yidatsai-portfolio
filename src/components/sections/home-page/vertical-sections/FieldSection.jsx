@@ -135,12 +135,13 @@ export default function FieldSection() {
           </div>
           <div className="fs-bio-block">
             <p className="fs-bio-text">
-              Multidisciplinary Designer <br />
-              based in Taipei. <br />
-              Bridging Visual and Digital Experiences.
+              Yi-Da Tsai｜蔡易達 <br />
+              Visual Designer based in Taipei. <br />
+              Focused on Typography & Editorial Design.
             </p>
+
             <p className="fs-bio-text-sub">
-              From visual language to digital interaction.
+              Bridging visual language and digital experiences.
             </p>
           </div>
         </div>

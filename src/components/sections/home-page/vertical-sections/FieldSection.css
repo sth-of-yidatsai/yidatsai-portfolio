@@ -152,7 +152,7 @@
 }
 
 .fs-bio-text {
-  font-family: var(--font-manrope);
+  font-family: var(--font-manrope), var(--font-cjk), sans-serif;
   font-size: var(--fs-12pt);
   font-weight: var(--fw-regular);
   line-height: 1.5;
@@ -162,7 +162,7 @@
 }
 
 .fs-bio-text-sub {
-  font-family: var(--font-manrope);
+  font-family: var(--font-manrope), var(--font-cjk), sans-serif;
   font-size: var(--fs-10pt);
   font-weight: var(--fw-regular);
   letter-spacing: 0.04em;
@@ -209,7 +209,8 @@
     order: 1;
     align-self: auto;
     justify-content: flex-start;
-    gap: var(--space-sm);
+    gap: var(--space-lg);
+    max-width: none;
   }
 
   /* 2. 橫幅圖 — 全寬，移除出血與錯落偏移 */
