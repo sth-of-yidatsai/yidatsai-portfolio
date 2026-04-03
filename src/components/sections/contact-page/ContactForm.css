@@ -664,10 +664,9 @@
   .cf__timeline-grid {
     flex-wrap: wrap;
     border-left: none;
-    border-right: none;
     gap: 4px;
-    width: 100%;
     box-sizing: border-box;
+    padding-right: 1px; /* prevent right border from being clipped at container edge */
   }
 
   .cf__timeline-btn {
@@ -747,10 +746,9 @@
   .cf__timeline-grid {
     flex-wrap: wrap;
     border-left: none;
-    border-right: none;
     gap: 4px;
-    width: 100%;
     box-sizing: border-box;
+    padding-right: 1px; /* prevent right border from being clipped at container edge */
   }
 
   .cf__timeline-btn {
