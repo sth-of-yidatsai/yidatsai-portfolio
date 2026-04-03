@@ -445,13 +445,12 @@ body.menu-open {
 /* sm ≤ 768px */
 @media (max-width: 768px) {
   .header-bar {
-    padding: 0 var(--space-md);
+    padding: 0 var(--px-page);
     margin-top: var(--space-md);
   }
 
   .header-hamburger {
-    margin-right: var(--space-md);
-
+    margin-right: 0;
   }
 
   .header-bar-logo {
@@ -468,7 +467,7 @@ body.menu-open {
     align-items: flex-start;
     justify-content: center;
     gap: var(--space-xl);
-    padding: var(--space-xl) var(--space-md);
+    padding: var(--space-xl) var(--px-page);
   }
 
   .header-overlay-glass {

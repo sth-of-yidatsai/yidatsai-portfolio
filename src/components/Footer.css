@@ -327,7 +327,11 @@
 
 @media (max-width: 768px) {
   .footer {
-    padding: var(--space-xl) var(--space-lg);
+    padding: var(--space-xl) var(--px-page);
+  }
+
+  .footer-nav-label {
+    font-size: var(--fs-12pt);
   }
 
   .footer-inner {
@@ -358,7 +362,7 @@
 /* xs ≤ 480px */
 @media (max-width: 480px) {
   .footer {
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-lg) var(--px-page);
   }
 
   .footer-logo {
