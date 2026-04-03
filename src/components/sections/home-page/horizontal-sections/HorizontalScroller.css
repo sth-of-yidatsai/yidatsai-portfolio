@@ -82,3 +82,9 @@ body.menu-open .hs-horizontal-scrollbar {
   display: flex;
   flex-direction: column;
 }
+
+/* 垂直佈局時覆蓋桌機版的固定 100vw / 100vh */
+.hs-vertical .hs-section {
+  width: 100%;
+  height: auto;
+}

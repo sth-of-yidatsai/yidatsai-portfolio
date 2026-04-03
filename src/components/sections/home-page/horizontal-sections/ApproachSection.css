@@ -164,21 +164,14 @@
 /* sm ≤ 768px */
 @media (max-width: 768px) {
   .as-left {
-    padding: var(--space-md) var(--px-page);
+    padding: var(--space-md) var(--px-page) var(--space-lg);
+  }
+
+  .as-left-content {
+    gap: var(--space-lg);
   }
 
   .as-small-image {
     width: calc(50% - var(--space-lg) / 2);
-  }
-}
-
-/* xs ≤ 480px */
-@media (max-width: 480px) {
-  .as-left {
-    padding: var(--space-md) var(--px-page);
-  }
-
-  .as-right {
-    height: 55vw;
   }
 }
