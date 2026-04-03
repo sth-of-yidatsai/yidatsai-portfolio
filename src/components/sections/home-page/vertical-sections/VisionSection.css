@@ -346,6 +346,11 @@
     font-size: var(--fs-48pt);
   }
 
+  /* 手機版隨 vs-title 等比縮放，維持與桌機版相同的視覺大小比例 */
+  .vs-title-sub {
+    font-size: 1.07em;
+  }
+
   /* 取消 sticky，改垂直排版 */
   .vs-scroll-zone {
     height: auto;
@@ -394,19 +399,104 @@
 
 /* sm ≤ 768px */
 @media (max-width: 768px) {
-  .vs-title {
-    font-size: var(--fs-36pt);
+  /* 縮小 section 頂部間距，與其他 section 一致 */
+  .vs-section {
+    padding-top: var(--space-lg);
   }
 
+  .vs-header {
+    margin-bottom: var(--space-lg);
+  }
+
+  /* 標題放大 */
+  .vs-title {
+    font-size: var(--fs-40pt);
+  }
+
+  /* sticky panel 不再持有邊距，交由各子元素自行管理 */
   .vs-sticky-panel {
-    padding: 0 var(--space-md) var(--space-xl);
+    padding: 0;
+  }
+
+  /* 排版：三圓圖形優先，消除 flex gap */
+  .vs-layout {
+    gap: 0;
+  }
+
+  .vs-diagram-wrap {
+    order: -1;
+    padding: var(--space-lg) var(--px-page);
+    background-color: var(--gray-900);
+  }
+
+  /* 文字欄：消除欄內 gap */
+  .vs-text-col {
+    gap: 0;
+  }
+
+  /* 每段文案：25vh 高度，左右邊距對齊全站 */
+  .vs-copy {
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-md) var(--px-page);
+    box-sizing: border-box;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  /* 允許換行（桌機版 nowrap 在此不適用） */
+  .vs-copy-title,
+  .vs-copy-lead {
+    white-space: normal;
+    text-wrap: wrap;
+  }
+
+  /* 交錯背景：淺灰 → 深灰 → 淺灰 → 深灰 */
+  /* left[0]=Logic / right[0]=Aesthetics → 淺灰 */
+  .vs-text-col--left .vs-copy:nth-child(1),
+  .vs-text-col--right .vs-copy:nth-child(1) {
+    background-color: var(--gray-25);
+  }
+  /* left[1]=Experience / right[1]=Structured Emotion → 深灰 */
+  .vs-text-col--left .vs-copy:nth-child(2),
+  .vs-text-col--right .vs-copy:nth-child(2) {
+    background-color: var(--gray-900);
+  }
+
+  /* 淺灰面板文字改為深色 */
+  .vs-text-col--left .vs-copy:nth-child(1) .vs-copy-title,
+  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-title {
+    color: var(--gray-700);
+  }
+  .vs-text-col--left .vs-copy:nth-child(1) .vs-copy-lead,
+  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-lead {
+    color: var(--gray-600);
+  }
+  .vs-text-col--left .vs-copy:nth-child(1) .vs-copy-body,
+  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-body {
+    color: var(--gray-500);
+  }
+  .vs-text-col--left .vs-copy:nth-child(1) .vs-copy-line,
+  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-line {
+    background: rgba(0, 0, 0, 0.18);
+  }
+
+  /* SVG 三圓文字放大（補償 viewBox 縮放後的可讀性） */
+  .vs-svg-title {
+    font-size: var(--fs-18pt);
+  }
+  .vs-svg-kw {
+    font-size: var(--fs-12pt);
   }
 }
 
 /* xs ≤ 480px */
 @media (max-width: 480px) {
   .vs-title {
-    font-size: var(--fs-28pt);
+    font-size: var(--fs-32pt);
   }
 
   .vs-diagram-wrap {

@@ -251,6 +251,7 @@
     gap: var(--space-sm);
     transform: none;
     opacity: 1;
+    padding-bottom: 6px;
   }
 
   .project-practice-areas-large {
