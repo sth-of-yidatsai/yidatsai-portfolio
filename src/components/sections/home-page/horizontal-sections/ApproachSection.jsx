@@ -4,24 +4,22 @@ import { useHorizontalParallaxRef } from "../../../../hooks/useHorizontalParalla
 
 // ── 圖片配置 ── 統一管理，方便置換
 const approachConfig = {
-  leftImage:  "/images/projects/foucault-book-binding/05.webp",
+  leftImage: "/images/projects/foucault-book-binding/05.webp",
   rightImage: "/images/projects/foucault-book-binding/07.webp",
 };
 
 export default function ApproachSection({ index }) {
-  const leftSrc  = approachConfig.leftImage;
+  const leftSrc = approachConfig.leftImage;
   const rightSrc = approachConfig.rightImage;
 
-  const [leftFrameRef,  leftWrapperRef]  = useHorizontalParallaxRef(5);
+  const [leftFrameRef, leftWrapperRef] = useHorizontalParallaxRef(5);
   const [rightFrameRef, rightWrapperRef] = useHorizontalParallaxRef(5);
 
   return (
     <section className={`as-section hs-section hs-section-${index}`}>
-
       {/* ── Left Panel ── */}
       <div className="as-left">
         <div className="as-left-content">
-
           {/* Small 1:1 image */}
           <div className="as-small-image">
             <div ref={leftFrameRef} className="as-image-frame">
@@ -42,23 +40,29 @@ export default function ApproachSection({ index }) {
             <h2 className="as-title">Design Approach</h2>
             <span className="as-rule" />
             <p className="as-body">
-              Each project begins with an idea and evolves
-              <br />through structure, material and detail.
+              Each project begins with a visual idea,
+              <br />
+              shaped through typography, structure, and material.
             </p>
+
             <p className="as-body">
               By balancing aesthetics and logic,
-              <br />the design forms a clear and meaningful
-              <br />experience.
+              <br />
+              the work evolves into a clear and
+              <br />
+              meaningful visual experience.
             </p>
           </div>
-
         </div>
       </div>
 
       {/* ── Right Panel ── */}
       <div className="as-right">
         <div ref={rightFrameRef} className="as-right-image-frame">
-          <div ref={rightWrapperRef} className="as-right-image-parallax-wrapper">
+          <div
+            ref={rightWrapperRef}
+            className="as-right-image-parallax-wrapper"
+          >
             <img
               src={rightSrc}
               srcSet={buildSrcSet(rightSrc)}
@@ -69,7 +73,6 @@ export default function ApproachSection({ index }) {
           </div>
         </div>
       </div>
-
     </section>
   );
 }

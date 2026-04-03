@@ -164,18 +164,18 @@
 /* sm ≤ 768px */
 @media (max-width: 768px) {
   .as-left {
-    padding: var(--space-xl) var(--px-page);
+    padding: var(--space-md) var(--px-page);
   }
 
   .as-small-image {
-    width: clamp(120px, 30vw, 200px);
+    width: calc(50% - var(--space-lg) / 2);
   }
 }
 
 /* xs ≤ 480px */
 @media (max-width: 480px) {
   .as-left {
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-md) var(--px-page);
   }
 
   .as-right {

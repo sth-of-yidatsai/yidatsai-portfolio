@@ -186,7 +186,7 @@
 /* ── Mobile ≤ 768px — 雙欄重排 ── */
 @media (max-width: 768px) {
   .fs-section {
-    padding: var(--space-lg) var(--px-page) var(--space-xl);
+    padding: var(--space-lg) var(--px-page) var(--space-lg);
   }
 
   .fs-grid {
