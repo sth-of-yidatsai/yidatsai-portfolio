@@ -672,6 +672,11 @@
     border: 1px solid var(--gray-200);
     margin: 0;
     border-radius: var(--radius-sm);
+    box-sizing: border-box;
+  }
+
+  .cf__timeline-btn:last-child {
+    flex: 1 1 100%;
   }
 
   .cf__textarea {
@@ -745,6 +750,11 @@
     border: 1px solid var(--gray-200);
     margin: 0;
     border-radius: var(--radius-sm);
+    box-sizing: border-box;
+  }
+
+  .cf__timeline-btn:last-child {
+    flex: 1 1 100%;
   }
 
   .cf__textarea {
