@@ -664,11 +664,15 @@
   .cf__timeline-grid {
     flex-wrap: wrap;
     border-left: none;
+    border-right: none;
     gap: 4px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .cf__timeline-btn {
-    flex: 1 1 40%;
+    flex: 1 1 calc(50% - 2px);
+    max-width: calc(50% - 2px);
     border: 1px solid var(--gray-200);
     margin: 0;
     border-radius: var(--radius-sm);
@@ -677,6 +681,7 @@
 
   .cf__timeline-btn:last-child {
     flex: 1 1 100%;
+    max-width: 100%;
   }
 
   .cf__textarea {
@@ -742,11 +747,15 @@
   .cf__timeline-grid {
     flex-wrap: wrap;
     border-left: none;
+    border-right: none;
     gap: 4px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .cf__timeline-btn {
-    flex: 1 1 40%;
+    flex: 1 1 calc(50% - 2px);
+    max-width: calc(50% - 2px);
     border: 1px solid var(--gray-200);
     margin: 0;
     border-radius: var(--radius-sm);
@@ -755,6 +764,7 @@
 
   .cf__timeline-btn:last-child {
     flex: 1 1 100%;
+    max-width: 100%;
   }
 
   .cf__textarea {
