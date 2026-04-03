@@ -661,17 +661,18 @@
     flex: 1 1 40%;
   }
 
+  .cf__row--timeline .cf__fields {
+    padding-right: 2px; /* give right border room */
+  }
+
   .cf__timeline-grid {
     flex-wrap: wrap;
     border-left: none;
     gap: 4px;
-    box-sizing: border-box;
-    padding-right: 1px; /* prevent right border from being clipped at container edge */
   }
 
   .cf__timeline-btn {
     flex: 1 1 calc(50% - 2px);
-    max-width: calc(50% - 2px);
     border: 1px solid var(--gray-200);
     margin: 0;
     border-radius: var(--radius-sm);
@@ -680,7 +681,8 @@
 
   .cf__timeline-btn:last-child {
     flex: 1 1 100%;
-    max-width: 100%;
+    border-right: 1px solid var(--gray-200);
+    
   }
 
   .cf__textarea {
@@ -743,17 +745,18 @@
     flex: 1 1 40%;
   }
 
+  .cf__row--timeline .cf__fields {
+    padding-right: 2px; /* give right border room */
+  }
+
   .cf__timeline-grid {
     flex-wrap: wrap;
     border-left: none;
     gap: 4px;
-    box-sizing: border-box;
-    padding-right: 1px; /* prevent right border from being clipped at container edge */
   }
 
   .cf__timeline-btn {
     flex: 1 1 calc(50% - 2px);
-    max-width: calc(50% - 2px);
     border: 1px solid var(--gray-200);
     margin: 0;
     border-radius: var(--radius-sm);
@@ -762,7 +765,6 @@
 
   .cf__timeline-btn:last-child {
     flex: 1 1 100%;
-    max-width: 100%;
   }
 
   .cf__textarea {
