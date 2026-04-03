@@ -212,34 +212,85 @@
   }
 }
 
-/* sm ≤ 768px */
+/* sm ≤ 768px — 4 × 25vh，底部並排，點擊切換 */
 @media (max-width: 768px) {
-  .project-block-number-large {
-    font-size: var(--fs-40pt);
-    margin-top: var(--space-lg);
-  }
-}
-
-@media (max-width: 480px) {
-  .project-block-number-large {
-    font-size: var(--fs-40pt);
+  .fullscreen-projects-content {
+    height: 100vh;
   }
 
-  .project-practice-areas-large {
-    font-size: var(--fs-16pt);
+  .fullscreen-project-block {
+    height: 25vh;
+    cursor: pointer;
   }
 
-  .project-description {
-    font-size: var(--fs-10pt);
-  }
-
+  /* 號碼 + 文字底部橫排 */
   .project-block-overlay {
-    padding: 1.5rem 1rem;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--px-page);
+  }
+
+  .project-block-number-large {
+    font-size: var(--fs-40pt);
+    margin-top: 0;
+    margin-left: 0;
+    flex-shrink: 0;
+    transform: none;
+    opacity: 0.9;
   }
 
   .project-block-content-bottom {
-    bottom: 1.5rem;
-    left: 1rem;
-    right: 1rem;
+    position: static;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-sm);
+    transform: none;
+    opacity: 1;
+  }
+
+  .project-practice-areas-large {
+    font-size: var(--fs-18pt);
+  }
+
+  /* 手機隱藏描述與分隔線 */
+  .project-rule,
+  .project-description {
+    display: none;
+  }
+
+  /* 覆蓋桌機 CSS hover（touch 裝置的 :hover 殘留） */
+  .fullscreen-project-block:hover::before {
+    filter: grayscale(1) blur(14px) brightness(0.85);
+    transform: scale(1);
+  }
+  .fullscreen-project-block:hover .project-block-overlay {
+    background: rgba(0, 0, 0, 0.25);
+  }
+  .fullscreen-project-block:hover .project-block-number-large {
+    opacity: 0.9;
+    transform: none;
+  }
+  .fullscreen-project-block:hover .project-block-content-bottom {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* 點擊態：彩色清晰圖，文字淡出 */
+  .fullscreen-project-block.is-tapped::before {
+    filter: grayscale(0) blur(0px) brightness(1);
+    transform: scale(1.04);
+  }
+  .fullscreen-project-block.is-tapped .project-block-overlay {
+    background: transparent;
+  }
+  .fullscreen-project-block.is-tapped .project-block-number-large,
+  .fullscreen-project-block.is-tapped .project-block-content-bottom {
+    opacity: 0;
+    transform: translateY(-4px);
   }
 }

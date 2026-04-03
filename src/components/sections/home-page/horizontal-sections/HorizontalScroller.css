@@ -88,3 +88,14 @@ body.menu-open .hs-horizontal-scrollbar {
   width: 100%;
   height: auto;
 }
+
+/* 手機垂直佈局隱藏 LandscapeSection */
+.hs-vertical .ls-section {
+  display: none;
+}
+
+/* ProjectsSection：absolute 定位改回文件流，父層才能撐高 */
+.hs-vertical .fullscreen-projects-content {
+  position: relative;
+  height: auto;
+}

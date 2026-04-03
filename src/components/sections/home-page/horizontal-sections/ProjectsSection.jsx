@@ -4,6 +4,12 @@ import { pickResponsiveSrc } from "../../../../utils/imgSrcSet";
 import "./ProjectsSection.css";
 
 export default function ProjectsSection({ index }) {
+  const [tappedIndex, setTappedIndex] = React.useState(null);
+
+  const handleBlockClick = (i) => {
+    setTappedIndex((prev) => (prev === i ? null : i));
+  };
+
   // 專案配置 - 指定專案ID和圖片索引
   const projectConfig = React.useMemo(
     () => [
@@ -56,13 +62,15 @@ export default function ProjectsSection({ index }) {
 
           const imagePath = `/images/projects/${projectId}/${image}`;
 
+          const blockIdx = parseInt(blockNumber) - 1;
           return (
             <div
               key={blockNumber}
-              className="fullscreen-project-block"
+              className={`fullscreen-project-block${tappedIndex === blockIdx ? " is-tapped" : ""}`}
               style={{
                 "--project-bg-image": `url(${pickResponsiveSrc(imagePath)})`,
               }}
+              onClick={() => handleBlockClick(blockIdx)}
             >
               <div className="project-block-overlay">
                 <div className="project-block-number-large">{blockNumber}</div>
