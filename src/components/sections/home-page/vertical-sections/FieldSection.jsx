@@ -121,29 +121,29 @@ export default function FieldSection() {
           <span className="fs-image-label">{images[2].label}</span>
         </div>
 
-        {/* 中央文字欄 — Name 貼 Image 3 上邊，Bio 貼 Image 3 下邊 */}
-        <div className="fs-center-col">
-          <div className="fs-name-block">
-            <div
-              ref={nameRef}
-              className={`fs-name${isNameInView ? " fs-name--in-view" : ""}`}
-            >
-              <LineRoll>YI</LineRoll>
-              <LineRoll>DA</LineRoll>
-              <LineRoll>TSAI</LineRoll>
-            </div>
+        {/* Name block */}
+        <div className="fs-name-block">
+          <div
+            ref={nameRef}
+            className={`fs-name${isNameInView ? " fs-name--in-view" : ""}`}
+          >
+            <LineRoll>YI</LineRoll>
+            <LineRoll>DA</LineRoll>
+            <LineRoll>TSAI</LineRoll>
           </div>
-          <div className="fs-bio-block">
-            <p className="fs-bio-text">
-              Yi-Da Tsai｜蔡易達 <br />
-              Visual Designer based in Taipei. <br />
-              Focused on Typography & Editorial Design.
-            </p>
+        </div>
 
-            <p className="fs-bio-text-sub">
-              Bridging visual language and digital experiences.
-            </p>
-          </div>
+        {/* Bio block */}
+        <div className="fs-bio-block">
+          <p className="fs-bio-text">
+            Yi-Da Tsai｜蔡易達 <br />
+            Visual Designer based in Taipei. <br />
+            Focused on Typography & Editorial Design.
+          </p>
+
+          <p className="fs-bio-text-sub">
+            Bridging visual language and digital experiences.
+          </p>
         </div>
 
         {/* Image 4 — Poster Design (large, right) */}
