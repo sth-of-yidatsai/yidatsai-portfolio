@@ -226,6 +226,34 @@ export default function TrajectorySection() {
     gsap.to(descRef.current, { x: pxPagePx, duration: 0.5, ease: "power2.out" });
   }, [activeIndex]);
 
+  // ── Mobile swipe handlers ─────────────────────────────────────────────────
+  const swipeRef = useRef({ startX: 0, startY: 0, locked: false });
+
+  const handleTouchStart = (e) => {
+    if (!isMobileRef.current) return;
+    swipeRef.current = {
+      startX: e.touches[0].clientX,
+      startY: e.touches[0].clientY,
+      locked: false,
+    };
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!isMobileRef.current) return;
+    const dx = e.changedTouches[0].clientX - swipeRef.current.startX;
+    const dy = e.changedTouches[0].clientY - swipeRef.current.startY;
+    // Ignore if mostly vertical (user scrolling page)
+    if (Math.abs(dy) > Math.abs(dx)) return;
+    // Require at least 40px horizontal movement
+    if (Math.abs(dx) < 40) return;
+    const n = CARDS.length;
+    if (dx < 0) {
+      setActiveIndex((prev) => Math.min(prev + 1, n - 1));
+    } else {
+      setActiveIndex((prev) => Math.max(prev - 1, 0));
+    }
+  };
+
   // ── Desktop scrollbar drag handlers ──────────────────────────────────────
   const handlePointerDown = (e) => {
     const thumb = thumbRef.current;
@@ -287,7 +315,12 @@ export default function TrajectorySection() {
         {/* Desktop: pinned 100vh viewport / Mobile: natural height */}
         <div className="ts__inner" ref={innerRef}>
           {/* Scroll wrapper — desktop: slides via ScrollTrigger; mobile: slides via click */}
-          <div className="ts__scroll-wrap" ref={scrollWrapRef}>
+          <div
+            className="ts__scroll-wrap"
+            ref={scrollWrapRef}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
             {/* Cards track */}
             <div className="ts__track" ref={trackRef}>
               {CARDS.map((card, i) => (
