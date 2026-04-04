@@ -335,6 +335,17 @@ body.menu-open .ts__scrollbar {
   }
 }
 
+/* Mobile timeline toggle */
+.ts__timeline-row--mobile {
+  display: none;
+}
+
+/* Mobile dot — no card-width constraint, just centered */
+.ts__step--sm {
+  width: auto;
+  padding-left: 0;
+}
+
 /* ── Responsive ───────────────────────────────────────────────── */
 
 /* md ≤ 1024px */
@@ -381,6 +392,33 @@ body.menu-open .ts__scrollbar {
   .ts__header {
     padding-left: var(--space-md);
     padding-right: var(--space-md);
+  }
+
+  /* Hide desktop scrolling timeline; show static mobile dots row */
+  .ts__timeline-row--desktop {
+    display: none;
+  }
+
+  .ts__timeline-row--mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-lg);
+    padding-top: var(--space-md);
+    padding-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  /* Desc: allow text to wrap, auto height, full image width */
+  .ts__desc-title {
+    text-wrap: wrap;
+    white-space: normal;
+  }
+
+  .ts__desc-wrap {
+    height: auto;
+    min-height: 10rem;
+    width: var(--ts-img-w, 280px);
   }
 }
 

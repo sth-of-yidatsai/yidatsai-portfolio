@@ -84,8 +84,9 @@ export default function TrajectorySection() {
       ctx?.revert();
       stRef.current = null;
 
+      const isMobile = window.innerWidth <= 768;
       const n = CARDS.length; // total cards
-      const shown = n - 1; // cards visible at once (last one starts off-screen)
+      const shown = isMobile ? 1 : n - 1; // mobile: 1 card full-width; desktop: all but last
       const gapCount = shown - 1; // gaps between the visible cards
 
       // Read the resolved px value from the track's own padding-left (= --px-page after clamp)
@@ -170,16 +171,24 @@ export default function TrajectorySection() {
 
             // Phase 2: slide the whole scroll-wrap (cards + timeline together)
             let x = 0;
-            if (cp > PHASE1_END) {
-              const p2 = (cp - PHASE1_END) / (1 - PHASE1_END);
-              x = -(cardW + gapPx) * p2;
-            }
-            gsap.set(scrollWrap, { x });
+            let idx;
 
-            const idx =
-              cp <= PHASE1_END
-                ? Math.min(n - 2, Math.round((cp / PHASE1_END) * (n - 2)))
-                : n - 1;
+            if (isMobile) {
+              // Mobile: slide one card at a time through all cards
+              idx = Math.min(n - 1, Math.round(cp * (n - 1)));
+              x = -(cardW + gapPx) * idx;
+            } else {
+              if (cp > PHASE1_END) {
+                const p2 = (cp - PHASE1_END) / (1 - PHASE1_END);
+                x = -(cardW + gapPx) * p2;
+              }
+              idx =
+                cp <= PHASE1_END
+                  ? Math.min(n - 2, Math.round((cp / PHASE1_END) * (n - 2)))
+                  : n - 1;
+            }
+
+            gsap.set(scrollWrap, { x });
 
             // Fill bar ends exactly at the active dot centre — CSS transition animates between steps
             if (fillBarRef.current) {
@@ -188,7 +197,12 @@ export default function TrajectorySection() {
 
             // Translate desc to follow the active card (x = current scroll-wrap offset)
             if (descRef.current) {
-              descRef.current.style.transform = `translateX(${pxPagePx + idx * (cardW + gapPx) + x}px)`;
+              if (isMobile) {
+                // Mobile: desc stays fixed at left margin
+                descRef.current.style.transform = `translateX(${pxPagePx}px)`;
+              } else {
+                descRef.current.style.transform = `translateX(${pxPagePx + idx * (cardW + gapPx) + x}px)`;
+              }
             }
 
             if (idx !== activeIdxRef.current) {
@@ -311,8 +325,8 @@ export default function TrajectorySection() {
               ))}
             </div>
 
-            {/* Timeline row */}
-            <div className="ts__timeline-row">
+            {/* Timeline row — desktop only (scrolls with cards in scroll-wrap) */}
+            <div className="ts__timeline-row ts__timeline-row--desktop">
               <div className="ts__timeline">
                 <div className="ts__tl-line" ref={lineRef} />
                 <div className="ts__timeline-fill" ref={fillBarRef} />
@@ -328,6 +342,20 @@ export default function TrajectorySection() {
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* Mobile: static dots row outside scroll-wrap so all dots stay visible */}
+          <div className="ts__timeline-row ts__timeline-row--mobile">
+            {CARDS.map((_, i) => (
+              <div
+                key={i}
+                className={`ts__step ts__step--sm${activeIndex === i ? " ts__step--active" : ""}`}
+              >
+                <div className="ts__dot-wrap">
+                  <span className="ts__dot" />
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Description wrapper — JS sets translateX to follow active card + Phase 2 offset.
