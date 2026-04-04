@@ -42,8 +42,9 @@
 }
 
 @media (max-width: 768px) {
+  /* First text block needs extra top clearance for fixed header (16px top + 48px height) */
   .contact-page {
-    padding-top: var(--space-2xl);
+    padding-top: calc(var(--space-md) + 48px + var(--space-xl));
   }
 
   .contact-title {

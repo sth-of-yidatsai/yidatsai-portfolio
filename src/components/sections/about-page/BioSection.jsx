@@ -22,6 +22,23 @@ function StickyText({ text }) {
     const chars   = charsRef.current.filter(Boolean);
     if (!section || !chars.length) return;
 
+    /* ── Mobile: entrance animation only, no GSAP pin ── */
+    if (window.innerWidth <= 768) {
+      chars.forEach(c => { c.style.color = "var(--gray-50)"; });
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            requestAnimationFrame(() => section.classList.add("is-visible"));
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(section);
+      return () => observer.disconnect();
+    }
+
+    /* ── Desktop: GSAP sticky char fill ── */
     chars.forEach(c => { c.style.color = "var(--gray-500)"; });
 
     let ctx;
@@ -32,7 +49,7 @@ function StickyText({ text }) {
           trigger: section,
           pin:     true,
           start:   "top top",
-          end:     `+=${window.innerWidth <= 768 ? window.innerHeight * 0.5 : Math.max(window.innerHeight, section.offsetHeight * 1.1)}`,
+          end:     `+=${Math.max(window.innerHeight, section.offsetHeight * 1.1)}`,
           scrub:   0.6,
           onUpdate(self) {
             const filled = Math.round(self.progress * chars.length);
