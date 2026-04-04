@@ -110,10 +110,3 @@
     align-items: flex-start;
   }
 }
-
-/* xs ≤ 480px */
-@media (max-width: 480px) {
-  .block--imgtxt__text {
-    padding: var(--space-lg) var(--space-md);
-  }
-}

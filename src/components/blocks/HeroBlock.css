@@ -124,16 +124,16 @@
     height: 70px;
   }
 
-  .block--hero__tag-section {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .block--hero__info-panel {
-    height: 60px;
+  .block--hero__info-content {
+    padding: 0 var(--px-page);
   }
 
+  .block--hero__title-section {
+    padding: 0;
+    border: none;
+  }
+
+  .block--hero__tag-section,
   .block--hero__year-section {
     display: none;
   }

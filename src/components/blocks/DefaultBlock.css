@@ -36,6 +36,6 @@
 /* xs ≤ 480px */
 @media (max-width: 480px) {
   .block--default {
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-lg) var(--px-page);
   }
 }

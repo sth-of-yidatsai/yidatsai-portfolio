@@ -87,6 +87,11 @@
   .block--imgset1b__caption {
     width: 100svw;
   }
+
+  .block--imgset1b__caption {
+    padding-inline: var(--px-page);
+    box-sizing: border-box;
+  }
 }
 
 /* xs ≤ 480px */

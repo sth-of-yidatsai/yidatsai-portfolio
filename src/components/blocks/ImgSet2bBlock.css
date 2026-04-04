@@ -97,7 +97,8 @@
 
 /* sm ≤ 768px */
 @media (max-width: 768px) {
-  .block--imgset2b__grid {
+  .block--imgset2b__grid,
+  .block--imgset2b--reverse .block--imgset2b__grid {
     flex-direction: column;
   }
 
@@ -105,12 +106,16 @@
     flex: none;
     width: 55%;
   }
+
+  .block--imgset2b__item--b {
+    width: 100%;
+  }
 }
 
 /* xs ≤ 480px */
 @media (max-width: 480px) {
   .block--imgset2b {
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-lg) var(--px-page);
   }
 
   .block--imgset2b__item--a {

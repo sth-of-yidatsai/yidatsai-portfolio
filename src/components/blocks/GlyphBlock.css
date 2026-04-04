@@ -119,7 +119,7 @@
 
 @media (max-width: 480px) {
   .block--glyph {
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-lg) var(--px-page);
   }
 
   .block--glyph__grid {

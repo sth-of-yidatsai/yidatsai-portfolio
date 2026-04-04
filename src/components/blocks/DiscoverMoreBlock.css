@@ -121,6 +121,6 @@
 /* xs ≤ 480px */
 @media (max-width: 480px) {
   .block--discover-more {
-    padding: var(--space-lg) var(--space-md) 0;
+    padding: var(--space-lg) var(--px-page) 0;
   }
 }

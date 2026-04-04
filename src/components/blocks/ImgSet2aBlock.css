@@ -128,7 +128,7 @@
 /* xs ≤ 480px */
 @media (max-width: 480px) {
   .block--imgset2a {
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-lg) var(--px-page);
   }
 
   .block--imgset2a__item--a {

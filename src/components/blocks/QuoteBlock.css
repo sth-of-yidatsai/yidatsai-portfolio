@@ -71,7 +71,7 @@
 
 @media (max-width: 480px) {
   .block--quote {
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-lg) var(--px-page);
   }
 
   .block--quote__text {
