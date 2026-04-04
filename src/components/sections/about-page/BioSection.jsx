@@ -32,7 +32,7 @@ function StickyText({ text }) {
           trigger: section,
           pin:     true,
           start:   "top top",
-          end:     `+=${window.innerHeight * 1.8}`,
+          end:     `+=${Math.max(window.innerHeight, section.offsetHeight * 1.1)}`,
           scrub:   0.6,
           onUpdate(self) {
             const filled = Math.round(self.progress * chars.length);
@@ -70,69 +70,40 @@ function StickyText({ text }) {
   );
 }
 
-/* ── Sticky image block ──────────────────────────────────────────────── */
-function StickyImage() {
-  const sectionRef  = useRef(null);
-  const imgWrapRef  = useRef(null);
+/* ── Parallax image block ────────────────────────────────────────────── */
+function ParallaxImage() {
+  const sectionRef = useRef(null);
+  const imgRef     = useRef(null);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    const imgWrap = imgWrapRef.current;
-    if (!section || !imgWrap) return;
+    const img     = imgRef.current;
+    if (!section || !img) return;
 
-    let ctx;
-    const setup = () => {
-      ctx?.revert();
+    const SPEED = 0.25; // fraction of viewport shift
 
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-
-      // Portrait 4:3 initial size (height = 60vh)
-      const initH = vh * 0.60;
-      const initW = initH * (3 / 4);
-
-      gsap.set(imgWrap, { width: initW, height: initH });
-
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger:  section,
-            pin:      true,
-            start:    "top top",
-            end:      `+=${vh * 1.0}`,   // ← reduced from 1.8
-            scrub:    0.6,
-          },
-        });
-
-        tl.to(imgWrap, {
-          width:    vw,
-          height:   vh,
-          ease:     "none",
-          duration: 1,
-        });
-      }, section);
+    const onScroll = () => {
+      const rect     = section.getBoundingClientRect();
+      const progress = rect.top / window.innerHeight; // 1→entering, 0→centered, -1→leaving
+      img.style.transform = `translateY(${progress * SPEED * 100}%)`;
     };
 
-    setup();
-    window.addEventListener("resize", setup);
-    return () => {
-      window.removeEventListener("resize", setup);
-      ctx?.revert();
-    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <section className="bs__img-block" ref={sectionRef}>
-      <div className="bs__img-wrap" ref={imgWrapRef}>
-        <img
-          className="bs__img"
-          src="/images/about/01.webp"
-          srcSet={buildSrcSet("/images/about/01.webp")}
-          sizes="100vw"
-          alt=""
-          draggable="false"
-        />
-      </div>
+      <img
+        className="bs__img"
+        ref={imgRef}
+        src="/images/about/01.webp"
+        srcSet={buildSrcSet("/images/about/01.webp")}
+        sizes="100vw"
+        alt=""
+        draggable="false"
+      />
     </section>
   );
 }
@@ -142,7 +113,7 @@ export default function BioSection() {
   return (
     <div className="bs">
       <StickyText text={TEXT1} />
-      <StickyImage />
+      <ParallaxImage />
       <StickyText text={TEXT2} />
     </div>
   );

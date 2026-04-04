@@ -63,25 +63,22 @@
 
 /* ── Image block layout ──────────────────────────────────────── */
 .bs__img-block {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-/* Size is set by JS; starts portrait 4:3, grows to 100vw×100vh */
-.bs__img-wrap {
   position: relative;
+  width: 100%;
+  height: 100vh;
   overflow: hidden;
-  flex-shrink: 0;
 }
 
+/* 130% height gives parallax room to translate without gaps */
 .bs__img {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 100%;
+  height: 130%;
   object-fit: cover;
   object-position: center;
   display: block;
+  will-change: transform;
 }
 
 /* ── Responsive ──────────────────────────────────────────────── */

@@ -113,11 +113,10 @@ html.projects-no-scroll-html {
 
 /* 展開視圖 */
 .gallery-expanded-item {
-  position: relative;
+  position: fixed;
   z-index: 850; /* 低於 header(999) */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
   background-color: var(--gray-900);
   overflow: hidden;
   cursor: default;

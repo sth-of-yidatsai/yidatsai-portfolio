@@ -396,19 +396,22 @@ export default function Playground() {
     // contain：依裝置方向決定由寬還是高限制，確保圖片完整顯示不超出螢幕
     const { targetWidth, targetHeight } = calcContainSize(itemWidth, itemHeight);
 
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
     gsap.fromTo(
       expanded,
       {
         width: itemWidth,
         height: itemHeight,
-        x: rect.left + itemWidth / 2 - window.innerWidth / 2,
-        y: rect.top + itemHeight / 2 - window.innerHeight / 2,
+        x: rect.left,
+        y: rect.top,
       },
       {
         width: targetWidth,
         height: targetHeight,
-        x: 0,
-        y: 0,
+        x: (vw - targetWidth) / 2,
+        y: (vh - targetHeight) / 2,
         duration: settings.zoomDuration,
         ease: "hop",
       }
@@ -442,8 +445,8 @@ export default function Playground() {
     gsap.to(s.expandedItem, {
       width: originalWidth,
       height: originalHeight,
-      x: originalRect.left + originalWidth / 2 - window.innerWidth / 2,
-      y: originalRect.top + originalHeight / 2 - window.innerHeight / 2,
+      x: originalRect.left,
+      y: originalRect.top,
       duration: settings.zoomDuration,
       ease: "hop",
       onComplete: () => {
@@ -579,9 +582,13 @@ export default function Playground() {
           s.originalPosition.height
         );
 
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
         gsap.to(s.expandedItem, {
           width: targetWidth,
           height: targetHeight,
+          x: (vw - targetWidth) / 2,
+          y: (vh - targetHeight) / 2,
           duration: 0.3,
           ease: "power2.out",
         });
