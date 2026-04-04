@@ -80,7 +80,7 @@ export default function FormosaFont() {
         images={[
           `${BASE}/15.webp`,
           `${BASE}/18.webp`,
-          `${BASE}/18.webp`,
+          `${BASE}/12.webp`,
           `${BASE}/14.webp`,
           `${BASE}/16.webp`,
         ]}
