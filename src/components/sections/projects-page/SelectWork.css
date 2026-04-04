@@ -130,7 +130,6 @@
   transform: translate3d(0, 0, 0);
 }
 
-
 /* ── Overlay Typography ──────────────────────────────────────────────────── */
 
 .select-work__card-title {
@@ -191,8 +190,28 @@
 
 /* sm ≤ 768px：每次顯示 1 張 + 右側微露 peek */
 @media (max-width: 768px) {
+  .select-work {
+    height: auto;
+    padding-top: calc(var(--space-md) + 48px + var(--space-xl));
+    padding-bottom: var(--space-lg);
+  }
+
+  .select-work__viewport {
+    flex: none;
+    height: auto;
+  }
+
+  .select-work__track {
+    height: auto;
+  }
+
   .select-work__card-wrap {
     width: calc(100vw - 2 * var(--px-page) - 24px);
+  }
+
+  .select-work__card {
+    flex: none;
+    aspect-ratio: 4 / 5;
   }
 
   .select-work__card-overlay {
@@ -202,16 +221,6 @@
 
 /* xs ≤ 480px：收窄 padding */
 @media (max-width: 480px) {
-  .select-work {
-    padding-bottom: var(--space-md);
-  }
-
-  .select-work__header,
-  .select-work__viewport {
-    padding-left: var(--space-md);
-    padding-right: var(--space-md);
-  }
-
   .select-work__card-wrap {
     width: calc(100vw - 2 * var(--space-md) - 24px);
   }

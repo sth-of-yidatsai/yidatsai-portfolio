@@ -60,6 +60,11 @@
     gap: var(--space-lg);
   }
 
+  .all-work__col {
+    width: 100%;
+    flex: none;
+  }
+
   .all-work {
     padding: var(--space-lg) var(--px-page);
   }
