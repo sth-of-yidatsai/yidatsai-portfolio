@@ -96,6 +96,14 @@
   }
 }
 
+/* sm ≤ 768px — mobile: square image */
+@media (max-width: 768px) {
+  .bs__img-block {
+    min-height: unset;
+    height: 100vw;
+  }
+}
+
 /* sm ≤ 768px — mobile: auto height + entrance animation */
 @media (max-width: 768px) {
   .bs__text-block {

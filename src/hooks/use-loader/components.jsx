@@ -97,6 +97,7 @@ export function Loader({ show }) {
     if (e.target === containerRef.current && e.propertyName === "transform") {
       setVisible(false);
       setExiting(false);
+      window.dispatchEvent(new CustomEvent("loader:exit-complete"));
     }
   };
 

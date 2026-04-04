@@ -13,7 +13,7 @@ const TEXT2 =
   "With a foundation in visual communication and experience in both digital and editorial projects, he focuses on clarity, structure, and the translation of design into tangible outcomes.";
 
 /* ── Sticky text block ───────────────────────────────────────────────── */
-function StickyText({ text }) {
+function StickyText({ text, isFirst = false }) {
   const sectionRef = useRef(null);
   const charsRef   = useRef([]);
 
@@ -25,6 +25,17 @@ function StickyText({ text }) {
     /* ── Mobile: entrance animation only, no GSAP pin ── */
     if (window.innerWidth <= 768) {
       chars.forEach(c => { c.style.color = "var(--gray-50)"; });
+
+      if (isFirst) {
+        // 字1：等 loader 完全離開螢幕後才觸發（loader:exit-complete = handleTransitionEnd 後）
+        const onExitComplete = () => {
+          requestAnimationFrame(() => section.classList.add("is-visible"));
+        };
+        window.addEventListener("loader:exit-complete", onExitComplete, { once: true });
+        return () => window.removeEventListener("loader:exit-complete", onExitComplete);
+      }
+
+      // 字2：接近螢幕中央時才觸發（rootMargin 往內縮 25%）
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
@@ -32,7 +43,7 @@ function StickyText({ text }) {
             observer.disconnect();
           }
         },
-        { threshold: 0.15 }
+        { threshold: 0.1, rootMargin: "0px 0px -25% 0px" }
       );
       observer.observe(section);
       return () => observer.disconnect();
@@ -129,7 +140,7 @@ function ParallaxImage() {
 export default function BioSection() {
   return (
     <div className="bs">
-      <StickyText text={TEXT1} />
+      <StickyText text={TEXT1} isFirst />
       <ParallaxImage />
       <StickyText text={TEXT2} />
     </div>
