@@ -108,12 +108,4 @@
   .block--imgset3a {
     padding: var(--space-lg) var(--px-page);
   }
-
-  .block--imgset3a__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .block--imgset3a__item:first-child {
-    grid-column: auto;
-  }
 }
