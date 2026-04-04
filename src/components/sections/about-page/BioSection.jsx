@@ -32,7 +32,7 @@ function StickyText({ text }) {
           trigger: section,
           pin:     true,
           start:   "top top",
-          end:     `+=${Math.max(window.innerHeight, section.offsetHeight * 1.1)}`,
+          end:     `+=${window.innerWidth <= 768 ? window.innerHeight * 0.5 : Math.max(window.innerHeight, section.offsetHeight * 1.1)}`,
           scrub:   0.6,
           onUpdate(self) {
             const filled = Math.round(self.progress * chars.length);
