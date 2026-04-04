@@ -1,18 +1,15 @@
 /* ================================================================
    TrajectorySection — about-page section
-   Pinned via GSAP ScrollTrigger (same pattern as HorizontalScroller).
-   Header scrolls normally above the 100vh pinned area.
-   Track + timeline share a scroll-wrap that translates together,
-   so dots always stay aligned with their cards.
-   Pinned content is vertically centred via justify-content: center.
+   Desktop: GSAP ScrollTrigger pin + scroll animation + scrollbar.
+   Mobile: click dots to switch cards, no pin.
    ================================================================ */
 
-/* ── Outer section — GSAP adds the scroll spacer automatically ── */
+/* ── Outer section ───────────────────────────────────────────── */
 .ts {
   position: relative;
 }
 
-/* ── Header — scrolls normally, above the pinned area ─────────── */
+/* ── Header ──────────────────────────────────────────────────── */
 .ts__header {
   padding-top: var(--space-2xl);
   padding-left: var(--px-page);
@@ -39,43 +36,36 @@
   margin: 0 0 var(--space-md);
 }
 
-/* ── Pinned viewport — 100vh, content vertically centred ─────── */
+/* ── Inner — desktop: 100vh pinned + centred; mobile: natural height ─ */
 .ts__inner {
   height: 100vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;     /* equal space above and below content */
-  gap: var(--space-lg);        /* dots → desc gap */
-  padding: var(--space-xl) 0 var(--space-md) 0;  /* safe breathing room, no left/right */
+  justify-content: center;
+  gap: var(--space-lg);
+  padding: var(--space-xl) 0 var(--space-md) 0;
 }
 
-/* ── Scroll wrapper — track + timeline translate together ─────── */
+/* ── Scroll wrapper — slides on mobile via animation ─────────── */
 .ts__scroll-wrap {
   display: flex;
   flex-direction: column;
   will-change: transform;
-  /* no flex:1 — natural height lets justify-content centre the block */
 }
 
 /* ── Cards track ──────────────────────────────────────────────── */
-/*
-  gap = --ts-gap (set by JS).
-  imgW fills the viewport: shown × imgW + gapCount × VISUAL_GAP = vw − 2×pxPage.
-  CSS column gap = VISUAL_GAP + imgW/4 so image edges never overlap.
-*/
 .ts__track {
   display: flex;
-  align-items: flex-end;   /* bottoms flush → image base sits at timeline */
-  gap: var(--ts-gap, var(--space-2xl));  /* JS reduces this to fit square images */
+  align-items: flex-end;
+  gap: var(--ts-gap, var(--space-2xl));
   padding-left: var(--px-page);
-  /* no flex:1 — natural height from card content */
 }
 
 /* ── Card ─────────────────────────────────────────────────────── */
 .ts__card {
   flex-shrink: 0;
-  width: var(--ts-card-w, 220px); /* set by JS: (vw − 2×px-page − gaps) / visible */
+  width: var(--ts-card-w, 220px);
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
@@ -97,9 +87,7 @@
   color: var(--gray-700);
 }
 
-/* ── Image wrapper — 1∶1 square, height same as old 3∶4 portrait ─
-   imgW (= cardW × 4/3) is computed in JS and stored as --ts-img-w,
-   so height (= imgW via 1:1) equals the original portrait height. */
+/* ── Image wrapper ────────────────────────────────────────────── */
 .ts__img-wrap {
   aspect-ratio: 1 / 1;
   width: var(--ts-img-w, 294px);
@@ -126,28 +114,27 @@
 /* ── Timeline row ─────────────────────────────────────────────── */
 .ts__timeline-row {
   flex-shrink: 0;
-  padding: var(--space-lg) 0 0 var(--px-page); /* top = image→dots gap; no bottom, ts__inner gap handles dots→desc */
+  padding: var(--space-lg) 0 0 var(--px-page);
 }
 
 /* ── Timeline container ───────────────────────────────────────── */
 .ts__timeline {
   position: relative;
   display: flex;
-  gap: var(--ts-gap, var(--space-2xl));   /* same gap as .ts__track — set by JS */
+  gap: var(--ts-gap, var(--space-2xl));
   align-items: flex-start;
 }
 
-/* ── Connecting line (left + width set by JS to span dot centres) ─ */
+/* ── Connecting line ──────────────────────────────────────────── */
 .ts__tl-line {
   position: absolute;
   top: 10px;
   height: 1px;
   background: var(--gray-200);
   z-index: 0;
-  /* left and width set by JS in setup() */
 }
 
-/* ── Fill bar (left set by JS, width driven by scroll progress) ── */
+/* ── Fill bar ─────────────────────────────────────────────────── */
 .ts__timeline-fill {
   position: absolute;
   top: 10px;
@@ -157,21 +144,19 @@
   z-index: 1;
   pointer-events: none;
   transition: width 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-  /* left set by JS in setup() */
 }
 
-/* ── Step — same width as .ts__card so each step spans one card column ─
-   Dot is left-aligned then nudged right by imgW/2 − half-dot-box (10px)
-   so its centre aligns with the image centre, not the card column centre. */
+/* ── Step ─────────────────────────────────────────────────────── */
 .ts__step {
   flex-shrink: 0;
-  width: var(--ts-card-w, 220px); /* mirrors .ts__card — set by same JS calculation */
+  width: var(--ts-card-w, 220px);
   position: relative;
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding-left: calc(var(--ts-img-w, 294px) / 2 - 10px);
+  cursor: pointer;
 }
 
 .ts__dot-wrap {
@@ -218,20 +203,16 @@
   background: var(--gray-700);
 }
 
-/* ── Description wrapper — fixed height prevents layout shift ─────
-   justify-content:center on ts__inner would shift everything up/down
-   when inner desc content changes height between cards.
-   Fixed height + overflow:hidden keeps the wrapper's layout footprint
-   constant regardless of how many lines each description renders.    */
+/* ── Description wrapper ──────────────────────────────────────── */
 .ts__desc-wrap {
   flex-shrink: 0;
-  width: var(--ts-img-w, 294px); /* matches image width (cardW × 4/3) */
-  height: 14rem;                 /* fixed — accommodates the tallest desc */
+  width: var(--ts-img-w, 294px);
+  height: 14rem;
   overflow: hidden;
   will-change: transform;
 }
 
-/* ── Description inner — re-keyed by React on card change → animation re-runs ─ */
+/* ── Description inner — re-keyed by React → animation re-runs ── */
 @keyframes ts-desc-in {
   from {
     opacity: 0;
@@ -260,7 +241,6 @@
   text-wrap: nowrap;
 }
 
-/* Horizontal rule between title and body */
 .ts-rule {
   display: block;
   width: 2rem;
@@ -279,7 +259,6 @@
   margin: 0;
 }
 
-/* ── Period — small, grey, italic ─────────────────────────────── */
 .ts__desc-period {
   font-family: var(--font-manrope);
   font-weight: var(--fw-regular);
@@ -290,7 +269,7 @@
   line-height: 1.4;
 }
 
-/* ── Custom horizontal scrollbar — mirrors HorizontalScroller ─── */
+/* ── Desktop scrollbar ────────────────────────────────────────── */
 .ts__scrollbar {
   position: fixed;
   bottom: 0;
@@ -322,25 +301,23 @@
   cursor: grabbing;
 }
 
-/* Hide when nav menu is open */
 body.menu-open .ts__scrollbar {
   opacity: 0;
   pointer-events: none;
 }
 
-/* Hide on touch devices */
 @media (hover: none) and (pointer: coarse) {
   .ts__scrollbar {
     display: none;
   }
 }
 
-/* Mobile timeline toggle */
+/* ── Mobile timeline toggle ───────────────────────────────────── */
 .ts__timeline-row--mobile {
   display: none;
 }
 
-/* Mobile dot — no card-width constraint, just centered */
+/* Mobile dot — no card-width constraint */
 .ts__step--sm {
   width: auto;
   padding-left: 0;
@@ -348,7 +325,6 @@ body.menu-open .ts__scrollbar {
 
 /* ── Responsive ───────────────────────────────────────────────── */
 
-/* md ≤ 1024px */
 @media (max-width: 1024px) {
   .ts__title {
     font-size: var(--fs-48pt);
@@ -364,7 +340,6 @@ body.menu-open .ts__scrollbar {
     font-size: var(--fs-40pt);
   }
 
-  /* JS re-reads the original gap on resize and recomputes --ts-gap */
   .ts__track,
   .ts__timeline {
     gap: var(--ts-gap, var(--space-xl));
@@ -381,6 +356,13 @@ body.menu-open .ts__scrollbar {
 
 /* sm ≤ 768px */
 @media (max-width: 768px) {
+  /* Mobile: no pin, natural height */
+  .ts__inner {
+    height: auto;
+    justify-content: flex-start;
+    padding: var(--space-lg) 0 var(--space-xl) 0;
+  }
+
   .ts__title {
     font-size: var(--fs-32pt);
   }
@@ -390,8 +372,8 @@ body.menu-open .ts__scrollbar {
   }
 
   .ts__header {
-    padding-left: var(--space-md);
-    padding-right: var(--space-md);
+    margin-top: var(--space-lg);
+    padding: 0 var(--px-page);
   }
 
   /* Hide desktop scrolling timeline; show static mobile dots row */
@@ -404,12 +386,11 @@ body.menu-open .ts__scrollbar {
     justify-content: center;
     align-items: center;
     gap: var(--space-lg);
-    padding-top: var(--space-md);
-    padding-bottom: 0;
+    padding: var(--space-md) 0 0;
     flex-shrink: 0;
   }
 
-  /* Desc: allow text to wrap, auto height, full image width */
+  /* Allow text to wrap on narrow screens */
   .ts__desc-title {
     text-wrap: wrap;
     white-space: normal;
@@ -426,9 +407,5 @@ body.menu-open .ts__scrollbar {
 @media (max-width: 480px) {
   .ts__title {
     font-size: var(--fs-28pt);
-  }
-
-  .ts__inner {
-    padding: var(--space-lg) 0 var(--space-sm) 0;
   }
 }

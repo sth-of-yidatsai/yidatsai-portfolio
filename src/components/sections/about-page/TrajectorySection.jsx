@@ -1,4 +1,4 @@
-import { useRef, useState, useLayoutEffect } from "react";
+import { useRef, useState, useLayoutEffect, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { buildSrcSet } from "../../../utils/imgSrcSet";
@@ -6,11 +6,10 @@ import "./TrajectorySection.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Phase 0 → PHASE1_END : cards 0–3 activate in sequence, track is static
-// Phase PHASE1_END → 1 : scroll-wrap shifts left to reveal card 4 (the 5th card)
+// Desktop: Phase 0 → PHASE1_END cards 0–3 activate, track static
+//          Phase PHASE1_END → 1 scroll-wrap shifts left to reveal card 4
 const PHASE1_END = 0.72;
-const CONTENT_SCROLL = 1600; // px of actual content scroll
-// End pause (= VH) is added in setup() so the pin holds at 100% for one extra scroll
+const CONTENT_SCROLL = 1600;
 
 const CARDS = [
   {
@@ -50,7 +49,7 @@ const CARDS = [
   },
 ];
 
-const THUMB_PCT = 100 / CARDS.length; // 20% — one card's share of the timeline
+const THUMB_PCT = 100 / CARDS.length;
 
 export default function TrajectorySection() {
   const innerRef = useRef(null);
@@ -60,18 +59,20 @@ export default function TrajectorySection() {
   const fillBarRef = useRef(null);
   const descRef = useRef(null);
   const activeIdxRef = useRef(0);
+  const metricsRef = useRef(null); // { cardW, gapPx, pxPagePx, isMobile }
+  const isMobileRef = useRef(false);
 
-  // Scrollbar refs
+  // Desktop scrollbar
   const scrollbarRef = useRef(null);
   const thumbRef = useRef(null);
-  const stRef = useRef(null); // stored ScrollTrigger instance
+  const stRef = useRef(null);
   const dragRef = useRef({ isDragging: false, startX: 0, startLeft: 0 });
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInSection, setIsInSection] = useState(false);
 
-  // ── GSAP pin + phase-based scroll ────────────────────────────────────────
+  // ── Sizing + ScrollTrigger (desktop) / static setup (mobile) ─────────────
   useLayoutEffect(() => {
     const inner = innerRef.current;
     const scrollWrap = scrollWrapRef.current;
@@ -85,37 +86,25 @@ export default function TrajectorySection() {
       stRef.current = null;
 
       const isMobile = window.innerWidth <= 768;
-      const n = CARDS.length; // total cards
-      const shown = isMobile ? 1 : n - 1; // mobile: 1 card full-width; desktop: all but last
-      const gapCount = shown - 1; // gaps between the visible cards
+      isMobileRef.current = isMobile;
 
-      // Read the resolved px value from the track's own padding-left (= --px-page after clamp)
+      const n = CARDS.length;
+      const shown = isMobile ? 1 : n - 1;
+      const gapCount = shown - 1;
       const pxPagePx = parseFloat(getComputedStyle(track).paddingLeft) || 64;
-
-      // ── Image-first sizing ────────────────────────────────────────────────
-      // `shown` square images fill the viewport with a fixed visual gap
-      // between adjacent image edges. This prevents overlap at any screen width.
-      //
-      // Layout: pxPage + shown×imgW + gapCount×VISUAL_GAP = vw − pxPage
-      //   → imgW = (vw − 2×pxPage − gapCount×VISUAL_GAP) / shown
-      //
-      // Card column (cardW = imgW×3/4) is the structural unit; image overhangs
-      // by imgW/4 to the right. CSS column gap = VISUAL_GAP + imgW/4 so that
-      // the gap between the image right-edge and the next image left-edge is
-      // exactly VISUAL_GAP — no overlap possible.
-      const VISUAL_GAP = 24; // px between adjacent image edges
+      const VISUAL_GAP = 24;
       const imgW =
         (window.innerWidth - 2 * pxPagePx - gapCount * VISUAL_GAP) / shown;
       const cardW = imgW * (3 / 4);
-      const gapPx = VISUAL_GAP + imgW / 4; // CSS column gap
+      const gapPx = VISUAL_GAP + imgW / 4;
 
-      // Apply CSS variables so cards, steps, img-wrap, desc-wrap and gaps always match
+      metricsRef.current = { cardW, gapPx, pxPagePx, isMobile, n };
+
       inner.style.setProperty("--ts-card-w", `${cardW}px`);
       inner.style.setProperty("--ts-img-w", `${imgW}px`);
       inner.style.setProperty("--ts-gap", `${gapPx}px`);
 
-      const half = imgW / 2; // dot/line origin at image centre
-
+      const half = imgW / 2;
       if (lineRef.current) {
         lineRef.current.style.left = `${half}px`;
         lineRef.current.style.width = `${(n - 1) * (cardW + gapPx)}px`;
@@ -124,15 +113,23 @@ export default function TrajectorySection() {
         fillBarRef.current.style.left = `${half}px`;
         fillBarRef.current.style.width = "0px";
       }
-      // Position desc under card 0 on load
-      if (descRef.current) {
-        descRef.current.style.transform = `translateX(${pxPagePx}px)`;
+
+      // ── Mobile: click-based, no ScrollTrigger ───────────────────────────
+      if (isMobile) {
+        const idx = activeIdxRef.current;
+        gsap.set(scrollWrap, { x: -(cardW + gapPx) * idx });
+        if (fillBarRef.current) {
+          fillBarRef.current.style.width = `${idx * (cardW + gapPx)}px`;
+        }
+        gsap.set(descRef.current, { x: pxPagePx });
+        return;
       }
 
-      // End pause: hold at 100% for one extra scroll-wheel turn (same as HorizontalScroller)
+      // ── Desktop: GSAP pin + scroll ──────────────────────────────────────
+      gsap.set(descRef.current, { x: pxPagePx });
+
       const endPause = window.innerHeight * 0.2;
       const totalScroll = CONTENT_SCROLL + endPause;
-      // Fraction of totalScroll that is actual content (0 → 1 maps to content, rest is pause)
       const contentFraction = CONTENT_SCROLL / totalScroll;
 
       ctx = gsap.context(() => {
@@ -162,47 +159,26 @@ export default function TrajectorySection() {
           },
 
           onUpdate(self) {
-            const p = self.progress;
-
-            // Clamp to content phase — freeze all effects at 100% during end pause
-            const cp = Math.min(1, p / contentFraction);
-
+            const cp = Math.min(1, self.progress / contentFraction);
             setScrollProgress(cp);
 
-            // Phase 2: slide the whole scroll-wrap (cards + timeline together)
             let x = 0;
-            let idx;
-
-            if (isMobile) {
-              // Mobile: slide one card at a time through all cards
-              idx = Math.min(n - 1, Math.round(cp * (n - 1)));
-              x = -(cardW + gapPx) * idx;
-            } else {
-              if (cp > PHASE1_END) {
-                const p2 = (cp - PHASE1_END) / (1 - PHASE1_END);
-                x = -(cardW + gapPx) * p2;
-              }
-              idx =
-                cp <= PHASE1_END
-                  ? Math.min(n - 2, Math.round((cp / PHASE1_END) * (n - 2)))
-                  : n - 1;
+            if (cp > PHASE1_END) {
+              const p2 = (cp - PHASE1_END) / (1 - PHASE1_END);
+              x = -(cardW + gapPx) * p2;
             }
-
             gsap.set(scrollWrap, { x });
 
-            // Fill bar ends exactly at the active dot centre — CSS transition animates between steps
+            const idx =
+              cp <= PHASE1_END
+                ? Math.min(n - 2, Math.round((cp / PHASE1_END) * (n - 2)))
+                : n - 1;
+
             if (fillBarRef.current) {
               fillBarRef.current.style.width = `${idx * (cardW + gapPx)}px`;
             }
-
-            // Translate desc to follow the active card (x = current scroll-wrap offset)
             if (descRef.current) {
-              if (isMobile) {
-                // Mobile: desc stays fixed at left margin
-                descRef.current.style.transform = `translateX(${pxPagePx}px)`;
-              } else {
-                descRef.current.style.transform = `translateX(${pxPagePx + idx * (cardW + gapPx) + x}px)`;
-              }
+              descRef.current.style.transform = `translateX(${pxPagePx + idx * (cardW + gapPx) + x}px)`;
             }
 
             if (idx !== activeIdxRef.current) {
@@ -219,7 +195,7 @@ export default function TrajectorySection() {
 
     const onResize = () => {
       setup();
-      ScrollTrigger.refresh();
+      if (!isMobileRef.current) ScrollTrigger.refresh();
     };
     window.addEventListener("resize", onResize);
 
@@ -231,7 +207,26 @@ export default function TrajectorySection() {
     };
   }, []);
 
-  // ── Scrollbar drag handlers ───────────────────────────────────────────────
+  // ── Mobile: animate to clicked card ──────────────────────────────────────
+  useEffect(() => {
+    if (!isMobileRef.current) return;
+    const m = metricsRef.current;
+    if (!m) return;
+    const { cardW, gapPx, pxPagePx } = m;
+
+    activeIdxRef.current = activeIndex;
+    gsap.to(scrollWrapRef.current, {
+      x: -(cardW + gapPx) * activeIndex,
+      duration: 0.5,
+      ease: "power2.out",
+    });
+    if (fillBarRef.current) {
+      fillBarRef.current.style.width = `${activeIndex * (cardW + gapPx)}px`;
+    }
+    gsap.to(descRef.current, { x: pxPagePx, duration: 0.5, ease: "power2.out" });
+  }, [activeIndex]);
+
+  // ── Desktop scrollbar drag handlers ──────────────────────────────────────
   const handlePointerDown = (e) => {
     const thumb = thumbRef.current;
     if (!thumb) return;
@@ -246,21 +241,18 @@ export default function TrajectorySection() {
 
   const handlePointerMove = (e) => {
     if (!dragRef.current.isDragging) return;
-    const track = scrollbarRef.current;
-    if (!track || !stRef.current) return;
-    const trackW = track.getBoundingClientRect().width;
-    const thumbW = (trackW * THUMB_PCT) / 100;
+    const bar = scrollbarRef.current;
+    if (!bar || !stRef.current) return;
+    const barW = bar.getBoundingClientRect().width;
+    const thumbW = (barW * THUMB_PCT) / 100;
     const delta = e.clientX - dragRef.current.startX;
     const newLeft = Math.max(
       0,
-      Math.min(trackW - thumbW, dragRef.current.startLeft + delta),
+      Math.min(barW - thumbW, dragRef.current.startLeft + delta),
     );
-    const progress = trackW - thumbW > 0 ? newLeft / (trackW - thumbW) : 0;
+    const progress = barW - thumbW > 0 ? newLeft / (barW - thumbW) : 0;
     const st = stRef.current;
-    window.scrollTo({
-      top: st.start + progress * (st.end - st.start),
-      behavior: "auto",
-    });
+    window.scrollTo({ top: st.start + progress * (st.end - st.start), behavior: "auto" });
     e.preventDefault();
   };
 
@@ -272,36 +264,29 @@ export default function TrajectorySection() {
 
   const handleTrackClick = (e) => {
     if (e.target === thumbRef.current) return;
-    const track = scrollbarRef.current;
-    if (!track || !stRef.current) return;
-    const rect = track.getBoundingClientRect();
+    const bar = scrollbarRef.current;
+    if (!bar || !stRef.current) return;
+    const rect = bar.getBoundingClientRect();
     const thumbW = (rect.width * THUMB_PCT) / 100;
     const clickX = e.clientX - rect.left;
-    const newLeft = Math.max(
-      0,
-      Math.min(rect.width - thumbW, clickX - thumbW / 2),
-    );
-    const progress =
-      rect.width - thumbW > 0 ? newLeft / (rect.width - thumbW) : 0;
+    const newLeft = Math.max(0, Math.min(rect.width - thumbW, clickX - thumbW / 2));
+    const progress = rect.width - thumbW > 0 ? newLeft / (rect.width - thumbW) : 0;
     const st = stRef.current;
-    window.scrollTo({
-      top: st.start + progress * (st.end - st.start),
-      behavior: "auto",
-    });
+    window.scrollTo({ top: st.start + progress * (st.end - st.start), behavior: "auto" });
   };
 
   return (
     <>
       <section className="ts">
-        {/* Header — scrolls normally, NOT part of the pinned 100vh */}
+        {/* Header */}
         <div className="ts__header">
           <p className="ts__subtitle">Trajectory</p>
           <h2 className="ts__title">Areas of Practice</h2>
         </div>
 
-        {/* Pinned viewport — 100vh, content vertically centred */}
+        {/* Desktop: pinned 100vh viewport / Mobile: natural height */}
         <div className="ts__inner" ref={innerRef}>
-          {/* Scroll wrapper — track + timeline translate together in Phase 2 */}
+          {/* Scroll wrapper — desktop: slides via ScrollTrigger; mobile: slides via click */}
           <div className="ts__scroll-wrap" ref={scrollWrapRef}>
             {/* Cards track */}
             <div className="ts__track" ref={trackRef}>
@@ -325,7 +310,7 @@ export default function TrajectorySection() {
               ))}
             </div>
 
-            {/* Timeline row — desktop only (scrolls with cards in scroll-wrap) */}
+            {/* Desktop timeline — inside scroll-wrap, aligned with cards */}
             <div className="ts__timeline-row ts__timeline-row--desktop">
               <div className="ts__timeline">
                 <div className="ts__tl-line" ref={lineRef} />
@@ -344,12 +329,13 @@ export default function TrajectorySection() {
             </div>
           </div>
 
-          {/* Mobile: static dots row outside scroll-wrap so all dots stay visible */}
+          {/* Mobile dots — static row outside scroll-wrap, click to switch card */}
           <div className="ts__timeline-row ts__timeline-row--mobile">
             {CARDS.map((_, i) => (
               <div
                 key={i}
                 className={`ts__step ts__step--sm${activeIndex === i ? " ts__step--active" : ""}`}
+                onClick={() => setActiveIndex(i)}
               >
                 <div className="ts__dot-wrap">
                   <span className="ts__dot" />
@@ -358,9 +344,7 @@ export default function TrajectorySection() {
             ))}
           </div>
 
-          {/* Description wrapper — JS sets translateX to follow active card + Phase 2 offset.
-              Inner div uses key={activeIndex} so React remounts it on each change,
-              re-triggering the CSS slide-up animation automatically. */}
+          {/* Description */}
           <div className="ts__desc-wrap" ref={descRef}>
             <div className="ts__desc" key={activeIndex}>
               <p className="ts__desc-title">{CARDS[activeIndex].title}</p>
@@ -372,7 +356,7 @@ export default function TrajectorySection() {
         </div>
       </section>
 
-      {/* Custom horizontal scrollbar — mirrors HorizontalScroller pattern */}
+      {/* Desktop scrollbar */}
       <div
         className={`ts__scrollbar${isInSection ? " ts__scrollbar--active" : ""}`}
         ref={scrollbarRef}
