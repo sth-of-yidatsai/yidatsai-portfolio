@@ -30,6 +30,23 @@ function TitleBlock({
     const allChars   = [...titleChars, ...descChars];
     if (!section || !allChars.length) return;
 
+    /* ── Mobile: entrance animation only, no GSAP pin ── */
+    if (window.innerWidth <= 768) {
+      allChars.forEach(c => { c.style.color = FILL_COLOR; });
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            requestAnimationFrame(() => section.classList.add('is-visible'));
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -38% 0px' }
+      );
+      observer.observe(section);
+      return () => observer.disconnect();
+    }
+
+    /* ── Desktop: GSAP sticky char fill ── */
     allChars.forEach(c => { c.style.color = EMPTY_COLOR; });
 
     let ctx;
@@ -40,7 +57,7 @@ function TitleBlock({
           trigger: section,
           pin:     true,
           start:   'top top',
-          end:     `+=${window.innerHeight * 1.8}`,
+          end:     `+=${Math.max(window.innerHeight, section.offsetHeight * 1.1)}`,
           scrub:   0.6,
           onUpdate(self) {
             const filled = Math.round(self.progress * allChars.length);
