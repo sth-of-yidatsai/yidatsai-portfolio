@@ -328,16 +328,11 @@ body.menu-open .ts__scrollbar {
 @media (max-width: 1024px) {
   .ts__title {
     font-size: var(--fs-48pt);
+    font-weight: var(--fw-light);
   }
-}
 
-@media (max-width: 900px) {
-  .ts__header {
+    .ts__header {
     padding-top: var(--space-xl);
-  }
-
-  .ts__title {
-    font-size: var(--fs-40pt);
   }
 
   .ts__track,
@@ -364,7 +359,7 @@ body.menu-open .ts__scrollbar {
   }
 
   .ts__title {
-    font-size: var(--fs-32pt);
+    font-size: var(--fs-40pt);
   }
 
   .ts__year {
@@ -406,6 +401,6 @@ body.menu-open .ts__scrollbar {
 /* xs ≤ 480px */
 @media (max-width: 480px) {
   .ts__title {
-    font-size: var(--fs-28pt);
+    font-size: var(--fs-32pt);
   }
 }
