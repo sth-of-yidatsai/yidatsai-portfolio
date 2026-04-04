@@ -15,24 +15,26 @@ const TEXT2 =
 /* ── Sticky text block ───────────────────────────────────────────────── */
 function StickyText({ text, isFirst = false }) {
   const sectionRef = useRef(null);
-  const charsRef   = useRef([]);
+  const charsRef = useRef([]);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    const chars   = charsRef.current.filter(Boolean);
+    const chars = charsRef.current.filter(Boolean);
     if (!section || !chars.length) return;
 
     /* ── Mobile: entrance animation only, no GSAP pin ── */
     if (window.innerWidth <= 768) {
-      chars.forEach(c => { c.style.color = "var(--gray-50)"; });
+      chars.forEach((c) => {
+        c.style.color = "var(--gray-50)";
+      });
 
       if (isFirst) {
-        // 字1：等 loader 完全離開螢幕後立即觸發（無額外 rAF 延遲）
-        const onExitComplete = () => {
-          section.classList.add("is-visible");
+        // 字1：loader 開始退場後 500ms 觸發，與 loader 1s 退場動畫交疊完成
+        const onExitStart = () => {
+          setTimeout(() => section.classList.add("is-visible"), 500);
         };
-        window.addEventListener("loader:exit-complete", onExitComplete, { once: true });
-        return () => window.removeEventListener("loader:exit-complete", onExitComplete);
+        window.addEventListener("loader:exit-start", onExitStart, { once: true });
+        return () => window.removeEventListener("loader:exit-start", onExitStart);
       }
 
       // 字2：接近螢幕中央時才觸發（rootMargin 往內縮 25%）
@@ -43,14 +45,16 @@ function StickyText({ text, isFirst = false }) {
             observer.disconnect();
           }
         },
-        { threshold: 0.1, rootMargin: "0px 0px -38% 0px" }
+        { threshold: 0.1, rootMargin: "0px 0px -40% 0px" },
       );
       observer.observe(section);
       return () => observer.disconnect();
     }
 
     /* ── Desktop: GSAP sticky char fill ── */
-    chars.forEach(c => { c.style.color = "var(--gray-500)"; });
+    chars.forEach((c) => {
+      c.style.color = "var(--gray-500)";
+    });
 
     let ctx;
     const setup = () => {
@@ -58,10 +62,10 @@ function StickyText({ text, isFirst = false }) {
       ctx = gsap.context(() => {
         ScrollTrigger.create({
           trigger: section,
-          pin:     true,
-          start:   "top top",
-          end:     `+=${Math.max(window.innerHeight, section.offsetHeight * 1.1)}`,
-          scrub:   0.6,
+          pin: true,
+          start: "top top",
+          end: `+=${Math.max(window.innerHeight, section.offsetHeight * 1.1)}`,
+          scrub: 0.6,
           onUpdate(self) {
             const filled = Math.round(self.progress * chars.length);
             chars.forEach((c, i) => {
@@ -78,7 +82,7 @@ function StickyText({ text, isFirst = false }) {
       window.removeEventListener("resize", setup);
       ctx?.revert();
     };
-  }, []);
+  }, [isFirst]);
 
   return (
     <section className="bs__text-block" ref={sectionRef}>
@@ -88,7 +92,9 @@ function StickyText({ text, isFirst = false }) {
           <span
             key={i}
             className="bs__char"
-            ref={el => { charsRef.current[i] = el; }}
+            ref={(el) => {
+              charsRef.current[i] = el;
+            }}
           >
             {char}
           </span>
@@ -101,17 +107,17 @@ function StickyText({ text, isFirst = false }) {
 /* ── Parallax image block ────────────────────────────────────────────── */
 function ParallaxImage() {
   const sectionRef = useRef(null);
-  const imgRef     = useRef(null);
+  const imgRef = useRef(null);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    const img     = imgRef.current;
+    const img = imgRef.current;
     if (!section || !img) return;
 
     const SPEED = 0.25; // fraction of viewport shift
 
     const onScroll = () => {
-      const rect     = section.getBoundingClientRect();
+      const rect = section.getBoundingClientRect();
       const progress = rect.top / window.innerHeight; // 1→entering, 0→centered, -1→leaving
       img.style.transform = `translateY(${progress * SPEED * 100}%)`;
     };

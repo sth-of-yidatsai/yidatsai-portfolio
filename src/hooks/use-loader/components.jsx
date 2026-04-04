@@ -83,11 +83,16 @@ export function Loader({ show }) {
       setExiting(false);
       timerRef.current = setTimeout(() => {
         cycleReadyRef.current = true;
-        if (exitPendingRef.current) setExiting(true);
+        if (exitPendingRef.current) {
+          setExiting(true);
+          window.dispatchEvent(new CustomEvent("loader:exit-start"));
+        }
       }, CYCLE_MS);
     } else {
-      if (cycleReadyRef.current) setExiting(true);
-      else exitPendingRef.current = true;
+      if (cycleReadyRef.current) {
+        setExiting(true);
+        window.dispatchEvent(new CustomEvent("loader:exit-start"));
+      } else exitPendingRef.current = true;
     }
   }, [show]);
 
