@@ -32,9 +32,9 @@ const SIZE_HEIGHT = {
 
 const COL_COUNT = 3;
 
-function buildLayout(projects) {
-  const cols = Array.from({ length: COL_COUNT }, () => []);
-  const heights = Array(COL_COUNT).fill(0);
+function buildLayout(projects, colCount = COL_COUNT) {
+  const cols = Array.from({ length: colCount }, () => []);
+  const heights = Array(colCount).fill(0);
   for (const p of projects) {
     const h = SIZE_HEIGHT[p.size] ?? 0.75;
     const shortest = heights.indexOf(Math.min(...heights));
@@ -42,6 +42,19 @@ function buildLayout(projects) {
     heights[shortest] += h;
   }
   return cols;
+}
+
+function useColCount() {
+  const [colCount, setColCount] = useState(() =>
+    typeof window !== "undefined" && window.innerWidth <= 768 ? 1 : COL_COUNT
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const handler = (e) => setColCount(e.matches ? 1 : COL_COUNT);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return colCount;
 }
 
 // ─── SEO <link> tag helpers ──────────────────────────────────────────────────
@@ -222,7 +235,8 @@ export default function AllWork() {
   );
 
 
-  const cols = buildLayout(visibleProjects);
+  const colCount = useColCount();
+  const cols = buildLayout(visibleProjects, colCount);
 
   return (
     <section className="all-work">
