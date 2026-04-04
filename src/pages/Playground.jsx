@@ -21,6 +21,16 @@ const SIZE_DIMS = {
 const DEFAULT_DIMS = { width: 360, height: 480 }; // fallback（同 portrait）
 
 // 依螢幕寬度決定卡片縮放比例
+// 計算 contain 尺寸：在螢幕內完整顯示圖片，不超出任何一邊
+const calcContainSize = (imgW, imgH) => {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const scaleByW = vw / imgW;
+  const scaleByH = vh / imgH;
+  const scale = Math.min(scaleByW, scaleByH);
+  return { targetWidth: imgW * scale, targetHeight: imgH * scale };
+};
+
 const getDeviceScale = () => {
   const w = window.innerWidth;
   if (w < 480) return 0.58;
@@ -383,12 +393,8 @@ export default function Playground() {
       height: itemHeight,
     };
 
-    const viewportHeight = window.innerHeight;
-    const aspectRatio = itemHeight / itemWidth;
-
-    // 縱向圖片放大至螢幕高度100%
-    const targetHeight = viewportHeight;
-    const targetWidth = targetHeight / aspectRatio;
+    // contain：依裝置方向決定由寬還是高限制，確保圖片完整顯示不超出螢幕
+    const { targetWidth, targetHeight } = calcContainSize(itemWidth, itemHeight);
 
     gsap.fromTo(
       expanded,
@@ -568,13 +574,10 @@ export default function Playground() {
     };
     const onResize = () => {
       if (s.isExpanded && s.expandedItem && s.originalPosition) {
-        const viewportHeight = window.innerHeight;
-        const aspectRatio =
-          s.originalPosition.height / s.originalPosition.width;
-
-        // 縱向圖片放大至螢幕高度100%
-        const targetHeight = viewportHeight;
-        const targetWidth = targetHeight / aspectRatio;
+        const { targetWidth, targetHeight } = calcContainSize(
+          s.originalPosition.width,
+          s.originalPosition.height
+        );
 
         gsap.to(s.expandedItem, {
           width: targetWidth,
