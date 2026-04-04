@@ -64,10 +64,16 @@
   .block--title {
     min-height: unset;
   }
+  .block--title__title,
+  .block--title__description {
+    font-weight: var(--fw-light);
+  }
   .block--title__inner {
     opacity: 0;
     transform: translateY(24px);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s ease-out;
   }
   .block--title.is-visible .block--title__inner {
     opacity: 1;
