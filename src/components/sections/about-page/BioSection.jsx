@@ -27,9 +27,9 @@ function StickyText({ text, isFirst = false }) {
       chars.forEach(c => { c.style.color = "var(--gray-50)"; });
 
       if (isFirst) {
-        // 字1：等 loader 完全離開螢幕後才觸發（loader:exit-complete = handleTransitionEnd 後）
+        // 字1：等 loader 完全離開螢幕後立即觸發（無額外 rAF 延遲）
         const onExitComplete = () => {
-          requestAnimationFrame(() => section.classList.add("is-visible"));
+          section.classList.add("is-visible");
         };
         window.addEventListener("loader:exit-complete", onExitComplete, { once: true });
         return () => window.removeEventListener("loader:exit-complete", onExitComplete);
@@ -43,7 +43,7 @@ function StickyText({ text, isFirst = false }) {
             observer.disconnect();
           }
         },
-        { threshold: 0.1, rootMargin: "0px 0px -25% 0px" }
+        { threshold: 0.1, rootMargin: "0px 0px -38% 0px" }
       );
       observer.observe(section);
       return () => observer.disconnect();

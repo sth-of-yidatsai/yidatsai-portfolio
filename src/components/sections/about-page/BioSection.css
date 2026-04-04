@@ -110,8 +110,8 @@
     min-height: unset;
     padding: var(--space-xl) var(--px-page);
     opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
+    transform: translateY(24px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
   }
   /* First text block needs extra top clearance for fixed header (16px top + 48px height) */
   .bs .bs__text-block:first-child {
