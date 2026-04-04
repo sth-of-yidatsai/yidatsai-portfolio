@@ -244,7 +244,7 @@
 }
 
 .cf__interest-item {
-  display: inline-flex;  /* shrink to content width */
+  display: inline-flex; /* shrink to content width */
   align-self: flex-start;
   align-items: center;
   gap: var(--space-sm);
@@ -270,7 +270,9 @@
   height: 18px;
   border-radius: 50%;
   border: 1.5px solid var(--gray-400);
-  transition: border-color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
 }
 
 .cf__radio-ring--checked {
@@ -398,10 +400,10 @@
   border-radius: 50%;
   background: var(--gray-400);
   transition:
-    width        0.55s cubic-bezier(0.16, 1, 0.3, 1),
-    height       0.55s cubic-bezier(0.16, 1, 0.3, 1),
-    background   0.3s  ease,
-    border-color 0.3s  ease;
+    width 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.3s ease,
+    border-color 0.3s ease;
   position: relative;
 }
 
@@ -466,7 +468,9 @@
   padding: var(--space-md) var(--space-sm);
   text-align: center;
   cursor: none;
-  transition: color 0.2s, background 0.2s;
+  transition:
+    color 0.2s,
+    background 0.2s;
 }
 
 .cf__timeline-btn:last-child {
@@ -536,7 +540,7 @@
   background: var(--gray-25);
 
   transition:
-    opacity  0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -575,7 +579,6 @@
   flex: 1;
 }
 
-
 /* ── Send button ──────────────────────────────────────────────── */
 .cf__send-wrap {
   display: flex;
@@ -592,7 +595,10 @@
   border: 1.5px solid var(--gray-700);
   background: transparent;
   cursor: none;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
 }
 
 .cf__send-btn:hover {
@@ -682,7 +688,6 @@
   .cf__timeline-btn:last-child {
     flex: 1 1 100%;
     border-right: 1px solid var(--gray-200);
-    
   }
 
   .cf__textarea {
@@ -697,6 +702,10 @@
   .cf__note {
     text-align: left;
     flex: none;
+  }
+
+  .cf__send-btn {
+    margin-top: var(--space-lg);
   }
 }
 
@@ -799,7 +808,6 @@
     height: auto;
     padding: var(--space-md) 0;
     border-radius: 2px;
-    margin-top: var(--space-lg);
   }
 }
 
@@ -833,9 +841,15 @@
   }
 
   /* reorder budget track: dots → active tier name → description */
-  .cf__budget-dots     { order: 1; }
-  .cf__budget-tier-row { order: 2; }
-  .cf__budget-desc     { order: 3; }
+  .cf__budget-dots {
+    order: 1;
+  }
+  .cf__budget-tier-row {
+    order: 2;
+  }
+  .cf__budget-desc {
+    order: 3;
+  }
 
   /* active tier name — same size/color as description, slightly bolder */
   .cf__budget-tier-cell--active {

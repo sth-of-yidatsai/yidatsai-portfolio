@@ -253,6 +253,10 @@
     padding-top: var(--space-xl);
     padding-bottom: var(--space-xl);
   }
+
+  .cs__title {
+    font-size: var(--fs-40pt);
+  }
 }
 
 @media (max-width: 600px) {
@@ -275,7 +279,7 @@
 /* xs ≤ 480px */
 @media (max-width: 480px) {
   .cs__title {
-    font-size: var(--fs-36pt);
+    font-size: var(--fs-32pt);
   }
 
   .cs__item-title {
