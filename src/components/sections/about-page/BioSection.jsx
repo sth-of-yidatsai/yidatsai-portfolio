@@ -33,8 +33,11 @@ function StickyText({ text, isFirst = false }) {
         const onExitStart = () => {
           setTimeout(() => section.classList.add("is-visible"), 500);
         };
-        window.addEventListener("loader:exit-start", onExitStart, { once: true });
-        return () => window.removeEventListener("loader:exit-start", onExitStart);
+        window.addEventListener("loader:exit-start", onExitStart, {
+          once: true,
+        });
+        return () =>
+          window.removeEventListener("loader:exit-start", onExitStart);
       }
 
       // 字2：接近螢幕中央時才觸發（rootMargin 往內縮 25%）
@@ -151,7 +154,7 @@ export default function BioSection() {
       <StickyText text={TEXT2} />
       <section className="bs__zh-bio" lang="zh-TW" aria-label="中文簡介">
         <p>
-          蔡易達，台灣台北的視覺設計師與前端開發者，專注於字體設計、編輯設計與數位體驗。
+          蔡易達，台灣台北的視覺設計師與前端工程師，專注於字體設計、裝幀設計與數位體驗。
           跨足平面設計與網頁開發，致力於在不同媒介間探索設計語言的可能性。
         </p>
       </section>

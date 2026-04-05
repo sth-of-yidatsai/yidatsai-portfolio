@@ -149,6 +149,12 @@
   font-family: var(--font-cjk), sans-serif;
   font-size: var(--fs-10pt);
   line-height: 1.8;
-  color: var(--gray-600);
+  color: var(--gray-500);
   margin: 0;
+}
+
+@media (max-width: 768px) {
+  .bs__zh-bio {
+    padding: 0 var(--px-page) var(--space-lg);
+  }
 }
