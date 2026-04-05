@@ -28,6 +28,7 @@
     "description": "Inspired by Taiwan’s diverse climate and terrain, this project transforms the idea of “Formosa” into a typographic expression. By integrating Latin letterforms with native flora, we reinterpret the island’s rich biodiversity through design.",
     "category": ["Editorial", "Book", "Typography", "Type Design"],
     "tags": ["Botanical", "Taiwan"],
+    "ogImage": "og.jpg",
     "size": "square"
   },
   {
@@ -57,6 +58,7 @@
     "description": "This project reinterprets the fading craft of patterned glass through a contemporary object. Combining a glass outer box, an exposed binding notebook, and an embossed bookmark, it preserves texture, memory, and the tactile quality of traditional craftsmanship.",
     "category": ["Product", "Graphic", "Photography"],
     "tags": ["Notebook", "Taiwan", "Glass"],
+    "ogImage": "og.jpg",
     "size": "portrait"
   },
   {
@@ -89,6 +91,7 @@
     "description": "This editorial design reinterprets two seminal works by Michel Foucault—The Order of Things and The Archaeology of Knowledge. The project explores how systems of knowledge are constructed, organized, and transformed over time, translating abstract philosophical structures into a visual language of form, hierarchy, and material.",
     "category": ["Editorial", "Book", "Poster"],
     "tags": ["Philosophy", "Michel Foucault"],
+    "ogImage": "og.jpg",
     "size": "landscape"
   },
   {

@@ -138,3 +138,17 @@
     font-size: var(--fs-28pt);
   }
 }
+
+/* ── Chinese bio (SEO supplemental text) ────────────────────── */
+.bs__zh-bio {
+  padding: var(--space-xl) var(--px-page);
+  background: var(--gray-900);
+}
+
+.bs__zh-bio p {
+  font-family: var(--font-cjk), sans-serif;
+  font-size: var(--fs-10pt);
+  line-height: 1.8;
+  color: var(--gray-600);
+  margin: 0;
+}

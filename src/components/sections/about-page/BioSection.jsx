@@ -149,6 +149,12 @@ export default function BioSection() {
       <StickyText text={TEXT1} isFirst />
       <ParallaxImage />
       <StickyText text={TEXT2} />
+      <section className="bs__zh-bio" lang="zh-TW" aria-label="中文簡介">
+        <p>
+          蔡易達，台灣台北的視覺設計師與前端開發者，專注於字體設計、編輯設計與數位體驗。
+          跨足平面設計與網頁開發，致力於在不同媒介間探索設計語言的可能性。
+        </p>
+      </section>
     </div>
   );
 }

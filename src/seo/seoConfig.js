@@ -10,18 +10,18 @@ export const PAGE_META = {
   home: {
     title: "Yi-Da Tsai 蔡易達｜Visual Designer & Frontend Developer",
     description:
-      "Yi-Da Tsai (蔡易達) is a visual designer and frontend developer based in Taipei, Taiwan, specializing in typography, editorial design, and digital experiences.",
+      "Yi-Da Tsai（蔡易達）是台灣台北的視覺設計師與前端工程師，專注於字體設計、編輯設計與數位體驗。",
     ogImage: "https://yidatsai.com/images/og-default.jpg",
   },
   about: {
-    title: "About | YI-DA TSAI",
+    title: "About | YI-DA TSAI 蔡易達",
     description:
-      "Learn about Yi-Da Tsai — a graphic designer with a focus on editorial, book design, and typographic systems.",
+      "蔡易達（Yi-Da Tsai）是台灣台北的視覺設計師，專注於編輯設計、書籍裝幀與字體排印系統。",
   },
   projects: {
-    title: "Projects | YI-DA TSAI",
+    title: "Projects | YI-DA TSAI 蔡易達",
     description:
-      "Selected works by Yi-Da Tsai across editorial design, book binding, typography, and visual identity.",
+      "蔡易達（Yi-Da Tsai）的設計作品集，涵蓋編輯設計、書籍裝幀、字體排印與視覺識別。",
   },
   playground: {
     title: "Playground | YI-DA TSAI",
@@ -43,7 +43,7 @@ export function buildProjectMeta(project) {
   return {
     title: `${project.title} | YI-DA TSAI`,
     description: project.description ?? SITE.defaultDescription,
-    ogImage: `${SITE.baseUrl}/images/projects/${project.id}/${project.cover}`,
+    ogImage: `${SITE.baseUrl}/images/projects/${project.id}/${project.ogImage ?? project.cover}`,
     ogType: "article",
     keywords: [
       ...(project.category ?? []),
