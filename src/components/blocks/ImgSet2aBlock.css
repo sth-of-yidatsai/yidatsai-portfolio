@@ -111,8 +111,20 @@
     padding-right: var(--px-page);
   }
 
+  .block--imgset2a--reverse {
+    padding-left: var(--px-page);
+  }
+
   .block--imgset2a__grid {
     flex-direction: column;
+  }
+
+  .block--imgset2a__grid--reverse {
+    flex-direction: column-reverse;
+  }
+
+  .block--imgset2a__grid--reverse .block--imgset2a__item--b .block--imgset2a__caption {
+    text-align: left;
   }
 
   .block--imgset2a__item--a {

@@ -102,7 +102,6 @@ export default function FoucaultBookBinding() {
         src={`${BASE}/09.webp`}
         title="Between text and structure"
         subtitle="(09)"
-        reverse
       />
 
       <ImgSet4aBlock

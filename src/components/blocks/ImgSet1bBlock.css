@@ -92,6 +92,10 @@
     padding-inline: var(--px-page);
     box-sizing: border-box;
   }
+
+  .block--imgset1b--reverse .block--imgset1b__caption {
+    text-align: left;
+  }
 }
 
 /* xs ≤ 480px */

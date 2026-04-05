@@ -120,6 +120,10 @@
     align-items: stretch;
   }
 
+  .block--imgset3b__grid--reverse {
+    flex-direction: column-reverse;
+  }
+
   .block--imgset3b__left {
     flex: none;
     flex-direction: row;

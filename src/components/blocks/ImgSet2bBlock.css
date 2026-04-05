@@ -97,9 +97,12 @@
 
 /* sm ≤ 768px */
 @media (max-width: 768px) {
-  .block--imgset2b__grid,
-  .block--imgset2b--reverse .block--imgset2b__grid {
+  .block--imgset2b__grid {
     flex-direction: column;
+  }
+
+  .block--imgset2b--reverse .block--imgset2b__grid {
+    flex-direction: column-reverse;
   }
 
   .block--imgset2b__item--a {

@@ -92,7 +92,6 @@
     height: auto;
   }
 
-  /* reverse: on mobile always show image first */
   .block--imgtxt--reverse {
     flex-direction: column-reverse;
   }
