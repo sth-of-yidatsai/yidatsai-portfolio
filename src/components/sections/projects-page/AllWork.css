@@ -46,7 +46,7 @@
   gap: var(--space-lg);
 }
 
-/* md ≤ 1024px: 2欄已足夠，調整間距 */
+/* md ≤ 1024px: 2欄（JS useColCount 控制），縮小間距 */
 @media (max-width: 1024px) {
   .all-work__masonry {
     gap: var(--space-lg);

@@ -85,7 +85,7 @@ export default function TrajectorySection() {
       ctx?.revert();
       stRef.current = null;
 
-      const isMobile = window.innerWidth <= 768;
+      const isMobile = window.innerWidth <= 1024;
       isMobileRef.current = isMobile;
 
       const n = CARDS.length;
@@ -223,7 +223,11 @@ export default function TrajectorySection() {
     if (fillBarRef.current) {
       fillBarRef.current.style.width = `${activeIndex * (cardW + gapPx)}px`;
     }
-    gsap.to(descRef.current, { x: pxPagePx, duration: 0.5, ease: "power2.out" });
+    gsap.to(descRef.current, {
+      x: pxPagePx,
+      duration: 0.5,
+      ease: "power2.out",
+    });
   }, [activeIndex]);
 
   // ── Mobile swipe handlers ─────────────────────────────────────────────────
@@ -280,7 +284,10 @@ export default function TrajectorySection() {
     );
     const progress = barW - thumbW > 0 ? newLeft / (barW - thumbW) : 0;
     const st = stRef.current;
-    window.scrollTo({ top: st.start + progress * (st.end - st.start), behavior: "auto" });
+    window.scrollTo({
+      top: st.start + progress * (st.end - st.start),
+      behavior: "auto",
+    });
     e.preventDefault();
   };
 
@@ -297,10 +304,17 @@ export default function TrajectorySection() {
     const rect = bar.getBoundingClientRect();
     const thumbW = (rect.width * THUMB_PCT) / 100;
     const clickX = e.clientX - rect.left;
-    const newLeft = Math.max(0, Math.min(rect.width - thumbW, clickX - thumbW / 2));
-    const progress = rect.width - thumbW > 0 ? newLeft / (rect.width - thumbW) : 0;
+    const newLeft = Math.max(
+      0,
+      Math.min(rect.width - thumbW, clickX - thumbW / 2),
+    );
+    const progress =
+      rect.width - thumbW > 0 ? newLeft / (rect.width - thumbW) : 0;
     const st = stRef.current;
-    window.scrollTo({ top: st.start + progress * (st.end - st.start), behavior: "auto" });
+    window.scrollTo({
+      top: st.start + progress * (st.end - st.start),
+      behavior: "auto",
+    });
   };
 
   return (
@@ -334,7 +348,7 @@ export default function TrajectorySection() {
                       className="ts__img"
                       src={card.image}
                       srcSet={buildSrcSet(card.image)}
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
                       alt={card.title}
                       draggable="false"
                     />

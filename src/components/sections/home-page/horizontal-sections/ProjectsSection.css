@@ -48,7 +48,8 @@
   background-position: center;
   background-repeat: no-repeat;
   filter: grayscale(1) blur(14px) brightness(0.85);
-  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  transition:
+    transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     filter 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: scale(1);
   z-index: 0;
@@ -104,7 +105,8 @@
   line-height: 1;
   opacity: 0.85;
   color: var(--gray-0);
-  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  transition:
+    opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateY(0px);
   margin-top: var(--space-xl);
@@ -127,7 +129,8 @@
   bottom: 3rem;
   left: 2rem;
   right: 2rem;
-  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  transition:
+    opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform: translateY(0px);
   opacity: 1;
@@ -169,19 +172,20 @@
 
 /* 響應式設計 */
 
-/* md ≤ 1024px：4 欄改垂直堆疊 */
+/* md ≤ 1024px：4 × 25vh 緊湊橫排，點擊切換 */
 @media (max-width: 1024px) {
   .fullscreen-projects-content {
     flex-direction: column;
-    height: 400vh;
+    height: 100vh;
   }
 
   .fullscreen-project-block {
     width: 100vw;
-    height: 100vh;
+    height: 25vh;
+    cursor: pointer;
   }
 
-  /* 垂直排列時分隔線改為底部水平線 */
+  /* 分隔線改為底部水平線 */
   .fullscreen-project-block:nth-child(1)::after,
   .fullscreen-project-block:nth-child(2)::after,
   .fullscreen-project-block:nth-child(3)::after {
@@ -191,36 +195,6 @@
     left: 0;
     width: 100%;
     height: 1px;
-  }
-
-  .project-block-number-large {
-    font-size: var(--fs-48pt);
-  }
-
-  .project-practice-areas-large {
-    font-size: var(--fs-18pt);
-  }
-
-  .project-block-overlay {
-    padding: 2rem 1.5rem;
-  }
-
-  .project-block-content-bottom {
-    bottom: 2rem;
-    left: 1.5rem;
-    right: 1.5rem;
-  }
-}
-
-/* sm ≤ 768px — 4 × 25vh，底部並排，點擊切換 */
-@media (max-width: 768px) {
-  .fullscreen-projects-content {
-    height: 100vh;
-  }
-
-  .fullscreen-project-block {
-    height: 25vh;
-    cursor: pointer;
   }
 
   /* 號碼 + 文字底部橫排 */
@@ -233,7 +207,7 @@
   }
 
   .project-block-number-large {
-    font-size: var(--fs-40pt);
+    font-size: var(--fs-56pt);
     margin-top: 0;
     margin-left: 0;
     flex-shrink: 0;
@@ -252,16 +226,26 @@
     transform: none;
     opacity: 1;
     padding-bottom: 6px;
+    flex: 1;
+    justify-content: space-between;
+    align-items: flex-end;
   }
 
   .project-practice-areas-large {
     font-size: var(--fs-18pt);
   }
 
-  /* 手機隱藏描述與分隔線 */
-  .project-rule,
-  .project-description {
+  /* 分隔線隱藏，description 改靠右顯示 */
+  .project-rule {
     display: none;
+  }
+
+  .project-description {
+    display: block;
+    max-width: 44%;
+    text-align: right;
+    white-space: pre-line;
+    font-size: var(--fs-10pt);
   }
 
   /* 覆蓋桌機 CSS hover（touch 裝置的 :hover 殘留） */
@@ -293,5 +277,20 @@
   .fullscreen-project-block.is-tapped .project-block-content-bottom {
     opacity: 0;
     transform: translateY(-4px);
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  .project-description {
+    display: none;
+  }
+
+  .project-block-number-large {
+    font-size: var(--fs-40pt);
+  }
+
+  .project-block-content-bottom {
+    justify-content: flex-start;
   }
 }

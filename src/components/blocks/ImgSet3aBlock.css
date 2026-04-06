@@ -73,19 +73,6 @@
 
 /* ── Responsive ── */
 
-/* md ≤ 1024px: 主圖 + 兩張小圖 2欄 */
-@media (max-width: 1024px) {
-  .block--imgset3a__grid {
-    grid-template-columns: 3fr 2fr;
-    grid-template-rows: auto auto;
-  }
-
-  .block--imgset3a__item:nth-child(3) {
-    grid-column: 2;
-    grid-row: 2;
-  }
-}
-
 /* sm ≤ 768px */
 @media (max-width: 768px) {
   .block--imgset3a__grid {

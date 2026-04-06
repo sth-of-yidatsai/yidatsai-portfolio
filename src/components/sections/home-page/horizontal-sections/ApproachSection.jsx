@@ -4,8 +4,8 @@ import { useHorizontalParallaxRef } from "../../../../hooks/useHorizontalParalla
 
 // ── 圖片配置 ── 統一管理，方便置換
 const approachConfig = {
-  leftImage: "/images/projects/foucault-book-binding/05.webp",
-  rightImage: "/images/projects/foucault-book-binding/07.webp",
+  leftImage: "/images/projects/foucault-book-binding/06.webp",
+  rightImage: "/images/projects/foucault-book-binding/20.webp",
 };
 
 export default function ApproachSection({ index }) {

@@ -22,8 +22,8 @@ function StickyText({ text, isFirst = false }) {
     const chars = charsRef.current.filter(Boolean);
     if (!section || !chars.length) return;
 
-    /* ── Mobile: entrance animation only, no GSAP pin ── */
-    if (window.innerWidth <= 768) {
+    /* ── Tablet/Mobile: entrance animation only, no GSAP pin ── */
+    if (window.innerWidth <= 1024) {
       chars.forEach((c) => {
         c.style.color = "var(--gray-50)";
       });

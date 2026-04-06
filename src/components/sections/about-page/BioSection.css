@@ -83,29 +83,8 @@
 
 /* ── Responsive ──────────────────────────────────────────────── */
 
-/* md ≤ 1024px */
+/* md ≤ 1024px — entrance animation, auto height */
 @media (max-width: 1024px) {
-  .bs__text {
-    font-size: var(--fs-48pt);
-  }
-}
-
-@media (max-width: 900px) {
-  .bs__text {
-    font-size: var(--fs-40pt);
-  }
-}
-
-/* sm ≤ 768px — mobile: square image */
-@media (max-width: 768px) {
-  .bs__img-block {
-    min-height: unset;
-    height: 100vw;
-  }
-}
-
-/* sm ≤ 768px — mobile: auto height + entrance animation */
-@media (max-width: 768px) {
   .bs__text-block {
     min-height: unset;
     padding: var(--space-xl) var(--px-page);
@@ -115,13 +94,24 @@
       opacity 0.5s ease-out,
       transform 0.5s ease-out;
   }
+
   /* First text block needs extra top clearance for fixed header (16px top + 48px height) */
   .bs .bs__text-block:first-child {
     padding-top: calc(var(--space-md) + 48px + var(--space-xl));
   }
+
   .bs__text-block.is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  .bs__text {
+    font-size: var(--fs-40pt);
+  }
+
+  .bs__img-block {
+    min-height: unset;
+    height: 100vw;
   }
 }
 

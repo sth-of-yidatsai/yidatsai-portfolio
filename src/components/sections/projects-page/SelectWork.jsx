@@ -12,13 +12,14 @@ import { buildSrcSet } from "../../../utils/imgSrcSet";
 import "./SelectWork.css";
 
 // ─── Work Selection Config ──────────────────────────────────────────────────
-// Define which project and which image index appears in each card slot.
+// Each entry: { id: "project-id", image: "filename.webp" }
+// `image` is the filename inside /images/projects/<id>/ — pick any project image freely.
 const SELECTED_WORKS = [
-  "formosa-font",
-  "patterned-glass-notebook",
-  "foucault-book-binding",
-  "patterned-glass-notebook",
-  "foucault-book-binding",
+  { id: "formosa-font", image: "03.webp" },
+  { id: "patterned-glass-notebook", image: "16.webp" },
+  { id: "foucault-book-binding", image: "01.webp" },
+  { id: "patterned-glass-notebook", image: "08.webp" },
+  { id: "foucault-book-binding", image: "06.webp" },
 ];
 // ───────────────────────────────────────────────────────────────────────────
 
@@ -28,14 +29,14 @@ const ANIM_MS = 1900; // slightly longer than CSS transition (1800ms) to fire af
 
 function buildCards(config, data) {
   return config
-    .map((projectId, i) => {
+    .map(({ id: projectId, image: imageFile }, i) => {
       const p = data.find((x) => x.id === projectId);
       if (!p) return null;
       return {
         id: p.id,
         title: p.title,
         description: p.description,
-        image: `/images/projects/${p.id}/${p.cover}`,
+        image: `/images/projects/${p.id}/${imageFile}`,
         number: `(${String(i + 1).padStart(2, "0")})`,
       };
     })
@@ -48,10 +49,7 @@ export default function SelectWork() {
   const N = cards.length;
 
   // Triple-clone the cards: [set0, set1(real), set2] for seamless infinite loop
-  const displayCards = useMemo(
-    () => [...cards, ...cards, ...cards],
-    [cards]
-  );
+  const displayCards = useMemo(() => [...cards, ...cards, ...cards], [cards]);
 
   const trackRef = useRef(null);
   const offsetRef = useRef(0);
@@ -91,7 +89,7 @@ export default function SelectWork() {
         }
       }, ANIM_MS);
     },
-    [getStep, N]
+    [getStep, N],
   );
 
   const startAutoAdvance = useCallback(() => {
@@ -123,8 +121,6 @@ export default function SelectWork() {
     navigate(`/projects/${card.id}`);
   };
 
-
-
   return (
     <section className="select-work">
       <div className="select-work__header">
@@ -142,7 +138,10 @@ export default function SelectWork() {
               key={i}
               className="select-work__card-wrap"
               href={`/projects/${card.id}`}
-              onClick={(e) => { e.preventDefault(); handleCardClick(card); }}
+              onClick={(e) => {
+                e.preventDefault();
+                handleCardClick(card);
+              }}
               data-clickable
             >
               <div className="select-work__card">

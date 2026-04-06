@@ -93,7 +93,7 @@
 }
 
 .as-body {
- font-family: var(--font-manrope);
+  font-family: var(--font-manrope);
   font-size: var(--fs-12pt);
   font-weight: var(--fw-regular);
   line-height: 1.5;
@@ -141,7 +141,7 @@
 
 /* ── Responsive ──────────────────────────────────────────────────── */
 
-/* md ≤ 1024px：左右 50vw 改為上下堆疊 */
+/* md ≤ 1024px：左右 50vw 改為上下堆疊；圖文橫排 */
 @media (max-width: 1024px) {
   .as-section {
     flex-direction: column;
@@ -151,22 +151,33 @@
   .as-left {
     width: 100%;
     height: auto;
-    padding: var(--space-2xl) var(--px-page) var(--space-xl);
+    padding: var(--space-lg) var(--px-page) var(--space-xl);
   }
 
   .as-right {
     width: 100%;
     height: 100vw;
   }
-}
 
-/* sm ≤ 768px */
-@media (max-width: 768px) {
-  .as-left {
-    padding: var(--space-md) var(--px-page) var(--space-xl);
+  /* 圖片與文字橫排 */
+  .as-left-content {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: var(--space-lg);
   }
 
+  .as-small-image {
+    width: 38%;
+    flex-shrink: 0;
+  }
+}
+
+/* xs ≤ 480px */
+@media (max-width: 480px) {
+  /* 手機：恢復直排 */
   .as-left-content {
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-xl);
   }
 

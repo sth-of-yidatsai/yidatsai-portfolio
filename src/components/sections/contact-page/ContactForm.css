@@ -707,6 +707,24 @@
   .cf__send-btn {
     margin-top: var(--space-lg);
   }
+
+  .cf__footer {
+    margin-top: var(--space-md);
+    padding-top: 0;
+    border-top: none;
+  }
+
+  /* full-width rectangular send button */
+  .cf__send-wrap {
+    width: 100%;
+  }
+
+  .cf__send-btn {
+    width: 100%;
+    height: auto;
+    padding: var(--space-md) 0;
+    border-radius: 2px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -792,23 +810,6 @@
 }
 
 @media (max-width: 768px) {
-  .cf__footer {
-    margin-top: var(--space-md);
-    padding-top: 0;
-    border-top: none;
-  }
-
-  /* full-width rectangular send button */
-  .cf__send-wrap {
-    width: 100%;
-  }
-
-  .cf__send-btn {
-    width: 100%;
-    height: auto;
-    padding: var(--space-md) 0;
-    border-radius: 2px;
-  }
 }
 
 @media (max-width: 600px) {

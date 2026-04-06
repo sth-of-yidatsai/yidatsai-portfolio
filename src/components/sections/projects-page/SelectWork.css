@@ -181,18 +181,9 @@
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 
-/* md ≤ 1024px：每次顯示 2 張卡 */
+/* md ≤ 1024px：每次顯示 1 張 + 右側微露 peek */
 @media (max-width: 1024px) {
-  .select-work__card-wrap {
-    width: calc((100vw - 2 * var(--px-page) - 1 * 16px) / 2);
-  }
-}
-
-/* sm ≤ 768px：每次顯示 1 張 + 右側微露 peek */
-@media (max-width: 768px) {
   .select-work {
-    height: auto;
-    padding-top: calc(var(--space-md) + 48px + var(--space-xl));
     padding-bottom: var(--space-lg);
   }
 
@@ -219,8 +210,19 @@
   }
 }
 
+/* sm ≤ 768px：header 高度補償 */
+@media (max-width: 768px) {
+  .select-work {
+    padding-top: calc(var(--space-md) + 48px + var(--space-xl));
+  }
+}
+
 /* xs ≤ 480px：收窄 padding */
 @media (max-width: 480px) {
+  .select-work {
+    height: auto;
+  }
+
   .select-work__card-wrap {
     width: calc(100vw - 2 * var(--space-md) - 24px);
   }

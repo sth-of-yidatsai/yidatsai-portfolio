@@ -45,14 +45,23 @@ function buildLayout(projects, colCount = COL_COUNT) {
 }
 
 function useColCount() {
-  const [colCount, setColCount] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth <= 768 ? 1 : COL_COUNT
-  );
+  const getCount = () => {
+    if (typeof window === "undefined") return COL_COUNT;
+    if (window.innerWidth <= 768) return 1;
+    if (window.innerWidth <= 1024) return 2;
+    return COL_COUNT;
+  };
+  const [colCount, setColCount] = useState(getCount);
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px)");
-    const handler = (e) => setColCount(e.matches ? 1 : COL_COUNT);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
+    const mq768  = window.matchMedia("(max-width: 768px)");
+    const mq1024 = window.matchMedia("(max-width: 1024px)");
+    const handler = () => setColCount(getCount());
+    mq768.addEventListener("change", handler);
+    mq1024.addEventListener("change", handler);
+    return () => {
+      mq768.removeEventListener("change", handler);
+      mq1024.removeEventListener("change", handler);
+    };
   }, []);
   return colCount;
 }
@@ -102,7 +111,7 @@ const ProjectCard = memo(function ProjectCard({ project, onClick, cardRef }) {
           ref={imgRef}
           src={imgSrc}
           srcSet={buildSrcSet(imgSrc)}
-          sizes="(max-width: 768px) 100vw, 33vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           alt={project.title}
           className="all-work__card-img"
           loading="lazy"

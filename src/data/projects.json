@@ -4,7 +4,7 @@
     "title": "The Book of Formosa Font",
     "year": 2022,
     "order": 1,
-    "cover": "03.webp",
+    "cover": "04.webp",
     "images": [
       "01.webp",
       "02.webp",
@@ -29,7 +29,7 @@
     "category": ["Editorial", "Book", "Typography", "Type Design"],
     "tags": ["Botanical", "Taiwan"],
     "ogImage": "og.jpg",
-    "size": "square"
+    "size": "landscape"
   },
   {
     "id": "patterned-glass-notebook",

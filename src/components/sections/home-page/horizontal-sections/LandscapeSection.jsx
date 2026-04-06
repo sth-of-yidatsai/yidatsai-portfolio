@@ -27,13 +27,13 @@ function RollingText({ children }) {
 // Each slide: { image, leftLabel, rightLabel, caption }
 const LANDSCAPE_SLIDES = [
   {
-    image: "/images/projects/foucault-book-binding/08.webp",
+    image: "/images/projects/foucault-book-binding/09.webp",
     leftLabel: "Product Design",
     rightLabel: "Product Design",
     caption: "(001)",
   },
   {
-    image: "/images/projects/foucault-book-binding/02.webp",
+    image: "/images/projects/foucault-book-binding/08.webp",
     leftLabel: "Editorial",
     rightLabel: "Editorial",
     caption: "(002)",
@@ -61,6 +61,22 @@ export default function LandscapeSection({
   landscapeFullscreenProgress = 0,
 }) {
   const slides = useMemo(() => LANDSCAPE_SLIDES.map(resolveSlide), []);
+
+  // ── Mobile carousel state ─────────────────────────────────────────
+  const [mobileIndex, setMobileIndex] = useState(0);
+  const touchStartX = useRef(null);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (dx < -40) setMobileIndex((i) => (i + 1) % slides.length);
+    else if (dx > 40)
+      setMobileIndex((i) => (i - 1 + slides.length) % slides.length);
+    touchStartX.current = null;
+  };
 
   // Refs for measuring the actual frame position inside the section
   const sectionRef = useRef(null);
@@ -251,6 +267,39 @@ export default function LandscapeSection({
         <p key={`caption-${activeSlideIndex}`} className="ls-caption">
           <RollingText>{activeSlide.caption}</RollingText>
         </p>
+      </div>
+
+      {/* Mobile carousel (≤1024px) */}
+      <div className="ls-mobile-carousel">
+        <div
+          className="ls-mobile-track"
+          style={{ transform: `translateX(-${mobileIndex * 100}%)` }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {slides.map((slide, i) => (
+            <div key={i} className="ls-mobile-slide">
+              <img
+                src={slide.image}
+                srcSet={buildSrcSet(slide.image)}
+                sizes="100vw"
+                alt={slide.leftLabel}
+                className="ls-mobile-img"
+                draggable={false}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="ls-mobile-dots">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              className={`ls-mobile-dot${i === mobileIndex ? " ls-mobile-dot-active" : ""}`}
+              onClick={() => setMobileIndex(i)}
+              aria-label={`Slide ${i + 1}`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Fullscreen overlay — 3rd image grows from exact frame position to full section */}

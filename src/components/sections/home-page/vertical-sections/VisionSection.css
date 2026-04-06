@@ -11,7 +11,7 @@
 }
 
 .vs-section::after {
-  content: '';
+  content: "";
   display: block;
   margin: 0 var(--px-page);
   border-top: 1px solid var(--gray-500);
@@ -44,10 +44,14 @@
 }
 
 .vs-title .line-roll:nth-child(1) .line-roll-top,
-.vs-title .line-roll:nth-child(1) .line-roll-bottom { transition-delay: 0s;    }
+.vs-title .line-roll:nth-child(1) .line-roll-bottom {
+  transition-delay: 0s;
+}
 
 .vs-title .line-roll:nth-child(2) .line-roll-top,
-.vs-title .line-roll:nth-child(2) .line-roll-bottom { transition-delay: 0.14s; }
+.vs-title .line-roll:nth-child(2) .line-roll-bottom {
+  transition-delay: 0.14s;
+}
 
 .vs-title {
   font-family: var(--font-hatton);
@@ -65,7 +69,7 @@
 
 .vs-title-sub {
   font-family: var(--font-manrope);
-  font-size: clamp(4.25rem, 8.25vw, 5.75rem)
+  font-size: clamp(4.25rem, 8.25vw, 5.75rem);
 }
 
 .vs-subtitle {
@@ -117,8 +121,12 @@
   z-index: 1;
 }
 
-.vs-text-col--left  { left:  calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg)); }
-.vs-text-col--right { right: calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg)); }
+.vs-text-col--left {
+  left: calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg));
+}
+.vs-text-col--right {
+  right: calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg));
+}
 
 .vs-text-col > * {
   grid-row: 1;
@@ -206,15 +214,23 @@
   transform-origin: center;
   cursor: pointer;
   will-change: filter;
-  transition: filter 0.70s ease-out;
+  transition: filter 0.7s ease-out;
 }
 
 /* ── Idle drift — applied to .vs-shape only, text stays fixed ── */
 @keyframes vs-drift {
-  0%   { transform: translate(  0px,   0px); }
-  30%  { transform: translate( 2px, -10px); }
-  65%  { transform: translate(-2px, -14px); }
-  100% { transform: translate(  0px,   0px); }
+  0% {
+    transform: translate(0px, 0px);
+  }
+  30% {
+    transform: translate(2px, -10px);
+  }
+  65% {
+    transform: translate(-2px, -14px);
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
 }
 
 .vs-shape {
@@ -224,9 +240,15 @@
 }
 
 /* Drift always runs — paused during hover/leave so it resumes from the same position */
-.vs-shape-aes { animation: vs-drift 7.2s ease-in-out infinite; }
-.vs-shape-log { animation: vs-drift 8.8s ease-in-out infinite -2.8s; }
-.vs-shape-exp { animation: vs-drift 6.6s ease-in-out infinite -5.1s; }
+.vs-shape-aes {
+  animation: vs-drift 7.2s ease-in-out infinite;
+}
+.vs-shape-log {
+  animation: vs-drift 8.8s ease-in-out infinite -2.8s;
+}
+.vs-shape-exp {
+  animation: vs-drift 6.6s ease-in-out infinite -5.1s;
+}
 
 .vs-phase-hovering .vs-shape,
 .vs-phase-leaving .vs-shape {
@@ -235,58 +257,109 @@
 
 /* ── Hover-in keyframes — each sphere floats outward from centroid ── */
 @keyframes vs-hover-aes {
-  from { transform: translateY(0px)       scale(1);     }
-  to   { transform: translateY(-12px)     scale(1.025); }
+  from {
+    transform: translateY(0px) scale(1);
+  }
+  to {
+    transform: translateY(-12px) scale(1.025);
+  }
 }
 @keyframes vs-hover-log {
-  from { transform: translate(0, 0)       scale(1);     }
-  to   { transform: translate(-10px, 7px) scale(1.025); }
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(-10px, 7px) scale(1.025);
+  }
 }
 @keyframes vs-hover-exp {
-  from { transform: translate(0, 0)       scale(1);     }
-  to   { transform: translate( 10px, 7px) scale(1.025); }
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(10px, 7px) scale(1.025);
+  }
 }
 
 /* ── Hover-out keyframes — return to origin ── */
 @keyframes vs-leave-aes {
-  from { transform: translateY(-12px)     scale(1.025); }
-  to   { transform: translateY(0px)       scale(1);     }
+  from {
+    transform: translateY(-12px) scale(1.025);
+  }
+  to {
+    transform: translateY(0px) scale(1);
+  }
 }
 @keyframes vs-leave-log {
-  from { transform: translate(-10px, 7px) scale(1.025); }
-  to   { transform: translate(0, 0)       scale(1);     }
+  from {
+    transform: translate(-10px, 7px) scale(1.025);
+  }
+  to {
+    transform: translate(0, 0) scale(1);
+  }
 }
 @keyframes vs-leave-exp {
-  from { transform: translate( 10px, 7px) scale(1.025); }
-  to   { transform: translate(0, 0)       scale(1);     }
+  from {
+    transform: translate(10px, 7px) scale(1.025);
+  }
+  to {
+    transform: translate(0, 0) scale(1);
+  }
 }
 
 /* ── Phase: hovering ── */
-.vs-phase-hovering.vs-ball-aes { animation: vs-hover-aes 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.vs-phase-hovering.vs-ball-log { animation: vs-hover-log 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.vs-phase-hovering.vs-ball-exp { animation: vs-hover-exp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.vs-phase-hovering.vs-ball-aes {
+  animation: vs-hover-aes 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.vs-phase-hovering.vs-ball-log {
+  animation: vs-hover-log 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.vs-phase-hovering.vs-ball-exp {
+  animation: vs-hover-exp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
 .vs-phase-hovering {
-  filter:
-    brightness(1.18)
-    drop-shadow(0 0 22px rgba(200, 200, 200, 0.45))
-    drop-shadow(0 8px 32px rgba(160, 160, 160, 0.30));
+  filter: brightness(1.18) drop-shadow(0 0 22px rgba(200, 200, 200, 0.45))
+    drop-shadow(0 8px 32px rgba(160, 160, 160, 0.3));
 }
 
 /* ── Phase: leaving (return animation) ── */
-.vs-phase-leaving.vs-ball-aes { animation: vs-leave-aes 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.vs-phase-leaving.vs-ball-log { animation: vs-leave-log 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.vs-phase-leaving.vs-ball-exp { animation: vs-leave-exp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.vs-phase-leaving.vs-ball-aes {
+  animation: vs-leave-aes 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.vs-phase-leaving.vs-ball-log {
+  animation: vs-leave-log 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.vs-phase-leaving.vs-ball-exp {
+  animation: vs-leave-exp 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
 
 /* ── Arrow trim-path animation ──
    Arc length = R_arc 305 × 96° × π/180 ≈ 511 SVG units
    Each arrow draws in, holds, then fades — staggered by 2s  */
 @keyframes vs-arrow-draw {
-  0%   { stroke-dashoffset: 511; opacity: 0;   }
-  6%   { opacity: 0.5; }
-  42%  { stroke-dashoffset: 0;   opacity: 1;   }
-  68%  { stroke-dashoffset: 0;   opacity: 1;   }
-  88%  { stroke-dashoffset: 0;   opacity: 0;   }
-  100% { stroke-dashoffset: 511; opacity: 0;   }
+  0% {
+    stroke-dashoffset: 511;
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.5;
+  }
+  42% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  68% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  88% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 511;
+    opacity: 0;
+  }
 }
 
 .vs-arrow {
@@ -296,12 +369,24 @@
 }
 
 @keyframes vs-arrowhead-show {
-  0%   { opacity: 0; }
-  41%  { opacity: 0; }
-  42%  { opacity: 1; }
-  68%  { opacity: 1; }
-  88%  { opacity: 0; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0;
+  }
+  41% {
+    opacity: 0;
+  }
+  42% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .vs-arrowhead {
@@ -340,66 +425,8 @@
 
 /* ── Responsive ── */
 
-/* md ≤ 1024px：浮動文字欄在平板上位置會出血，改為垂直堆疊 */
+/* md ≤ 1024px：取消 sticky；diagram 全寬在上，兩欄文字並排 */
 @media (max-width: 1024px) {
-  .vs-title {
-    font-size: var(--fs-48pt);
-  }
-
-  /* 手機版隨 vs-title 等比縮放，維持與桌機版相同的視覺大小比例 */
-  .vs-title-sub {
-    font-size: 1.07em;
-  }
-
-  /* 取消 sticky，改垂直排版 */
-  .vs-scroll-zone {
-    height: auto;
-  }
-
-  .vs-sticky-panel {
-    position: static;
-    height: auto;
-    padding: 0 var(--px-page) var(--space-2xl);
-  }
-
-  .vs-layout {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
-    position: static;
-  }
-
-  .vs-text-col {
-    position: static;
-    transform: none;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xl);
-  }
-
-  .vs-text-col > * {
-    grid-row: unset;
-    grid-column: unset;
-  }
-
-  .vs-copy {
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
-  }
-
-  .vs-svg {
-    height: auto;
-    width: 100%;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-}
-
-/* sm ≤ 768px */
-@media (max-width: 768px) {
-  /* 縮小 section 頂部間距，與其他 section 一致 */
   .vs-section {
     padding-top: var(--space-xl);
   }
@@ -408,33 +435,71 @@
     margin-bottom: var(--space-lg);
   }
 
-  /* 標題放大 */
   .vs-title {
-    font-size: var(--fs-40pt);
+    font-size: var(--fs-44pt);
   }
 
-  /* sticky panel 不再持有邊距，交由各子元素自行管理 */
+  /* 隨 vs-title 等比縮放 */
+  .vs-title-sub {
+    font-size: 1.07em;
+  }
+
+  /* 取消 sticky */
+  .vs-scroll-zone {
+    height: auto;
+  }
+
   .vs-sticky-panel {
+    position: static;
+    height: auto;
     padding: 0;
   }
 
-  /* 排版：三圓圖形優先，消除 flex gap */
+  /* diagram 全寬在上，兩欄文字並排 */
   .vs-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "diagram diagram"
+      "left    right";
     gap: 0;
+    position: static;
   }
 
   .vs-diagram-wrap {
-    order: -1;
-    padding: var(--space-lg) var(--px-page);
+    grid-area: diagram;
+    width: 100%;
+    padding: 0 var(--px-page) var(--space-xl);
     background-color: var(--gray-900);
   }
 
-  /* 文字欄：消除欄內 gap */
+  .vs-text-col--left {
+    grid-area: left;
+  }
+  .vs-text-col--right {
+    grid-area: right;
+  }
+
+  .vs-svg {
+    height: auto;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
   .vs-text-col {
+    position: static;
+    transform: none;
+    width: 100%;
     gap: 0;
   }
 
-  /* 每段文案：25vh 高度，左右邊距對齊全站 */
+  .vs-text-col > * {
+    grid-row: unset;
+    grid-column: unset;
+  }
+
+  /* 每段文案：25vh 高度 */
   .vs-copy {
     height: 25vh;
     display: flex;
@@ -454,33 +519,31 @@
     text-wrap: wrap;
   }
 
-  /* 交錯背景：淺灰 → 深灰 → 淺灰 → 深灰 */
-  /* left[0]=Logic / right[0]=Aesthetics → 淺灰 */
+  /* 斜對角配色：左欄 淺→深，右欄 深→淺 */
   .vs-text-col--left .vs-copy:nth-child(1),
-  .vs-text-col--right .vs-copy:nth-child(1) {
+  .vs-text-col--right .vs-copy:nth-child(2) {
     background-color: var(--gray-25);
   }
-  /* left[1]=Experience / right[1]=Structured Emotion → 深灰 */
   .vs-text-col--left .vs-copy:nth-child(2),
-  .vs-text-col--right .vs-copy:nth-child(2) {
+  .vs-text-col--right .vs-copy:nth-child(1) {
     background-color: var(--gray-900);
   }
 
   /* 淺灰面板文字改為深色 */
   .vs-text-col--left .vs-copy:nth-child(1) .vs-copy-title,
-  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-title {
+  .vs-text-col--right .vs-copy:nth-child(2) .vs-copy-title {
     color: var(--gray-700);
   }
   .vs-text-col--left .vs-copy:nth-child(1) .vs-copy-lead,
-  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-lead {
+  .vs-text-col--right .vs-copy:nth-child(2) .vs-copy-lead {
     color: var(--gray-600);
   }
   .vs-text-col--left .vs-copy:nth-child(1) .vs-copy-body,
-  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-body {
+  .vs-text-col--right .vs-copy:nth-child(2) .vs-copy-body {
     color: var(--gray-500);
   }
   .vs-text-col--left .vs-copy:nth-child(1) .vs-copy-line,
-  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-line {
+  .vs-text-col--right .vs-copy:nth-child(2) .vs-copy-line {
     background: rgba(0, 0, 0, 0.18);
   }
 
@@ -491,6 +554,10 @@
   .vs-svg-kw {
     font-size: var(--fs-12pt);
   }
+
+  .vs-section::after {
+    border-top: none;
+  }
 }
 
 /* xs ≤ 480px */
@@ -499,7 +566,55 @@
     font-size: var(--fs-32pt);
   }
 
+  /* 手機：恢復 flex 直排 */
+  .vs-layout {
+    display: flex;
+    flex-direction: column;
+  }
+
   .vs-diagram-wrap {
     width: 100%;
+    padding: var(--space-lg) var(--px-page);
+    order: -1;
+  }
+
+  .vs-svg {
+    max-width: 480px;
+  }
+
+  /* 手機：右欄恢復淺→深（同左欄），覆蓋 768px 斜對角規則 */
+  .vs-text-col--right .vs-copy:nth-child(1) {
+    background-color: var(--gray-25);
+  }
+  .vs-text-col--right .vs-copy:nth-child(2) {
+    background-color: var(--gray-900);
+  }
+  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-title {
+    color: var(--gray-700);
+  }
+  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-lead {
+    color: var(--gray-600);
+  }
+  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-body {
+    color: var(--gray-500);
+  }
+  .vs-text-col--right .vs-copy:nth-child(1) .vs-copy-line {
+    background: rgba(0, 0, 0, 0.18);
+  }
+  .vs-text-col--right .vs-copy:nth-child(2) .vs-copy-title {
+    color: var(--gray-200);
+  }
+  .vs-text-col--right .vs-copy:nth-child(2) .vs-copy-lead {
+    color: var(--gray-100);
+  }
+  .vs-text-col--right .vs-copy:nth-child(2) .vs-copy-body {
+    color: var(--gray-400);
+  }
+  .vs-text-col--right .vs-copy:nth-child(2) .vs-copy-line {
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+  .vs-section::after {
+    border-top: 1px solid var(--gray-500);
   }
 }

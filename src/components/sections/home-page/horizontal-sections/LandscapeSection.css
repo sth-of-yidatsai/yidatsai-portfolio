@@ -196,54 +196,81 @@
   overflow: hidden;
 }
 
+/* ── Mobile carousel (hidden on desktop) ────────────────────────── */
+
+.ls-mobile-carousel {
+  display: none;
+}
+
 /* ── Responsive ──────────────────────────────────────────────────── */
 
-/* md ≤ 1024px */
+/* ≤ 1024px: switch to swipe carousel, hide desktop layout */
 @media (max-width: 1024px) {
   .ls-section {
     height: auto;
-    padding: var(--space-2xl) 0;
+    display: block;
+    overflow: hidden;
   }
 
-  .ls-image-frame {
-    width: 80vw;
-    height: 50vw;
-  }
-
-  /* 側邊標籤收窄，縮小間距 */
-  .ls-label-left  { left:  4vw; }
-  .ls-label-right { right: 4vw; }
-}
-
-/* sm ≤ 768px：隱藏側標籤，圖片框放大 */
-@media (max-width: 768px) {
-  .ls-section {
-    padding: var(--space-xl) 0;
-  }
-
-  .ls-side-label {
-    display: none;
-  }
-
-  .ls-image-frame {
-    width: 90vw;
-    height: 60vw;
-  }
-
-  .ls-deco-tl, .ls-deco-tr, .ls-deco-bl, .ls-deco-br,
-  .ls-deco-tc, .ls-deco-bc {
-    display: none;
-  }
-}
-
-/* xs ≤ 480px */
-@media (max-width: 480px) {
-  .ls-image-frame {
-    width: 95vw;
-    height: 65vw;
-  }
-
+  /* hide all desktop-only elements */
+  .ls-side-label,
   .ls-content {
-    gap: var(--space-md);
+    display: none;
+  }
+
+  /* show carousel */
+  .ls-mobile-carousel {
+    display: block;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ls-mobile-track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+  }
+
+  .ls-mobile-slide {
+    width: 100vw;
+    flex-shrink: 0;
+    /* maintain same aspect ratio as desktop frame (62 : 37) */
+    aspect-ratio: 62 / 37;
+  }
+
+  .ls-mobile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* dots overlaid on the image */
+  .ls-mobile-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 2;
+  }
+
+  .ls-mobile-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s;
+  }
+
+  .ls-mobile-dot-active {
+    background: rgba(255, 255, 255, 0.95);
   }
 }

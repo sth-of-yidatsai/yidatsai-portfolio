@@ -81,7 +81,7 @@
 /* md ≤ 1024px: 縮短高度 */
 @media (max-width: 1024px) {
   .block--imgtxt {
-    height: 65svh;
+    height: 40vh;
   }
 }
 

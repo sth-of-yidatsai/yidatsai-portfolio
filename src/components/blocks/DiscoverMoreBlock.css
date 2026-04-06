@@ -100,14 +100,18 @@
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 
-/* md ≤ 1024px: 2 欄 */
+/* md ≤ 1024px: 2 欄，2 張（隱藏第 3 張） */
 @media (max-width: 1024px) {
   .discover-more__grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .discover-more__card-wrap:nth-child(3) {
+    display: none;
+  }
 }
 
-/* sm ≤ 768px: 單欄 */
+/* sm ≤ 768px: 單欄，2 張 */
 @media (max-width: 768px) {
   .discover-more__grid {
     grid-template-columns: 1fr;

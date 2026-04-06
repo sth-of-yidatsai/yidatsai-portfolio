@@ -4,7 +4,7 @@
 
 .fs-section {
   width: 100%;
-  padding: var(--space-2xl) var(--px-page) ;
+  padding: var(--space-2xl) var(--px-page);
   background: var(--gray-25);
   box-sizing: border-box;
 }
@@ -127,14 +127,19 @@
   margin-bottom: -0.35em;
 }
 
-
 /* 各行錯開 delay（同 header-overlay-logo） */
 .fs-name .line-roll:nth-child(1) .line-roll-top,
-.fs-name .line-roll:nth-child(1) .line-roll-bottom { transition-delay: 0s;    }
+.fs-name .line-roll:nth-child(1) .line-roll-bottom {
+  transition-delay: 0s;
+}
 .fs-name .line-roll:nth-child(2) .line-roll-top,
-.fs-name .line-roll:nth-child(2) .line-roll-bottom { transition-delay: 0.07s; }
+.fs-name .line-roll:nth-child(2) .line-roll-bottom {
+  transition-delay: 0.07s;
+}
 .fs-name .line-roll:nth-child(3) .line-roll-top,
-.fs-name .line-roll:nth-child(3) .line-roll-bottom { transition-delay: 0.14s; }
+.fs-name .line-roll:nth-child(3) .line-roll-bottom {
+  transition-delay: 0.14s;
+}
 
 .fs-name .line-roll-top,
 .fs-name .line-roll-bottom {
@@ -177,20 +182,12 @@
 
 /* ── Tablet ≤ 1024px — 縮小錯落偏移 ── */
 @media (max-width: 1024px) {
-  .fs-image-1 {
-    margin-top: 10%;
-  }
-}
-
-/* ── Mobile ≤ 768px — 雙欄重排 ── */
-@media (max-width: 768px) {
   .fs-section {
     padding: var(--space-xl) var(--px-page) var(--space-lg);
   }
 
   .fs-grid {
     grid-template-columns: 1fr 1fr;
-    row-gap: var(--space-xl);
   }
 
   /* 清除桌機版定位 */
@@ -214,7 +211,7 @@
     margin-top: 0;
   }
 
-  /* 2. 名字（左）+ Image 2（右）並列 */
+  /* 2–3. 名字（左 row2）+ Bio（左 row3）；Image 2（右，跨 row 2–3） */
   .fs-name-block {
     grid-column: 1 / 2;
     grid-row: 2;
@@ -222,14 +219,13 @@
   }
   .fs-image-2 {
     grid-column: 2 / 3;
-    grid-row: 2;
+    grid-row: 2 / 4;
   }
 
-  /* 3. Bio — 全寬 */
   .fs-bio-block {
-    grid-column: 1 / 3;
+    grid-column: 1 / 2;
     grid-row: 3;
-    align-self: auto;
+    align-self: start;
   }
 
   /* 4. 兩圖並列 */
@@ -248,3 +244,16 @@
   }
 }
 
+/* ── Mobile ≤ 768px — 還原 image-2 單行、bio 全寬 ── */
+@media (max-width: 480px) {
+  .fs-image-2 {
+    grid-column: 2 / 3;
+    grid-row: 2;
+  }
+
+  .fs-bio-block {
+    grid-column: 1 / 3;
+    grid-row: 3;
+    align-self: auto;
+  }
+}
