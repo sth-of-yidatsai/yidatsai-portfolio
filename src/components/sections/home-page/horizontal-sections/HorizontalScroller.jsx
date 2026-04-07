@@ -110,7 +110,7 @@ export default function HorizontalScroller() {
           trigger: container,
           pin: true,
           anticipatePin: 1,
-          scrub: 0.5,
+          scrub: 1.2,
           start: "top top",
           end: () => `+=${totalScrollDistance}`,
           invalidateOnRefresh: true,

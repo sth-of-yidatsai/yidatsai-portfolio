@@ -47,7 +47,7 @@
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight);
   font-size: var(--fs-56pt);
-  line-height: 1.2;
+  line-height: 1.25;
   margin: 0;
   white-space: normal;
   overflow-wrap: break-word;
@@ -81,7 +81,23 @@
   will-change: transform;
 }
 
-/* ── Responsive ──────────────────────────────────────────────── */
+/* ============================================================
+   Responsive
+   ============================================================ */
+/* ≤ 1920px */
+@media (max-width: 1920px) {
+  .bs__text {
+    font-size: var(--fs-48pt);
+    line-height: 1.35;
+  }
+}
+
+/* ≤ 1440px */
+@media (max-width: 1440px) {
+  .bs__text {
+    font-size: var(--fs-40pt);
+  }
+}
 
 /* md ≤ 1024px — entrance animation, auto height */
 @media (max-width: 1024px) {
@@ -105,13 +121,13 @@
     transform: translateY(0);
   }
 
-  .bs__text {
-    font-size: var(--fs-40pt);
-  }
-
   .bs__img-block {
     min-height: unset;
     height: 100vw;
+  }
+
+  .bs__text {
+    line-height: 1.4;
   }
 }
 

@@ -126,7 +126,8 @@
   height: auto;
   gap: var(--space-md);
   position: absolute;
-  bottom: 3rem;
+  top: 80%;
+  bottom: auto;
   left: 2rem;
   right: 2rem;
   transition:
@@ -170,7 +171,28 @@
   white-space: pre-line;
 }
 
-/* 響應式設計 */
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+/* ≤ 1920px */
+@media (max-width: 1920px) {
+  /* 取消 pre-line 換行，讓文字連成一行 */
+  .project-description {
+    white-space: normal;
+  }
+  .project-block-content-bottom {
+    top: 80%;
+  }
+}
+
+/* ≤ 1440px */
+@media (max-width: 1440px) {
+  /* 改為 top 定位，讓各欄 title 齊頭對齊 */
+  .project-block-content-bottom {
+    top: 75%;
+  }
+}
 
 /* md ≤ 1024px：4 × 25vh 緊湊橫排，點擊切換 */
 @media (max-width: 1024px) {

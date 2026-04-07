@@ -59,12 +59,20 @@
 }
 
 @keyframes ls-roll-in {
-  from { transform: translateY(110%); }
-  to   { transform: translateY(0); }
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
-.ls-label-left  { left:  9vw; }
-.ls-label-right { right: 9vw; }
+.ls-label-left {
+  left: 9vw;
+}
+.ls-label-right {
+  right: 9vw;
+}
 
 /* ── Center content wrapper ───────────────────────────────────────── */
 
@@ -106,10 +114,30 @@
     BL → scaleY(-1) (arms go down + left)
     BR → scale(-1,-1) (arms go down + right)
 */
-.ls-deco-tl { width: 56px; left:  calc(-50px - var(--space-lg)); top:    calc(7px - var(--space-lg)); transform: none; }
-.ls-deco-tr { width: 56px; right: calc(-50px - var(--space-lg)); top:    calc(7px - var(--space-lg)); transform: scaleX(-1); }
-.ls-deco-bl { width: 56px; left:  calc(-50px - var(--space-lg)); bottom: calc(7px - var(--space-lg)); transform: scaleY(-1); }
-.ls-deco-br { width: 56px; right: calc(-50px - var(--space-lg)); bottom: calc(7px - var(--space-lg)); transform: scale(-1, -1); }
+.ls-deco-tl {
+  width: 56px;
+  left: calc(-50px - var(--space-lg));
+  top: calc(7px - var(--space-lg));
+  transform: none;
+}
+.ls-deco-tr {
+  width: 56px;
+  right: calc(-50px - var(--space-lg));
+  top: calc(7px - var(--space-lg));
+  transform: scaleX(-1);
+}
+.ls-deco-bl {
+  width: 56px;
+  left: calc(-50px - var(--space-lg));
+  bottom: calc(7px - var(--space-lg));
+  transform: scaleY(-1);
+}
+.ls-deco-br {
+  width: 56px;
+  right: calc(-50px - var(--space-lg));
+  bottom: calc(7px - var(--space-lg));
+  transform: scale(-1, -1);
+}
 
 /* Center SVG: viewBox 99.45×21.06 — horizontal bar at y≈14.5px.
    top/bottom 13px places the bar flush with the frame edge. */
@@ -202,7 +230,20 @@
   display: none;
 }
 
-/* ── Responsive ──────────────────────────────────────────────────── */
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+/* ≤ 1440px */
+@media (max-width: 1440px) {
+  .ls-label-left {
+    left: calc(var(--px-page) + 2rem);
+  }
+
+  .ls-label-right {
+    right: calc(var(--px-page) + 2rem);
+  }
+}
 
 /* ≤ 1024px: switch to swipe carousel, hide desktop layout */
 @media (max-width: 1024px) {

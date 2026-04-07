@@ -242,7 +242,7 @@ export default function HeroSection({ index }) {
           </div>
 
           {/* Category區域 */}
-          <div className="hero-tag-section">
+          <div className="hero-tag-section hero-category-section">
             <div className="hero-info-item">
               <span className="hero-info-label">Category</span>
               <div

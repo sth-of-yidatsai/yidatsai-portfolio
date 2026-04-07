@@ -28,20 +28,20 @@ function RollingText({ children }) {
 const LANDSCAPE_SLIDES = [
   {
     image: "/images/projects/foucault-book-binding/09.webp",
-    leftLabel: "Product Design",
-    rightLabel: "Product Design",
+    leftLabel: "Graphic",
+    rightLabel: "Graphic",
     caption: "(001)",
   },
   {
     image: "/images/projects/foucault-book-binding/08.webp",
-    leftLabel: "Editorial",
-    rightLabel: "Editorial",
+    leftLabel: "Poster",
+    rightLabel: "Poster",
     caption: "(002)",
   },
   {
     image: "/images/projects/foucault-book-binding/01.webp",
-    leftLabel: "Illustration",
-    rightLabel: "Illustration",
+    leftLabel: "Editorial",
+    rightLabel: "Editorial",
     caption: "(003)",
   },
 ];

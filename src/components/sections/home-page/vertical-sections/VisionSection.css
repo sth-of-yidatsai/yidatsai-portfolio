@@ -122,10 +122,16 @@
 }
 
 .vs-text-col--left {
-  left: calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg));
+  left: max(
+    var(--px-page),
+    calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg))
+  );
 }
 .vs-text-col--right {
-  right: calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg));
+  right: max(
+    var(--px-page),
+    calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg))
+  );
 }
 
 .vs-text-col > * {
@@ -423,7 +429,81 @@
   letter-spacing: 0.15em;
 }
 
-/* ── Responsive ── */
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+/* ≤ 1920px */
+@media (max-width: 1920px) {
+  .vs-svg {
+    height: 60vh;
+  }
+  .vs-text-col--left {
+    left: max(
+      var(--px-page),
+      calc(50% - 32.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg))
+    );
+  }
+  .vs-text-col--right {
+    right: max(
+      var(--px-page),
+      calc(50% - 32.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg))
+    );
+  }
+}
+
+/* ≤ 1440px */
+@media (max-width: 1440px) {
+  .vs-svg {
+    height: 58vh;
+  }
+  .vs-text-col--left {
+    left: max(
+      var(--px-page),
+      calc(50% - 31.3vh - clamp(180px, 20vw, 300px) - 1vw - var(--space-lg))
+    );
+  }
+  .vs-text-col--right {
+    right: max(
+      var(--px-page),
+      calc(50% - 31.3vh - clamp(180px, 20vw, 300px) - 1vw - var(--space-lg))
+    );
+  }
+  .vs-text-col {
+    width: clamp(180px, 20vw, 300px);
+  }
+}
+
+/* ≤ 1280px */
+@media (max-width: 1280px) {
+  .vs-svg {
+    height: 55vh;
+  }
+  .vs-text-col--left {
+    left: max(
+      var(--px-page),
+      calc(50% - 29.7vh - clamp(160px, 18vw, 260px) - 1vw - var(--space-lg))
+    );
+  }
+  .vs-text-col--right {
+    right: max(
+      var(--px-page),
+      calc(50% - 29.7vh - clamp(160px, 18vw, 260px) - 1vw - var(--space-lg))
+    );
+  }
+  .vs-text-col {
+    width: clamp(160px, 18vw, 260px);
+  }
+  .vs-copy-title {
+    font-size: var(--fs-18pt);
+  }
+  .vs-copy-lead {
+    font-size: var(--fs-12pt);
+  }
+  .vs-copy-body {
+    font-size: var(--fs-10pt);
+  }
+}
 
 /* md ≤ 1024px：取消 sticky；diagram 全寬在上，兩欄文字並排 */
 @media (max-width: 1024px) {

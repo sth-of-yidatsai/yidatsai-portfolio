@@ -3,10 +3,10 @@
    ============================================================ */
 .header-bar {
   position: fixed;
-  top: var(--space-md);
+  top: var(--space-lg);
   left: 0;
   width: 100vw;
-  padding: 0 var(--space-lg);
+  padding: 0 var(--px-page);
   height: 48px;
   display: flex;
   align-items: center;
@@ -108,7 +108,6 @@
   background: transparent;
   border: none;
   padding: 0;
-  margin-right: var(--space-sm);
   color: currentColor;
   appearance: none;
   -webkit-appearance: none;
@@ -492,13 +491,15 @@ body.menu-open {
    Responsive
    ============================================================ */
 
+/* ≤ 1440px */
+@media (max-width: 1440px) {
+  .header-overlay-logo {
+    font-size: var(--fs-48pt);
+  }
+}
+
 /* md ≤ 1024px */
 @media (max-width: 1024px) {
-  .header-bar {
-    padding: 0 var(--px-page);
-    margin-top: var(--space-md);
-  }
-
   .header-hamburger {
     margin-right: 0;
   }
