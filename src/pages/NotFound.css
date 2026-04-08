@@ -131,7 +131,7 @@
 .nf-reveal-sub {
   font-family: var(--font-manrope), sans-serif;
   font-weight: 400;
-  font-size: clamp(12px, 1.1vw, 16px);
+  font-size: clamp(12px, 1.8vw, 16px);
   color: rgba(255, 255, 255, 0.45);
   line-height: 1.7;
   margin: 0;
@@ -145,7 +145,7 @@
   padding: 0.75em 2.4em;
   font-family: var(--font-manrope), sans-serif;
   font-weight: 500;
-  font-size: clamp(11px, 0.85vw, 14px);
+  font-size: clamp(11px, 1.3vw, 14px);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #fff;
@@ -209,4 +209,77 @@
 @keyframes nf-ticker-scroll {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Tablet (≤ 1024px) ───────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .nf-reveal--above { bottom: calc(50% + 2vh); }
+  .nf-reveal--below { top:    calc(50% + 3vh); }
+}
+
+/* ── Phone (≤ 768px) ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nf-reveal--above {
+    white-space: normal;
+    width: calc(100% - 48px);
+    bottom: calc(50% + 1.5vh);
+    gap: 0.5em;
+  }
+
+  .nf-reveal--below {
+    top: calc(50% + 2.5vh);
+  }
+
+  .nf-cta {
+    padding: 0.9em 2em;
+    letter-spacing: 0.14em;
+    cursor: auto;
+  }
+
+  .nf-ticker-track {
+    animation-duration: 18s;
+  }
+
+  /* Tap-to-skip button — full-screen, sits behind text layers */
+  .nf-skip-btn {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.28);
+    font-family: var(--font-manrope), sans-serif;
+    font-size: clamp(9px, 2.5vw, 12px);
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    pointer-events: auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 10vh;
+    cursor: auto;
+    z-index: 11;
+  }
+}
+
+/* ── Small phone (≤ 480px) ───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .nf-reveal--above {
+    bottom: calc(50% + 1vh);
+    width: calc(100% - 32px);
+  }
+
+  .nf-reveal--below {
+    top: calc(50% + 2vh);
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .nf-scanlines    { animation: none; }
+  .nf-ticker-track { animation: none; justify-content: center; }
 }

@@ -5,8 +5,7 @@ import gsap from 'gsap';
 import store from './useGlitchStore';
 import vertexShader   from './particle.vert.glsl?raw';
 import fragmentShader from './particle.frag.glsl?raw';
-
-const isMobile      = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+import { isMobile }   from './deviceDetect';
 const PARTICLE_COUNT = isMobile ? 2500 : 8000;
 
 // Canvas size for "404" pixel sampling

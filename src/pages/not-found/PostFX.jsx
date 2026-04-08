@@ -3,6 +3,7 @@
 // so we no longer need a postprocessing GlitchEffect.
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { isMobile } from './deviceDetect';
 import { EffectComposer, wrapEffect } from '@react-three/postprocessing';
 import { Effect } from 'postprocessing';
 import { Uniform, Vector2 } from 'three';
@@ -24,6 +25,8 @@ class MouseDistortionImpl extends Effect {
 const MouseDistortion = wrapEffect(MouseDistortionImpl);
 
 export default function PostFX() {
+  if (isMobile) return null;
+
   const ref = useRef();
 
   useFrame(({ clock }) => {

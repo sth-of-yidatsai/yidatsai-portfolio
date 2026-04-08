@@ -3,6 +3,7 @@ import { Canvas, useThree } from '@react-three/fiber';
 import GlitchBackground from './GlitchBackground';
 import PostFX           from './PostFX';
 import store            from './useGlitchStore';
+import { isMobile }     from './deviceDetect';
 
 function SceneSetup() {
   const { gl } = useThree();
@@ -31,7 +32,8 @@ export default function GlitchScene() {
       className="nf-canvas"
       camera={{ fov: 75, position: [0, 0, 5], near: 0.1, far: 100 }}
       gl={{ antialias: false, alpha: false, powerPreference: 'high-performance' }}
-      frameloop="always"
+      frameloop={isMobile ? 'demand' : 'always'}
+      dpr={isMobile ? Math.min(window.devicePixelRatio, 1.5) : window.devicePixelRatio}
     >
       <SceneSetup />
       <GlitchBackground />

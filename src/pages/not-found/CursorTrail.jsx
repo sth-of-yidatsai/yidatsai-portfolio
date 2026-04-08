@@ -1,6 +1,5 @@
 import { useRef, useEffect } from 'react';
-
-const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+import { isMobile } from './deviceDetect';
 
 const GRAVITY    = 0.18;   // px/frame²
 const FLOAT_TIME = 0.6;    // seconds to hover before gravity activates

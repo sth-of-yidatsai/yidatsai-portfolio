@@ -179,7 +179,20 @@
   flex-shrink: 0;
 }
 
-/* ── Responsive ──────────────────────────────────────────────────────────── */
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+/* ≤ 1440px */
+@media (max-width: 1920px) {
+  .select-work__card-overlay {
+    padding: var(--space-md);
+  }
+
+  .select-work__card-desc {
+    -webkit-line-clamp: 5;
+  }
+}
 
 /* md ≤ 1024px：每次顯示 1 張 + 右側微露 peek */
 @media (max-width: 1024px) {
