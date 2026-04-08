@@ -1,36 +1,32 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    404 — Glitch page
-   Layer stack (local stacking context within .nf-page):
-     1  R3F canvas          (position:absolute, inset:0)
-     2  cursor trail canvas (position:absolute, inset:0)
+   Layer stack:
+     1  R3F canvas          (absolute, inset 0)
+     2  cursor trail canvas (absolute, inset 0)
      5  .nf-scanlines
      6  .nf-vignette
-     7  .nf-flicker
-     9  .nf-scroll-track    (invisible scroll capture, pointer-events:none)
+     9  .nf-scroll-track
     10  .nf-dom-layer
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Page wrapper ─────────────────────────────────────────────────────────── */
 .nf-page {
   position: fixed;
   inset: 0;
-  background: var(--gray-900);
+  background: #0a0a0a;
   overflow: hidden;
-  font-family: var(--font-manrope), var(--font-cjk);
-  z-index: 1100; /* above Header (1001) */
+  z-index: 1100;
 }
 
-/* ── R3F canvas wrapper (className="nf-canvas" goes to R3F's outer div) ──── */
+/* ── R3F canvas ───────────────────────────────────────────────────────────── */
 .nf-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   z-index: 1;
-  overflow: hidden;
 }
 
-/* ── Cursor trail canvas ─────────────────────────────────────────────────── */
+/* ── Cursor trail ─────────────────────────────────────────────────────────── */
 .nf-cursor-trail {
   position: absolute;
   inset: 0;
@@ -49,11 +45,11 @@
     to bottom,
     transparent 0px,
     transparent 3px,
-    rgba(0, 0, 0, 0.22) 3px,
-    rgba(0, 0, 0, 0.22) 4px
+    rgba(0, 0, 0, 0.18) 3px,
+    rgba(0, 0, 0, 0.18) 4px
   );
   animation: nf-scan-move 10s linear infinite;
-  opacity: 0.55; /* GSAP animates toward 0.06 as world heals */
+  opacity: 0.40;
 }
 
 @keyframes nf-scan-move {
@@ -69,91 +65,148 @@
   pointer-events: none;
   background: radial-gradient(
     ellipse at 50% 50%,
-    transparent 38%,
-    rgba(0, 0, 0, 0.72) 100%
+    transparent 40%,
+    rgba(0, 0, 0, 0.65) 100%
   );
 }
 
-/* ── Invisible internal scroll track ────────────────────────────────────── */
+/* ── Scroll track ─────────────────────────────────────────────────────────── */
 .nf-scroll-track {
   position: absolute;
   inset: 0;
   z-index: 9;
   overflow-y: scroll;
-  pointer-events: none; /* pass interactions to canvas / DOM layers */
-  /* hide scrollbar across browsers */
+  pointer-events: none;
   scrollbar-width: none;
 }
 .nf-scroll-track::-webkit-scrollbar { display: none; }
 
-.nf-scroll-inner {
-  height: 300vh; /* 3× viewport = two full scroll lengths */
-}
+.nf-scroll-inner { height: 300vh; }
 
-/* ── DOM layer — CTA + scroll hint only ─────────────────────────────────── */
+/* ── DOM layer ───────────────────────────────────────────────────────────── */
 .nf-dom-layer {
   position: absolute;
   inset: 0;
   z-index: 10;
+  pointer-events: none;
+}
+
+/* ── Text group above the centre glitch line ─────────────────────────────── */
+.nf-reveal--above {
+  position: absolute;
+  left: 50%;
+  bottom: calc(50% + 3vh);          /* just above the line */
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  padding-bottom: var(--space-xl);
-  pointer-events: none; /* children opt-in with pointer-events:auto */
+  gap: 0.75em;
+  text-align: center;
+  white-space: nowrap;
 }
 
-/* ── Return Home CTA ─────────────────────────────────────────────────────── */
-.nf-cta {
-  display: inline-flex;
+/* ── CTA group below the centre glitch line ──────────────────────────────── */
+.nf-reveal--below {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 4vh);             /* just below the line */
+  transform: translateX(-50%);
+  display: flex;
   align-items: center;
-  gap: var(--space-md);
-  margin-bottom: var(--space-xl);
-  padding: var(--space-sm) 0;
-  color: var(--gray-100);
-  text-decoration: none;
-  font-family: var(--font-manrope);
-  font-size: var(--fs-12pt);
-  font-weight: var(--fw-medium);
-  letter-spacing: 0.12em;
+  justify-content: center;
+}
+
+/* ── 404 + Page not found heading ────────────────────────────────────────── */
+.nf-reveal-heading {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 300;
+  font-size: clamp(28px, 4.2vw, 64px);
+  letter-spacing: 0.01em;
+  color: #fff;
+  margin: 0;
+  opacity: 0;            /* GSAP reveals */
+}
+
+/* ── Subtitle ─────────────────────────────────────────────────────────────── */
+.nf-reveal-sub {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 400;
+  font-size: clamp(12px, 1.1vw, 16px);
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.7;
+  margin: 0;
+  text-align: center;
+  opacity: 0;            /* GSAP reveals */
+}
+
+/* ── Return Home CTA — bordered box ─────────────────────────────────────── */
+.nf-cta {
+  display: inline-block;
+  padding: 0.75em 2.4em;
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 500;
+  font-size: clamp(11px, 0.85vw, 14px);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.70);
+  text-decoration: none;
   pointer-events: auto;
-  opacity: 0;          /* GSAP reveals — do not add CSS transform here, GSAP owns it */
-  visibility: hidden;  /* prevent focus/tab while hidden */
-  transition: color 0.25s ease;
+  opacity: 0;
+  visibility: hidden;
+  transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
   cursor: none;
 }
 
-.nf-cta::after { display: none; } /* suppress global link underline */
-
-.nf-cta-line {
-  display: block;
-  height: 1px;
-  width: clamp(24px, 4vw, 56px);
-  background: currentColor;
-  transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+.nf-cta::after { display: none; }
 
 .nf-cta:hover {
-  color: var(--gray-0);
+  background: #fff;
+  color: #0a0a0a;
+  border-color: #fff;
 }
 
-.nf-cta:hover .nf-cta-line {
-  width: clamp(40px, 6vw, 88px);
-}
-
-/* ── Scroll hint ─────────────────────────────────────────────────────────── */
-.nf-scroll-hint {
-  font-family: var(--font-manrope);
-  font-size: var(--fs-10pt);
-  color: var(--gray-400);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+/* ── Bottom marquee ticker ───────────────────────────────────────────────── */
+.nf-ticker {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 0.55em 0;
   pointer-events: none;
-  animation: nf-hint-pulse 2.4s ease-in-out infinite;
+  background: rgba(10, 10, 10, 0.55);
 }
 
-@keyframes nf-hint-pulse {
-  0%, 100% { opacity: 0.5; transform: translateY(0); }
-  50%       { opacity: 0.9; transform: translateY(-4px); }
+.nf-ticker-track {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  /* -50% = exactly one set → seamless loop */
+  animation: nf-ticker-scroll 26s linear infinite;
+}
+
+.nf-ticker-set {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.nf-ticker-item {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 500;
+  font-size: clamp(9px, 0.72vw, 12px);
+  letter-spacing: 0.20em;
+  color: rgba(255, 255, 255, 0.50);
+  padding-right: 1em;
+}
+
+.nf-ticker-dot {
+  padding: 0 0.8em;
+  opacity: 0.35;
+}
+
+@keyframes nf-ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }

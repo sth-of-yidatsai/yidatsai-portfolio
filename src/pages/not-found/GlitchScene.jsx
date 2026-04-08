@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import GlitchBackground from './GlitchBackground';
-import ParticleSystem   from './ParticleSystem';
 import PostFX           from './PostFX';
 import store            from './useGlitchStore';
 
@@ -36,7 +35,6 @@ export default function GlitchScene() {
     >
       <SceneSetup />
       <GlitchBackground />
-      <ParticleSystem />
       <PostFX />
     </Canvas>
   );

@@ -1,9 +1,11 @@
 import { useRef, useEffect } from 'react';
 
-// Skip on touch devices — no cursor to trail
 const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
-const TRAIL_LENGTH = 42;
+const GRAVITY    = 0.18;   // px/frame²
+const FLOAT_TIME = 0.6;    // seconds to hover before gravity activates
+const SPAWN_RATE = 2;      // spawn one particle every N pointermove events
+const MAX_P      = 120;    // particle pool cap
 
 export default function CursorTrail() {
   const canvasRef = useRef(null);
@@ -21,13 +23,31 @@ export default function CursorTrail() {
     resize();
     window.addEventListener('resize', resize);
 
-    // Ring buffer of recent mouse positions
-    const points = Array.from({ length: TRAIL_LENGTH }, () => ({ x: 0, y: 0 }));
-    let head = 0;
+    // Particle pool — reuse objects to avoid GC pressure
+    const pool = [];
+    let moveCount = 0;
+    let mx = 0, my = 0;
+
+    const spawn = (x, y) => {
+      if (pool.length >= MAX_P) return;
+      pool.push({
+        x,
+        y,
+        // Near-zero initial velocity — tiny horizontal wobble only
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: 0,
+        r:    1.2 + Math.random() * 2.2,
+        life: 1.0,
+        decay: 0.016 + Math.random() * 0.012,
+        age:  0,
+      });
+    };
 
     const onMove = (e) => {
-      points[head] = { x: e.clientX, y: e.clientY };
-      head = (head + 1) % TRAIL_LENGTH;
+      mx = e.clientX;
+      my = e.clientY;
+      moveCount++;
+      if (moveCount % SPAWN_RATE === 0) spawn(mx, my);
     };
     window.addEventListener('pointermove', onMove);
 
@@ -37,15 +57,31 @@ export default function CursorTrail() {
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      for (let i = 0; i < TRAIL_LENGTH; i++) {
-        // Walk the ring buffer from oldest to newest relative to `head`
-        const idx   = (head + i) % TRAIL_LENGTH;
-        const alpha = i / TRAIL_LENGTH;
-        const r     = alpha * 3.5;
+      for (let i = pool.length - 1; i >= 0; i--) {
+        const p = pool[i];
+
+        // Physics — float in place, then gravity
+        p.age += 1 / 60;
+        if (p.age > FLOAT_TIME) {
+          p.vy += GRAVITY;
+          p.x  += p.vx;
+          p.y  += p.vy;
+        }
+        // During float: stay put (vx tiny wobble only, no y movement)
+        p.life -= p.decay;
+
+        if (p.life <= 0) {
+          pool.splice(i, 1);
+          continue;
+        }
+
+        // ease-out fade: bright at birth, quick fade in last 30%
+        const alpha = p.life < 0.3 ? (p.life / 0.3) * 0.50 : 0.50;
+        const r     = p.r * (0.5 + 0.5 * p.life); // shrink as it dies
 
         ctx.beginPath();
-        ctx.arc(points[idx].x, points[idx].y, r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${alpha * 0.55})`;
+        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${alpha.toFixed(3)})`;
         ctx.fill();
       }
 

@@ -1,106 +1,179 @@
-import { useRef, useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import store from './useGlitchStore';
-import ReturnHomeCTA from './ReturnHomeCTA';
+import { useRef, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import store from "./useGlitchStore";
+import ReturnHomeCTA from "./ReturnHomeCTA";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function GlitchDOM() {
   const scrollTrackRef = useRef(null);
   const scrollInnerRef = useRef(null);
+  const revealedRef = useRef(false); // guard: fire entrance once
 
   useEffect(() => {
     const track = scrollTrackRef.current;
     const inner = scrollInnerRef.current;
     if (!track || !inner) return;
 
-    // ── Pipe window wheel → internal scroll track ──────────────────────────
+    // ── Ensure entrance elements start hidden ─────────────────────────────
+    gsap.set([".nf-reveal-heading", ".nf-reveal-sub"], { opacity: 0, y: 18 });
+    gsap.set(".nf-cta", { opacity: 0, y: 22, visibility: "hidden" });
+
+    // ── Wheel / touch → internal scroll track ─────────────────────────────
     const onWheel = (e) => {
       track.scrollTop = Math.max(
         0,
-        Math.min(track.scrollTop + e.deltaY, inner.offsetHeight - track.offsetHeight)
+        Math.min(
+          track.scrollTop + e.deltaY,
+          inner.offsetHeight - track.offsetHeight,
+        ),
       );
       ScrollTrigger.update();
     };
 
     let touchY = 0;
-    const onTouchStart = (e) => { touchY = e.touches[0].clientY; };
-    const onTouchMove  = (e) => {
+    const onTouchStart = (e) => {
+      touchY = e.touches[0].clientY;
+    };
+    const onTouchMove = (e) => {
       track.scrollTop += touchY - e.touches[0].clientY;
       touchY = e.touches[0].clientY;
       ScrollTrigger.update();
     };
 
-    window.addEventListener('wheel',      onWheel,      { passive: true });
-    window.addEventListener('touchstart', onTouchStart, { passive: true });
-    window.addEventListener('touchmove',  onTouchMove,  { passive: true });
+    window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
 
-    // ── ScrollTrigger proxy ─────────────────────────────────────────────────
     ScrollTrigger.scrollerProxy(track, {
       scrollTop(value) {
         if (arguments.length) track.scrollTop = value;
         return track.scrollTop;
       },
       getBoundingClientRect() {
-        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
       },
     });
 
+    // ── rAF loop: watch store.linePing to trigger entrance ────────────────
+    let rafId;
+    const watchPing = () => {
+      if (store.linePing > 0 && !revealedRef.current) {
+        revealedRef.current = true;
+        // Elegant staggered entrance — triggered by the white flash
+        gsap.to(".nf-reveal-heading", {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "expo.out",
+          delay: 0.05,
+        });
+        gsap.to(".nf-reveal-sub", {
+          opacity: 0.5,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          delay: 0.18,
+        });
+        gsap.to(".nf-cta", {
+          opacity: 1,
+          y: 0,
+          visibility: "visible",
+          duration: 0.65,
+          ease: "expo.out",
+          delay: 0.34,
+        });
+      }
+      // Reset if user scrolls back
+      if (store.linePing === 0 && store.phase < 0.75 && revealedRef.current) {
+        revealedRef.current = false;
+        gsap.set([".nf-reveal-heading", ".nf-reveal-sub"], {
+          opacity: 0,
+          y: 18,
+        });
+        gsap.set(".nf-cta", { opacity: 0, y: 22, visibility: "hidden" });
+      }
+      rafId = requestAnimationFrame(watchPing);
+    };
+    rafId = requestAnimationFrame(watchPing);
+
+    // ── ScrollTrigger: only drives phase + scanlines (no text tweens) ─────
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger:  inner,
-          scroller: track,
-          start:    'top top',
-          end:      'bottom bottom',
-          scrub:    1.4,
-          onUpdate: (self) => {
-            store.phase = self.progress;
-            store.invalidate?.();
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: inner,
+            scroller: track,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1.2,
+            onUpdate: (self) => {
+              store.phase = self.progress;
+              store.invalidate?.();
+            },
           },
-        },
-      });
-
-      // ── 0 %  →  15 %: scroll hint disappears ─────────────────────────────
-      tl.to('.nf-scroll-hint', { opacity: 0, y: 8, ease: 'power1.in', duration: 0.15 }, 0)
-
-      // ── 0 %  →  50 %: scanlines tighten ──────────────────────────────────
-        .to('.nf-scanlines', { opacity: 0.18, ease: 'power2.out' }, 0.5)
-
-      // ── 78 % → 95 %: CTA slides in ───────────────────────────────────────
-        .fromTo(
-          '.nf-cta',
-          { opacity: 0, y: 40, visibility: 'hidden' },
-          { opacity: 1, y: 0,  visibility: 'visible', ease: 'expo.out', duration: 0.22 },
-          0.78
+        })
+        .to(
+          ".nf-scroll-hint",
+          { opacity: 0, y: 8, ease: "power1.in", duration: 0.12 },
+          0,
         )
-
-      // ── 85 % → 100 %: scanlines near-zero for a clean finish ─────────────
-        .to('.nf-scanlines', { opacity: 0.06, ease: 'power1.out', duration: 0.15 }, 0.85);
+        .to(
+          ".nf-scanlines",
+          { opacity: 0.06, ease: "power2.out", duration: 0.8 },
+          0,
+        );
 
       ScrollTrigger.refresh();
     });
 
     return () => {
+      cancelAnimationFrame(rafId);
       ctx.revert();
-      window.removeEventListener('wheel',      onWheel);
-      window.removeEventListener('touchstart', onTouchStart);
-      window.removeEventListener('touchmove',  onTouchMove);
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
     };
   }, []);
 
   return (
     <>
-      {/* Invisible 300vh scroll track */}
       <div ref={scrollTrackRef} className="nf-scroll-track" aria-hidden="true">
         <div ref={scrollInnerRef} className="nf-scroll-inner" />
       </div>
 
-      {/* DOM layer — CTA + scroll hint only, no text content */}
       <div className="nf-dom-layer">
-        <ReturnHomeCTA />
-        <p className="nf-scroll-hint" aria-hidden="true">↓ scroll to repair</p>
+        <div className="nf-reveal nf-reveal--above">
+          <h1 className="nf-reveal-heading">404 Page not found</h1>
+          <p className="nf-reveal-sub">
+            This page doesn&apos;t exist — or maybe it was never meant to.
+          </p>
+        </div>
+
+        <div className="nf-reveal nf-reveal--below">
+          <ReturnHomeCTA />
+        </div>
+
+        <div className="nf-ticker" aria-hidden="true">
+          <div className="nf-ticker-track">
+            {/* Two identical sets — animation moves exactly -50% (one set), then resets seamlessly */}
+            {[0, 1].map((setIdx) => (
+              <div key={setIdx} className="nf-ticker-set">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <span key={i} className="nf-ticker-item">
+                    SCROLL TO REPAIR<span className="nf-ticker-dot">·</span>404 PAGE NOT FOUND<span className="nf-ticker-dot">·</span>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   );
