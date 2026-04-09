@@ -6,8 +6,11 @@
 
 ```
 scripts/generate-responsive-images.js   ← 產生各尺寸圖片檔
+scripts/generate-alt-texts.js           ← 用 Claude CLI 自動生成圖片 alt 文字
 src/data/imageWidths.json               ← 原圖尺寸清單（自動產生）
+src/data/image-alts.json               ← 圖片 alt 文字庫（自動產生，commit 進 repo）
 src/utils/imgSrcSet.js                  ← srcset 字串建構 & preload 選圖
+src/utils/getAltText.js                 ← alt 文字查詢工具
 ```
 
 ---
@@ -111,7 +114,49 @@ usePagePreloader(PRELOAD_IMAGES);
 
 ---
 
-## 五、新增專案流程
+## 五、Alt 文字系統
+
+### 架構
+
+圖片 alt 文字獨立存放於 `src/data/image-alts.json`，不寫入 `projects.json`，以避免單一檔案過長。
+
+key 格式：`"{projectId}/{filename}"` → `"alt text 描述"`
+
+```json
+{
+  "formosa-font/01.webp": "A white booklet featuring botanical illustration...",
+  "foucault-book-binding/01.webp": "A flat-lay arrangement of redesigned book covers..."
+}
+```
+
+### 查詢工具：`getAltText(src, fallback?)`
+
+所有 Block 元件透過 `src/utils/getAltText.js` 查詢 alt 文字：
+
+```js
+import { getAltText } from '../../utils/getAltText';
+
+// 接受完整路徑或相對 key，有 fallback 機制
+<img alt={getAltText(src, title ?? '')} ... />
+```
+
+- 支援完整路徑（`/images/projects/formosa-font/01.webp`）或相對 key（`formosa-font/01.webp`）
+- 查無資料時回傳 `fallback`（預設 `''`）
+
+### 生成 Alt 文字
+
+```bash
+npm run generate-alts
+```
+
+- 使用 Claude Code CLI（訂閱帳號，不需要 API key）
+- **Incremental**：已有 alt 的圖片自動跳過，只處理新圖
+- 自動跳過：responsive 變體（`-800`、`-1200` 等）、`og.jpg`、`title.svg`
+- 結果寫入 `src/data/image-alts.json` 後需 commit 進 repo
+
+---
+
+## 六、新增專案流程
 
 ### Step 1 — 準備原圖
 
@@ -131,6 +176,14 @@ npm run generate-images
 ```
 
 執行後自動產生 `-800` / `-1200` / `-1600` / `-2400` / `-3200` 五組變體，並更新 `src/data/imageWidths.json`。
+
+### Step 2.5 — 生成 Alt 文字
+
+```bash
+npm run generate-alts
+```
+
+用 Claude Code CLI 對新圖自動生成 alt 文字，寫入 `src/data/image-alts.json`。確認內容後 commit。
 
 ### Step 3 — 建立專案頁面
 
@@ -161,9 +214,11 @@ const PRELOAD_IMAGES = [
 
 ---
 
-## 六、注意事項
+## 七、注意事項
 
 - **不要直接使用原圖路徑作為 `src`**：`buildSrcSet` 會以原圖路徑作為 `src` fallback，但 srcset 中不包含原圖，瀏覽器只在完全不支援 srcset 時才 fallback 到原圖（幾乎不發生）。
 - **SVG 不產生變體**：`buildSrcSet` 遇到 `.svg` 返回 `null`，直接以原始 SVG 呈現。
 - **重新跑 generate-images 是安全的**：已存在的變體會自動跳過，不重複壓縮。
 - **來源圖寬度 < 目標尺寸**：`withoutEnlargement: true` 保護，不會放大圖片（例如 1920px 原圖不會產生 2400px 變體，而是直接輸出 1920px）。
+- **`generate-alts` 不在 prebuild 流程**：避免每次 build 都呼叫 CLI，需手動執行後 commit `image-alts.json`。
+- **Alt 文字品質**：自動生成的結果可在 `image-alts.json` 中直接編輯修正，格式為純 JSON。
