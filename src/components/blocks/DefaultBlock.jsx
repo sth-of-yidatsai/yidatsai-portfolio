@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
+import { getAltText } from '../../utils/getAltText';
 import './DefaultBlock.css';
 
 function DefaultBlock({ images = [], baseUrl = '' }) {
@@ -12,7 +13,7 @@ function DefaultBlock({ images = [], baseUrl = '' }) {
               src={`${baseUrl}/${filename}`}
               srcSet={buildSrcSet(`${baseUrl}/${filename}`)}
               sizes="(max-width: 768px) 100vw, 50vw"
-              alt={`image ${i + 1}`}
+              alt={getAltText(`${baseUrl}/${filename}`)}
               loading="eager"
               decoding="async"
             />

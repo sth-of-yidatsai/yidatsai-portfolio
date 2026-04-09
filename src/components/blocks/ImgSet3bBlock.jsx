@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
+import { getAltText } from '../../utils/getAltText';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import './ImgSet3bBlock.css';
 
@@ -12,7 +13,7 @@ function ImgItem({ item, modifier }) {
           src={item.src}
           srcSet={buildSrcSet(item.src)}
           sizes="(max-width: 768px) 100vw, 33vw"
-          alt={item.title ?? ''}
+          alt={getAltText(item.src, item.title ?? '')}
           loading="eager"
           decoding="async"
         />

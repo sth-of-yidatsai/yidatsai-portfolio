@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
+import { getAltText } from '../../utils/getAltText';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import './ImgSet1aBlock.css';
 
@@ -8,7 +9,7 @@ function ImgSet1aBlock({ src, title, subtitle }) {
   return (
     <section className="block block--imgset1a">
       <div ref={revealRef} className="block--imgset1a__img-wrap">
-        <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 100vw, 1200px" alt={title ?? ''} loading="lazy" decoding="async" />
+        <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 100vw, 1200px" alt={getAltText(src, title ?? '')} loading="lazy" decoding="async" />
       </div>
       {(title || subtitle) && (
         <div className="block--imgset1a__caption">

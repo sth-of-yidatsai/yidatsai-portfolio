@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
+import { getAltText } from '../../utils/getAltText';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import './ImgSet2aBlock.css';
 
@@ -16,7 +17,7 @@ function ImgSet2aBlock({ items = [], bg, color, reverse }) {
         {a && (
           <div className="block--imgset2a__item block--imgset2a__item--a">
             <div ref={revealA} className="block--imgset2a__img-wrap">
-              <img src={a.src} srcSet={buildSrcSet(a.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={a.title ?? ''} loading="eager" decoding="async" />
+              <img src={a.src} srcSet={buildSrcSet(a.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={getAltText(a.src, a.title ?? '')} loading="eager" decoding="async" />
             </div>
             {(a.title || a.subtitle) && (
               <div className="block--imgset2a__caption">
@@ -29,7 +30,7 @@ function ImgSet2aBlock({ items = [], bg, color, reverse }) {
         {b && (
           <div className="block--imgset2a__item block--imgset2a__item--b">
             <div ref={revealB} className="block--imgset2a__img-wrap">
-              <img src={b.src} srcSet={buildSrcSet(b.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={b.title ?? ''} loading="eager" decoding="async" />
+              <img src={b.src} srcSet={buildSrcSet(b.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={getAltText(b.src, b.title ?? '')} loading="eager" decoding="async" />
             </div>
             {(b.title || b.subtitle) && (
               <div className="block--imgset2a__caption">

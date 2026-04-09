@@ -6,21 +6,21 @@ import { usePagePreloader } from "../hooks/usePagePreloader";
 
 const PRELOAD_IMAGES = [
   // HeroSection carousel
-  '/images/projects/formosa-font/cover.webp',
-  '/images/projects/patterned-glass-notebook/01.webp',
-  '/images/projects/foucault-book-binding/02.webp',
-  '/images/projects/patterned-glass-notebook/03.webp',
-  '/images/projects/formosa-font/04.webp',
+  '/images/projects/foucault-book-binding/03.webp',
+  '/images/projects/formosa-font/15.webp',
+  '/images/projects/patterned-glass-notebook/08.webp',
+  '/images/projects/formosa-font/13.webp',
+  '/images/projects/foucault-book-binding/01.webp',
   // FieldSection
-  '/images/projects/patterned-glass-notebook/cover.webp',
-  '/images/projects/patterned-glass-notebook/02.webp',
-  '/images/projects/patterned-glass-notebook/04.webp',
-  // LandscapeSection
   '/images/projects/foucault-book-binding/08.webp',
-  '/images/projects/foucault-book-binding/cover.webp',
+  '/images/projects/patterned-glass-notebook/16.webp',
+  '/images/projects/patterned-glass-notebook/12.webp',
+  '/images/projects/patterned-glass-notebook/05.webp',
+  // LandscapeSection
+  '/images/projects/foucault-book-binding/09.webp',
   // ApproachSection
-  '/images/projects/foucault-book-binding/05.webp',
-  '/images/projects/foucault-book-binding/07.webp',
+  '/images/projects/foucault-book-binding/06.webp',
+  '/images/projects/foucault-book-binding/20.webp',
 ];
 
 export default function Home() {

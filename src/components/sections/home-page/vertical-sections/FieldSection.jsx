@@ -18,24 +18,24 @@ function LineRoll({ children }) {
 // ── 圖片配置 ── 統一管理，方便置換
 const fieldConfig = [
   {
-    projectId: "patterned-glass-notebook",
-    image: "11.webp",
-    label: "(Product Design)",
+    projectId: "foucault-book-binding",
+    image: "08.webp",
+    label: "(Editorial)",
   },
   {
     projectId: "patterned-glass-notebook",
-    image: "02.webp",
-    label: "(Graphic Design)",
+    image: "16.webp",
+    label: "(Texture)",
   },
   {
     projectId: "patterned-glass-notebook",
-    image: "04.webp",
-    label: "(Typography)",
+    image: "12.webp",
+    label: "(Material)",
   },
   {
     projectId: "patterned-glass-notebook",
-    image: "02.webp",
-    label: "(Poster Design)",
+    image: "05.webp",
+    label: "(Memory in Glass)",
   },
 ];
 

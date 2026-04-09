@@ -1,5 +1,6 @@
 import { memo, useState, useEffect, useCallback, useRef } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
+import { getAltText } from '../../utils/getAltText';
 import './CarouselBlock.css';
 
 function CarouselBlock({ images = [], interval = 5000 }) {
@@ -40,7 +41,7 @@ function CarouselBlock({ images = [], interval = 5000 }) {
             src={src}
             srcSet={buildSrcSet(src)}
             sizes="100vw"
-            alt=""
+            alt={getAltText(src)}
             className={[
               'block--carousel__slide',
               i === current ? 'is-active' : '',

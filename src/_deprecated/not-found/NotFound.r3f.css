@@ -1,0 +1,285 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   404 — Glitch page
+   Layer stack:
+     1  R3F canvas          (absolute, inset 0)
+     2  cursor trail canvas (absolute, inset 0)
+     5  .nf-scanlines
+     6  .nf-vignette
+     9  .nf-scroll-track
+    10  .nf-dom-layer
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.nf-page {
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  overflow: hidden;
+  z-index: 1100;
+}
+
+/* ── R3F canvas ───────────────────────────────────────────────────────────── */
+.nf-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* ── Cursor trail ─────────────────────────────────────────────────────────── */
+.nf-cursor-trail {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* ── Scanlines ───────────────────────────────────────────────────────────── */
+.nf-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.18) 3px,
+    rgba(0, 0, 0, 0.18) 4px
+  );
+  animation: nf-scan-move 10s linear infinite;
+  opacity: 0.40;
+}
+
+@keyframes nf-scan-move {
+  from { background-position: 0 0; }
+  to   { background-position: 0 100px; }
+}
+
+/* ── Vignette ─────────────────────────────────────────────────────────────── */
+.nf-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.65) 100%
+  );
+}
+
+/* ── Scroll track ─────────────────────────────────────────────────────────── */
+.nf-scroll-track {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  overflow-y: scroll;
+  pointer-events: none;
+  scrollbar-width: none;
+}
+.nf-scroll-track::-webkit-scrollbar { display: none; }
+
+.nf-scroll-inner { height: 300vh; }
+
+/* ── DOM layer ───────────────────────────────────────────────────────────── */
+.nf-dom-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ── Text group above the centre glitch line ─────────────────────────────── */
+.nf-reveal--above {
+  position: absolute;
+  left: 50%;
+  bottom: calc(50% + 3vh);          /* just above the line */
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ── CTA group below the centre glitch line ──────────────────────────────── */
+.nf-reveal--below {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 4vh);             /* just below the line */
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 404 + Page not found heading ────────────────────────────────────────── */
+.nf-reveal-heading {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 300;
+  font-size: clamp(28px, 4.2vw, 64px);
+  letter-spacing: 0.01em;
+  color: #fff;
+  margin: 0;
+  opacity: 0;            /* GSAP reveals */
+}
+
+/* ── Subtitle ─────────────────────────────────────────────────────────────── */
+.nf-reveal-sub {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 400;
+  font-size: clamp(12px, 1.8vw, 16px);
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.7;
+  margin: 0;
+  text-align: center;
+  opacity: 0;            /* GSAP reveals */
+}
+
+/* ── Return Home CTA — bordered box ─────────────────────────────────────── */
+.nf-cta {
+  display: inline-block;
+  padding: 0.75em 2.4em;
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 500;
+  font-size: clamp(11px, 1.3vw, 14px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.70);
+  text-decoration: none;
+  pointer-events: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+  cursor: none;
+}
+
+.nf-cta::after { display: none; }
+
+.nf-cta:hover {
+  background: #fff;
+  color: #0a0a0a;
+  border-color: #fff;
+}
+
+/* ── Bottom marquee ticker ───────────────────────────────────────────────── */
+.nf-ticker {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 0.55em 0;
+  pointer-events: none;
+  background: rgba(10, 10, 10, 0.55);
+}
+
+.nf-ticker-track {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  /* -50% = exactly one set → seamless loop */
+  animation: nf-ticker-scroll 26s linear infinite;
+}
+
+.nf-ticker-set {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.nf-ticker-item {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 500;
+  font-size: clamp(9px, 0.72vw, 12px);
+  letter-spacing: 0.20em;
+  color: rgba(255, 255, 255, 0.50);
+  padding-right: 1em;
+}
+
+.nf-ticker-dot {
+  padding: 0 0.8em;
+  opacity: 0.35;
+}
+
+@keyframes nf-ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Tablet (≤ 1024px) ───────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .nf-reveal--above { bottom: calc(50% + 2vh); }
+  .nf-reveal--below { top:    calc(50% + 3vh); }
+}
+
+/* ── Phone (≤ 768px) ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nf-reveal--above {
+    white-space: normal;
+    width: calc(100% - 48px);
+    bottom: calc(50% + 1.5vh);
+    gap: 0.5em;
+  }
+
+  .nf-reveal--below {
+    top: calc(50% + 2.5vh);
+  }
+
+  .nf-cta {
+    padding: 0.9em 2em;
+    letter-spacing: 0.14em;
+    cursor: auto;
+  }
+
+  .nf-ticker-track {
+    animation-duration: 18s;
+  }
+
+  /* Tap-to-skip button — full-screen, sits behind text layers */
+  .nf-skip-btn {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.28);
+    font-family: var(--font-manrope), sans-serif;
+    font-size: clamp(9px, 2.5vw, 12px);
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    pointer-events: auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 10vh;
+    cursor: auto;
+    z-index: 11;
+  }
+}
+
+/* ── Small phone (≤ 480px) ───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .nf-reveal--above {
+    bottom: calc(50% + 1vh);
+    width: calc(100% - 32px);
+  }
+
+  .nf-reveal--below {
+    top: calc(50% + 2vh);
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .nf-scanlines    { animation: none; }
+  .nf-ticker-track { animation: none; justify-content: center; }
+}

@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
+import { getAltText } from '../../utils/getAltText';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import './ImgSet2bBlock.css';
 
@@ -8,7 +9,7 @@ function ImgItem({ item, modifier }) {
   return (
     <div className={`block--imgset2b__item block--imgset2b__item--${modifier}`}>
       <div ref={revealRef} className="block--imgset2b__img-wrap">
-        <img src={item.src} srcSet={buildSrcSet(item.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={item.title ?? ''} loading="lazy" decoding="async" />
+        <img src={item.src} srcSet={buildSrcSet(item.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={getAltText(item.src, item.title ?? '')} loading="lazy" decoding="async" />
       </div>
       {(item.title || item.subtitle) && (
         <div className="block--imgset2b__caption">

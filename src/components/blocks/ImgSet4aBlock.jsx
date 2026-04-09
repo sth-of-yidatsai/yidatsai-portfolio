@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
+import { getAltText } from '../../utils/getAltText';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import './ImgSet4aBlock.css';
 
@@ -7,7 +8,7 @@ function ImgWrap({ src }) {
   const revealRef = useScrollReveal();
   return (
     <div ref={revealRef} className="block--imgset4a__img-wrap">
-      <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 50vw, 25vw" alt="" loading="eager" decoding="async" />
+      <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 50vw, 25vw" alt={getAltText(src)} loading="eager" decoding="async" />
     </div>
   );
 }
