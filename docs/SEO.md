@@ -94,20 +94,20 @@ Google 搜尋「蔡易達」的相關性來自以下幾處：
 
 ## Prerender 設定
 
-**`vite.config.js`** 中設定預渲染的路由：
+**`vite.config.js`** 中設定預渲染的路由，從 `src/data/projects.json` 動態讀取，新增作品時無需手動更新：
 
 ```js
-routes: [
-  '/',
-  '/about',
-  '/projects',
-  '/playground',
-  '/contact',
-  '/projects/formosa-font',
-  '/projects/patterned-glass-notebook',
-  '/projects/foucault-book-binding',
-  // 新增作品時在此加入對應路徑
-],
+routes: (() => {
+  const projects = require('./src/data/projects.json')
+  return [
+    '/',
+    '/about',
+    '/projects',
+    '/playground',
+    '/contact',
+    ...projects.map(p => `/projects/${p.id}`),
+  ]
+})(),
 ```
 
 ---
@@ -142,16 +142,7 @@ public/images/projects/my-new-project/
   └── og.jpg        ← OG 圖（選填，1200×630px JPG）
 ```
 
-### 3. 在 `vite.config.js` 加入預渲染路徑
-
-```js
-routes: [
-  // ... 現有路由
-  '/projects/my-new-project',   // ← 加這行
-],
-```
-
-### 4. Build、確認、部署
+### 3. Build、確認、部署
 
 ```bash
 npm run build

@@ -47,9 +47,9 @@
    ============================================================ */
 :root {
   /* 字型族 */
-  --font-manrope:  "Manrope", sans-serif;
-  --font-hatton:   "PPHatton", "Manrope", sans-serif;
-  --font-cjk:      "Noto Sans TC", sans-serif;
+  --font-manrope:  "Manrope Variable", sans-serif;
+  --font-hatton:   "PPHatton", "Manrope Variable", sans-serif;
+  --font-cjk:      "Noto Sans TC Variable", sans-serif;
 
   /* 字重 */
   --fw-thin:       100;

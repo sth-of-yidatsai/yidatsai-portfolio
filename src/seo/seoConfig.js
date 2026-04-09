@@ -12,16 +12,19 @@ export const PAGE_META = {
     description:
       "Yi-Da Tsai（蔡易達）是台灣台北的視覺設計師與前端工程師，專注於字體設計、編輯設計與數位體驗。",
     ogImage: "https://yidatsai.com/images/og-default.jpg",
+    ogLocale: "zh_TW",
   },
   about: {
     title: "About | YI-DA TSAI 蔡易達",
     description:
       "蔡易達（Yi-Da Tsai）是台灣台北的視覺設計師，專注於編輯設計、書籍裝幀與字體排印系統。",
+    ogLocale: "zh_TW",
   },
   projects: {
     title: "Projects | YI-DA TSAI 蔡易達",
     description:
       "蔡易達（Yi-Da Tsai）的設計作品集，涵蓋編輯設計、書籍裝幀、字體排印與視覺識別。",
+    ogLocale: "zh_TW",
   },
   playground: {
     title: "Playground | YI-DA TSAI",
@@ -56,19 +59,46 @@ export function buildProjectMeta(project) {
 export function buildProjectJsonLd(project) {
   return {
     "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    name: project.title,
-    description: project.description,
-    creator: {
-      "@type": "Person",
-      name: "Yi-Da Tsai",
-      alternateName: "蔡易達",
-      url: SITE.baseUrl,
-    },
-    dateCreated: String(project.year),
-    image: `${SITE.baseUrl}/images/projects/${project.id}/${project.cover}`,
-    url: `${SITE.baseUrl}/projects/${project.id}`,
-    genre: project.category,
-    keywords: project.tags?.join(", "),
+    "@graph": [
+      {
+        "@type": "CreativeWork",
+        name: project.title,
+        description: project.description,
+        creator: {
+          "@type": "Person",
+          name: "Yi-Da Tsai",
+          alternateName: "蔡易達",
+          url: SITE.baseUrl,
+        },
+        dateCreated: String(project.year),
+        image: `${SITE.baseUrl}/images/projects/${project.id}/${project.cover}`,
+        url: `${SITE.baseUrl}/projects/${project.id}`,
+        genre: project.category,
+        keywords: project.tags?.join(", "),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: SITE.baseUrl,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Projects",
+            item: `${SITE.baseUrl}/projects`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: project.title,
+            item: `${SITE.baseUrl}/projects/${project.id}`,
+          },
+        ],
+      },
+    ],
   };
 }

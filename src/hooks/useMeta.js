@@ -13,6 +13,7 @@ export function useMeta({
   ogImage,
   ogUrl,
   ogType = "website",
+  ogLocale = "en_US",
   twitterCard = "summary_large_image",
   keywords,
   jsonLd,
@@ -53,6 +54,7 @@ export function useMeta({
     setMeta({ property: "og:url", content: resolvedOgUrl });
     setMeta({ property: "og:type", content: ogType });
     setMeta({ property: "og:site_name", content: SITE.name });
+    setMeta({ property: "og:locale", content: ogLocale });
 
     // Twitter Card
     setMeta({ name: "twitter:card", content: twitterCard });
@@ -85,5 +87,5 @@ export function useMeta({
     return () => {
       created.forEach((el) => el.parentNode?.removeChild(el));
     };
-  }, [title, description, ogTitle, ogDescription, ogImage, ogUrl, ogType, twitterCard, keywords, jsonLd]);
+  }, [title, description, ogTitle, ogDescription, ogImage, ogUrl, ogType, ogLocale, twitterCard, keywords, jsonLd]);
 }

@@ -45,16 +45,17 @@ export default defineConfig({
     react(),
     !isCI && vitePrerender({
       staticDir: path.resolve(__dirname, 'dist'),
-      routes: [
-        '/',
-        '/about',
-        '/projects',
-        '/playground',
-        '/contact',
-        '/projects/formosa-font',
-        '/projects/patterned-glass-notebook',
-        '/projects/foucault-book-binding',
-      ],
+      routes: (() => {
+        const projects = require('./src/data/projects.json')
+        return [
+          '/',
+          '/about',
+          '/projects',
+          '/playground',
+          '/contact',
+          ...projects.map(p => `/projects/${p.id}`),
+        ]
+      })(),
       renderer: new PuppeteerRenderer({
         renderAfterTime: 3000,
       }),
