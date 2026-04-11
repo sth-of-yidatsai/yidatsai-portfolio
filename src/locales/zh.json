@@ -268,6 +268,25 @@
       ]
     }
   },
+  "nav": {
+    "projects": "PROJECTS",
+    "playground": "PLAYGROUND",
+    "about": "ABOUT",
+    "contact": "CONTACT"
+  },
+  "hero": {
+    "labelTitle": "作品名稱",
+    "labelYear": "年份",
+    "labelCategory": "類別",
+    "labelTag": "標籤",
+    "prevProject": "上一個作品",
+    "nextProject": "下一個作品"
+  },
+  "header": {
+    "mainNav": "主要導覽",
+    "closeMenu": "關閉選單",
+    "openMenu": "開啟選單"
+  },
   "playground": {
     "dragHint": "拖曳移動"
   },

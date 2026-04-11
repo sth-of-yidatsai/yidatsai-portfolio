@@ -289,6 +289,25 @@
       ]
     }
   },
+  "nav": {
+    "projects": "PROJECTS",
+    "playground": "PLAYGROUND",
+    "about": "ABOUT",
+    "contact": "CONTACT"
+  },
+  "hero": {
+    "labelTitle": "Title",
+    "labelYear": "Year",
+    "labelCategory": "Category",
+    "labelTag": "Tag",
+    "prevProject": "Previous project",
+    "nextProject": "Next project"
+  },
+  "header": {
+    "mainNav": "Main navigation",
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu"
+  },
   "playground": {
     "dragHint": "Drag to move"
   },

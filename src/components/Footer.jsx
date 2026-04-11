@@ -11,19 +11,19 @@ import './Footer.css';
  */
 const FOOTER_ROWS = [
   {
-    nav: { label: 'PROJECTS', to: '/projects' },
+    nav: { key: 'nav.projects', to: '/projects' },
     contact: { type: 'link', href: 'mailto:hello@yidatsai.com', text: 'hello@yidatsai.com' },
   },
   {
-    nav: { label: 'PLAYGROUND', to: '/playground' },
+    nav: { key: 'nav.playground', to: '/playground' },
     contact: { type: 'link', href: 'https://x.com/Yida_Tsai', text: 'x.com', external: true },
   },
   {
-    nav: { label: 'ABOUT', to: '/about' },
+    nav: { key: 'nav.about', to: '/about' },
     contact: { type: 'link', href: 'https://www.behance.net/sth_of_yidatsai', text: 'Behance', external: true },
   },
   {
-    nav: { label: 'CONTACT', to: '/contact' },
+    nav: { key: 'nav.contact', to: '/contact' },
     contact: { type: 'copyright' },
   },
 ];
@@ -83,7 +83,7 @@ function FooterBadgeLottie() {
 const CURRENT_YEAR = new Date().getFullYear();
 
 export default function Footer() {
-  const { t } = useTranslation();
+  const { t, tf } = useTranslation();
   const year = CURRENT_YEAR;
 
   return (
@@ -104,7 +104,7 @@ export default function Footer() {
               <Link to={nav.to} className="footer-nav-item clickable">
                 <span className="footer-nav-bullet" aria-hidden="true" />
                 <span className="footer-nav-label">
-                  <RollingText>{nav.label}</RollingText>
+                  <RollingText>{t(nav.key)}</RollingText>
                 </span>
               </Link>
 
@@ -120,7 +120,7 @@ export default function Footer() {
                 </div>
               ) : (
                 <div className="footer-contact-row">
-                  <p className="footer-copyright">{t('footer.copyright').replace('{year}', year)}</p>
+                  <p className="footer-copyright">{tf('footer.copyright', { year })}</p>
                 </div>
               )}
             </Fragment>

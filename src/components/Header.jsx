@@ -4,10 +4,10 @@ import { useLanguage } from "../contexts/LanguageContext";
 import "./Header.css";
 
 const NAV_LINKS = [
-  { number: "01", label: "PROJECTS", to: "/projects" },
-  { number: "02", label: "PLAYGROUND", to: "/playground" },
-  { number: "03", label: "ABOUT", to: "/about" },
-  { number: "04", label: "CONTACT", to: "/contact" },
+  { number: "01", key: "nav.projects", to: "/projects" },
+  { number: "02", key: "nav.playground", to: "/playground" },
+  { number: "03", key: "nav.about", to: "/about" },
+  { number: "04", key: "nav.contact", to: "/contact" },
 ];
 
 function LangToggle({ language, setLanguage, className = '' }) {
@@ -100,7 +100,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [theme, setTheme] = useState("light");
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
 
   const toggleMenu = useCallback(() => {
     if (isOpen) {
@@ -159,8 +159,8 @@ export default function Header() {
             <LineRoll>TSAI</LineRoll>
           </Link>
 
-          <nav className="header-overlay-nav" aria-label="Main navigation">
-            {NAV_LINKS.map(({ number, label, to }) => (
+          <nav className="header-overlay-nav" aria-label={t('header.mainNav')}>
+            {NAV_LINKS.map(({ number, key, to }) => (
               <Link
                 key={to}
                 to={to}
@@ -169,7 +169,7 @@ export default function Header() {
               >
                 <span className="header-nav-number">({number})</span>
                 <span className="header-nav-label">
-                  <RollingText>{label}</RollingText>
+                  <RollingText>{t(key)}</RollingText>
                 </span>
               </Link>
             ))}
@@ -198,7 +198,7 @@ export default function Header() {
           <button
             className="header-hamburger clickable"
             onClick={toggleMenu}
-            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-label={isOpen ? t('header.closeMenu') : t('header.openMenu')}
             aria-expanded={isOpen}
           >
             <span className={`header-hamburger-line line1${isOpen ? " open" : ""}`} />

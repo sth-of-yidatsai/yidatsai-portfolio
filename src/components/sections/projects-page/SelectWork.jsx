@@ -129,37 +129,46 @@ export default function SelectWork() {
   };
 
   // ─── Drag / swipe handlers ─────────────────────────────────────────────────
+  // Window-level listeners capture move/up even when pointer leaves viewport,
+  // and avoid setPointerCapture which would re-target click events away from <a>.
+  useEffect(() => {
+    const onMove = (e) => {
+      if (!dragRef.current.active) return;
+      const delta = e.clientX - dragRef.current.startX;
+      if (Math.abs(delta) > 5) dragRef.current.hasMoved = true;
+      const newOffset = dragRef.current.startOffset - delta;
+      offsetRef.current = newOffset;
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translateX(${-newOffset}px)`;
+      }
+    };
+    const onUp = () => {
+      if (!dragRef.current.active) return;
+      dragRef.current.active = false;
+      setIsDragging(false);
+      const step = getStep();
+      if (!step) return;
+      const snapIdx = Math.round(offsetRef.current / step);
+      animateTo(snapIdx * step);
+      startAutoAdvance();
+    };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+    };
+  }, [animateTo, getStep, startAutoAdvance]);
+
   const handlePointerDown = useCallback((e) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
-    e.preventDefault(); // prevent browser native drag on <a> / <img>
-    e.currentTarget.setPointerCapture(e.pointerId);
     clearInterval(autoTimer.current);
     dragRef.current = { active: true, startX: e.clientX, startOffset: offsetRef.current, hasMoved: false };
     setIsAnimating(false);
     setIsDragging(true);
   }, []);
-
-  const handlePointerMove = useCallback((e) => {
-    if (!dragRef.current.active) return;
-    const delta = e.clientX - dragRef.current.startX;
-    if (Math.abs(delta) > 5) dragRef.current.hasMoved = true;
-    const newOffset = dragRef.current.startOffset - delta;
-    offsetRef.current = newOffset;
-    if (trackRef.current) {
-      trackRef.current.style.transform = `translateX(${-newOffset}px)`;
-    }
-  }, []);
-
-  const handlePointerUp = useCallback(() => {
-    if (!dragRef.current.active) return;
-    dragRef.current.active = false;
-    setIsDragging(false);
-    const step = getStep();
-    if (!step) return;
-    const snapIdx = Math.round(offsetRef.current / step);
-    animateTo(snapIdx * step);
-    startAutoAdvance();
-  }, [animateTo, getStep, startAutoAdvance]);
   // ──────────────────────────────────────────────────────────────────────────
 
   return (
@@ -172,9 +181,7 @@ export default function SelectWork() {
         ref={viewportRef}
         className={`select-work__viewport${isDragging ? " is-dragging" : ""}`}
         onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
+        onDragStart={(e) => e.preventDefault()}
       >
         <div
           ref={trackRef}

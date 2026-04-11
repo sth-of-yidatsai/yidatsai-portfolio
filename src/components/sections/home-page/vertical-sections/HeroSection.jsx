@@ -8,7 +8,7 @@ import leftArrowIcon from "../../../../assets/icons/keyboard_arrow_left_24dp_E3E
 import rightArrowIcon from "../../../../assets/icons/keyboard_arrow_right_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 
 export default function HeroSection({ index }) {
-  const { language } = useTranslation();
+  const { language, t } = useTranslation();
   const sectionRef = useRef(null);
   const isVisibleRef = useRef(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -219,7 +219,7 @@ export default function HeroSection({ index }) {
           {/* Title區域 */}
           <div className="hero-title-section">
             <div className="hero-info-item">
-              <span className="hero-info-label">Title</span>
+              <span className="hero-info-label">{t('hero.labelTitle')}</span>
               <span
                 className={`hero-info-value ${
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
@@ -233,7 +233,7 @@ export default function HeroSection({ index }) {
           {/* Year區域 */}
           <div className="hero-year-section">
             <div className="hero-info-item">
-              <span className="hero-info-label">Year</span>
+              <span className="hero-info-label">{t('hero.labelYear')}</span>
               <span
                 className={`hero-info-value ${
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
@@ -247,7 +247,7 @@ export default function HeroSection({ index }) {
           {/* Category區域 */}
           <div className="hero-tag-section hero-category-section">
             <div className="hero-info-item">
-              <span className="hero-info-label">Category</span>
+              <span className="hero-info-label">{t('hero.labelCategory')}</span>
               <div
                 className={`hero-tag-list ${
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
@@ -271,7 +271,7 @@ export default function HeroSection({ index }) {
           {/* TAG區域 */}
           <div className="hero-tag-section">
             <div className="hero-info-item">
-              <span className="hero-info-label">Tag</span>
+              <span className="hero-info-label">{t('hero.labelTag')}</span>
               <div
                 className={`hero-tag-list ${
                   animationPhase !== "idle" ? `animate-${animationPhase}` : ""
@@ -296,18 +296,18 @@ export default function HeroSection({ index }) {
           <button
             className="hero-nav-button hero-prev-button clickable"
             onClick={handlePrevious}
-            aria-label="Previous project"
+            aria-label={t('hero.prevProject')}
           >
-            <img src={leftArrowIcon} alt="Previous" />
+            <img src={leftArrowIcon} alt="" aria-hidden="true" />
           </button>
           <div className="hero-nav-button-divider" />
           {/* 右箭頭 */}
           <button
             className="hero-nav-button hero-next-button clickable"
             onClick={handleNext}
-            aria-label="Next project"
+            aria-label={t('hero.nextProject')}
           >
-            <img src={rightArrowIcon} alt="Next" />
+            <img src={rightArrowIcon} alt="" aria-hidden="true" />
           </button>
         </div>
       </div>
