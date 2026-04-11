@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import BioSection from "../components/sections/about-page/BioSection";
 import TrajectorySection from "../components/sections/about-page/TrajectorySection";
 import CapabilitiesSection from "../components/sections/about-page/CapabilitiesSection";
 import "./About.css";
 import { usePagePreloader } from "../hooks/usePagePreloader";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const PRELOAD_IMAGES = [
   '/images/about/01.webp',
@@ -15,6 +19,16 @@ const PRELOAD_IMAGES = [
 
 export default function About() {
   usePagePreloader(PRELOAD_IMAGES);
+
+  // ScrollTriggers are created while body.overflow='hidden' (loader active).
+  // Once the loader hides and overflow is restored, the true scrollable height
+  // is available — refresh here so all pin spacer positions are correct.
+  useEffect(() => {
+    const onLoaderHidden = () => ScrollTrigger.refresh();
+    window.addEventListener('loader:hidden', onLoaderHidden);
+    return () => window.removeEventListener('loader:hidden', onLoaderHidden);
+  }, []);
+
   return (
     <main className="about-page">
       <BioSection />

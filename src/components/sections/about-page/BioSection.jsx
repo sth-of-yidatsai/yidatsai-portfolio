@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect } from "react";
+import { useRef, useLayoutEffect, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { buildSrcSet } from "../../../utils/imgSrcSet";
@@ -14,6 +14,7 @@ function StickyText({ text, label, isFirst = false }) {
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
+    // Re-read refs after text prop changes (new language may have different char count)
     const chars = charsRef.current.filter(Boolean);
     if (!section || !chars.length) return;
 
@@ -80,7 +81,7 @@ function StickyText({ text, label, isFirst = false }) {
       window.removeEventListener("resize", setup);
       ctx?.revert();
     };
-  }, [isFirst]);
+  }, [isFirst, text]);
 
   return (
     <section className="bs__text-block" ref={sectionRef}>
@@ -144,11 +145,19 @@ function ParallaxImage() {
 export default function BioSection() {
   const { t, language } = useTranslation();
   const label = t('bio.eyebrow');
+
+  // After language change, StickyText components remount (key changes) and
+  // recreate their ScrollTrigger pins. Refresh all triggers so TrajectorySection
+  // recalculates its start position against the new pin spacers.
+  useEffect(() => {
+    ScrollTrigger.refresh();
+  }, [language]);
+
   return (
     <div className="bs">
-      <StickyText key={`text1-${language}`} text={t('bio.text1')} label={label} isFirst />
+      <StickyText text={t('bio.text1')} label={label} isFirst />
       <ParallaxImage />
-      <StickyText key={`text2-${language}`} text={t('bio.text2')} label={label} />
+      <StickyText text={t('bio.text2')} label={label} />
     </div>
   );
 }

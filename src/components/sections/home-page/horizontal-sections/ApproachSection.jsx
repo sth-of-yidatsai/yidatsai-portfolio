@@ -12,7 +12,7 @@ const approachConfig = {
 };
 
 export default function ApproachSection({ index }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const leftSrc = approachConfig.leftImage;
   const rightSrc = approachConfig.rightImage;
 
@@ -43,7 +43,7 @@ export default function ApproachSection({ index }) {
           <div className="as-text-block">
             <BilingTitle
               en={t('approach.title')}
-              zh={t('approach.titleZh')}
+              zh={locale.approach?.titleZh ?? null}
               className="as-title"
             />
             <span className="as-rule" />

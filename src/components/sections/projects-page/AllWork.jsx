@@ -134,7 +134,7 @@ const ProjectCard = memo(function ProjectCard({ project, onClick, cardRef }) {
 export default function AllWork() {
   const navigate = useNavigate();
   const { page: pageParam } = useParams();
-  const { language } = useTranslation();
+  const { language, t } = useTranslation();
 
   const initialPage = Math.max(
     1,
@@ -256,7 +256,7 @@ export default function AllWork() {
   return (
     <section className="all-work">
       <div className="all-work__header">
-        <p className="all-work__eyebrow">All Projects</p>
+        <p className="all-work__eyebrow">{t('projectsPage.allEyebrow')}</p>
       </div>
 
       <div className="all-work__masonry">

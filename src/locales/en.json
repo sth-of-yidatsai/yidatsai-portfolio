@@ -2,19 +2,38 @@
   "bio": {
     "eyebrow": "About",
     "text1": "Yida Tsai is a multidisciplinary designer based in Taipei, working between visual design and digital experience. His practice spans from interface design to printed matter, exploring how ideas take form across different mediums.",
-    "text2": "With a foundation in visual communication and experience in both digital and editorial projects, he focuses on clarity, structure, and the translation of design into tangible outcomes.",
-    "tagline": "Visual Designer based in Taipei. Focused on Typography & Editorial Design."
+    "text2": "With a foundation in visual communication and experience in both digital and editorial projects, he focuses on clarity, structure, and the translation of design into tangible outcomes."
   },
   "capabilities": {
     "eyebrow": "Capabilities",
     "title": "Areas of Expertise",
     "titleZh": null,
     "items": [
-      { "num": "01", "title": "Interface Design", "desc": "UI / UX design, layout systems, and interaction flow." },
-      { "num": "02", "title": "Web Development", "desc": "Frontend implementation with modern frameworks and responsive systems." },
-      { "num": "03", "title": "Brand & Visual Design", "desc": "Identity systems, typography, and visual language." },
-      { "num": "04", "title": "Editorial & Print", "desc": "Publication design, printed materials, and physical outputs." },
-      { "num": "05", "title": "Creative Direction", "desc": "Concept development, visual strategy, and cross-medium execution." }
+      {
+        "num": "01",
+        "title": "Interface Design",
+        "desc": "UI / UX design, layout systems, and interaction flow."
+      },
+      {
+        "num": "02",
+        "title": "Web Development",
+        "desc": "Frontend implementation with modern frameworks and responsive systems."
+      },
+      {
+        "num": "03",
+        "title": "Brand & Visual Design",
+        "desc": "Identity systems, typography, and visual language."
+      },
+      {
+        "num": "04",
+        "title": "Editorial & Print",
+        "desc": "Publication design, printed materials, and physical outputs."
+      },
+      {
+        "num": "05",
+        "title": "Creative Direction",
+        "desc": "Concept development, visual strategy, and cross-medium execution."
+      }
     ]
   },
   "trajectory": {
@@ -23,80 +42,93 @@
     "titleZh": null,
     "cards": [
       {
-        "year": "2026",
-        "title": "Digital Experience Practice.",
-        "desc": "Continuously exploring the intersection of visual design and front-end development, creating interfaces that balance clarity, interaction, and aesthetics.",
-        "period": "2024 — present"
+        "year": "2025",
+        "title": "GOODAY TUORS (Sun Day Tour Group) — Web Visual Design",
+        "desc": "Responsible for the visual design and front-end development of travel campaign pages, and contributed to print and physical deliverables for premium group tours.\nIntegrating digital and print design, extending outcomes across multiple mediums.",
+        "period": "2025 — Present"
       },
       {
         "year": "2024",
-        "title": "Transition into front-end development.",
-        "desc": "Shifted from visual design to web development, building a solid foundation in modern technologies and translating design thinking into functional interfaces.",
-        "period": "2024/09 — present"
-      },
-      {
-        "year": "2024",
-        "title": "Campmate — Bridging UI and system logic.",
-        "desc": "Led the design and implementation of key features including homepage, coupon system, and admin tools, connecting user experience with backend functionality.",
+        "title": "Front-End Engineering Training — III",
+        "desc": "Completed intensive front-end training at the Institute for Information Industry (III), building a foundation in HTML, CSS, JavaScript, and React.\nContributed to the Campmate e-commerce project, designing and implementing the homepage, coupon system, and admin tools.",
         "period": "2024/05 — 2024/09"
       },
       {
-        "year": "2024",
-        "title": "Visual design in practice.",
-        "desc": "Worked as a visual designer across branding and marketing projects, focusing on typography, layout, and delivering clear visual communication.",
-        "period": "2022/09 — 2024/03"
+        "year": "2023",
+        "title": "Real Estate Visual Design & Brand Integration",
+        "desc": "Led visual and brand design for residential developments, including naming, sales center visuals, and promotional materials.\nDeveloped integrated design experience across print and spatial environments.",
+        "period": "2022/09 — 2023/10"
       },
       {
         "year": "2022",
         "title": "NTUA — Visual Communication Design",
-        "desc": "Studied at National Taiwan University of Arts, building a foundation in visual language, design principles, and creative thinking.",
+        "desc": "Built a foundation in visual language and design principles.\nDeveloped creative thinking and a systematic approach to design.",
         "period": "2018/09 — 2022/06"
       }
     ]
   },
+
   "approach": {
     "title": "Design Approach",
     "titleZh": null,
-    "body1": "Each project begins with a visual idea,\nshaped through typography, structure, and material.",
-    "body2": "By balancing aesthetics and logic,\nthe work evolves into a clear and\nmeaningful visual experience."
+    "body1": "Design is shaped through the interplay\nof typography, structure, and material.",
+    "body2": "By balancing aesthetics and logic,\nmaking each work more precise and meaningful."
   },
+
   "field": {
-    "tagline": "Visual Designer based in Taipei. Focused on Typography & Editorial Design.",
-    "taglineSub": "Bridging visual language and digital experiences.",
-    "labels": ["(Editorial)", "(Texture)", "(Material)", "(Memory in Glass)"]
+    "tagline": "Multidisciplinary designer based in Taipei.\nFocused on visual design and digital experience.",
+    "taglineSub": "Through structure and systems, transforming concepts into perceptible design.",
+    "labels": [
+      "Visual Language",
+      "Structure & Systems",
+      "Material & Surface",
+      "Memory & Perception"
+    ]
   },
   "vision": {
     "header1": "BETWEEN",
     "header2": "ART & SYSTEM",
-    "subtitle": "Where aesthetics, logic and experience converge",
+    "titleZh": null,
+    "subtitle": "Where aesthetics, logic, and experience intersect",
     "center1": "STRUCTURED",
     "center2": "EMOTION",
     "steps": [
       {
         "left": {
           "title": "Logic",
-          "lead": "Structure creates clarity.",
-          "body": ["Systems and hierarchy", "make complexity readable."]
+          "titleZh": null,
+          "lead": "Clarity begins with structure.",
+          "body": ["Systems and hierarchy", "turn complexity into order."]
         },
         "right": {
           "title": "Aesthetics",
-          "lead": "Form gives emotion a surface.",
-          "body": ["Rhythm and visual tone", "allow language to emerge."]
+          "titleZh": null,
+          "lead": "Form gives emotion its surface.",
+          "body": ["Rhythm and visual tone", "allow meaning to emerge."]
         }
       },
       {
         "left": {
           "title": "Experience",
-          "lead": "Experience gives design meaning.",
-          "body": ["Atmosphere and memory", "shape how it is felt."]
+          "titleZh": null,
+          "lead": "Design is completed through experience.",
+          "body": ["Atmosphere and memory", "shape how it is perceived."]
         },
         "right": {
           "title": "Structured Emotion",
-          "lead": "Emotion is not accidental.",
-          "body": ["It is shaped through structure, and brought", "to life through design."]
+          "titleZh": null,
+          "lead": "Emotion is carefully constructed.",
+          "body": [
+            "Shaped through structure,",
+            "brought to life through design."
+          ]
         }
       }
     ]
+  },
+  "projectsPage": {
+    "selectEyebrow": "Selected Projects",
+    "allEyebrow": "All Projects"
   },
   "projects": {
     "areas": {
@@ -105,18 +137,33 @@
       "3": "Material",
       "4": "Detail"
     },
+    "areasZh": {
+      "1": null,
+      "2": null,
+      "3": null,
+      "4": null
+    },
     "descriptions": {
-      "1": "Every project begins with a clear idea.\nConcept defines the direction, intention,\nand the story behind the design.",
-      "2": "Structure shapes the foundation of design.\nIt organizes elements and builds a visual\nframework that supports the concept.",
-      "3": "Material brings texture and depth.\nThrough surface, light, and detail,\nthe design gains its physical presence.",
-      "4": "Detail refines the final expression.\nSmall elements complete the design\nand reveal the true level of craftsmanship."
+      "1": "Every project starts with a clear concept.\nIt defines the direction, intention,\nand narrative of the work.",
+      "2": "Structure builds the visual foundation.\nIt organizes elements into a coherent\nand functional system.",
+      "3": "Material introduces texture and depth.\nThrough surface, light, and tactility,\nthe work gains physical presence.",
+      "4": "Detail refines the final expression.\nPrecision in small elements reveals\nthe level of craftsmanship."
     }
   },
   "landscape": {
     "slides": [
-      { "leftLabel": "Graphic", "rightLabel": "Graphic" },
-      { "leftLabel": "Poster", "rightLabel": "Poster" },
-      { "leftLabel": "Editorial", "rightLabel": "Editorial" }
+      {
+        "leftLabel": "(Visual Language)",
+        "rightLabel": "(Typographic System)"
+      },
+      {
+        "leftLabel": "(Material Expression)",
+        "rightLabel": "(Tactile Surface)"
+      },
+      {
+        "leftLabel": "(Narrative Form)",
+        "rightLabel": "(Editorial Flow)"
+      }
     ]
   },
   "contact": {
@@ -144,10 +191,37 @@
       "errorToast": "Something went wrong. Please try again or email hello@yidatsai.com directly.",
       "rateLimitToast": "Too many submissions. Please try again later.",
       "interestGroups": [
-        { "group": "Brand", "items": ["Logo Design", "Brand Identity", "Brand Strategy", "Rebranding"] },
-        { "group": "Graphic", "items": ["Packaging Design", "Print Design", "Editorial Design", "Campaign Visuals"] },
-        { "group": "Digital", "items": ["Website Design", "UI / UX Design", "Landing Page", "Design System"] },
-        { "group": "Extras", "items": ["Social Media", "Motion Graphics", "3D Visual"] },
+        {
+          "group": "Brand",
+          "items": [
+            "Logo Design",
+            "Brand Identity",
+            "Brand Strategy",
+            "Rebranding"
+          ]
+        },
+        {
+          "group": "Graphic",
+          "items": [
+            "Packaging Design",
+            "Print Design",
+            "Editorial Design",
+            "Campaign Visuals"
+          ]
+        },
+        {
+          "group": "Digital",
+          "items": [
+            "Website Design",
+            "UI / UX Design",
+            "Landing Page",
+            "Design System"
+          ]
+        },
+        {
+          "group": "Extras",
+          "items": ["Social Media", "Motion Graphics", "3D Visual"]
+        },
         { "group": "Other", "items": ["Not sure yet"] }
       ],
       "budgetTiers": ["Starter", "Basic", "Standard", "Pro", "Custom"],
@@ -158,18 +232,67 @@
         "Ideal for a complete brand experience",
         "Tailored for premium, full-scale projects"
       ],
-      "timelines": ["Within 1 month", "2-3 months", "3-6 months", "Over 3 months", "Flexible timeline"],
-      "counties": ["Taiwan", "Taipei City", "New Taipei City", "Taoyuan City", "Taichung City", "Tainan City", "Kaohsiung City", "Hsinchu City", "Keelung City", "Hsinchu County", "Miaoli County", "Changhua County", "Nantou County", "Yunlin County", "Chiayi City", "Chiayi County", "Pingtung County", "Yilan County", "Hualien County", "Taitung County", "Penghu County", "Kinmen County", "Lienchiang County"],
-      "regions": ["International", "Japan", "South Korea", "China (Mainland)", "Hong Kong", "Macau", "Singapore", "Southeast Asia", "South Asia", "United States", "Canada", "United Kingdom", "Germany", "France", "Netherlands", "Other Europe", "Middle East", "Australia / New Zealand", "Latin America", "Africa", "Other"]
+      "timelines": [
+        "Within 1 month",
+        "2-3 months",
+        "3-6 months",
+        "Over 3 months",
+        "Flexible timeline"
+      ],
+      "counties": [
+        "Taiwan",
+        "Taipei City",
+        "New Taipei City",
+        "Taoyuan City",
+        "Taichung City",
+        "Tainan City",
+        "Kaohsiung City",
+        "Hsinchu City",
+        "Keelung City",
+        "Hsinchu County",
+        "Miaoli County",
+        "Changhua County",
+        "Nantou County",
+        "Yunlin County",
+        "Chiayi City",
+        "Chiayi County",
+        "Pingtung County",
+        "Yilan County",
+        "Hualien County",
+        "Taitung County",
+        "Penghu County",
+        "Kinmen County",
+        "Lienchiang County"
+      ],
+      "regions": [
+        "International",
+        "Japan",
+        "South Korea",
+        "China (Mainland)",
+        "Hong Kong",
+        "Macau",
+        "Singapore",
+        "Southeast Asia",
+        "South Asia",
+        "United States",
+        "Canada",
+        "United Kingdom",
+        "Germany",
+        "France",
+        "Netherlands",
+        "Other Europe",
+        "Middle East",
+        "Australia / New Zealand",
+        "Latin America",
+        "Africa",
+        "Other"
+      ]
     }
   },
+  "playground": {
+    "dragHint": "Drag to move"
+  },
   "projectDetail": {
-    "labelTitle": "Title",
-    "labelYear": "Year",
-    "labelCategory": "Category",
-    "labelTag": "Tag",
-    "prevProject": "Previous project",
-    "nextProject": "Next project",
     "discoverMore": "Discover More"
   },
   "footer": {

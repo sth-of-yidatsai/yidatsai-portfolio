@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import "./VisionSection.css";
 import visionCircle from "../../../../assets/icons/vision-circle.svg";
 import { useTranslation } from "../../../../hooks/useTranslation";
+import BilingTitle from "../../../BilingTitle";
 
 /* ══════════════════════════════════════════════════════════════════
    Geometry  —  viewBox 700 × 650
@@ -157,7 +158,7 @@ function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
 function CopyPanel({ data, active }) {
   return (
     <div className={`vs-copy${active ? " vs-copy--active" : ""}`}>
-      <h3 className="vs-copy-title">{data.title}</h3>
+      <BilingTitle en={data.title} zh={data.titleZh ?? null} as="h3" className="vs-copy-title" />
       <div className="vs-copy-line" />
       <p className="vs-copy-lead">{data.lead}</p>
       <p className="vs-copy-body">
@@ -242,6 +243,9 @@ export default function VisionSection() {
               <span className="line-roll-bottom" aria-hidden="true">ART <span className="vs-title-sub">&amp; SYSTEM</span></span>
             </span>
           </h2>
+          {locale.vision?.titleZh && (
+            <p className="vs-title-zh" lang="zh-TW">{locale.vision.titleZh}</p>
+          )}
           <p className="vs-subtitle">{t('vision.subtitle')}</p>
         </header>
       </div>

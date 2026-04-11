@@ -1,9 +1,7 @@
 import { memo } from "react";
 import './HeroBlock.css';
-import { useTranslation } from "../../hooks/useTranslation";
 
 function HeroBlock({ image, project = {} }) {
-  const { t } = useTranslation();
   const { title, year, category = [], tags = [] } = project;
 
   return (
@@ -18,7 +16,7 @@ function HeroBlock({ image, project = {} }) {
 
           <div className="block--hero__title-section">
             <div className="block--hero__info-item">
-              <span className="block--hero__info-label">{t('projectDetail.labelTitle')}</span>
+              <span className="block--hero__info-label">Title</span>
               <span className="block--hero__info-value">{title}</span>
             </div>
           </div>
@@ -26,7 +24,7 @@ function HeroBlock({ image, project = {} }) {
           {year && (
             <div className="block--hero__year-section">
               <div className="block--hero__info-item">
-                <span className="block--hero__info-label">{t('projectDetail.labelYear')}</span>
+                <span className="block--hero__info-label">Year</span>
                 <span className="block--hero__info-value">{year}</span>
               </div>
             </div>
@@ -35,7 +33,7 @@ function HeroBlock({ image, project = {} }) {
           {category.length > 0 && (
             <div className="block--hero__tag-section">
               <div className="block--hero__info-item">
-                <span className="block--hero__info-label">{t('projectDetail.labelCategory')}</span>
+                <span className="block--hero__info-label">Category</span>
                 <div className="block--hero__tag-list">
                   {category.map((cat, i) => (
                     <span key={i} className="block--hero__tag-item">{cat}</span>
@@ -48,7 +46,7 @@ function HeroBlock({ image, project = {} }) {
           {tags.length > 0 && (
             <div className="block--hero__tag-section">
               <div className="block--hero__info-item">
-                <span className="block--hero__info-label">{t('projectDetail.labelTag')}</span>
+                <span className="block--hero__info-label">Tag</span>
                 <div className="block--hero__tag-list">
                   {tags.map((tag, i) => (
                     <span key={i} className="block--hero__tag-item">{tag}</span>

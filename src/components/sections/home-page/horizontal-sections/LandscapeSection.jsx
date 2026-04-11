@@ -3,6 +3,7 @@ import "./LandscapeSection.css";
 import { buildSrcSet } from "../../../../utils/imgSrcSet";
 import cornerSvg from "../../../../assets/icons/landscape-section-corner.svg";
 import centerSvg from "../../../../assets/icons/landscape-section-center.svg";
+import { useTranslation } from "../../../../hooks/useTranslation";
 
 /** 逐字捲動（從下方捲入），用於圖片切換時的文字動畫 */
 function RollingText({ children }) {
@@ -60,7 +61,18 @@ export default function LandscapeSection({
   landscapeProgress = 0,
   landscapeFullscreenProgress = 0,
 }) {
-  const slides = useMemo(() => LANDSCAPE_SLIDES.map(resolveSlide), []);
+  const { locale } = useTranslation();
+  const slides = useMemo(
+    () => LANDSCAPE_SLIDES.map((cfg, i) => {
+      const localeSlide = locale.landscape?.slides?.[i];
+      return {
+        ...resolveSlide(cfg),
+        leftLabel:  localeSlide?.leftLabel  ?? cfg.leftLabel,
+        rightLabel: localeSlide?.rightLabel ?? cfg.rightLabel,
+      };
+    }),
+    [locale],
+  );
 
   // ── Mobile carousel state ─────────────────────────────────────────
   const [mobileIndex, setMobileIndex] = useState(0);

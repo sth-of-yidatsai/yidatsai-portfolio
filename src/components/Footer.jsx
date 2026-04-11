@@ -2,6 +2,7 @@ import { Fragment, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import footerCircleAnimation from '../assets/icons/FooterCircle.json';
+import { useTranslation } from '../hooks/useTranslation';
 import './Footer.css';
 
 /**
@@ -82,6 +83,7 @@ function FooterBadgeLottie() {
 const CURRENT_YEAR = new Date().getFullYear();
 
 export default function Footer() {
+  const { t } = useTranslation();
   const year = CURRENT_YEAR;
 
   return (
@@ -118,7 +120,7 @@ export default function Footer() {
                 </div>
               ) : (
                 <div className="footer-contact-row">
-                  <p className="footer-copyright">Yida Tsai © 2020–{year}</p>
+                  <p className="footer-copyright">{t('footer.copyright').replace('{year}', year)}</p>
                 </div>
               )}
             </Fragment>

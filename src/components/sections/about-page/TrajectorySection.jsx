@@ -22,7 +22,7 @@ const CARD_IMAGES = [
 ];
 
 export default function TrajectorySection() {
-  const { t, locale } = useTranslation();
+  const { t, locale, language } = useTranslation();
   const CARDS = locale.trajectory.cards.map((card, i) => ({
     ...card,
     image: CARD_IMAGES[i],
@@ -181,7 +181,7 @@ export default function TrajectorySection() {
       ctx?.revert();
       window.removeEventListener("resize", onResize);
     };
-  }, []);
+  }, [language]);
 
   // ── Mobile: animate to clicked card ──────────────────────────────────────
   useEffect(() => {
@@ -301,7 +301,7 @@ export default function TrajectorySection() {
           <p className="ts__subtitle">{t('trajectory.eyebrow')}</p>
           <BilingTitle
             en={t('trajectory.title')}
-            zh={t('trajectory.titleZh')}
+            zh={locale.trajectory?.titleZh ?? null}
             className="ts__title"
           />
         </div>
@@ -322,8 +322,8 @@ export default function TrajectorySection() {
                   key={i}
                   className={`ts__card${activeIndex === i ? " ts__card--active" : ""}`}
                 >
-                  <p className="ts__year">{card.year}</p>
                   <div className="ts__img-wrap">
+                    <p className="ts__year">{card.year}</p>
                     <img
                       className="ts__img"
                       src={card.image}

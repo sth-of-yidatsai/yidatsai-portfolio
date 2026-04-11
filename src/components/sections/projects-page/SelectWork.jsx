@@ -48,7 +48,7 @@ function buildCards(config, data, language) {
 
 export default function SelectWork() {
   const navigate = useNavigate();
-  const { language } = useTranslation();
+  const { language, t } = useTranslation();
   const cards = useMemo(() => buildCards(SELECTED_WORKS, projectsData, language), [language]);
   const N = cards.length;
 
@@ -56,11 +56,14 @@ export default function SelectWork() {
   const displayCards = useMemo(() => [...cards, ...cards, ...cards], [cards]);
 
   const trackRef = useRef(null);
+  const viewportRef = useRef(null);
   const offsetRef = useRef(0);
   const autoTimer = useRef(null);
+  const dragRef = useRef({ active: false, startX: 0, startOffset: 0, hasMoved: false });
 
   const [offset, setOffset] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const getStep = useCallback(() => {
     const card = trackRef.current?.querySelector(".select-work__card-wrap");
@@ -125,13 +128,54 @@ export default function SelectWork() {
     navigate(`/projects/${card.id}`);
   };
 
+  // ─── Drag / swipe handlers ─────────────────────────────────────────────────
+  const handlePointerDown = useCallback((e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    e.preventDefault(); // prevent browser native drag on <a> / <img>
+    e.currentTarget.setPointerCapture(e.pointerId);
+    clearInterval(autoTimer.current);
+    dragRef.current = { active: true, startX: e.clientX, startOffset: offsetRef.current, hasMoved: false };
+    setIsAnimating(false);
+    setIsDragging(true);
+  }, []);
+
+  const handlePointerMove = useCallback((e) => {
+    if (!dragRef.current.active) return;
+    const delta = e.clientX - dragRef.current.startX;
+    if (Math.abs(delta) > 5) dragRef.current.hasMoved = true;
+    const newOffset = dragRef.current.startOffset - delta;
+    offsetRef.current = newOffset;
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translateX(${-newOffset}px)`;
+    }
+  }, []);
+
+  const handlePointerUp = useCallback(() => {
+    if (!dragRef.current.active) return;
+    dragRef.current.active = false;
+    setIsDragging(false);
+    const step = getStep();
+    if (!step) return;
+    const snapIdx = Math.round(offsetRef.current / step);
+    animateTo(snapIdx * step);
+    startAutoAdvance();
+  }, [animateTo, getStep, startAutoAdvance]);
+  // ──────────────────────────────────────────────────────────────────────────
+
   return (
     <section className="select-work">
       <div className="select-work__header">
-        <p className="select-work__eyebrow">Selected Projects</p>
+        <p className="select-work__eyebrow">{t('projectsPage.selectEyebrow')}</p>
       </div>
 
-      <div className="select-work__viewport">
+      <div
+        ref={viewportRef}
+        className={`select-work__viewport${isDragging ? " is-dragging" : ""}`}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+      >
         <div
           ref={trackRef}
           className={`select-work__track${isAnimating ? " is-animating" : ""}`}
@@ -142,9 +186,10 @@ export default function SelectWork() {
               key={i}
               className="select-work__card-wrap"
               href={`/projects/${card.id}`}
+              draggable={false}
               onClick={(e) => {
                 e.preventDefault();
-                handleCardClick(card);
+                if (!dragRef.current.hasMoved) handleCardClick(card);
               }}
               data-clickable
             >

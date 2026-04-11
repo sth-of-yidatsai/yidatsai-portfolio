@@ -66,25 +66,27 @@
 .ts__card {
   flex-shrink: 0;
   width: var(--ts-card-w, 220px);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
 }
 
 /* ── Year label ───────────────────────────────────────────────── */
 .ts__year {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-md);
+  z-index: 1;
   font-family: var(--font-hatton);
   font-weight: var(--fw-light);
   font-size: var(--fs-40pt);
-  color: var(--gray-200);
+  color: var(--gray-50);
+  opacity: 0.25;
   line-height: 1;
   margin: 0;
-  transition: color 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
 
 .ts__card--active .ts__year {
-  color: var(--gray-700);
+  opacity: 1;
 }
 
 /* ── Image wrapper ────────────────────────────────────────────── */

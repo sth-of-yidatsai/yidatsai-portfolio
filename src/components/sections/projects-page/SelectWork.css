@@ -42,6 +42,14 @@
   box-sizing: border-box;
   /* Contain layout/style recalculations to this subtree */
   contain: layout style;
+  cursor: grab;
+  user-select: none;
+  /* Let browser handle vertical scroll; we capture horizontal */
+  touch-action: pan-y;
+}
+
+.select-work__viewport.is-dragging {
+  cursor: grabbing;
 }
 
 /* ── Track ───────────────────────────────────────────────────────────────── */

@@ -46,16 +46,18 @@ const DiscoverMoreCard = memo(function DiscoverMoreCard({ project, onClick }) {
       data-clickable
     >
       <div ref={frameRef} className="discover-more__card">
-        <img
-          ref={imgRef}
-          src={imgSrc}
-          srcSet={buildSrcSet(imgSrc)}
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          alt={project.title}
-          className="discover-more__card-img"
-          loading="lazy"
-          draggable={false}
-        />
+        <div className="discover-more__card-img-scale">
+          <img
+            ref={imgRef}
+            src={imgSrc}
+            srcSet={buildSrcSet(imgSrc)}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            alt={project.title}
+            className="discover-more__card-img"
+            loading="lazy"
+            draggable={false}
+          />
+        </div>
       </div>
       <div className="discover-more__caption">
         <span className="discover-more__caption-num">{orderNum}</span>
@@ -69,9 +71,10 @@ function DiscoverMoreBlock({ currentId }) {
   const navigate = useNavigate();
   const { t, language } = useTranslation();
 
+  const rawPicks = useMemo(() => pickProjects(currentId), [currentId]);
   const picks = useMemo(
-    () => pickProjects(currentId).map((p) => localizeProject(p, language)),
-    [currentId, language]
+    () => rawPicks.map((p) => localizeProject(p, language)),
+    [rawPicks, language]
   );
 
   return (

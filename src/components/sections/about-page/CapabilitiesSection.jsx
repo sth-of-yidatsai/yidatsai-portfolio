@@ -55,7 +55,7 @@ export default function CapabilitiesSection() {
         <p className="cs__subtitle">{t('capabilities.eyebrow')}</p>
         <BilingTitle
           en={t('capabilities.title')}
-          zh={t('capabilities.titleZh')}
+          zh={locale.capabilities?.titleZh ?? null}
           className="cs__title hatton-ultralight"
         />
       </div>

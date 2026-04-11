@@ -4,6 +4,8 @@ import { CustomEase } from "gsap/CustomEase";
 import { useNavigate } from "react-router-dom";
 import projectsRaw from "../data/projects.json";
 import { buildSrcSet } from "../utils/imgSrcSet";
+import { useTranslation } from "../hooks/useTranslation";
+import { localizeProject } from "../utils/projectLocale";
 import "./Playground.css";
 
 gsap.registerPlugin(CustomEase);
@@ -47,6 +49,8 @@ const projectsData = [...projectsRaw]
 
 export default function Playground() {
   const navigate = useNavigate();
+  const { language, t } = useTranslation();
+  const languageRef = useRef(language);
 
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
@@ -255,7 +259,8 @@ export default function Playground() {
           : project?.id && project?.cover
             ? `/images/projects/${project.id}/${project.cover}`
             : "";
-        const title = project?.title || "";
+        const lp = localizeProject(project, languageRef.current);
+        const title = lp?.title || "";
         const projectId = project?.id || "";
 
         const imageContainer = document.createElement("div");
@@ -498,6 +503,20 @@ export default function Playground() {
     s.rafId = requestAnimationFrame(animateLoop);
   };
 
+  // 語言切換時重建所有卡片（僅在畫廊已初始化後執行）
+  useEffect(() => {
+    languageRef.current = language;
+    const canvas = canvasRef.current;
+    const s = stateRef.current;
+    if (!canvas || !s.cellWidth) return; // not yet initialized
+    s.visibleItems.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && el.parentNode === canvas) canvas.removeChild(el);
+    });
+    s.visibleItems.clear();
+    updateVisibleItems();
+  }, [language]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // 初始化與事件綁定
   useEffect(() => {
     updateCSSVars();
@@ -728,7 +747,7 @@ export default function Playground() {
         <div className="gallery-page-vignette-extreme" />
       </div>
 
-      <p className="gallery-drag-hint" ref={dragHintRef} aria-hidden>Drag to move</p>
+      <p className="gallery-drag-hint" ref={dragHintRef} aria-hidden>{t('playground.dragHint')}</p>
     </div>
   );
 }

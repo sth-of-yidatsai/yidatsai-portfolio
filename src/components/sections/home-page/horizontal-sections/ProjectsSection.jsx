@@ -2,6 +2,7 @@ import React from "react";
 import projects from "../../../../data/projects.json";
 import { pickResponsiveSrc } from "../../../../utils/imgSrcSet";
 import { useTranslation } from "../../../../hooks/useTranslation";
+import BilingTitle from "../../../BilingTitle";
 import "./ProjectsSection.css";
 
 export default function ProjectsSection({ index }) {
@@ -40,6 +41,7 @@ export default function ProjectsSection({ index }) {
   );
 
   const PracticeAreas = locale.projects.areas;
+  const PracticeAreasZh = locale.projects.areasZh;
   const customDescriptions = locale.projects.descriptions;
 
   return (
@@ -66,7 +68,11 @@ export default function ProjectsSection({ index }) {
 
                 <div className="project-block-content-bottom">
                   <div className="project-practice-areas-large">
-                    {PracticeAreas[blockNumber]}
+                    <BilingTitle
+                      en={PracticeAreas[blockNumber]}
+                      zh={PracticeAreasZh[blockNumber]}
+                      as="span"
+                    />
                   </div>
                   <span className="project-rule" />
                   <div className="project-description">

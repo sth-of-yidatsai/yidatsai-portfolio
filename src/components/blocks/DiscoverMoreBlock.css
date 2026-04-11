@@ -55,6 +55,17 @@
   aspect-ratio: 4 / 5;
 }
 
+.discover-more__card-img-scale {
+  position: absolute;
+  inset: 0;
+  transform: scale(1);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.discover-more__card-wrap:hover .discover-more__card-img-scale {
+  transform: scale(1.06);
+}
+
 .discover-more__card-img {
   position: absolute;
   top: -10%;
