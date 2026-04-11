@@ -18,7 +18,7 @@ function LineRoll({ children }) {
 
 // ── 圖片配置 ── 統一管理，方便置換
 const FIELD_IMAGES = [
-  { projectId: "foucault-book-binding",  image: "08.webp" },
+  { projectId: "foucault-book-binding", image: "08.webp" },
   { projectId: "patterned-glass-notebook", image: "16.webp" },
   { projectId: "patterned-glass-notebook", image: "12.webp" },
   { projectId: "patterned-glass-notebook", image: "05.webp" },
@@ -122,13 +122,11 @@ export default function FieldSection() {
         {/* Bio block */}
         <div className="fs-bio-block">
           <p className="fs-bio-text">
-            Yi-Da Tsai｜蔡易達 <br />
-            {t('field.tagline')}
+            <span>Yi-Da Tsai｜蔡易達</span>
+            {t("field.tagline")}
           </p>
 
-          <p className="fs-bio-text-sub">
-            {t('field.taglineSub')}
-          </p>
+          <p className="fs-bio-text-sub">{t("field.taglineSub")}</p>
         </div>
 
         {/* Image 4 — Poster Design (large, right) */}

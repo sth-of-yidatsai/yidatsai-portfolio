@@ -1,623 +1,359 @@
 [
   {
     "id": "formosa-font",
-
     "title": "The Book of Formosa Font",
-
+    "title_zh": "福爾摩沙字體書籍設計",
+    "description": "Inspired by Taiwan's diverse climate and terrain, this project transforms the idea of 'Formosa' into a typographic expression. By integrating Latin letterforms with native flora, we reinterpret the island's rich biodiversity through design.",
+    "description_zh": "靈感源自台灣多元的氣候與地形，本專案將「福爾摩沙」的概念轉化為字體語言。透過融合拉丁字母與台灣原生植物，以設計重新詮釋這座島嶼豐富的生物多樣性。",
     "year": 2022,
-
+    "category": ["editorial", "book", "typography", "type-design"],
+    "tags": ["botanical", "taiwan"],
     "order": 1,
-
+    "size": "landscape",
     "cover": "04.webp",
-
     "images": [
       "01.webp",
-
       "02.webp",
-
       "03.webp",
-
       "04.webp",
-
       "05.webp",
-
       "06.webp",
-
       "07.webp",
-
       "08.webp",
-
       "09.webp",
-
       "10.webp",
-
       "11.webp",
-
       "12.webp",
-
       "13.webp",
-
       "14.webp",
-
       "15.webp",
-
       "16.webp",
-
       "17.webp",
-
       "18.webp"
     ],
-
-    "description": "Inspired by Taiwan's diverse climate and terrain, this project transforms the idea of 'Formosa' into a typographic expression. By integrating Latin letterforms with native flora, we reinterpret the island's rich biodiversity through design.",
-
-    "title_zh": "福爾摩沙字體書籍設計",
-
-    "description_zh": "靈感源自台灣多元的氣候與地形，本專案將「福爾摩沙」的概念轉化為字體語言。透過融合拉丁字母與台灣原生植物，以設計重新詮釋這座島嶼豐富的生物多樣性。",
-
-    "category": ["Editorial", "Book", "Typography", "Type Design"],
-
-    "category_zh": ["編輯設計", "書籍", "字體排印", "字體設計"],
-
-    "tags": ["Botanical", "Taiwan"],
-
-    "tags_zh": ["植物", "台灣"],
-
-    "ogImage": "og.jpg",
-
-    "size": "landscape"
+    "ogImage": "og.jpg"
   },
 
   {
     "id": "patterned-glass-notebook",
-
     "title": "Patterned Glass — Notebook & Box Design",
-
+    "title_zh": "玻璃壓花 — 筆記本與盒裝設計",
+    "description": "This project reinterprets the fading craft of patterned glass through a contemporary object. Combining a glass outer box, an exposed binding notebook, and an embossed bookmark, it preserves texture, memory, and the tactile quality of traditional craftsmanship.",
+    "description_zh": "本專案以當代物件重新詮釋逐漸凋零的玻璃壓花工藝。結合玻璃外盒、裸背裝訂筆記本與壓花書籤，保留傳統工藝的紋理、記憶與觸感。",
     "year": 2024,
-
+    "category": ["product", "graphic", "photography"],
+    "tags": ["notebook", "taiwan", "glass"],
     "order": 2,
-
+    "size": "portrait",
     "cover": "08.webp",
-
     "images": [
       "01.webp",
-
       "02.webp",
-
       "03.webp",
-
       "04.webp",
-
       "05.webp",
-
       "06.webp",
-
       "07.webp",
-
       "08.webp",
-
       "09.webp",
-
       "10.webp",
-
       "11.webp",
-
       "12.webp",
-
       "13.webp",
-
       "14.webp",
-
       "15.webp",
-
       "16.webp"
     ],
-
-    "description": "This project reinterprets the fading craft of patterned glass through a contemporary object. Combining a glass outer box, an exposed binding notebook, and an embossed bookmark, it preserves texture, memory, and the tactile quality of traditional craftsmanship.",
-
-    "title_zh": "玻璃壓花 — 筆記本與盒裝設計",
-
-    "description_zh": "本專案以當代物件重新詮釋逐漸凋零的玻璃壓花工藝。結合玻璃外盒、裸背裝訂筆記本與壓花書籤，保留傳統工藝的紋理、記憶與觸感。",
-
-    "category": ["Product", "Graphic", "Photography"],
-
-    "category_zh": ["產品", "平面", "攝影"],
-
-    "tags": ["Notebook", "Taiwan", "Glass"],
-
-    "tags_zh": ["筆記本", "台灣", "玻璃"],
-
-    "ogImage": "og.jpg",
-
-    "size": "portrait"
+    "ogImage": "og.jpg"
   },
 
   {
     "id": "foucault-book-binding",
-
     "title": "Foucault — A Study in Knowledge & Order",
-
+    "title_zh": "傅柯 — 知識與秩序的探索",
+    "description": "This editorial design reinterprets two seminal works by Michel Foucault—The Order of Things and The Archaeology of Knowledge. The project explores how systems of knowledge are constructed, organized, and transformed over time, translating abstract philosophical structures into a visual language of form, hierarchy, and material.",
+    "description_zh": "本裝幀設計重新詮釋米歇爾·傅柯的兩部重要著作——《詞與物》與《知識考古學》。探索知識系統如何被建構、組織與演變，將抽象的哲學結構轉化為形式、層次與材質的視覺語言。",
     "year": 2024,
-
+    "category": ["editorial", "book", "poster"],
+    "tags": ["philosophy", "michel-foucault"],
     "order": 3,
-
+    "size": "landscape",
     "cover": "01.webp",
-
     "images": [
       "01.webp",
-
       "02.webp",
-
       "03.webp",
-
       "04.webp",
-
       "05.webp",
-
       "06.webp",
-
       "07.webp",
-
       "08.webp",
-
       "09.webp",
-
       "10.webp",
-
       "11.webp",
-
       "12.webp",
-
       "13.webp",
-
       "14.webp",
-
       "15.webp",
-
       "16.webp",
-
       "17.webp",
-
       "18.webp",
-
       "19.webp"
     ],
-
-    "description": "This editorial design reinterprets two seminal works by Michel Foucault—The Order of Things and The Archaeology of Knowledge. The project explores how systems of knowledge are constructed, organized, and transformed over time, translating abstract philosophical structures into a visual language of form, hierarchy, and material.",
-
-    "title_zh": "傅柯 — 知識與秩序的探索",
-
-    "description_zh": "本裝幀設計重新詮釋米歇爾·傅柯的兩部重要著作——《詞與物》與《知識考古學》。探索知識系統如何被建構、組織與演變，將抽象的哲學結構轉化為形式、層次與材質的視覺語言。",
-
-    "category": ["Editorial", "Book", "Poster"],
-
-    "category_zh": ["編輯設計", "書籍", "海報"],
-
-    "tags": ["Philosophy", "Michel Foucault"],
-
-    "tags_zh": ["哲學", "米歇爾·傅柯"],
-
-    "ogImage": "og.jpg",
-
-    "size": "landscape"
+    "ogImage": "og.jpg"
   },
 
   {
     "id": "test-project-04",
-
     "title": "Test Project 04",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 4,
-
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"]
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-05",
-
     "title": "Test Project 05",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 5,
-
+    "size": "portrait",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "portrait"
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-06",
-
     "title": "Test Project 06",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 6,
-
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"]
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-07",
-
     "title": "Test Project 07",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 7,
-
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"]
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-08",
-
     "title": "Test Project 08",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 8,
-
+    "size": "portrait",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "portrait"
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-09",
-
     "title": "Test Project 09",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 9,
-
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"]
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-10",
-
     "title": "Test Project 10",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 10,
-
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"]
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-11",
-
     "title": "Test Project 11",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 11,
-
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"]
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-12",
-
     "title": "Test Project 12",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 12,
-
+    "size": "portrait",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "portrait"
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-13",
-
     "title": "Test Project 13",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 13,
-
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"]
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-14",
-
     "title": "Test Project 14",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 14,
-
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"]
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-15",
-
     "title": "Test Project 15",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 15,
-
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"]
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-16",
-
     "title": "Test Project 16",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 16,
-
+    "size": "landscape",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "landscape"
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-17",
-
     "title": "Test Project 17",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 17,
-
+    "size": "portrait",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "portrait"
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-18",
-
     "title": "Test Project 18",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 18,
-
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"]
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-19",
-
     "title": "Test Project 19",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 19,
-
+    "size": "square",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "square"
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-20",
-
     "title": "Test Project 20",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 20,
-
+    "size": "square",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "square"
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-21",
-
     "title": "Test Project 21",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 21,
-
+    "size": "portrait",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "portrait"
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-22",
-
     "title": "Test Project 22",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 22,
-
+    "size": "landscape",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "landscape"
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-23",
-
     "title": "Test Project 23",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 23,
-
+    "size": "portrait",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "portrait"
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-24",
-
     "title": "Test Project 24",
-
     "year": 2026,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 24,
-
+    "size": "square",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "square"
+    "images": ["placeholder.webp"]
   },
 
   {
     "id": "test-project-25",
-
     "title": "Test Project 25",
-
     "year": 2025,
-
+    "category": ["test"],
+    "tags": ["placeholder"],
     "order": 25,
-
+    "size": "landscape",
     "cover": "placeholder.webp",
-
-    "images": ["placeholder.webp"],
-
-    "category": ["Test"],
-
-    "tags": ["Placeholder"],
-
-    "size": "landscape"
+    "images": ["placeholder.webp"]
   }
 ]

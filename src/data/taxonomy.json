@@ -1,0 +1,87 @@
+{
+  "categories": {
+    "editorial": { "en": "Editorial", "zh": "編輯設計" },
+    "book": { "en": "Book", "zh": "書籍設計" },
+    "typography": { "en": "Typography", "zh": "字體排印" },
+    "type-design": { "en": "Type Design", "zh": "字體設計" },
+
+    "branding": { "en": "Branding", "zh": "品牌設計" },
+    "visual-identity": { "en": "Visual Identity", "zh": "品牌識別" },
+    "logo": { "en": "Logo Design", "zh": "標誌設計" },
+
+    "graphic": { "en": "Graphic Design", "zh": "平面設計" },
+    "poster": { "en": "Poster", "zh": "海報設計" },
+    "illustration": { "en": "Illustration", "zh": "插畫" },
+
+    "product": { "en": "Product Design", "zh": "產品設計" },
+    "packaging": { "en": "Packaging", "zh": "包裝設計" },
+
+    "web": { "en": "Web Design", "zh": "網頁設計" },
+    "ui": { "en": "UI Design", "zh": "介面設計" },
+    "ux": { "en": "UX Design", "zh": "使用者體驗" },
+    "app": { "en": "App Design", "zh": "應用程式設計" },
+
+    "motion": { "en": "Motion Design", "zh": "動態設計" },
+    "3d": { "en": "3D Design", "zh": "3D設計" },
+
+    "photography": { "en": "Photography", "zh": "攝影" },
+
+    "campaign": { "en": "Campaign", "zh": "行銷活動" },
+    "advertising": { "en": "Advertising", "zh": "廣告設計" },
+
+    "installation": { "en": "Installation", "zh": "空間裝置" },
+    "exhibition": { "en": "Exhibition", "zh": "展覽設計" },
+
+    "research": { "en": "Research", "zh": "設計研究" },
+    "concept": { "en": "Concept", "zh": "概念設計" },
+
+    "test": { "en": "Test", "zh": "測試" }
+  },
+
+  "tags": {
+    "botanical": { "en": "Botanical", "zh": "植物" },
+    "nature": { "en": "Nature", "zh": "自然" },
+    "culture": { "en": "Culture", "zh": "文化" },
+    "heritage": { "en": "Heritage", "zh": "文化保存" },
+    "architecture": { "en": "Architecture", "zh": "建築" },
+    "urban": { "en": "Urban", "zh": "城市" },
+
+    "taiwan": { "en": "Taiwan", "zh": "台灣" },
+    "japan": { "en": "Japan", "zh": "日本" },
+
+    "notebook": { "en": "Notebook", "zh": "筆記本" },
+    "glass": { "en": "Glass", "zh": "玻璃" },
+    "paper": { "en": "Paper", "zh": "紙材" },
+    "print": { "en": "Print", "zh": "印刷" },
+
+    "minimal": { "en": "Minimal", "zh": "極簡" },
+    "modern": { "en": "Modern", "zh": "現代" },
+    "experimental": { "en": "Experimental", "zh": "實驗性" },
+    "brutalist": { "en": "Brutalist", "zh": "粗野主義" },
+    "editorial-style": { "en": "Editorial Style", "zh": "編輯風格" },
+
+    "grid": { "en": "Grid System", "zh": "網格系統" },
+    "layout": { "en": "Layout", "zh": "版面設計" },
+    "typography-heavy": { "en": "Typography Heavy", "zh": "字體主導" },
+
+    "3d": { "en": "3D", "zh": "3D" },
+    "render": { "en": "Rendering", "zh": "渲染" },
+    "motion": { "en": "Motion", "zh": "動態" },
+
+    "philosophy": { "en": "Philosophy", "zh": "哲學" },
+    "memory": { "en": "Memory", "zh": "記憶" },
+    "time": { "en": "Time", "zh": "時間" },
+    "identity": { "en": "Identity", "zh": "身份認同" },
+
+    "michel-foucault": { "en": "Michel Foucault", "zh": "米歇爾·傅柯" },
+
+    "portfolio": { "en": "Portfolio", "zh": "作品集" },
+    "concept": { "en": "Concept", "zh": "概念" },
+    "case-study": { "en": "Case Study", "zh": "案例研究" },
+
+    "personal": { "en": "Personal Project", "zh": "個人專案" },
+    "client": { "en": "Client Work", "zh": "商業案" },
+
+    "placeholder": { "en": "Placeholder", "zh": "佔位" }
+  }
+}

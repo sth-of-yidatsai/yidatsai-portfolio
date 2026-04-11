@@ -164,6 +164,13 @@
   letter-spacing: 0.02em;
   color: var(--gray-500);
   margin: 0;
+  white-space: pre-line;
+}
+
+.fs-bio-text span {
+  font-weight: var(--fw-medium);
+  display: block;
+  margin-bottom: var(--space-md);
 }
 
 .fs-bio-text-sub {
