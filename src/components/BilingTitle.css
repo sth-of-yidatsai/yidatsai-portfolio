@@ -1,0 +1,12 @@
+.biling-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.biling-zh {
+  font-size: 0.55em;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}

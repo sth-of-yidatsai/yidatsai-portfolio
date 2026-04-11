@@ -10,6 +10,8 @@ import DiscoverMoreBlock from "../../components/blocks/DiscoverMoreBlock";
 import projects from "../../data/projects.json";
 import { usePagePreloader } from "../../hooks/usePagePreloader";
 import { pickResponsiveSrc } from "../../utils/imgSrcSet";
+import { useTranslation } from "../../hooks/useTranslation";
+import { localizeProject } from "../../utils/projectLocale";
 
 const BASE = "/images/projects/patterned-glass-notebook";
 
@@ -21,15 +23,17 @@ const PRELOAD_IMAGES = [
 
 export default function PatternedGlassNotebook() {
   usePagePreloader(PRELOAD_IMAGES);
+  const { language } = useTranslation();
+  const lp = localizeProject(project, language);
 
   return (
     <main className="project-detail project-detail--blocks">
-      <HeroBlock image={`${BASE}/08.webp`} project={project} />
+      <HeroBlock image={`${BASE}/08.webp`} project={lp} />
 
       <TitleBlock
         labelColor="var(--sage-300)"
-        title={project.title}
-        description={project.description}
+        title={lp.title}
+        description={lp.description}
         bgColor="var(--sage-700)"
         emptyColor="var(--sage-950)"
         fillColor="var(--sage-100)"
@@ -39,12 +43,12 @@ export default function PatternedGlassNotebook() {
         items={[
           {
             src: `${BASE}/03.webp`,
-            title: "Everyday Object",
+            title: { en: "Everyday Object", zh: "日常物件" },
             subtitle: "(02)",
           },
           {
             src: `${BASE}/01.webp`,
-            title: "Memory in Material",
+            title: { en: "Memory in Material", zh: "物質中的記憶" },
             subtitle: "(01)",
           },
         ]}
@@ -52,7 +56,10 @@ export default function PatternedGlassNotebook() {
       />
 
       <QuoteBlock
-        text="What we call the beginning is often the end, and to make an end is to make a beginning."
+        text={{
+          en: "What we call the beginning is often the end, and to make an end is to make a beginning.",
+          zh: "我們所謂的開始，往往就是終點；而結束，即是另一個開始。",
+        }}
         author="T. S. Eliot"
         image={`${BASE}/title.svg`}
       />
@@ -61,17 +68,17 @@ export default function PatternedGlassNotebook() {
         items={[
           {
             src: `${BASE}/14.webp`,
-            title: "A Study of Texture",
+            title: { en: "A Study of Texture", zh: "質感研究" },
             subtitle: "(03)",
           },
           {
             src: `${BASE}/13.webp`,
-            title: "Surface Detail",
+            title: { en: "Surface Detail", zh: "表面細節" },
             subtitle: "(04)",
           },
           {
             src: `${BASE}/12.webp`,
-            title: "Debossed Brass",
+            title: { en: "Debossed Brass", zh: "黃銅壓紋" },
             subtitle: "(05)",
           },
         ]}
@@ -79,7 +86,7 @@ export default function PatternedGlassNotebook() {
 
       <ImgSet1bBlock
         src={`${BASE}/11.webp`}
-        title="Material Expression"
+        title={{ en: "Material Expression", zh: "材質表現" }}
         subtitle="(06)"
         reverse
       />
@@ -88,12 +95,12 @@ export default function PatternedGlassNotebook() {
         items={[
           {
             src: `${BASE}/04.webp`,
-            title: "Exposed Smyth Sewn Binding",
+            title: { en: "Exposed Smyth Sewn Binding", zh: "裸背縫線裝幀" },
             subtitle: "(07)",
           },
           {
             src: `${BASE}/05.webp`,
-            title: "Memory in Glass",
+            title: { en: "Memory in Glass", zh: "玻璃中的記憶" },
             subtitle: "(08)",
           },
         ]}
@@ -103,12 +110,12 @@ export default function PatternedGlassNotebook() {
         items={[
           {
             src: `${BASE}/15.webp`,
-            title: "Quiet Detail",
+            title: { en: "Quiet Detail", zh: "靜默細節" },
             subtitle: "(10)",
           },
           {
             src: `${BASE}/06.webp`,
-            title: "Form and Tactility",
+            title: { en: "Form and Tactility", zh: "形式與觸感" },
             subtitle: "(09)",
           },
         ]}
@@ -117,17 +124,23 @@ export default function PatternedGlassNotebook() {
 
       <ImgSet1bBlock
         src={`${BASE}/09.webp`}
-        title="Surface and Light"
+        title={{ en: "Surface and Light", zh: "光與表面" }}
         subtitle="(11)"
       />
 
       <ImgTextBlock
         image={`${BASE}/16.webp`}
-        title="Patterned Glass Notebook"
-        text={[
-          "This work preserves a fragment of everyday material culture, translating it into a contemporary form.",
-          "Through texture, light, and touch, it invites a quiet reflection on memory and the value of things once familiar.",
-        ]}
+        title={{ en: "Patterned Glass Notebook", zh: "玻璃壓花筆記本" }}
+        text={{
+          en: [
+            "This work preserves a fragment of everyday material culture, translating it into a contemporary form.",
+            "Through texture, light, and touch, it invites a quiet reflection on memory and the value of things once familiar.",
+          ],
+          zh: [
+            "本作品保存了日常物質文化的片段，將其轉化為當代形式。",
+            "透過質感、光線與觸覺，喚起對記憶與曾經熟悉之物的靜默省思。",
+          ],
+        }}
         bgColor="var(--sage-700)"
         textColor="var(--sage-300)"
         titleColor="var(--sage-100)"

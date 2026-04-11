@@ -1,6 +1,7 @@
 import { Outlet, useMatches } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useMeta } from "./hooks/useMeta";
+import { useLanguage } from "./contexts/LanguageContext";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,11 +11,51 @@ import CustomCursor from "./components/CustomCursor";
 import GlobalScrollbar from "./components/GlobalScrollbar";
 import { Providers } from "./providers";
 
-function App() {
+// Inner shell — rendered inside <Providers>, so context hooks work here
+function AppShell({ lenisRef }) {
   const matches = useMatches();
-  const lenisRef = useRef(null);
   const [currentMeta, setCurrentMeta] = useState({});
+  const { language } = useLanguage();
   useMeta(currentMeta);
+
+  // loader 隱藏後（overflow:'' 恢復）重新計算頁面高度。
+  useEffect(() => {
+    const handler = () => {
+      const lenis = lenisRef.current;
+      if (lenis) lenis.resize();
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener("loader:hidden", handler);
+    return () => window.removeEventListener("loader:hidden", handler);
+  }, [lenisRef]);
+
+  useEffect(() => {
+    const match = [...matches].reverse().find((m) => m.handle?.title);
+    if (match) {
+      document.title = match.handle.title(match.data, language);
+    }
+  }, [matches, language]);
+
+  useEffect(() => {
+    const match = [...matches].reverse().find((m) => m.handle?.meta);
+    if (match) {
+      setCurrentMeta(match.handle.meta(match.data, language));
+    }
+  }, [matches, language]);
+
+  return (
+    <>
+      <CustomCursor />
+      <GlobalScrollbar />
+      <Header />
+      <Outlet />
+      <Footer />
+    </>
+  );
+}
+
+function App() {
+  const lenisRef = useRef(null);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -40,41 +81,9 @@ function App() {
     };
   }, []);
 
-  // loader 隱藏後（overflow:'' 恢復）重新計算頁面高度。
-  // 路由切換時 overflow:hidden 會讓 scrollHeight = window.innerHeight，
-  // 此時呼叫 resize/refresh 會拿到錯誤數值；
-  // 改為等 LoaderProvider 確認 overflow 已還原才執行。
-  useEffect(() => {
-    const handler = () => {
-      const lenis = lenisRef.current;
-      if (lenis) lenis.resize();
-      ScrollTrigger.refresh();
-    };
-    window.addEventListener("loader:hidden", handler);
-    return () => window.removeEventListener("loader:hidden", handler);
-  }, []);
-
-  useEffect(() => {
-    const match = [...matches].reverse().find((m) => m.handle?.title);
-    if (match) {
-      document.title = match.handle.title(match.data);
-    }
-  }, [matches]);
-
-  useEffect(() => {
-    const match = [...matches].reverse().find((m) => m.handle?.meta);
-    if (match) {
-      setCurrentMeta(match.handle.meta(match.data));
-    }
-  }, [matches]);
-
   return (
     <Providers>
-      <CustomCursor />
-      <GlobalScrollbar />
-      <Header />
-      <Outlet />
-      <Footer />
+      <AppShell lenisRef={lenisRef} />
     </Providers>
   );
 }

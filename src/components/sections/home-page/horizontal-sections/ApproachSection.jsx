@@ -1,6 +1,9 @@
+import { Fragment } from "react";
 import "./ApproachSection.css";
 import { buildSrcSet } from "../../../../utils/imgSrcSet";
 import { useHorizontalParallaxRef } from "../../../../hooks/useHorizontalParallaxRef";
+import { useTranslation } from "../../../../hooks/useTranslation";
+import BilingTitle from "../../../BilingTitle";
 
 // ── 圖片配置 ── 統一管理，方便置換
 const approachConfig = {
@@ -9,6 +12,7 @@ const approachConfig = {
 };
 
 export default function ApproachSection({ index }) {
+  const { t } = useTranslation();
   const leftSrc = approachConfig.leftImage;
   const rightSrc = approachConfig.rightImage;
 
@@ -37,21 +41,19 @@ export default function ApproachSection({ index }) {
 
           {/* Text block */}
           <div className="as-text-block">
-            <h2 className="as-title">Design Approach</h2>
+            <BilingTitle
+              en={t('approach.title')}
+              zh={t('approach.titleZh')}
+              className="as-title"
+            />
             <span className="as-rule" />
-            <p className="as-body">
-              Each project begins with a visual idea,
-              <br />
-              shaped through typography, structure, and material.
-            </p>
-
-            <p className="as-body">
-              By balancing aesthetics and logic,
-              <br />
-              the work evolves into a clear and
-              <br />
-              meaningful visual experience.
-            </p>
+            {[t('approach.body1'), t('approach.body2')].map((text, pi) => (
+              <p key={pi} className="as-body">
+                {text.split('\n').map((line, li, arr) => (
+                  <Fragment key={li}>{line}{li < arr.length - 1 && <br />}</Fragment>
+                ))}
+              </p>
+            ))}
           </div>
         </div>
       </div>

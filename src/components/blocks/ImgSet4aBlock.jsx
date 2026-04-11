@@ -2,6 +2,8 @@ import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
 import { getAltText } from '../../utils/getAltText';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { useTranslation } from '../../hooks/useTranslation';
+import { pickLang } from '../../utils/pickLang';
 import './ImgSet4aBlock.css';
 
 function ImgWrap({ src }) {
@@ -14,6 +16,9 @@ function ImgWrap({ src }) {
 }
 
 function ImgSet4aBlock({ images = [], title, subtitle, bg, color }) {
+  const { language } = useTranslation();
+  const resolvedTitle    = pickLang(title, language);
+  const resolvedSubtitle = pickLang(subtitle, language);
   return (
     <section className="block block--imgset4a" style={{ background: bg, color }}>
       <div className="block--imgset4a__grid">
@@ -21,10 +26,10 @@ function ImgSet4aBlock({ images = [], title, subtitle, bg, color }) {
           <ImgWrap key={i} src={src} />
         ))}
       </div>
-      {(title || subtitle) && (
+      {(resolvedTitle || resolvedSubtitle) && (
         <div className="block--imgset4a__caption">
-          {title    && <p className="block--imgset4a__title">{title}</p>}
-          {subtitle && <p className="block--imgset4a__subtitle">{subtitle}</p>}
+          {resolvedTitle    && <p className="block--imgset4a__title">{resolvedTitle}</p>}
+          {resolvedSubtitle && <p className="block--imgset4a__subtitle">{resolvedSubtitle}</p>}
         </div>
       )}
     </section>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useTranslation } from "../../../hooks/useTranslation";
 import "./ContactForm.css";
 
 const EMAILJS_SERVICE_ID =
@@ -22,7 +23,7 @@ const TOAST_REMOVE_MS = 6500;
 // ── Set true to preview toast style, false in production ──────────────────────
 const PREVIEW_TOAST = false;
 
-const INTEREST_GROUPS = [
+const EN_INTEREST_GROUPS = [
   {
     group: "Brand",
     items: ["Logo Design", "Brand Identity", "Brand Strategy", "Rebranding"],
@@ -80,7 +81,7 @@ const CATEGORY_MULTIPLIERS = {
 
 // item → group lookup (built once at module level)
 const ITEM_GROUP = {};
-INTEREST_GROUPS.forEach(({ group, items }) =>
+EN_INTEREST_GROUPS.forEach(({ group, items }) =>
   items.forEach((item) => {
     ITEM_GROUP[item] = group;
   }),
@@ -107,15 +108,8 @@ function suggestBudgetIndex(selectedItems) {
 
 const BUDGET_STEPS = [1200, 2500, 3600, 4500, 6000];
 const BUDGET_TIERS = ["Starter", "Basic", "Standard", "Pro", "Custom"];
-const BUDGET_DESCS = [
-  "Best for small-scale projects",
-  "Ideal for focused design needs",
-  "Balanced solution for growing brands",
-  "Ideal for a complete brand experience",
-  "Tailored for premium, full-scale projects",
-];
 
-const TIMELINES = [
+const EN_TIMELINES = [
   "Within 1 month",
   "2-3 months",
   "3-6 months",
@@ -151,20 +145,35 @@ const TAIWAN_COUNTIES = [
 
 const REGIONS = [
   "International",
-  "Asia Pacific",
-  "North America",
-  "Europe",
+  "Japan",
+  "South Korea",
+  "China (Mainland)",
+  "Hong Kong",
+  "Macau",
+  "Singapore",
+  "Southeast Asia",
+  "South Asia",
+  "United States",
+  "Canada",
+  "United Kingdom",
+  "Germany",
+  "France",
+  "Netherlands",
+  "Other Europe",
   "Middle East",
+  "Australia / New Zealand",
   "Latin America",
   "Africa",
-  "Oceania",
+  "Other",
 ];
 
 // ─── Custom Select ────────────────────────────────────────────────────────────
 
 const MIN_THUMB_H = 24;
 
-function CustomSelect({ name, value, options, onChange, disabled = false }) {
+// options      — EN keys stored in form state
+// displayOptions — locale display labels (same length as options)
+function CustomSelect({ name, value, options, displayOptions, onChange, disabled = false }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
   const listRef = useRef(null);
@@ -241,7 +250,9 @@ function CustomSelect({ name, value, options, onChange, disabled = false }) {
         aria-expanded={open}
         aria-disabled={disabled}
       >
-        <span className="cf__csel-value">{value}</span>
+        <span className="cf__csel-value">
+          {displayOptions ? displayOptions[options.indexOf(value)] ?? value : value}
+        </span>
         <span className="cf__csel-arrow" aria-hidden="true">
           &#x25BE;
         </span>
@@ -250,7 +261,7 @@ function CustomSelect({ name, value, options, onChange, disabled = false }) {
       {open && (
         <div className="cf__csel-panel">
           <ul className="cf__csel-list" role="listbox" ref={listRef}>
-            {options.map((opt) => (
+            {options.map((opt, i) => (
               <li key={opt} role="option" aria-selected={opt === value}>
                 <button
                   type="button"
@@ -260,7 +271,7 @@ function CustomSelect({ name, value, options, onChange, disabled = false }) {
                     setOpen(false);
                   }}
                 >
-                  {opt}
+                  {displayOptions ? (displayOptions[i] ?? opt) : opt}
                 </button>
               </li>
             ))}
@@ -316,6 +327,16 @@ function recordSubmission() {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function ContactForm() {
+  const { t, locale } = useTranslation();
+  const cf = locale.contact.form;
+  // Display-only locale arrays (form state always stores EN values internally)
+  const displayGroups = cf.interestGroups;
+  const displayTiers = cf.budgetTiers;
+  const displayDescs = cf.budgetDescs;
+  const displayTimelines = cf.timelines;
+  const displayCounties = cf.counties;
+  const displayRegions = cf.regions;
+
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState("idle"); // idle | sending | success | error | rate-limited
   const [toastVisible, setToastVisible] = useState(false);
@@ -447,8 +468,8 @@ export default function ContactForm() {
     window.addEventListener("touchend", onUp);
   }, []);
 
-  const handleTimeline = useCallback((t) => {
-    setForm((prev) => ({ ...prev, timeline: prev.timeline === t ? "" : t }));
+  const handleTimeline = useCallback((val) => {
+    setForm((prev) => ({ ...prev, timeline: prev.timeline === val ? "" : val }));
   }, []);
 
   // ─── Submit ────────────────────────────────────────────────────────────────
@@ -525,11 +546,11 @@ export default function ContactForm() {
 
   const toastMessage =
     status === "success"
-      ? "Message sent! I\u2019ll get back to you soon."
+      ? t('contact.form.successToast')
       : status === "error"
-        ? "Something went wrong. Please try again or email hello@yidatsai.com directly."
+        ? t('contact.form.errorToast')
         : status === "rate-limited"
-          ? "Too many submissions. Please try again later."
+          ? t('contact.form.rateLimitToast')
           : "";
 
   const toastType = status === "success" ? "success" : "error";
@@ -546,7 +567,7 @@ export default function ContactForm() {
           aria-live="polite"
         >
           {PREVIEW_TOAST
-            ? "Message sent! I\u2019ll get back to you soon."
+            ? t('contact.form.successToast')
             : toastMessage}
         </div>
       )}
@@ -566,13 +587,13 @@ export default function ContactForm() {
 
         {/* ── Name ── */}
         <div className="cf__row">
-          <span className="cf__label">Full Name</span>
+          <span className="cf__label">{t('contact.form.nameSection')}</span>
           <div className="cf__fields cf__fields--split">
             <input
               className="cf__input"
               type="text"
               name="firstName"
-              placeholder="First Name*"
+              placeholder={t('contact.form.firstName')}
               value={form.firstName}
               onChange={handleChange}
               required
@@ -581,7 +602,7 @@ export default function ContactForm() {
               className="cf__input"
               type="text"
               name="lastName"
-              placeholder="Last Name*"
+              placeholder={t('contact.form.lastName')}
               value={form.lastName}
               onChange={handleChange}
               required
@@ -591,13 +612,13 @@ export default function ContactForm() {
 
         {/* ── Company ── */}
         <div className="cf__row">
-          <span className="cf__label">Company or Brand Name</span>
+          <span className="cf__label">{t('contact.form.companySection')}</span>
           <div className="cf__fields">
             <input
               className="cf__input"
               type="text"
               name="company"
-              placeholder="Company or brand name"
+              placeholder={t('contact.form.companyPlaceholder')}
               value={form.company}
               onChange={handleChange}
             />
@@ -606,13 +627,13 @@ export default function ContactForm() {
 
         {/* ── Contact ── */}
         <div className="cf__row">
-          <span className="cf__label">Contact Information</span>
+          <span className="cf__label">{t('contact.form.contactSection')}</span>
           <div className="cf__fields cf__fields--split">
             <input
               className="cf__input"
               type="email"
               name="email"
-              placeholder="Email Address*"
+              placeholder={t('contact.form.email')}
               value={form.email}
               onChange={handleChange}
               required
@@ -621,7 +642,7 @@ export default function ContactForm() {
               className="cf__input"
               type="tel"
               name="phone"
-              placeholder="Phone Number"
+              placeholder={t('contact.form.phone')}
               value={form.phone}
               onChange={handleChange}
             />
@@ -630,12 +651,13 @@ export default function ContactForm() {
 
         {/* ── Location ── */}
         <div className="cf__row">
-          <span className="cf__label">Location</span>
+          <span className="cf__label">{t('contact.form.locationSection')}</span>
           <div className="cf__fields cf__fields--split">
             <CustomSelect
               name="locationCounty"
               value={form.locationCounty}
               options={TAIWAN_COUNTIES}
+              displayOptions={displayCounties}
               onChange={handleSelectChange}
               disabled={form.locationRegion !== "International"}
             />
@@ -643,6 +665,7 @@ export default function ContactForm() {
               name="locationRegion"
               value={form.locationRegion}
               options={REGIONS}
+              displayOptions={displayRegions}
               onChange={handleSelectChange}
               disabled={form.locationCounty !== "Taiwan"}
             />
@@ -651,41 +674,44 @@ export default function ContactForm() {
 
         {/* ── Interests ── */}
         <div className="cf__row cf__row--interests">
-          <span className="cf__label">Area of Interest</span>
+          <span className="cf__label">{t('contact.form.interestSection')}</span>
           <div className="cf__fields">
             <div className="cf__interest-groups">
-              {INTEREST_GROUPS.map(({ group, items }) => (
-                <div key={group} className="cf__interest-group">
-                  <span className="cf__interest-group-label">{group}</span>
-                  <div className="cf__interest-items">
-                    {items.map((label) => {
-                      const checked = form.interests.includes(label);
-                      return (
-                        <label key={label} className="cf__interest-item">
-                          <span
-                            className={`cf__radio-ring${checked ? " cf__radio-ring--checked" : ""}`}
-                            aria-hidden="true"
-                          />
-                          <input
-                            type="checkbox"
-                            className="cf__checkbox-hidden"
-                            checked={checked}
-                            onChange={() => handleInterest(label)}
-                          />
-                          <span className="cf__interest-label">{label}</span>
-                        </label>
-                      );
-                    })}
+              {EN_INTEREST_GROUPS.map(({ group, items }, gi) => {
+                const dg = displayGroups[gi];
+                return (
+                  <div key={group} className="cf__interest-group">
+                    <span className="cf__interest-group-label">{dg.group}</span>
+                    <div className="cf__interest-items">
+                      {items.map((enLabel, ii) => {
+                        const checked = form.interests.includes(enLabel);
+                        return (
+                          <label key={enLabel} className="cf__interest-item">
+                            <span
+                              className={`cf__radio-ring${checked ? " cf__radio-ring--checked" : ""}`}
+                              aria-hidden="true"
+                            />
+                            <input
+                              type="checkbox"
+                              className="cf__checkbox-hidden"
+                              checked={checked}
+                              onChange={() => handleInterest(enLabel)}
+                            />
+                            <span className="cf__interest-label">{dg.items[ii]}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
 
         {/* ── Budget ── */}
         <div className="cf__row cf__row--budget">
-          <span className="cf__label">Project Budget (USD $)</span>
+          <span className="cf__label">{t('contact.form.budgetSection')}</span>
           <div className="cf__fields">
             <div className="cf__budget-track">
               {/* tier names row */}
@@ -695,7 +721,7 @@ export default function ContactForm() {
                     key={`tier-${v}`}
                     className={`cf__budget-tier-cell${i === form.budgetIndex ? " cf__budget-tier-cell--active" : ""}`}
                   >
-                    {BUDGET_TIERS[i]}
+                    {displayTiers[i]}
                   </span>
                 ))}
               </div>
@@ -742,7 +768,7 @@ export default function ContactForm() {
               </div>
               {/* description line */}
               <p className="cf__budget-desc">
-                {BUDGET_DESCS[form.budgetIndex]}
+                {displayDescs[form.budgetIndex]}
               </p>
             </div>
           </div>
@@ -750,17 +776,17 @@ export default function ContactForm() {
 
         {/* ── Timeline ── */}
         <div className="cf__row cf__row--timeline">
-          <span className="cf__label">Project Timeline</span>
+          <span className="cf__label">{t('contact.form.timelineSection')}</span>
           <div className="cf__fields">
             <div className="cf__timeline-grid">
-              {TIMELINES.map((t) => (
+              {EN_TIMELINES.map((enTimeline, i) => (
                 <button
-                  key={t}
+                  key={enTimeline}
                   type="button"
-                  className={`cf__timeline-btn${form.timeline === t ? " cf__timeline-btn--active" : ""}`}
-                  onClick={() => handleTimeline(t)}
+                  className={`cf__timeline-btn${form.timeline === enTimeline ? " cf__timeline-btn--active" : ""}`}
+                  onClick={() => handleTimeline(enTimeline)}
                 >
-                  {t}
+                  {displayTimelines[i]}
                 </button>
               ))}
             </div>
@@ -769,12 +795,12 @@ export default function ContactForm() {
 
         {/* ── Message ── */}
         <div className="cf__row cf__row--message">
-          <span className="cf__label">Project Details</span>
+          <span className="cf__label">{t('contact.form.detailsSection')}</span>
           <div className="cf__fields">
             <textarea
               className="cf__textarea"
               name="message"
-              placeholder="Briefly describe your brand, target audience, and project goals."
+              placeholder={t('contact.form.detailsPlaceholder')}
               value={form.message}
               onChange={handleChange}
               rows={4}
@@ -784,10 +810,7 @@ export default function ContactForm() {
 
         {/* ── Footer: note ── */}
         <div className="cf__footer">
-          <p className="cf__note">
-            Fields marked with * are required. Other information is optional but
-            will help us better understand your needs.
-          </p>
+          <p className="cf__note">{t('contact.form.requiredNote')}</p>
         </div>
 
         {/* ── Send button ── */}
@@ -796,10 +819,10 @@ export default function ContactForm() {
             type="submit"
             className={`cf__send-btn clickable${status === "sending" ? " cf__send-btn--sending" : ""}`}
             disabled={status === "sending"}
-            aria-label="Send"
+            aria-label={t('contact.form.sendBtn')}
           >
             <span className="cf__send-text">
-              {status === "sending" ? "Sending" : "Send"}
+              {status === "sending" ? t('contact.form.sendingBtn') : t('contact.form.sendBtn')}
             </span>
           </button>
         </div>

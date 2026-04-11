@@ -12,7 +12,7 @@ import NotFound from "./pages/NotFound.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 
 import projects from "./data/projects.json";
-import { PAGE_META, buildProjectMeta } from "./seo/seoConfig.js";
+import { getPageMeta, buildProjectMeta } from "./seo/seoConfig.js";
 
 // loaders
 export async function projectsLoader() {
@@ -34,37 +34,40 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Home />, handle: { title: () => "YI-DA TSAI", meta: () => PAGE_META.home } },
-      { path: "about", element: <About />, handle: { title: () => "About | YI-DA TSAI", meta: () => PAGE_META.about } },
-      { path: "contact", element: <Contact />, handle: { title: () => "Contact | YI-DA TSAI", meta: () => PAGE_META.contact } },
+      { index: true, element: <Home />, handle: { title: (_d, lang) => getPageMeta("home", lang).title ?? "YI-DA TSAI", meta: (_d, lang) => getPageMeta("home", lang) } },
+      { path: "about", element: <About />, handle: { title: (_d, lang) => getPageMeta("about", lang).title ?? "About | YI-DA TSAI", meta: (_d, lang) => getPageMeta("about", lang) } },
+      { path: "contact", element: <Contact />, handle: { title: (_d, lang) => getPageMeta("contact", lang).title ?? "Contact | YI-DA TSAI", meta: (_d, lang) => getPageMeta("contact", lang) } },
       {
         path: "projects",
         element: <Projects />,
         loader: projectsLoader,
-        handle: { title: () => "Projects | YI-DA TSAI", meta: () => PAGE_META.projects },
+        handle: { title: (_d, lang) => getPageMeta("projects", lang).title ?? "Projects | YI-DA TSAI", meta: (_d, lang) => getPageMeta("projects", lang) },
       },
       {
         path: "projects/page/:page",
         element: <Projects />,
         loader: projectsLoader,
-        handle: { title: () => "Projects | YI-DA TSAI", meta: () => PAGE_META.projects },
+        handle: { title: (_d, lang) => getPageMeta("projects", lang).title ?? "Projects | YI-DA TSAI", meta: (_d, lang) => getPageMeta("projects", lang) },
       },
       {
         path: "playground",
         element: <Playground />,
         loader: projectsLoader,
-        handle: { title: () => "Playground | YI-DA TSAI", meta: () => PAGE_META.playground },
+        handle: { title: (_d, lang) => getPageMeta("playground", lang).title ?? "Playground | YI-DA TSAI", meta: (_d, lang) => getPageMeta("playground", lang) },
       },
       {
         path: "projects/:id",
         element: <ProjectPage />,
         loader: projectDetailLoader,
         handle: {
-          title: (data) => data?.title ? `${data.title} | YI-DA TSAI` : "Project | YI-DA TSAI",
-          meta: (data) => buildProjectMeta(data),
+          title: (data, lang) => {
+            const title = lang === "zh" && data?.title_zh ? data.title_zh : data?.title;
+            return title ? `${title} | YI-DA TSAI` : "Project | YI-DA TSAI";
+          },
+          meta: (data, lang) => buildProjectMeta(data, lang),
         },
       },
-      { path: "*", element: <NotFound />, handle: { title: () => "Not Found | YI-DA TSAI", meta: () => PAGE_META.notFound } },
+      { path: "*", element: <NotFound />, handle: { title: (_d, lang) => getPageMeta("notFound", lang).title ?? "Not Found | YI-DA TSAI", meta: (_d, lang) => getPageMeta("notFound", lang) } },
     ],
   },
   { path: "error-test", element: <ErrorPage />, handle: { title: () => "Error | YI-DA TSAI" } },

@@ -2,10 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import "./HeroSection.css";
 import projectsData from "../../../../data/projects.json";
 import { pickResponsiveSrc } from "../../../../utils/imgSrcSet";
+import { useTranslation } from "../../../../hooks/useTranslation";
+import { localizeProject } from "../../../../utils/projectLocale";
 import leftArrowIcon from "../../../../assets/icons/keyboard_arrow_left_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 import rightArrowIcon from "../../../../assets/icons/keyboard_arrow_right_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 
 export default function HeroSection({ index }) {
+  const { language } = useTranslation();
   const sectionRef = useRef(null);
   const isVisibleRef = useRef(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -32,9 +35,9 @@ export default function HeroSection({ index }) {
   const carouselData = React.useMemo(() => {
     return carouselConfig
       .map((config) => {
-        const project = projectsData.find((p) => p.id === config.projectId);
-        if (!project) return null;
-
+        const raw = projectsData.find((p) => p.id === config.projectId);
+        if (!raw) return null;
+        const project = localizeProject(raw, language);
         return {
           image: `/images/projects/${project.id}/${config.image}`,
           title: project.title,
@@ -45,7 +48,7 @@ export default function HeroSection({ index }) {
         };
       })
       .filter(Boolean);
-  }, [carouselConfig]);
+  }, [carouselConfig, language]);
 
   const images = carouselData.map((item) => item.image);
 

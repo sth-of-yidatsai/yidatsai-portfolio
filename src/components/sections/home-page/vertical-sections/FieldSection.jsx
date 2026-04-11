@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import "./FieldSection.css";
 import { buildSrcSet } from "../../../../utils/imgSrcSet";
 import { useParallaxRef } from "../../../../hooks/useParallaxRef";
+import { useTranslation } from "../../../../hooks/useTranslation";
 
 /** 與 header-overlay-logo 相同的 line-roll 結構 */
 function LineRoll({ children }) {
@@ -16,33 +17,18 @@ function LineRoll({ children }) {
 }
 
 // ── 圖片配置 ── 統一管理，方便置換
-const fieldConfig = [
-  {
-    projectId: "foucault-book-binding",
-    image: "08.webp",
-    label: "(Editorial)",
-  },
-  {
-    projectId: "patterned-glass-notebook",
-    image: "16.webp",
-    label: "(Texture)",
-  },
-  {
-    projectId: "patterned-glass-notebook",
-    image: "12.webp",
-    label: "(Material)",
-  },
-  {
-    projectId: "patterned-glass-notebook",
-    image: "05.webp",
-    label: "(Memory in Glass)",
-  },
+const FIELD_IMAGES = [
+  { projectId: "foucault-book-binding",  image: "08.webp" },
+  { projectId: "patterned-glass-notebook", image: "16.webp" },
+  { projectId: "patterned-glass-notebook", image: "12.webp" },
+  { projectId: "patterned-glass-notebook", image: "05.webp" },
 ];
 
 export default function FieldSection() {
-  const images = fieldConfig.map((cfg) => ({
+  const { locale, t } = useTranslation();
+  const images = FIELD_IMAGES.map((cfg, i) => ({
     src: `/images/projects/${cfg.projectId}/${cfg.image}`,
-    label: cfg.label,
+    label: locale.field.labels[i],
   }));
 
   const [frame1, img1] = useParallaxRef();
@@ -137,12 +123,11 @@ export default function FieldSection() {
         <div className="fs-bio-block">
           <p className="fs-bio-text">
             Yi-Da Tsai｜蔡易達 <br />
-            Visual Designer based in Taipei. <br />
-            Focused on Typography & Editorial Design.
+            {t('field.tagline')}
           </p>
 
           <p className="fs-bio-text-sub">
-            Bridging visual language and digital experiences.
+            {t('field.taglineSub')}
           </p>
         </div>
 

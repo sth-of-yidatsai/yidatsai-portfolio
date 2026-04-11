@@ -1,43 +1,26 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { buildSrcSet } from "../../../utils/imgSrcSet";
+import { useTranslation } from "../../../hooks/useTranslation";
+import BilingTitle from "../../BilingTitle";
 import "./CapabilitiesSection.css";
 
-const ITEMS = [
-  {
-    num: "01",
-    title: "Interface Design",
-    desc: "UI / UX design, layout systems, and interaction flow.",
-    image: "/images/about/01.webp",
-  },
-  {
-    num: "02",
-    title: "Web Development",
-    desc: "Frontend implementation with modern frameworks and responsive systems.",
-    image: "/images/about/02.webp",
-  },
-  {
-    num: "03",
-    title: "Brand & Visual Design",
-    desc: "Identity systems, typography, and visual language.",
-    image: "/images/about/03.webp",
-  },
-  {
-    num: "04",
-    title: "Editorial & Print",
-    desc: "Publication design, printed materials, and physical outputs.",
-    image: "/images/about/04.webp",
-  },
-  {
-    num: "05",
-    title: "Creative Direction",
-    desc: "Concept development, visual strategy, and cross-medium execution.",
-    image: "/images/about/05.webp",
-  },
+const ITEM_IMAGES = [
+  "/images/about/01.webp",
+  "/images/about/02.webp",
+  "/images/about/03.webp",
+  "/images/about/04.webp",
+  "/images/about/05.webp",
 ];
 
 const EASE = 0.08; // lower = more lag (0.05 sluggish, 0.15 snappy)
 
 export default function CapabilitiesSection() {
+  const { t, locale } = useTranslation();
+  const ITEMS = locale.capabilities.items.map((item, i) => ({
+    ...item,
+    image: ITEM_IMAGES[i],
+  }));
+
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const imgWrapRef = useRef(null);
   const rafRef = useRef(null);
@@ -69,8 +52,12 @@ export default function CapabilitiesSection() {
     <section className="cs" onMouseMove={handleMouseMove} onMouseLeave={() => setHoveredIndex(null)}>
       {/* Header */}
       <div className="cs__header">
-        <p className="cs__subtitle">Capabilities</p>
-        <h2 className="cs__title hatton-ultralight">Areas of Expertise</h2>
+        <p className="cs__subtitle">{t('capabilities.eyebrow')}</p>
+        <BilingTitle
+          en={t('capabilities.title')}
+          zh={t('capabilities.titleZh')}
+          className="cs__title hatton-ultralight"
+        />
       </div>
 
       {/* Rows */}

@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState, useCallback, memo } from "react";
+import { useEffect, useRef, useState, useCallback, memo, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import projectsData from "../../../data/projects.json";
 import { buildSrcSet } from "../../../utils/imgSrcSet";
 import { useParallaxRef } from "../../../hooks/useParallaxRef";
+import { useTranslation } from "../../../hooks/useTranslation";
+import { localizeProject } from "../../../utils/projectLocale";
 import "./AllWork.css";
 
 // ─── Config ─────────────────────────────────────────────────────────────────
@@ -132,6 +134,7 @@ const ProjectCard = memo(function ProjectCard({ project, onClick, cardRef }) {
 export default function AllWork() {
   const navigate = useNavigate();
   const { page: pageParam } = useParams();
+  const { language } = useTranslation();
 
   const initialPage = Math.max(
     1,
@@ -142,7 +145,10 @@ export default function AllWork() {
   const cardRefsMap = useRef(new Map());
   const sentinelRef = useRef(null);
 
-  const visibleProjects = sortedProjects.slice(0, visibleCount);
+  const visibleProjects = useMemo(
+    () => sortedProjects.slice(0, visibleCount).map((p) => localizeProject(p, language)),
+    [visibleCount, language]
+  );
   const hasMore = visibleCount < TOTAL;
   const currentPage = Math.ceil(visibleCount / PAGE_SIZE);
 

@@ -47,8 +47,8 @@
    ============================================================ */
 :root {
   /* 字型族 */
-  --font-manrope:  "Manrope Variable", sans-serif;
-  --font-hatton:   "PPHatton", "Manrope Variable", sans-serif;
+  --font-manrope:  "Manrope Variable", "Noto Sans TC Variable", sans-serif;
+  --font-hatton:   "PPHatton", "Manrope Variable", "Noto Sans TC Variable", sans-serif;
   --font-cjk:      "Noto Sans TC Variable", sans-serif;
 
   /* 字重 */
@@ -95,12 +95,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-variant-numeric: lining-nums tabular-nums;
-}
-
-:lang(zh),
-:lang(zh-TW),
-:lang(zh-HK) {
-  font-family: var(--font-cjk), var(--font-manrope);
 }
 
 

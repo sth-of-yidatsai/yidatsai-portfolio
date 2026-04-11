@@ -2,6 +2,8 @@ import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
 import { getAltText } from '../../utils/getAltText';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { useTranslation } from '../../hooks/useTranslation';
+import { pickLang } from '../../utils/pickLang';
 import './ImgTextBlock.css';
 
 function ImgTextBlock({
@@ -14,8 +16,11 @@ function ImgTextBlock({
   titleColor,
   textColor,
 }) {
+  const { language } = useTranslation();
+  const resolvedTitle = pickLang(title, language);
+  const rawText = pickLang(text, language);
+  const paragraphs = Array.isArray(rawText) ? rawText : rawText ? [rawText] : [];
   const resolvedAlt = imageAlt ?? getAltText(image);
-  const paragraphs = Array.isArray(text) ? text : text ? [text] : [];
   const revealRef = useScrollReveal();
 
   const imgPanel = (
@@ -27,12 +32,12 @@ function ImgTextBlock({
   const textPanel = (
     <div className="block--imgtxt__text" style={{ background: bgColor }}>
       <div className="block--imgtxt__text-inner">
-        {title && (
+        {resolvedTitle && (
           <h3
             className="block--imgtxt__title"
             style={titleColor ? { color: titleColor } : undefined}
           >
-            {title}
+            {resolvedTitle}
           </h3>
         )}
         <span

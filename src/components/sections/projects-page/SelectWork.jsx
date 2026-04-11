@@ -9,6 +9,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import projectsData from "../../../data/projects.json";
 import { buildSrcSet } from "../../../utils/imgSrcSet";
+import { useTranslation } from "../../../hooks/useTranslation";
+import { localizeProject } from "../../../utils/projectLocale";
 import "./SelectWork.css";
 
 // ─── Work Selection Config ──────────────────────────────────────────────────
@@ -27,16 +29,17 @@ const CARD_GAP = 16; // px — must stay in sync with CSS `gap: 16px`
 const AUTO_MS = 6000;
 const ANIM_MS = 1900; // slightly longer than CSS transition (1800ms) to fire after animation ends
 
-function buildCards(config, data) {
+function buildCards(config, data, language) {
   return config
     .map(({ id: projectId, image: imageFile }, i) => {
       const p = data.find((x) => x.id === projectId);
       if (!p) return null;
+      const lp = localizeProject(p, language);
       return {
-        id: p.id,
-        title: p.title,
-        description: p.description,
-        image: `/images/projects/${p.id}/${imageFile}`,
+        id: lp.id,
+        title: lp.title,
+        description: lp.description,
+        image: `/images/projects/${lp.id}/${imageFile}`,
         number: `(${String(i + 1).padStart(2, "0")})`,
       };
     })
@@ -45,7 +48,8 @@ function buildCards(config, data) {
 
 export default function SelectWork() {
   const navigate = useNavigate();
-  const cards = useMemo(() => buildCards(SELECTED_WORKS, projectsData), []);
+  const { language } = useTranslation();
+  const cards = useMemo(() => buildCards(SELECTED_WORKS, projectsData, language), [language]);
   const N = cards.length;
 
   // Triple-clone the cards: [set0, set1(real), set2] for seamless infinite loop

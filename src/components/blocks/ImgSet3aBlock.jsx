@@ -2,10 +2,14 @@ import { memo } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
 import { getAltText } from '../../utils/getAltText';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { useTranslation } from '../../hooks/useTranslation';
+import { pickLang } from '../../utils/pickLang';
 import './ImgSet3aBlock.css';
 
-function ImgItem({ item }) {
+function ImgItem({ item, language }) {
   const revealRef = useScrollReveal();
+  const title    = pickLang(item.title, language);
+  const subtitle = pickLang(item.subtitle, language);
   return (
     <div className="block--imgset3a__item">
       <div ref={revealRef} className="block--imgset3a__img-wrap">
@@ -13,15 +17,15 @@ function ImgItem({ item }) {
           src={item.src}
           srcSet={buildSrcSet(item.src)}
           sizes="(max-width: 768px) 100vw, 33vw"
-          alt={getAltText(item.src, item.title ?? '')}
+          alt={getAltText(item.src, title ?? '')}
           loading="eager"
           decoding="async"
         />
       </div>
-      {(item.title || item.subtitle) && (
+      {(title || subtitle) && (
         <div className="block--imgset3a__caption">
-          {item.title    && <p className="block--imgset3a__title">{item.title}</p>}
-          {item.subtitle && <p className="block--imgset3a__subtitle">{item.subtitle}</p>}
+          {title    && <p className="block--imgset3a__title">{title}</p>}
+          {subtitle && <p className="block--imgset3a__subtitle">{subtitle}</p>}
         </div>
       )}
     </div>
@@ -29,6 +33,7 @@ function ImgItem({ item }) {
 }
 
 function ImgSet3aBlock({ items = [], bg, color, reverse }) {
+  const { language } = useTranslation();
   return (
     <section
       className="block block--imgset3a"
@@ -36,7 +41,7 @@ function ImgSet3aBlock({ items = [], bg, color, reverse }) {
     >
       <div className={`block--imgset3a__grid${reverse ? ' block--imgset3a__grid--reverse' : ''}`}>
         {items.map((item, i) => (
-          <ImgItem key={i} item={item} />
+          <ImgItem key={i} item={item} language={language} />
         ))}
       </div>
     </section>

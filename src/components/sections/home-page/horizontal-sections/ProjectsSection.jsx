@@ -1,9 +1,11 @@
 import React from "react";
 import projects from "../../../../data/projects.json";
 import { pickResponsiveSrc } from "../../../../utils/imgSrcSet";
+import { useTranslation } from "../../../../hooks/useTranslation";
 import "./ProjectsSection.css";
 
 export default function ProjectsSection({ index }) {
+  const { locale } = useTranslation();
   const [tappedIndex, setTappedIndex] = React.useState(null);
 
   const handleBlockClick = (i) => {
@@ -37,21 +39,8 @@ export default function ProjectsSection({ index }) {
     [],
   );
 
-  // PracticeAreas 文字
-  const PracticeAreas = {
-    1: "Concept",
-    2: "Structure",
-    3: "Material",
-    4: "Detail",
-  };
-
-  // Description文字
-  const customDescriptions = {
-    1: "Every project begins with a clear idea.\nConcept defines the direction, intention,\nand the story behind the design.",
-    2: "Structure shapes the foundation of design.\nIt organizes elements and builds a visual\nframework that supports the concept.",
-    3: "Material brings texture and depth.\nThrough surface, light, and detail,\nthe design gains its physical presence.",
-    4: "Detail refines the final expression.\nSmall elements complete the design\nand reveal the true level of craftsmanship.",
-  };
+  const PracticeAreas = locale.projects.areas;
+  const customDescriptions = locale.projects.descriptions;
 
   return (
     <div className={`hs-section projects-section hs-section-${index}`}>

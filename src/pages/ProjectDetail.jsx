@@ -3,10 +3,14 @@ import HeroBlock from "../components/blocks/HeroBlock";
 import TitleBlock from "../components/blocks/TitleBlock";
 import DefaultBlock from "../components/blocks/DefaultBlock";
 import DiscoverMoreBlock from "../components/blocks/DiscoverMoreBlock";
+import { useTranslation } from "../hooks/useTranslation";
+import { localizeProject } from "../utils/projectLocale";
 
 export default function ProjectDetail() {
-  const project = useLoaderData();
-  const base = `/images/projects/${project.id}`;
+  const rawProject = useLoaderData();
+  const { language } = useTranslation();
+  const project = localizeProject(rawProject, language);
+  const base = `/images/projects/${rawProject.id}`;
 
   return (
     <main className="project-detail project-detail--blocks">

@@ -90,6 +90,10 @@
   min-width: 0;
 }
 
+.block--hero__year-section {
+  max-width: 12rem;
+}
+
 .block--hero__tag-list {
   display: flex;
   flex-wrap: nowrap;
@@ -125,7 +129,6 @@
     border-left: 1px solid rgba(255, 255, 255, 0.18);
     border-right: none;
     flex: 0 0 auto;
-    min-width: 12rem;
     padding: 0 var(--space-md);
   }
 

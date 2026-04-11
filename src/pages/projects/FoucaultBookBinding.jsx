@@ -11,6 +11,8 @@ import DiscoverMoreBlock from "../../components/blocks/DiscoverMoreBlock";
 import projects from "../../data/projects.json";
 import { usePagePreloader } from "../../hooks/usePagePreloader";
 import { pickResponsiveSrc } from "../../utils/imgSrcSet";
+import { useTranslation } from "../../hooks/useTranslation";
+import { localizeProject } from "../../utils/projectLocale";
 
 const BASE = "/images/projects/foucault-book-binding";
 
@@ -22,14 +24,16 @@ const PRELOAD_IMAGES = [
 
 export default function FoucaultBookBinding() {
   usePagePreloader(PRELOAD_IMAGES);
+  const { language } = useTranslation();
+  const lp = localizeProject(project, language);
 
   return (
     <main className="project-detail project-detail--blocks">
-      <HeroBlock image={`${BASE}/01.webp`} project={project} />
+      <HeroBlock image={`${BASE}/01.webp`} project={lp} />
 
       <TitleBlock
-        title={project.title}
-        description={project.description}
+        title={lp.title}
+        description={lp.description}
         bgColor="var(--gray-100)"
         emptyColor="var(--gray-300)"
         fillColor="var(--gray-900)"
@@ -39,24 +43,27 @@ export default function FoucaultBookBinding() {
         items={[
           {
             src: `${BASE}/06.webp`,
-            title: "Exposed Smyth Sewn Binding",
+            title: { en: "Exposed Smyth Sewn Binding", zh: "裸背縫線裝幀" },
             subtitle: "(01)",
           },
           {
             src: `${BASE}/16.webp`,
-            title: "The order of things",
+            title: { en: "The Order of Things", zh: "事物的秩序" },
             subtitle: "(02)",
           },
           {
             src: `${BASE}/20.webp`,
-            title: "Structural Order",
+            title: { en: "Structural Order", zh: "結構秩序" },
             subtitle: "(03)",
           },
         ]}
       />
 
       <QuoteBlock
-        text="Order is, at one and the same time, that which is given in things and that which must be discovered."
+        text={{
+          en: "Order is, at one and the same time, that which is given in things and that which must be discovered.",
+          zh: "秩序既是事物本身所賦予的，也是有待我們去發現的。",
+        }}
         author="Michel Foucault"
         image={`${BASE}/title.svg`}
       />
@@ -65,12 +72,12 @@ export default function FoucaultBookBinding() {
         items={[
           {
             src: `${BASE}/11.webp`,
-            title: "The Archaeology of Knowledge",
+            title: { en: "The Archaeology of Knowledge", zh: "知識的考掘學" },
             subtitle: "(04)",
           },
           {
             src: `${BASE}/07.webp`,
-            title: "Typographic Hierarchy",
+            title: { en: "Typographic Hierarchy", zh: "字型排版層級" },
             subtitle: "(05)",
           },
         ]}
@@ -80,12 +87,12 @@ export default function FoucaultBookBinding() {
         items={[
           {
             src: `${BASE}/04.webp`,
-            title: "Poster Design",
+            title: { en: "Poster Design", zh: "海報設計" },
             subtitle: "(07)",
           },
           {
             src: `${BASE}/05.webp`,
-            title: "Systematic Arrangement",
+            title: { en: "Systematic Arrangement", zh: "系統化排列" },
             subtitle: "(06)",
           },
         ]}
@@ -94,13 +101,13 @@ export default function FoucaultBookBinding() {
 
       <ImgSet4aBlock
         images={[`${BASE}/17.webp`, `${BASE}/12.webp`]}
-        title="System of Thought"
+        title={{ en: "System of Thought", zh: "思想體系" }}
         subtitle="(08)"
       />
 
       <ImgSet1aBlock
         src={`${BASE}/09.webp`}
-        title="Between text and structure"
+        title={{ en: "Between Text and Structure", zh: "文字與結構之間" }}
         subtitle="(09)"
       />
 
@@ -111,17 +118,23 @@ export default function FoucaultBookBinding() {
           `${BASE}/19.webp`,
           `${BASE}/14.webp`,
         ]}
-        title="Knowledge Mapping"
+        title={{ en: "Knowledge Mapping", zh: "知識圖譜" }}
         subtitle="(10)"
       />
 
       <ImgTextBlock
         image={`${BASE}/02.webp`}
-        title="Michel Foucault Book Design"
-        text={[
-          "This work traces the underlying structures through which knowledge is formed and understood.",
-          "Through form, hierarchy, and composition, it reflects a quiet order embedded within systems of thought.",
-        ]}
+        title={{ en: "Michel Foucault Book Design", zh: "傅柯書籍裝幀設計" }}
+        text={{
+          en: [
+            "This work traces the underlying structures through which knowledge is formed and understood.",
+            "Through form, hierarchy, and composition, it reflects a quiet order embedded within systems of thought.",
+          ],
+          zh: [
+            "本作品追溯知識得以形成與理解的底層結構。",
+            "透過形式、層級與構圖，映照出思想體系中內蘊的靜默秩序。",
+          ],
+        }}
         bgColor="var(--gray-100)"
         textColor="var(--gray-600)"
         titleColor="var(--gray-900)"

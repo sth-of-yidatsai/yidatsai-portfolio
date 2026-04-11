@@ -2,18 +2,13 @@ import { useRef, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { buildSrcSet } from "../../../utils/imgSrcSet";
+import { useTranslation } from "../../../hooks/useTranslation";
 import "./BioSection.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TEXT1 =
-  "Yida Tsai is a multidisciplinary designer based in Taipei, working between visual design and digital experience. His practice spans from interface design to printed matter, exploring how ideas take form across different mediums.";
-
-const TEXT2 =
-  "With a foundation in visual communication and experience in both digital and editorial projects, he focuses on clarity, structure, and the translation of design into tangible outcomes.";
-
 /* ── Sticky text block ───────────────────────────────────────────────── */
-function StickyText({ text, isFirst = false }) {
+function StickyText({ text, label, isFirst = false }) {
   const sectionRef = useRef(null);
   const charsRef = useRef([]);
 
@@ -89,7 +84,7 @@ function StickyText({ text, isFirst = false }) {
 
   return (
     <section className="bs__text-block" ref={sectionRef}>
-      <p className="bs__label">About</p>
+      <p className="bs__label">{label}</p>
       <p className="bs__text hatton-ultralight">
         {[...text].map((char, i) => (
           <span
@@ -147,17 +142,13 @@ function ParallaxImage() {
 
 /* ── Root ────────────────────────────────────────────────────────────── */
 export default function BioSection() {
+  const { t, language } = useTranslation();
+  const label = t('bio.eyebrow');
   return (
     <div className="bs">
-      <StickyText text={TEXT1} isFirst />
+      <StickyText key={`text1-${language}`} text={t('bio.text1')} label={label} isFirst />
       <ParallaxImage />
-      <StickyText text={TEXT2} />
-      <section className="bs__zh-bio" lang="zh-TW" aria-label="中文簡介">
-        <p>
-          蔡易達，台灣台北的視覺設計師與前端工程師，專注於字體設計、裝幀設計與數位體驗。
-          跨足平面設計與網頁開發，致力於在不同媒介間探索設計語言的可能性。
-        </p>
-      </section>
+      <StickyText key={`text2-${language}`} text={t('bio.text2')} label={label} />
     </div>
   );
 }

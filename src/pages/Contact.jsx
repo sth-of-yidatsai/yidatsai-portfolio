@@ -1,16 +1,18 @@
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import ContactForm from "../components/sections/contact-page/ContactForm";
+import { useTranslation } from "../hooks/useTranslation";
 import "./Contact.css";
 
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
 
 export default function Contact() {
+  const { t } = useTranslation();
   return (
     <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
       <main className="contact-page">
         <header className="contact-hero">
-          <p className="contact-eyebrow">Get in Touch</p>
-          <h1 className="contact-title">Let&apos;s Work Together</h1>
+          <p className="contact-eyebrow">{t('contact.hero')}</p>
+          <h1 className="contact-title">{t('contact.subtitle')}</h1>
         </header>
 
         <ContactForm />

@@ -8,62 +8,129 @@ export const SITE = {
 
 export const PAGE_META = {
   home: {
-    title: "Yi-Da Tsai 蔡易達｜Visual Designer & Frontend Developer",
-    description:
-      "Yi-Da Tsai（蔡易達）是台灣台北的視覺設計師與前端工程師，專注於字體設計、編輯設計與數位體驗。",
-    ogImage: "https://yidatsai.com/images/og-default.jpg",
-    ogLocale: "zh_TW",
+    en: {
+      title: "Yi-Da Tsai 蔡易達｜Visual Designer & Frontend Developer",
+      description:
+        "Yi-Da Tsai is a visual designer and frontend developer based in Taipei, Taiwan, specializing in typography, editorial design, and digital experiences.",
+      ogImage: "https://yidatsai.com/images/og-default.jpg",
+      ogLocale: "en_US",
+    },
+    zh: {
+      title: "蔡易達｜視覺設計師與前端工程師",
+      description:
+        "蔡易達（Yi-Da Tsai）是台灣台北的視覺設計師與前端工程師，專注於字體排印、編輯設計與數位體驗。",
+      ogImage: "https://yidatsai.com/images/og-default.jpg",
+      ogLocale: "zh_TW",
+    },
   },
   about: {
-    title: "About | YI-DA TSAI 蔡易達",
-    description:
-      "蔡易達（Yi-Da Tsai）是台灣台北的視覺設計師，專注於編輯設計、書籍裝幀與字體排印系統。",
-    ogLocale: "zh_TW",
+    en: {
+      title: "About | YI-DA TSAI 蔡易達",
+      description:
+        "Yi-Da Tsai is a multidisciplinary designer based in Taipei, working between visual design and digital experience.",
+      ogLocale: "en_US",
+    },
+    zh: {
+      title: "關於 | 蔡易達 YI-DA TSAI",
+      description:
+        "蔡易達（Yi-Da Tsai）是台灣台北的視覺設計師，專注於編輯設計、書籍裝幀與字體排印系統。",
+      ogLocale: "zh_TW",
+    },
   },
   projects: {
-    title: "Projects | YI-DA TSAI 蔡易達",
-    description:
-      "蔡易達（Yi-Da Tsai）的設計作品集，涵蓋編輯設計、書籍裝幀、字體排印與視覺識別。",
-    ogLocale: "zh_TW",
+    en: {
+      title: "Projects | YI-DA TSAI 蔡易達",
+      description:
+        "Design projects by Yi-Da Tsai, covering editorial design, bookbinding, typography, and visual identity.",
+      ogLocale: "en_US",
+    },
+    zh: {
+      title: "作品集 | 蔡易達 YI-DA TSAI",
+      description:
+        "蔡易達（Yi-Da Tsai）的設計作品集，涵蓋編輯設計、書籍裝幀、字體排印與視覺識別。",
+      ogLocale: "zh_TW",
+    },
   },
   playground: {
-    title: "Playground | YI-DA TSAI",
-    description:
-      "Interactive experiments and explorations by graphic designer Yi-Da Tsai.",
+    en: {
+      title: "Playground | YI-DA TSAI",
+      description:
+        "Interactive experiments and explorations by graphic designer Yi-Da Tsai.",
+    },
+    zh: {
+      title: "Playground | 蔡易達 YI-DA TSAI",
+      description: "蔡易達的互動實驗與視覺探索。",
+    },
   },
   contact: {
-    title: "Contact | YI-DA TSAI",
-    description: "Get in touch with Yi-Da Tsai.",
+    en: {
+      title: "Contact | YI-DA TSAI",
+      description: "Get in touch with Yi-Da Tsai.",
+    },
+    zh: {
+      title: "聯絡 | 蔡易達 YI-DA TSAI",
+      description: "與蔡易達聯繫，討論您的設計需求。",
+    },
   },
   notFound: {
-    title: "Not Found | YI-DA TSAI",
-    description: "Page not found.",
+    en: {
+      title: "Not Found | YI-DA TSAI",
+      description: "Page not found.",
+    },
+    zh: {
+      title: "找不到頁面 | YI-DA TSAI",
+      description: "找不到此頁面。",
+    },
   },
 };
 
-export function buildProjectMeta(project) {
-  if (!project) return PAGE_META.projects;
+export function getPageMeta(key, language = "en") {
+  const page = PAGE_META[key];
+  if (!page) return {};
+  return page[language] ?? page.en ?? {};
+}
+
+export function buildProjectMeta(project, language = "en") {
+  if (!project) return getPageMeta("projects", language);
+
+  const title =
+    language === "zh" && project.title_zh
+      ? project.title_zh
+      : project.title;
+  const description =
+    language === "zh" && project.description_zh
+      ? project.description_zh
+      : project.description;
+
   return {
-    title: `${project.title} | YI-DA TSAI`,
-    description: project.description ?? SITE.defaultDescription,
+    title: `${title} | YI-DA TSAI`,
+    description: description ?? SITE.defaultDescription,
     ogImage: `${SITE.baseUrl}/images/projects/${project.id}/${project.ogImage ?? project.cover}`,
+    ogLocale: language === "zh" ? "zh_TW" : "en_US",
     ogType: "article",
     keywords: [
-      ...(project.category ?? []),
-      ...(project.tags ?? []),
+      ...(language === "zh" && project.category_zh ? project.category_zh : project.category ?? []),
+      ...(language === "zh" && project.tags_zh ? project.tags_zh : project.tags ?? []),
     ].join(", "),
-    jsonLd: buildProjectJsonLd(project),
+    jsonLd: buildProjectJsonLd(project, language),
   };
 }
 
-export function buildProjectJsonLd(project) {
+export function buildProjectJsonLd(project, language = "en") {
+  const title =
+    language === "zh" && project.title_zh ? project.title_zh : project.title;
+  const description =
+    language === "zh" && project.description_zh
+      ? project.description_zh
+      : project.description;
+
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "CreativeWork",
-        name: project.title,
-        description: project.description,
+        name: title,
+        description: description,
         creator: {
           "@type": "Person",
           name: "Yi-Da Tsai",
@@ -88,13 +155,13 @@ export function buildProjectJsonLd(project) {
           {
             "@type": "ListItem",
             position: 2,
-            name: "Projects",
+            name: language === "zh" ? "作品集" : "Projects",
             item: `${SITE.baseUrl}/projects`,
           },
           {
             "@type": "ListItem",
             position: 3,
-            name: project.title,
+            name: title,
             item: `${SITE.baseUrl}/projects/${project.id}`,
           },
         ],

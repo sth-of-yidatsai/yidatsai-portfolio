@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import projectsData from "../../data/projects.json";
 import { buildSrcSet } from "../../utils/imgSrcSet";
 import { useParallaxRef } from "../../hooks/useParallaxRef";
+import { useTranslation } from "../../hooks/useTranslation";
+import { localizeProject } from "../../utils/projectLocale";
 import "./DiscoverMoreBlock.css";
 
 function pickProjects(currentId) {
@@ -65,12 +67,16 @@ const DiscoverMoreCard = memo(function DiscoverMoreCard({ project, onClick }) {
 
 function DiscoverMoreBlock({ currentId }) {
   const navigate = useNavigate();
+  const { t, language } = useTranslation();
 
-  const picks = useMemo(() => pickProjects(currentId), [currentId]);
+  const picks = useMemo(
+    () => pickProjects(currentId).map((p) => localizeProject(p, language)),
+    [currentId, language]
+  );
 
   return (
     <section className="block block--discover-more">
-      <h2 className="discover-more__heading">Discover More</h2>
+      <h2 className="discover-more__heading">{t('projectDetail.discoverMore')}</h2>
       <div className="discover-more__grid">
         {picks.map((project) => (
           <DiscoverMoreCard

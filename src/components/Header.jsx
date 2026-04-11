@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../contexts/LanguageContext";
 import "./Header.css";
 
 const NAV_LINKS = [
@@ -8,6 +9,24 @@ const NAV_LINKS = [
   { number: "03", label: "ABOUT", to: "/about" },
   { number: "04", label: "CONTACT", to: "/contact" },
 ];
+
+function LangToggle({ language, setLanguage, className = '' }) {
+  return (
+    <div className={`lang-toggle ${className}`.trim()}>
+      <button
+        className={`lang-btn${language === 'en' ? ' lang-btn--active' : ''}`}
+        onClick={() => setLanguage('en')}
+        aria-label="Switch to English"
+      >EN</button>
+      <span className="lang-divider" aria-hidden="true">/</span>
+      <button
+        className={`lang-btn${language === 'zh' ? ' lang-btn--active' : ''}`}
+        onClick={() => setLanguage('zh')}
+        aria-label="切換至中文"
+      >中</button>
+    </div>
+  );
+}
 
 /** Line-level roll: the whole line slides up/down as a unit */
 function LineRoll({ children }) {
@@ -81,6 +100,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [theme, setTheme] = useState("light");
+  const { language, setLanguage } = useLanguage();
 
   const toggleMenu = useCallback(() => {
     if (isOpen) {
@@ -173,15 +193,18 @@ export default function Header() {
         >
           YIDA
         </Link>
-        <button
-          className="header-hamburger clickable"
-          onClick={toggleMenu}
-          aria-label={isOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isOpen}
-        >
-          <span className={`header-hamburger-line line1${isOpen ? " open" : ""}`} />
-          <span className={`header-hamburger-line line2${isOpen ? " open" : ""}`} />
-        </button>
+        <div className="header-bar-controls">
+          <LangToggle language={language} setLanguage={setLanguage} />
+          <button
+            className="header-hamburger clickable"
+            onClick={toggleMenu}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isOpen}
+          >
+            <span className={`header-hamburger-line line1${isOpen ? " open" : ""}`} />
+            <span className={`header-hamburger-line line2${isOpen ? " open" : ""}`} />
+          </button>
+        </div>
       </header>
     </>
   );

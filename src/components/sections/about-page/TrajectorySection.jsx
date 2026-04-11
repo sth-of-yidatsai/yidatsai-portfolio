@@ -2,6 +2,8 @@ import { useRef, useState, useLayoutEffect, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { buildSrcSet } from "../../../utils/imgSrcSet";
+import { useTranslation } from "../../../hooks/useTranslation";
+import BilingTitle from "../../BilingTitle";
 import "./TrajectorySection.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -11,47 +13,21 @@ gsap.registerPlugin(ScrollTrigger);
 const PHASE1_END = 0.72;
 const CONTENT_SCROLL = 1600;
 
-const CARDS = [
-  {
-    year: "2026",
-    image: "/images/about/01.webp",
-    title: "Digital Experience Practice.",
-    desc: "Continuously exploring the intersection of visual design and front-end development, creating interfaces that balance clarity, interaction, and aesthetics.",
-    period: "2024 — present",
-  },
-  {
-    year: "2024",
-    image: "/images/about/02.webp",
-    title: "Transition into front-end development.",
-    desc: "Shifted from visual design to web development, building a solid foundation in modern technologies and translating design thinking into functional interfaces.",
-    period: "2024/09 — present",
-  },
-  {
-    year: "2024",
-    image: "/images/about/03.webp",
-    title: "Campmate — Bridging UI and system logic.",
-    desc: "Led the design and implementation of key features including homepage, coupon system, and admin tools, connecting user experience with backend functionality.",
-    period: "2024/05 — 2024/09",
-  },
-  {
-    year: "2024",
-    image: "/images/about/04.webp",
-    title: "Visual design in practice.",
-    desc: "Worked as a visual designer across branding and marketing projects, focusing on typography, layout, and delivering clear visual communication.",
-    period: "2022/09 — 2024/03",
-  },
-  {
-    year: "2022",
-    image: "/images/about/05.webp",
-    title: "NTUA — Visual Communication Design",
-    desc: "Studied at National Taiwan University of Arts, building a foundation in visual language, design principles, and creative thinking.",
-    period: "2018/09 — 2022/06",
-  },
+const CARD_IMAGES = [
+  "/images/about/01.webp",
+  "/images/about/02.webp",
+  "/images/about/03.webp",
+  "/images/about/04.webp",
+  "/images/about/05.webp",
 ];
 
-const THUMB_PCT = 100 / CARDS.length;
-
 export default function TrajectorySection() {
+  const { t, locale } = useTranslation();
+  const CARDS = locale.trajectory.cards.map((card, i) => ({
+    ...card,
+    image: CARD_IMAGES[i],
+  }));
+  const THUMB_PCT = 100 / CARDS.length;
   const innerRef = useRef(null);
   const scrollWrapRef = useRef(null);
   const trackRef = useRef(null);
@@ -322,8 +298,12 @@ export default function TrajectorySection() {
       <section className="ts">
         {/* Header */}
         <div className="ts__header">
-          <p className="ts__subtitle">Trajectory</p>
-          <h2 className="ts__title">Areas of Practice</h2>
+          <p className="ts__subtitle">{t('trajectory.eyebrow')}</p>
+          <BilingTitle
+            en={t('trajectory.title')}
+            zh={t('trajectory.titleZh')}
+            className="ts__title"
+          />
         </div>
 
         {/* Desktop: pinned 100vh viewport / Mobile: natural height */}

@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import "./VisionSection.css";
 import visionCircle from "../../../../assets/icons/vision-circle.svg";
+import { useTranslation } from "../../../../hooks/useTranslation";
 
 /* ══════════════════════════════════════════════════════════════════
    Geometry  —  viewBox 700 × 650
@@ -66,33 +67,7 @@ const ARROW_ENDS = [
 const ANIM_DURATION  = 900; // ms — must match CSS animation duration
 const ENTER_DEBOUNCE = 120; // ms — ignore rapid enter/leave sweeps
 
-/* Two scroll steps — each step shows one copy on left + one on right */
-const COPY_STEPS = [
-  {
-    left: {
-      title: "Logic",
-      lead: "Structure creates clarity.",
-      body: ["Systems and hierarchy", "make complexity readable."],
-    },
-    right: {
-      title: "Aesthetics",
-      lead: "Form gives emotion a surface.",
-      body: ["Rhythm and visual tone", "allow language to emerge."],
-    },
-  },
-  {
-    left: {
-      title: "Experience",
-      lead: "Experience gives design meaning.",
-      body: ["Atmosphere and memory", "shape how it is felt."],
-    },
-    right: {
-      title: "Structured Emotion",
-      lead: "Emotion is not accidental.",
-      body: ["It is shaped through structure, and brought", "to life through design."],
-    },
-  },
-];
+/* COPY_STEPS are now loaded from locale — see VisionSection() */
 
 function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
                       onHoverStart, onHoverEnd }) {
@@ -195,6 +170,8 @@ function CopyPanel({ data, active }) {
 }
 
 export default function VisionSection() {
+  const { t, locale } = useTranslation();
+  const COPY_STEPS = locale.vision.steps;
   const headerRef      = useRef(null);
   const scrollZoneRef  = useRef(null);
   const [isHeaderInView, setIsHeaderInView] = useState(false);
@@ -265,7 +242,7 @@ export default function VisionSection() {
               <span className="line-roll-bottom" aria-hidden="true">ART <span className="vs-title-sub">&amp; SYSTEM</span></span>
             </span>
           </h2>
-          <p className="vs-subtitle">Where aesthetics, logic and experience converge</p>
+          <p className="vs-subtitle">{t('vision.subtitle')}</p>
         </header>
       </div>
 

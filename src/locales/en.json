@@ -1,0 +1,178 @@
+{
+  "bio": {
+    "eyebrow": "About",
+    "text1": "Yida Tsai is a multidisciplinary designer based in Taipei, working between visual design and digital experience. His practice spans from interface design to printed matter, exploring how ideas take form across different mediums.",
+    "text2": "With a foundation in visual communication and experience in both digital and editorial projects, he focuses on clarity, structure, and the translation of design into tangible outcomes.",
+    "tagline": "Visual Designer based in Taipei. Focused on Typography & Editorial Design."
+  },
+  "capabilities": {
+    "eyebrow": "Capabilities",
+    "title": "Areas of Expertise",
+    "titleZh": null,
+    "items": [
+      { "num": "01", "title": "Interface Design", "desc": "UI / UX design, layout systems, and interaction flow." },
+      { "num": "02", "title": "Web Development", "desc": "Frontend implementation with modern frameworks and responsive systems." },
+      { "num": "03", "title": "Brand & Visual Design", "desc": "Identity systems, typography, and visual language." },
+      { "num": "04", "title": "Editorial & Print", "desc": "Publication design, printed materials, and physical outputs." },
+      { "num": "05", "title": "Creative Direction", "desc": "Concept development, visual strategy, and cross-medium execution." }
+    ]
+  },
+  "trajectory": {
+    "eyebrow": "Trajectory",
+    "title": "Areas of Practice",
+    "titleZh": null,
+    "cards": [
+      {
+        "year": "2026",
+        "title": "Digital Experience Practice.",
+        "desc": "Continuously exploring the intersection of visual design and front-end development, creating interfaces that balance clarity, interaction, and aesthetics.",
+        "period": "2024 — present"
+      },
+      {
+        "year": "2024",
+        "title": "Transition into front-end development.",
+        "desc": "Shifted from visual design to web development, building a solid foundation in modern technologies and translating design thinking into functional interfaces.",
+        "period": "2024/09 — present"
+      },
+      {
+        "year": "2024",
+        "title": "Campmate — Bridging UI and system logic.",
+        "desc": "Led the design and implementation of key features including homepage, coupon system, and admin tools, connecting user experience with backend functionality.",
+        "period": "2024/05 — 2024/09"
+      },
+      {
+        "year": "2024",
+        "title": "Visual design in practice.",
+        "desc": "Worked as a visual designer across branding and marketing projects, focusing on typography, layout, and delivering clear visual communication.",
+        "period": "2022/09 — 2024/03"
+      },
+      {
+        "year": "2022",
+        "title": "NTUA — Visual Communication Design",
+        "desc": "Studied at National Taiwan University of Arts, building a foundation in visual language, design principles, and creative thinking.",
+        "period": "2018/09 — 2022/06"
+      }
+    ]
+  },
+  "approach": {
+    "title": "Design Approach",
+    "titleZh": null,
+    "body1": "Each project begins with a visual idea,\nshaped through typography, structure, and material.",
+    "body2": "By balancing aesthetics and logic,\nthe work evolves into a clear and\nmeaningful visual experience."
+  },
+  "field": {
+    "tagline": "Visual Designer based in Taipei. Focused on Typography & Editorial Design.",
+    "taglineSub": "Bridging visual language and digital experiences.",
+    "labels": ["(Editorial)", "(Texture)", "(Material)", "(Memory in Glass)"]
+  },
+  "vision": {
+    "header1": "BETWEEN",
+    "header2": "ART & SYSTEM",
+    "subtitle": "Where aesthetics, logic and experience converge",
+    "center1": "STRUCTURED",
+    "center2": "EMOTION",
+    "steps": [
+      {
+        "left": {
+          "title": "Logic",
+          "lead": "Structure creates clarity.",
+          "body": ["Systems and hierarchy", "make complexity readable."]
+        },
+        "right": {
+          "title": "Aesthetics",
+          "lead": "Form gives emotion a surface.",
+          "body": ["Rhythm and visual tone", "allow language to emerge."]
+        }
+      },
+      {
+        "left": {
+          "title": "Experience",
+          "lead": "Experience gives design meaning.",
+          "body": ["Atmosphere and memory", "shape how it is felt."]
+        },
+        "right": {
+          "title": "Structured Emotion",
+          "lead": "Emotion is not accidental.",
+          "body": ["It is shaped through structure, and brought", "to life through design."]
+        }
+      }
+    ]
+  },
+  "projects": {
+    "areas": {
+      "1": "Concept",
+      "2": "Structure",
+      "3": "Material",
+      "4": "Detail"
+    },
+    "descriptions": {
+      "1": "Every project begins with a clear idea.\nConcept defines the direction, intention,\nand the story behind the design.",
+      "2": "Structure shapes the foundation of design.\nIt organizes elements and builds a visual\nframework that supports the concept.",
+      "3": "Material brings texture and depth.\nThrough surface, light, and detail,\nthe design gains its physical presence.",
+      "4": "Detail refines the final expression.\nSmall elements complete the design\nand reveal the true level of craftsmanship."
+    }
+  },
+  "landscape": {
+    "slides": [
+      { "leftLabel": "Graphic", "rightLabel": "Graphic" },
+      { "leftLabel": "Poster", "rightLabel": "Poster" },
+      { "leftLabel": "Editorial", "rightLabel": "Editorial" }
+    ]
+  },
+  "contact": {
+    "hero": "Get in Touch",
+    "subtitle": "Let's Work Together",
+    "form": {
+      "nameSection": "Full Name",
+      "firstName": "First Name*",
+      "lastName": "Last Name*",
+      "companySection": "Company or Brand Name",
+      "companyPlaceholder": "Company or brand name",
+      "contactSection": "Contact Information",
+      "email": "Email Address*",
+      "phone": "Phone Number",
+      "locationSection": "Location",
+      "interestSection": "Area of Interest",
+      "budgetSection": "Project Budget (USD $)",
+      "timelineSection": "Project Timeline",
+      "detailsSection": "Project Details",
+      "detailsPlaceholder": "Briefly describe your brand, target audience, and project goals.",
+      "requiredNote": "Fields marked with * are required. Other information is optional but will help us better understand your needs.",
+      "sendBtn": "Send",
+      "sendingBtn": "Sending",
+      "successToast": "Message sent! I'll get back to you soon.",
+      "errorToast": "Something went wrong. Please try again or email hello@yidatsai.com directly.",
+      "rateLimitToast": "Too many submissions. Please try again later.",
+      "interestGroups": [
+        { "group": "Brand", "items": ["Logo Design", "Brand Identity", "Brand Strategy", "Rebranding"] },
+        { "group": "Graphic", "items": ["Packaging Design", "Print Design", "Editorial Design", "Campaign Visuals"] },
+        { "group": "Digital", "items": ["Website Design", "UI / UX Design", "Landing Page", "Design System"] },
+        { "group": "Extras", "items": ["Social Media", "Motion Graphics", "3D Visual"] },
+        { "group": "Other", "items": ["Not sure yet"] }
+      ],
+      "budgetTiers": ["Starter", "Basic", "Standard", "Pro", "Custom"],
+      "budgetDescs": [
+        "Best for small-scale projects",
+        "Ideal for focused design needs",
+        "Balanced solution for growing brands",
+        "Ideal for a complete brand experience",
+        "Tailored for premium, full-scale projects"
+      ],
+      "timelines": ["Within 1 month", "2-3 months", "3-6 months", "Over 3 months", "Flexible timeline"],
+      "counties": ["Taiwan", "Taipei City", "New Taipei City", "Taoyuan City", "Taichung City", "Tainan City", "Kaohsiung City", "Hsinchu City", "Keelung City", "Hsinchu County", "Miaoli County", "Changhua County", "Nantou County", "Yunlin County", "Chiayi City", "Chiayi County", "Pingtung County", "Yilan County", "Hualien County", "Taitung County", "Penghu County", "Kinmen County", "Lienchiang County"],
+      "regions": ["International", "Japan", "South Korea", "China (Mainland)", "Hong Kong", "Macau", "Singapore", "Southeast Asia", "South Asia", "United States", "Canada", "United Kingdom", "Germany", "France", "Netherlands", "Other Europe", "Middle East", "Australia / New Zealand", "Latin America", "Africa", "Other"]
+    }
+  },
+  "projectDetail": {
+    "labelTitle": "Title",
+    "labelYear": "Year",
+    "labelCategory": "Category",
+    "labelTag": "Tag",
+    "prevProject": "Previous project",
+    "nextProject": "Next project",
+    "discoverMore": "Discover More"
+  },
+  "footer": {
+    "copyright": "Yida Tsai © 2020–{year}"
+  }
+}
