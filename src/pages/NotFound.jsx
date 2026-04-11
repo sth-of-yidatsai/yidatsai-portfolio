@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import p5 from 'p5';
 import arrowCircleLeft from '../assets/icons/arrow-circle-left.svg';
 import './NotFound.css';
@@ -142,6 +142,7 @@ function PerimeterMarquee({ color = '#ffffff' }) {
 
 /* ── Main page ── */
 export default function NotFound() {
+  const { lang = 'en' } = useParams();
   /* window visibility */
   const [showP5, setShowP5] = useState(true);
   const [showColor, setShowColor] = useState(true);
@@ -534,7 +535,7 @@ export default function NotFound() {
       </DraggableWindow>
 
       {/* ── Back to Home ── */}
-      <Link to="/" className="nf-home-btn" data-clickable="true">
+      <Link to={`/${lang}/`} className="nf-home-btn" data-clickable="true">
         <img src={arrowCircleLeft} alt="" className="nf-home-arrow" />
         <span className="nf-home-divider" aria-hidden />
         <span className="nf-home-label">Back to Home</span>

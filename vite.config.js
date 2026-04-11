@@ -47,30 +47,34 @@ export default defineConfig({
       staticDir: path.resolve(__dirname, 'dist'),
       routes: (() => {
         const projects = require('./src/data/projects.json')
+        const staticRoutes = ['/about', '/projects', '/playground', '/contact']
+        const projectRoutes = projects.map(p => `/projects/${p.id}`)
+        const allPaths = [...staticRoutes, ...projectRoutes]
         return [
-          '/',
-          '/about',
-          '/projects',
-          '/playground',
-          '/contact',
-          ...projects.map(p => `/projects/${p.id}`),
+          '/en/',
+          '/zh/',
+          ...allPaths.map(p => `/en${p}`),
+          ...allPaths.map(p => `/zh${p}`),
         ]
       })(),
       renderer: new PuppeteerRenderer({
         renderAfterTime: 3000,
       }),
       postProcess(renderedRoute) {
-        const projectMatch = renderedRoute.route.match(/^\/projects\/(.+)$/)
+        const projectMatch = renderedRoute.route.match(/^\/(en|zh)\/projects\/(.+)$/)
         if (projectMatch) {
-          const projectId = projectMatch[1]
+          const lang = projectMatch[1]
+          const projectId = projectMatch[2]
           const projects = require('./src/data/projects.json')
           const project = projects.find(p => p.id === projectId)
           if (project) {
+            const title = lang === 'zh' && project.title_zh ? project.title_zh : project.title
+            const description = lang === 'zh' && project.description_zh ? project.description_zh : project.description
             renderedRoute.html = injectMeta(renderedRoute.html, {
-              title: `${project.title} | YI-DA TSAI`,
-              description: project.description,
+              title: `${title} | YI-DA TSAI`,
+              description,
               ogImage: `${BASE_URL}/images/projects/${project.id}/${project.ogImage ?? project.cover}`,
-              ogUrl: `${BASE_URL}/projects/${project.id}`,
+              ogUrl: `${BASE_URL}/${lang}/projects/${project.id}`,
               ogType: 'article',
             })
           }

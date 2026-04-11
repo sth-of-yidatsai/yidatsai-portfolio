@@ -84,6 +84,26 @@ export const PAGE_META = {
   },
 };
 
+/**
+ * Given a canonical URL like https://yidatsai.com/en/about,
+ * returns the en + zh alternate URLs and x-default.
+ */
+export function buildAlternateUrls(canonicalUrl) {
+  try {
+    const url = new URL(canonicalUrl);
+    const match = url.pathname.match(/^\/(en|zh)(\/.*)?$/);
+    if (!match) return null;
+    const suffix = match[2] || '/';
+    return {
+      en: `${SITE.baseUrl}/en${suffix}`,
+      zh: `${SITE.baseUrl}/zh${suffix}`,
+      xDefault: `${SITE.baseUrl}/en${suffix}`,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export function getPageMeta(key, language = "en") {
   const page = PAGE_META[key];
   if (!page) return {};
@@ -139,7 +159,7 @@ export function buildProjectJsonLd(project, language = "en") {
         },
         dateCreated: String(project.year),
         image: `${SITE.baseUrl}/images/projects/${project.id}/${project.cover}`,
-        url: `${SITE.baseUrl}/projects/${project.id}`,
+        url: `${SITE.baseUrl}/${language}/projects/${project.id}`,
         genre: project.category,
         keywords: project.tags?.join(", "),
       },
@@ -150,19 +170,19 @@ export function buildProjectJsonLd(project, language = "en") {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: SITE.baseUrl,
+            item: `${SITE.baseUrl}/${language}/`,
           },
           {
             "@type": "ListItem",
             position: 2,
             name: language === "zh" ? "作品集" : "Projects",
-            item: `${SITE.baseUrl}/projects`,
+            item: `${SITE.baseUrl}/${language}/projects`,
           },
           {
             "@type": "ListItem",
             position: 3,
             name: title,
-            item: `${SITE.baseUrl}/projects/${project.id}`,
+            item: `${SITE.baseUrl}/${language}/projects/${project.id}`,
           },
         ],
       },

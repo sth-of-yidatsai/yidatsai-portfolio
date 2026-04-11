@@ -1,51 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://yidatsai.com/</loc>
-    <lastmod>2026-04-09</lastmod>
+    <loc>https://yidatsai.com/en/</loc>
+    <lastmod>2026-04-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/"/>
   </url>
   <url>
-    <loc>https://yidatsai.com/about</loc>
-    <lastmod>2026-04-09</lastmod>
+    <loc>https://yidatsai.com/zh/</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/"/>
+  </url>
+  <url>
+    <loc>https://yidatsai.com/en/about</loc>
+    <lastmod>2026-04-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/about"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/about"/>
   </url>
   <url>
-    <loc>https://yidatsai.com/projects</loc>
-    <lastmod>2026-04-09</lastmod>
+    <loc>https://yidatsai.com/zh/about</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/about"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/about"/>
+  </url>
+  <url>
+    <loc>https://yidatsai.com/en/projects</loc>
+    <lastmod>2026-04-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/projects"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/projects"/>
   </url>
   <url>
-    <loc>https://yidatsai.com/playground</loc>
-    <lastmod>2026-04-09</lastmod>
+    <loc>https://yidatsai.com/zh/projects</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/projects"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/projects"/>
+  </url>
+  <url>
+    <loc>https://yidatsai.com/en/playground</loc>
+    <lastmod>2026-04-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/playground"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/playground"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/playground"/>
   </url>
   <url>
-    <loc>https://yidatsai.com/contact</loc>
-    <lastmod>2026-04-09</lastmod>
+    <loc>https://yidatsai.com/zh/playground</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/playground"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/playground"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/playground"/>
+  </url>
+  <url>
+    <loc>https://yidatsai.com/en/contact</loc>
+    <lastmod>2026-04-11</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/contact"/>
   </url>
   <url>
-    <loc>https://yidatsai.com/projects/formosa-font</loc>
-    <lastmod>2026-04-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://yidatsai.com/zh/contact</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/contact"/>
   </url>
   <url>
-    <loc>https://yidatsai.com/projects/patterned-glass-notebook</loc>
-    <lastmod>2026-04-09</lastmod>
+    <loc>https://yidatsai.com/en/projects/formosa-font</loc>
+    <lastmod>2026-04-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/formosa-font"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/projects/formosa-font"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/projects/formosa-font"/>
   </url>
   <url>
-    <loc>https://yidatsai.com/projects/foucault-book-binding</loc>
-    <lastmod>2026-04-09</lastmod>
+    <loc>https://yidatsai.com/zh/projects/formosa-font</loc>
+    <lastmod>2026-04-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/formosa-font"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/projects/formosa-font"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/projects/formosa-font"/>
+  </url>
+  <url>
+    <loc>https://yidatsai.com/en/projects/patterned-glass-notebook</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/patterned-glass-notebook"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/projects/patterned-glass-notebook"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/projects/patterned-glass-notebook"/>
+  </url>
+  <url>
+    <loc>https://yidatsai.com/zh/projects/patterned-glass-notebook</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/patterned-glass-notebook"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/projects/patterned-glass-notebook"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/projects/patterned-glass-notebook"/>
+  </url>
+  <url>
+    <loc>https://yidatsai.com/en/projects/foucault-book-binding</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/foucault-book-binding"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/projects/foucault-book-binding"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/projects/foucault-book-binding"/>
+  </url>
+  <url>
+    <loc>https://yidatsai.com/zh/projects/foucault-book-binding</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/foucault-book-binding"/>
+    <xhtml:link rel="alternate" hreflang="zh-TW" href="https://yidatsai.com/zh/projects/foucault-book-binding"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://yidatsai.com/en/projects/foucault-book-binding"/>
   </url>
 </urlset>

@@ -133,7 +133,7 @@ const ProjectCard = memo(function ProjectCard({ project, onClick, cardRef }) {
 
 export default function AllWork() {
   const navigate = useNavigate();
-  const { page: pageParam } = useParams();
+  const { lang = 'en', page: pageParam } = useParams();
   const { language, t } = useTranslation();
 
   const initialPage = Math.max(
@@ -165,9 +165,9 @@ export default function AllWork() {
   //
   useEffect(() => {
     const origin = window.location.origin;
-    const base = `${origin}/projects`;
+    const base = `${origin}/${lang}/projects`;
 
-    const newPath = currentPage > 1 ? `/projects/page/${currentPage}` : "/projects";
+    const newPath = currentPage > 1 ? `/${lang}/projects/page/${currentPage}` : `/${lang}/projects`;
     window.history.replaceState(null, "", newPath);
 
     setLinkTag("canonical", currentPage === 1 ? base : `${base}/page/${currentPage}`);
@@ -185,7 +185,7 @@ export default function AllWork() {
     }
 
     return removeAllLinkTags;
-  }, [currentPage]);
+  }, [currentPage, lang]);
 
   // ── Scroll fade-in with per-batch stagger ─────────────────────────────────
   useEffect(() => {
@@ -245,8 +245,8 @@ export default function AllWork() {
   }, [visibleCount, hasMore]);
 
   const handleCardClick = useCallback(
-    (project) => navigate(`/projects/${project.id}`),
-    [navigate]
+    (project) => navigate(`/${lang}/projects/${project.id}`),
+    [navigate, lang]
   );
 
 

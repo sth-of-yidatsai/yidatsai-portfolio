@@ -25,7 +25,7 @@ export default function ErrorPage() {
           >
             Reload
           </button>
-          <Link to="/" className="ep-btn ep-btn--primary">
+          <Link to={`/${window.location.pathname.match(/^\/(en|zh)\//)?.[1] ?? 'en'}/`} className="ep-btn ep-btn--primary">
             Back to Home
           </Link>
         </div>

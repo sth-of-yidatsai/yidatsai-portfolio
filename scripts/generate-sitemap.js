@@ -30,23 +30,46 @@ const projectPages = realProjects.map((p) => ({
 
 const allPages = [...staticPages, ...projectPages];
 
-const urls = allPages
-  .map(
-    ({ path, changefreq, priority }) => `  <url>
-    <loc>${BASE_URL}${path}</loc>
+// Generate a URL entry for both language variants
+function buildUrlEntry({ path, changefreq, priority }) {
+  const suffix = path === "/" ? "/" : path;
+  const enUrl = `${BASE_URL}/en${suffix}`;
+  const zhUrl = `${BASE_URL}/zh${suffix}`;
+
+  const xhtmlAlternates = [
+    `    <xhtml:link rel="alternate" hreflang="en" href="${enUrl}"/>`,
+    `    <xhtml:link rel="alternate" hreflang="zh-TW" href="${zhUrl}"/>`,
+    `    <xhtml:link rel="alternate" hreflang="x-default" href="${enUrl}"/>`,
+  ].join("\n");
+
+  const enEntry = `  <url>
+    <loc>${enUrl}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
-  </url>`
-  )
-  .join("\n");
+${xhtmlAlternates}
+  </url>`;
+
+  const zhEntry = `  <url>
+    <loc>${zhUrl}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+${xhtmlAlternates}
+  </url>`;
+
+  return [enEntry, zhEntry].join("\n");
+}
+
+const urls = allPages.map(buildUrlEntry).join("\n");
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls}
 </urlset>
 `;
 
 const outPath = join(__dirname, "../public/sitemap.xml");
 writeFileSync(outPath, sitemap, "utf-8");
-console.log(`Sitemap generated: ${outPath} (${allPages.length} URLs)`);
+console.log(`Sitemap generated: ${outPath} (${allPages.length * 2} URLs — en + zh)`);

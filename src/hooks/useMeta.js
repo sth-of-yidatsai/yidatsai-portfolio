@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { SITE } from "../seo/seoConfig";
+import { SITE, buildAlternateUrls } from "../seo/seoConfig";
 
 /**
  * Imperatively manages <head> meta tags for SEO.
@@ -72,6 +72,14 @@ export function useMeta({
       created.push(canonical);
     }
     canonical.setAttribute("href", resolvedOgUrl);
+
+    // hreflang alternates
+    const alternates = buildAlternateUrls(resolvedOgUrl);
+    if (alternates) {
+      setLink({ rel: "alternate", hreflang: "en", href: alternates.en });
+      setLink({ rel: "alternate", hreflang: "zh-TW", href: alternates.zh });
+      setLink({ rel: "alternate", hreflang: "x-default", href: alternates.xDefault });
+    }
 
     // JSON-LD structured data
     let jsonLdScript = null;

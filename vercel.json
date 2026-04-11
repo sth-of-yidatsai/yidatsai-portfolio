@@ -1,9 +1,15 @@
 {
+  "redirects": [
+    { "source": "/about", "destination": "/en/about", "permanent": true },
+    { "source": "/projects", "destination": "/en/projects", "permanent": true },
+    { "source": "/projects/page/:page", "destination": "/en/projects/page/:page", "permanent": true },
+    { "source": "/playground", "destination": "/en/playground", "permanent": true },
+    { "source": "/contact", "destination": "/en/contact", "permanent": true },
+    { "source": "/projects/:id", "destination": "/en/projects/:id", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/robots.txt", "destination": "/robots.txt" },
     { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
-
-

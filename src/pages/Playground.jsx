@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import projectsRaw from "../data/projects.json";
 import { buildSrcSet } from "../utils/imgSrcSet";
 import { useTranslation } from "../hooks/useTranslation";
@@ -49,6 +49,7 @@ const projectsData = [...projectsRaw]
 
 export default function Playground() {
   const navigate = useNavigate();
+  const { lang = 'en' } = useParams();
   const { language, t } = useTranslation();
   const languageRef = useRef(language);
 
@@ -365,7 +366,7 @@ export default function Playground() {
           }
           s.expandedItem = null;
           s.isExpanded = false;
-          navigate(`/projects/${projectId}`);
+          navigate(`/${lang}/projects/${projectId}`);
         },
       });
     });

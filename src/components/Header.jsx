@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import "./Header.css";
 
@@ -10,18 +10,28 @@ const NAV_LINKS = [
   { number: "04", key: "nav.contact", to: "/contact" },
 ];
 
-function LangToggle({ language, setLanguage, className = '' }) {
+function LangToggle({ language, className = '' }) {
+  const { lang = 'en' } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const switchLang = (newLang) => {
+    if (newLang === lang) return;
+    const newPath = location.pathname.replace(/^\/(en|zh)/, `/${newLang}`);
+    navigate(newPath);
+  };
+
   return (
     <div className={`lang-toggle ${className}`.trim()}>
       <button
         className={`lang-btn${language === 'en' ? ' lang-btn--active' : ''}`}
-        onClick={() => setLanguage('en')}
+        onClick={() => switchLang('en')}
         aria-label="Switch to English"
       >EN</button>
       <span className="lang-divider" aria-hidden="true">/</span>
       <button
         className={`lang-btn${language === 'zh' ? ' lang-btn--active' : ''}`}
-        onClick={() => setLanguage('zh')}
+        onClick={() => switchLang('zh')}
         aria-label="切換至中文"
       >中</button>
     </div>
@@ -100,7 +110,8 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [theme, setTheme] = useState("light");
-  const { language, setLanguage, t } = useLanguage();
+  const { language, t } = useLanguage();
+  const { lang = 'en' } = useParams();
 
   const toggleMenu = useCallback(() => {
     if (isOpen) {
@@ -149,7 +160,7 @@ export default function Header() {
         <div className="header-overlay-top">
           {/* YIDATSAI — clickable, navigates home */}
           <Link
-            to="/"
+            to={`/${lang}/`}
             className="header-overlay-logo"
             aria-label="YIDA TSAI"
             onClick={closeMenu}
@@ -163,7 +174,7 @@ export default function Header() {
             {NAV_LINKS.map(({ number, key, to }) => (
               <Link
                 key={to}
-                to={to}
+                to={`/${lang}${to}`}
                 className="header-nav-item clickable"
                 onClick={closeMenu}
               >
@@ -183,7 +194,7 @@ export default function Header() {
       {/* Header bar — always visible, animates hamburger ↔ X */}
       <header className="header-bar">
         <Link
-          to="/"
+          to={`/${lang}/`}
           className={[
             "header-bar-logo",
             "clickable",
@@ -194,7 +205,7 @@ export default function Header() {
           YIDA
         </Link>
         <div className="header-bar-controls">
-          <LangToggle language={language} setLanguage={setLanguage} />
+          <LangToggle language={language} />
           <button
             className="header-hamburger clickable"
             onClick={toggleMenu}

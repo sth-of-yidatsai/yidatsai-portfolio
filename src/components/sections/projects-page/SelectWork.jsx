@@ -6,7 +6,7 @@ import {
   useCallback,
   useMemo,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import projectsData from "../../../data/projects.json";
 import { buildSrcSet } from "../../../utils/imgSrcSet";
 import { useTranslation } from "../../../hooks/useTranslation";
@@ -48,6 +48,7 @@ function buildCards(config, data, language) {
 
 export default function SelectWork() {
   const navigate = useNavigate();
+  const { lang = 'en' } = useParams();
   const { language, t } = useTranslation();
   const cards = useMemo(() => buildCards(SELECTED_WORKS, projectsData, language), [language]);
   const N = cards.length;
@@ -125,7 +126,7 @@ export default function SelectWork() {
   }, [startAutoAdvance]);
 
   const handleCardClick = (card) => {
-    navigate(`/projects/${card.id}`);
+    navigate(`/${lang}/projects/${card.id}`);
   };
 
   // ─── Drag / swipe handlers ─────────────────────────────────────────────────

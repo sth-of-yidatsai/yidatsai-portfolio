@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import projectsData from "../../data/projects.json";
 import { buildSrcSet } from "../../utils/imgSrcSet";
 import { useParallaxRef } from "../../hooks/useParallaxRef";
@@ -69,6 +69,7 @@ const DiscoverMoreCard = memo(function DiscoverMoreCard({ project, onClick }) {
 
 function DiscoverMoreBlock({ currentId }) {
   const navigate = useNavigate();
+  const { lang = 'en' } = useParams();
   const { t, language } = useTranslation();
 
   const rawPicks = useMemo(() => pickProjects(currentId), [currentId]);
@@ -85,7 +86,7 @@ function DiscoverMoreBlock({ currentId }) {
           <DiscoverMoreCard
             key={project.id}
             project={project}
-            onClick={() => navigate(`/projects/${project.id}`)}
+            onClick={() => navigate(`/${lang}/projects/${project.id}`)}
           />
         ))}
       </div>

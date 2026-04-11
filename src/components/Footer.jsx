@@ -1,5 +1,5 @@
 import { Fragment, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import footerCircleAnimation from '../assets/icons/FooterCircle.json';
 import { useTranslation } from '../hooks/useTranslation';
@@ -84,6 +84,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 
 export default function Footer() {
   const { t, tf } = useTranslation();
+  const { lang = 'en' } = useParams();
   const year = CURRENT_YEAR;
 
   return (
@@ -91,7 +92,7 @@ export default function Footer() {
       <div className="footer-inner">
 
         {/* Col 1 — YIDATSAI */}
-        <Link to="/" className="footer-logo clickable" aria-label="YIDA TSAI">
+        <Link to={`/${lang}/`} className="footer-logo clickable" aria-label="YIDA TSAI">
           <LineRoll>YI</LineRoll>
           <LineRoll>DA</LineRoll>
           <LineRoll>TSAI</LineRoll>
@@ -101,7 +102,7 @@ export default function Footer() {
         <div className="footer-mid">
           {FOOTER_ROWS.map(({ nav, contact }) => (
             <Fragment key={nav.to}>
-              <Link to={nav.to} className="footer-nav-item clickable">
+              <Link to={`/${lang}${nav.to}`} className="footer-nav-item clickable">
                 <span className="footer-nav-bullet" aria-hidden="true" />
                 <span className="footer-nav-label">
                   <RollingText>{t(nav.key)}</RollingText>

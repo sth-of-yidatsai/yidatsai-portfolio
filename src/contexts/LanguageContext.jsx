@@ -9,6 +9,9 @@ export const LanguageContext = createContext(null);
 
 export function LanguageProvider({ children }) {
   const [language, setLanguageState] = useState(() => {
+    // URL path takes priority (e.g. /en/ or /zh/) — avoids flash on direct load
+    const pathLang = window.location.pathname.match(/^\/(en|zh)(\/|$)/)?.[1];
+    if (pathLang) return pathLang;
     const stored = localStorage.getItem(STORAGE_KEY);
     return stored === 'zh' ? 'zh' : 'en';
   });
