@@ -748,7 +748,7 @@ export default function Playground() {
         <div className="gallery-page-vignette-extreme" />
       </div>
 
-      <p className="gallery-drag-hint" ref={dragHintRef} aria-hidden>{t('playground.dragHint')}</p>
+      <p className="gallery-drag-hint" ref={dragHintRef} aria-hidden>{t('explore.dragHint')}</p>
     </div>
   );
 }

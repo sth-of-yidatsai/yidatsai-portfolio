@@ -56,10 +56,10 @@ const router = createBrowserRouter([
             handle: { title: (_d, lang) => getPageMeta("projects", lang).title ?? "Projects | YI-DA TSAI", meta: (_d, lang) => getPageMeta("projects", lang) },
           },
           {
-            path: "playground",
+            path: "explore",
             element: <Playground />,
             loader: projectsLoader,
-            handle: { title: (_d, lang) => getPageMeta("playground", lang).title ?? "Playground | YI-DA TSAI", meta: (_d, lang) => getPageMeta("playground", lang) },
+            handle: { title: (_d, lang) => getPageMeta("explore", lang).title ?? "Explore | YI-DA TSAI", meta: (_d, lang) => getPageMeta("explore", lang) },
           },
           {
             path: "projects/:id",

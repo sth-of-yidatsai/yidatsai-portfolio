@@ -3,7 +3,9 @@
     { "source": "/about", "destination": "/en/about", "permanent": true },
     { "source": "/projects", "destination": "/en/projects", "permanent": true },
     { "source": "/projects/page/:page", "destination": "/en/projects/page/:page", "permanent": true },
-    { "source": "/playground", "destination": "/en/playground", "permanent": true },
+    { "source": "/playground", "destination": "/en/explore", "permanent": true },
+    { "source": "/en/playground", "destination": "/en/explore", "permanent": true },
+    { "source": "/zh/playground", "destination": "/zh/explore", "permanent": true },
     { "source": "/contact", "destination": "/en/contact", "permanent": true },
     { "source": "/projects/:id", "destination": "/en/projects/:id", "permanent": true }
   ],

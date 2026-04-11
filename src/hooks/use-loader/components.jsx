@@ -7,7 +7,7 @@ const ROUTE_LABELS = {
   "": "HOME",
   "/about": "ABOUT",
   "/contact": "CONTACT",
-  "/playground": "PLAYGROUND",
+  "/explore": "EXPLORE",
 };
 
 function getPageLabel(pathname) {
@@ -43,7 +43,7 @@ function RollingText({ text }) {
 }
 
 // Minimum text animation display time.
-// PLAYGROUND = 10 chars → stagger = 9 × 38ms = 342ms → 1600 + 342 + 200 buffer
+// PLAYGROUND = 10 chars was the longest; EXPLORE = 7 chars → stagger = 6 × 38ms = 228ms
 const CYCLE_MS = 2200;
 
 /**

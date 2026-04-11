@@ -45,20 +45,20 @@ export const PAGE_META = {
       ogLocale: "en_US",
     },
     zh: {
-      title: "作品集 | 蔡易達 YI-DA TSAI",
+      title: "專案 | 蔡易達 YI-DA TSAI",
       description:
-        "蔡易達（Yi-Da Tsai）的設計作品集，涵蓋編輯設計、書籍裝幀、字體排印與視覺識別。",
+        "蔡易達（Yi-Da Tsai）的設計專案，涵蓋編輯設計、書籍裝幀、字體排印與視覺識別。",
       ogLocale: "zh_TW",
     },
   },
-  playground: {
+  explore: {
     en: {
-      title: "Playground | YI-DA TSAI",
+      title: "Explore | YI-DA TSAI",
       description:
         "Interactive experiments and explorations by graphic designer Yi-Da Tsai.",
     },
     zh: {
-      title: "Playground | 蔡易達 YI-DA TSAI",
+      title: "Explore | 蔡易達 YI-DA TSAI",
       description: "蔡易達的互動實驗與視覺探索。",
     },
   },
@@ -175,7 +175,7 @@ export function buildProjectJsonLd(project, language = "en") {
           {
             "@type": "ListItem",
             position: 2,
-            name: language === "zh" ? "作品集" : "Projects",
+            name: language === "zh" ? "專案" : "Projects",
             item: `${SITE.baseUrl}/${language}/projects`,
           },
           {

@@ -15,7 +15,7 @@ const FOOTER_ROWS = [
     contact: { type: 'link', href: 'mailto:hello@yidatsai.com', text: 'hello@yidatsai.com' },
   },
   {
-    nav: { key: 'nav.playground', to: '/playground' },
+    nav: { key: 'nav.explore', to: '/explore' },
     contact: { type: 'link', href: 'https://x.com/Yida_Tsai', text: 'x.com', external: true },
   },
   {

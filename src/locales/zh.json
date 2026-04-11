@@ -123,8 +123,8 @@
   },
 
   "projectsPage": {
-    "selectEyebrow": "精選作品",
-    "allEyebrow": "所有作品"
+    "selectEyebrow": "精選專案",
+    "allEyebrow": "所有專案"
   },
 
   "projects": {
@@ -269,10 +269,10 @@
     }
   },
   "nav": {
-    "projects": "PROJECTS",
-    "playground": "PLAYGROUND",
-    "about": "ABOUT",
-    "contact": "CONTACT"
+    "projects": "PROJECTS．專案",
+    "explore": "EXPLORE．探索",
+    "about": "ABOUT．關於",
+    "contact": "CONTACT．聯絡"
   },
   "hero": {
     "labelTitle": "作品名稱",
@@ -287,7 +287,7 @@
     "closeMenu": "關閉選單",
     "openMenu": "開啟選單"
   },
-  "playground": {
+  "explore": {
     "dragHint": "拖曳移動"
   },
   "projectDetail": {

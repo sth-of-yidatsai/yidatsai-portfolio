@@ -47,7 +47,7 @@ export default defineConfig({
       staticDir: path.resolve(__dirname, 'dist'),
       routes: (() => {
         const projects = require('./src/data/projects.json')
-        const staticRoutes = ['/about', '/projects', '/playground', '/contact']
+        const staticRoutes = ['/about', '/projects', '/explore', '/contact']
         const projectRoutes = projects.map(p => `/projects/${p.id}`)
         const allPaths = [...staticRoutes, ...projectRoutes]
         return [

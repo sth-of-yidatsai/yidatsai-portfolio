@@ -5,7 +5,7 @@ import "./Header.css";
 
 const NAV_LINKS = [
   { number: "01", key: "nav.projects", to: "/projects" },
-  { number: "02", key: "nav.playground", to: "/playground" },
+  { number: "02", key: "nav.explore", to: "/explore" },
   { number: "03", key: "nav.about", to: "/about" },
   { number: "04", key: "nav.contact", to: "/contact" },
 ];

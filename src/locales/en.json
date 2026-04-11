@@ -291,7 +291,7 @@
   },
   "nav": {
     "projects": "PROJECTS",
-    "playground": "PLAYGROUND",
+    "explore": "EXPLORE",
     "about": "ABOUT",
     "contact": "CONTACT"
   },
@@ -308,7 +308,7 @@
     "closeMenu": "Close menu",
     "openMenu": "Open menu"
   },
-  "playground": {
+  "explore": {
     "dragHint": "Drag to move"
   },
   "projectDetail": {
