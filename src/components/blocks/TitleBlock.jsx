@@ -1,6 +1,7 @@
 import { memo, useRef, useLayoutEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "../../hooks/useTranslation";
 import "./TitleBlock.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,6 +17,7 @@ function TitleBlock({
   fillColor,
   labelColor,
 }) {
+  const { isZh } = useTranslation();
   const sectionRef = useRef(null);
   const titleCharsRef = useRef([]);
   const descCharsRef = useRef([]);
@@ -92,7 +94,7 @@ function TitleBlock({
           className="block--title__label"
           style={labelColor ? { color: labelColor } : undefined}
         >
-          Title
+          {isZh ? "Title｜作品名稱" : "Title"}
         </p>
 
         <h2 className="block--title__title">
