@@ -4,14 +4,17 @@ import styles from "./assets/loader.module.scss";
 
 const ROUTE_LABELS = {
   "/": "HOME",
+  "": "HOME",
   "/about": "ABOUT",
   "/contact": "CONTACT",
   "/playground": "PLAYGROUND",
 };
 
 function getPageLabel(pathname) {
-  if (ROUTE_LABELS[pathname]) return ROUTE_LABELS[pathname];
-  if (pathname.startsWith("/projects")) return "PROJECTS";
+  // Strip /en or /zh prefix before matching
+  const path = pathname.replace(/^\/(en|zh)/, "");
+  if (ROUTE_LABELS[path] !== undefined) return ROUTE_LABELS[path];
+  if (path.startsWith("/projects")) return "PROJECTS";
   return "YIDA";
 }
 
