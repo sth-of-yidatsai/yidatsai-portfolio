@@ -13,7 +13,7 @@ function ImgItem({ item, modifier, language }) {
   return (
     <div className={`block--imgset2b__item block--imgset2b__item--${modifier}`}>
       <div ref={revealRef} className="block--imgset2b__img-wrap">
-        <img src={item.src} srcSet={buildSrcSet(item.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={getAltText(item.src, title ?? '')} loading="lazy" decoding="async" />
+        <img src={item.src} srcSet={buildSrcSet(item.src)} sizes="(max-width: 768px) 100vw, 50vw" alt={getAltText(item.src, title ?? '', language)} loading="lazy" decoding="async" />
       </div>
       {(title || subtitle) && (
         <div className="block--imgset2b__caption">

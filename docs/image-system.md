@@ -6,11 +6,11 @@
 
 ```
 scripts/generate-responsive-images.js   ← 產生各尺寸圖片檔
-scripts/generate-alt-texts.js           ← 用 Claude CLI 自動生成圖片 alt 文字
+scripts/generate-alt-texts.js           ← 用 Claude CLI 自動生成中英文 alt 文字
 src/data/imageWidths.json               ← 原圖尺寸清單（自動產生）
 src/data/image-alts.json               ← 圖片 alt 文字庫（自動產生，commit 進 repo）
 src/utils/imgSrcSet.js                  ← srcset 字串建構 & preload 選圖
-src/utils/getAltText.js                 ← alt 文字查詢工具
+src/utils/getAltText.js                 ← alt 文字查詢工具（支援語言參數）
 ```
 
 ---
@@ -120,28 +120,36 @@ usePagePreloader(PRELOAD_IMAGES);
 
 圖片 alt 文字獨立存放於 `src/data/image-alts.json`，不寫入 `projects.json`，以避免單一檔案過長。
 
-key 格式：`"{projectId}/{filename}"` → `"alt text 描述"`
+key 格式：`"{projectId}/{filename}"` → `{ "en": "...", "zh": "..." }`
 
 ```json
 {
-  "formosa-font/01.webp": "A white booklet featuring botanical illustration...",
-  "foucault-book-binding/01.webp": "A flat-lay arrangement of redesigned book covers..."
+  "formosa-font/01.webp": {
+    "en": "A white booklet featuring botanical illustration...",
+    "zh": "一本白色小冊子，封面有精緻的植物插圖..."
+  },
+  "foucault-book-binding/01.webp": {
+    "en": "A flat-lay arrangement of redesigned book covers...",
+    "zh": "平鋪展示的傅柯著作重新設計封面..."
+  }
 }
 ```
 
-### 查詢工具：`getAltText(src, fallback?)`
+### 查詢工具：`getAltText(src, fallback?, lang?)`
 
 所有 Block 元件透過 `src/utils/getAltText.js` 查詢 alt 文字：
 
 ```js
 import { getAltText } from '../../utils/getAltText';
 
-// 接受完整路徑或相對 key，有 fallback 機制
-<img alt={getAltText(src, title ?? '')} ... />
+// 接受完整路徑或相對 key，支援語言參數
+<img alt={getAltText(src, title ?? '', language)} ... />
 ```
 
 - 支援完整路徑（`/images/projects/formosa-font/01.webp`）或相對 key（`formosa-font/01.webp`）
+- `lang` 參數接受 `'en'` 或 `'zh'`（預設 `'en'`）
 - 查無資料時回傳 `fallback`（預設 `''`）
+- 向後相容舊版純字串格式
 
 ### 生成 Alt 文字
 
@@ -150,7 +158,8 @@ npm run generate-alts
 ```
 
 - 使用 Claude Code CLI（訂閱帳號，不需要 API key）
-- **Incremental**：已有 alt 的圖片自動跳過，只處理新圖
+- **雙語**：每張圖產生英文（`en`）與繁體中文（`zh`）兩種 alt
+- **Incremental**：`en` 和 `zh` 都已存在才跳過；缺哪個就補哪個
 - 自動跳過：responsive 變體（`-800`、`-1200` 等）、`og.jpg`、`title.svg`
 - 結果寫入 `src/data/image-alts.json` 後需 commit 進 repo
 

@@ -47,22 +47,46 @@ async function getProjectImages(projectId) {
     });
 }
 
-function generateAltText(imagePath, project) {
-  const prompt =
-    `Read the image file at "${imagePath}" and write concise alt text for it (1–2 sentences). ` +
-    `Focus on what is visually depicted — materials, colors, composition, typography style, or technique. ` +
-    `Project context: "${project.title}". ` +
-    `Output only the alt text, no explanation or preamble.`;
-
+function callClaude(prompt) {
   const result = spawnSync('claude', ['-p', prompt], {
     encoding: 'utf-8',
     timeout: 60000,
   });
-
   if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(result.stderr?.trim() || 'claude CLI exited with error');
-
   return result.stdout.trim();
+}
+
+function generateAltEn(imagePath, project) {
+  const prompt =
+    `Read the image file at "${imagePath}" and write concise alt text for it (1–2 sentences). ` +
+    `Focus on what is visually depicted — materials, colors, composition, typography style, or technique. ` +
+    `Project context: "${project.title}". ` +
+    `Output only the alt text in English, no explanation or preamble.`;
+  return callClaude(prompt);
+}
+
+function generateAltZh(imagePath, project, enAlt) {
+  const context = enAlt
+    ? `English reference alt: "${enAlt}". `
+    : '';
+  const prompt =
+    `Read the image file at "${imagePath}" and write concise Traditional Chinese (繁體中文) alt text for it (1–2 sentences). ` +
+    `Focus on what is visually depicted — materials, colors, composition, typography style, or technique. ` +
+    `${context}` +
+    `Project context: "${project.title_zh ?? project.title}". ` +
+    `Output only the alt text in Traditional Chinese, no explanation or preamble.`;
+  return callClaude(prompt);
+}
+
+/**
+ * Migrate an existing entry (string or object) to { en, zh } shape.
+ * Returns { en, zh } — fields may be empty string if not yet generated.
+ */
+function normalizeEntry(value) {
+  if (!value) return { en: '', zh: '' };
+  if (typeof value === 'string') return { en: value, zh: '' };
+  return { en: value.en ?? '', zh: value.zh ?? '' };
 }
 
 async function main() {
@@ -72,7 +96,13 @@ async function main() {
     process.exit(1);
   }
 
-  const alts = (await loadJson(ALTS_JSON)) ?? {};
+  const rawAlts = (await loadJson(ALTS_JSON)) ?? {};
+
+  // Migrate all entries to { en, zh } shape
+  const alts = {};
+  for (const [key, val] of Object.entries(rawAlts)) {
+    alts[key] = normalizeEntry(val);
+  }
 
   let skipped = 0;
   let generated = 0;
@@ -92,24 +122,46 @@ async function main() {
 
     for (const filename of images) {
       const key = `${project.id}/${filename}`;
-      if (alts[key] !== undefined) {
+      const entry = alts[key] ?? { en: '', zh: '' };
+      const needEn = !entry.en;
+      const needZh = !entry.zh;
+
+      if (!needEn && !needZh) {
         console.log(`  ✓ ${filename} (cached)`);
         skipped++;
+        alts[key] = entry;
         continue;
       }
 
       const imagePath = join(PUBLIC_PROJECTS, project.id, filename);
-      process.stdout.write(`  → ${filename} ... `);
 
-      try {
-        const altText = generateAltText(imagePath, project);
-        alts[key] = altText;
-        generated++;
-        console.log('done');
-      } catch (err) {
-        errors++;
-        console.log(`ERROR: ${err.message}`);
+      // Generate EN if missing
+      if (needEn) {
+        process.stdout.write(`  → ${filename} [en] ... `);
+        try {
+          entry.en = generateAltEn(imagePath, project);
+          generated++;
+          console.log('done');
+        } catch (err) {
+          errors++;
+          console.log(`ERROR: ${err.message}`);
+        }
       }
+
+      // Generate ZH if missing
+      if (needZh) {
+        process.stdout.write(`  → ${filename} [zh] ... `);
+        try {
+          entry.zh = generateAltZh(imagePath, project, entry.en);
+          generated++;
+          console.log('done');
+        } catch (err) {
+          errors++;
+          console.log(`ERROR: ${err.message}`);
+        }
+      }
+
+      alts[key] = entry;
     }
   }
 

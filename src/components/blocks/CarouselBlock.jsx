@@ -1,9 +1,11 @@
 import { memo, useState, useEffect, useCallback, useRef } from 'react';
 import { buildSrcSet } from '../../utils/imgSrcSet';
 import { getAltText } from '../../utils/getAltText';
+import { useTranslation } from '../../hooks/useTranslation';
 import './CarouselBlock.css';
 
 function CarouselBlock({ images = [], interval = 5000 }) {
+  const { language } = useTranslation();
   const [current, setCurrent] = useState(0);
   const [prev, setPrev] = useState(null);
   const timerRef = useRef(null);
@@ -41,7 +43,7 @@ function CarouselBlock({ images = [], interval = 5000 }) {
             src={src}
             srcSet={buildSrcSet(src)}
             sizes="100vw"
-            alt={getAltText(src)}
+            alt={getAltText(src, '', language)}
             className={[
               'block--carousel__slide',
               i === current ? 'is-active' : '',

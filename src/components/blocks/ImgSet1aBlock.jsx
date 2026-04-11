@@ -14,7 +14,7 @@ function ImgSet1aBlock({ src, title, subtitle }) {
   return (
     <section className="block block--imgset1a">
       <div ref={revealRef} className="block--imgset1a__img-wrap">
-        <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 100vw, 1200px" alt={getAltText(src, resolvedTitle ?? '')} loading="lazy" decoding="async" />
+        <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 100vw, 1200px" alt={getAltText(src, resolvedTitle ?? '', language)} loading="lazy" decoding="async" />
       </div>
       {(resolvedTitle || resolvedSubtitle) && (
         <div className="block--imgset1a__caption">

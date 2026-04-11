@@ -17,7 +17,7 @@ function ImgItem({ item, language }) {
           src={item.src}
           srcSet={buildSrcSet(item.src)}
           sizes="(max-width: 768px) 100vw, 33vw"
-          alt={getAltText(item.src, title ?? '')}
+          alt={getAltText(item.src, title ?? '', language)}
           loading="eager"
           decoding="async"
         />

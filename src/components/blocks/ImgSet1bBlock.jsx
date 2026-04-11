@@ -14,7 +14,7 @@ function ImgSet1bBlock({ src, title, subtitle, reverse }) {
   return (
     <section className={`block block--imgset1b${reverse ? ' block--imgset1b--reverse' : ''}`}>
       <div ref={revealRef} className="block--imgset1b__img-wrap">
-        <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 100vw, 1200px" alt={getAltText(src, resolvedTitle ?? '')} loading="lazy" decoding="async" />
+        <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 100vw, 1200px" alt={getAltText(src, resolvedTitle ?? '', language)} loading="lazy" decoding="async" />
       </div>
       {(resolvedTitle || resolvedSubtitle) && (
         <div className="block--imgset1b__caption">

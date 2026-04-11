@@ -6,11 +6,11 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { pickLang } from '../../utils/pickLang';
 import './ImgSet4aBlock.css';
 
-function ImgWrap({ src }) {
+function ImgWrap({ src, language }) {
   const revealRef = useScrollReveal();
   return (
     <div ref={revealRef} className="block--imgset4a__img-wrap">
-      <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 50vw, 25vw" alt={getAltText(src)} loading="eager" decoding="async" />
+      <img src={src} srcSet={buildSrcSet(src)} sizes="(max-width: 768px) 50vw, 25vw" alt={getAltText(src, '', language)} loading="eager" decoding="async" />
     </div>
   );
 }
@@ -23,7 +23,7 @@ function ImgSet4aBlock({ images = [], title, subtitle, bg, color }) {
     <section className="block block--imgset4a" style={{ background: bg, color }}>
       <div className="block--imgset4a__grid">
         {images.slice(0, 4).map((src, i) => (
-          <ImgWrap key={i} src={src} />
+          <ImgWrap key={i} src={src} language={language} />
         ))}
       </div>
       {(resolvedTitle || resolvedSubtitle) && (

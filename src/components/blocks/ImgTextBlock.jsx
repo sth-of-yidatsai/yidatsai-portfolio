@@ -20,7 +20,7 @@ function ImgTextBlock({
   const resolvedTitle = pickLang(title, language);
   const rawText = pickLang(text, language);
   const paragraphs = Array.isArray(rawText) ? rawText : rawText ? [rawText] : [];
-  const resolvedAlt = imageAlt ?? getAltText(image);
+  const resolvedAlt = imageAlt ?? getAltText(image, '', language);
   const revealRef = useScrollReveal();
 
   const imgPanel = (
