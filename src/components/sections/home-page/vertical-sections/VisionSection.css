@@ -126,23 +126,20 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: clamp(200px, 22vw, 340px);
   display: grid;
   /* both copy panels occupy the same cell so they overlay each other */
   z-index: 1;
 }
 
 .vs-text-col--left {
-  left: max(
-    var(--px-page),
-    calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg))
-  );
+  left: var(--px-page);
+  right: calc(50% + 40.4vh + 1vw + var(--space-lg));
+  justify-items: start;
 }
 .vs-text-col--right {
-  right: max(
-    var(--px-page),
-    calc(50% - 40.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg))
-  );
+  right: var(--px-page);
+  left: calc(50% + 40.4vh + 1vw + var(--space-lg));
+  justify-items: end;
 }
 
 .vs-text-col > * {
@@ -152,6 +149,8 @@
 
 /* ── Copy panels ── */
 .vs-copy {
+  width: fit-content;
+  max-width: clamp(200px, 22vw, 340px);
   opacity: 0;
   transform: translateY(14px);
   transition:
@@ -173,7 +172,7 @@
   letter-spacing: 0.05em;
   color: var(--gray-200);
   margin: 0 0 var(--space-sm);
-  text-wrap: nowrap;
+  text-wrap: wrap;
 }
 
 .vs-copy-title .biling-zh {
@@ -199,7 +198,7 @@
   line-height: 1.45;
   color: var(--gray-100);
   margin: 0 0 var(--space-md);
-  text-wrap: nowrap;
+  text-wrap: wrap;
 }
 
 .vs-copy-body {
@@ -457,16 +456,12 @@
     height: 60vh;
   }
   .vs-text-col--left {
-    left: max(
-      var(--px-page),
-      calc(50% - 32.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg))
-    );
+    left: var(--px-page);
+    right: calc(50% + 32.4vh + 1vw + var(--space-lg));
   }
   .vs-text-col--right {
-    right: max(
-      var(--px-page),
-      calc(50% - 32.4vh - clamp(200px, 22vw, 340px) - 1vw - var(--space-lg))
-    );
+    right: var(--px-page);
+    left: calc(50% + 32.4vh + 1vw + var(--space-lg));
   }
 }
 
@@ -476,19 +471,21 @@
     height: 58vh;
   }
   .vs-text-col--left {
-    left: max(
-      var(--px-page),
-      calc(50% - 31.3vh - clamp(180px, 20vw, 300px) - 1vw - var(--space-lg))
-    );
+    left: var(--px-page);
+    right: calc(50% + 31.3vh + 1vw + var(--space-lg));
   }
   .vs-text-col--right {
-    right: max(
-      var(--px-page),
-      calc(50% - 31.3vh - clamp(180px, 20vw, 300px) - 1vw - var(--space-lg))
-    );
+    right: var(--px-page);
+    left: calc(50% + 31.3vh + 1vw + var(--space-lg));
   }
-  .vs-text-col {
-    width: clamp(180px, 20vw, 300px);
+  .vs-copy-title {
+    font-size: var(--fs-18pt);
+  }
+  .vs-copy-lead {
+    font-size: var(--fs-12pt);
+  }
+  .vs-copy-body {
+    font-size: var(--fs-10pt);
   }
 }
 
@@ -498,19 +495,12 @@
     height: 55vh;
   }
   .vs-text-col--left {
-    left: max(
-      var(--px-page),
-      calc(50% - 29.7vh - clamp(160px, 18vw, 260px) - 1vw - var(--space-lg))
-    );
+    left: var(--px-page);
+    right: calc(50% + 29.7vh + 1vw + var(--space-lg));
   }
   .vs-text-col--right {
-    right: max(
-      var(--px-page),
-      calc(50% - 29.7vh - clamp(160px, 18vw, 260px) - 1vw - var(--space-lg))
-    );
-  }
-  .vs-text-col {
-    width: clamp(160px, 18vw, 260px);
+    right: var(--px-page);
+    left: calc(50% + 29.7vh + 1vw + var(--space-lg));
   }
   .vs-copy-title {
     font-size: var(--fs-18pt);
@@ -573,9 +563,11 @@
 
   .vs-text-col--left {
     grid-area: left;
+    justify-items: unset;
   }
   .vs-text-col--right {
     grid-area: right;
+    justify-items: unset;
   }
 
   .vs-svg {
@@ -599,6 +591,8 @@
 
   /* 每段文案：25vh 高度 */
   .vs-copy {
+    width: 100%;
+    max-width: none;
     height: 25vh;
     display: flex;
     flex-direction: column;
@@ -611,10 +605,23 @@
   }
 
   /* 允許換行（桌機版 nowrap 在此不適用） */
-  .vs-copy-title,
   .vs-copy-lead {
     white-space: normal;
     text-wrap: wrap;
+  }
+
+  .vs-copy-title {
+    white-space: nowrap;
+  }
+  .vs-copy-title br {
+    display: none;
+  }
+
+  .vs-copy-body br {
+    display: none;
+  }
+  .vs-copy-body span + span::before {
+    content: " ";
   }
 
   /* 斜對角配色：左欄 淺→深，右欄 深→淺 */

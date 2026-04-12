@@ -192,6 +192,10 @@
   .project-block-content-bottom {
     top: 75%;
   }
+
+  .project-description {
+    font-size: var(--fs-10pt);
+  }
 }
 
 /* md ≤ 1024px：4 × 25vh 緊湊橫排，點擊切換 */

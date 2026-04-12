@@ -564,6 +564,10 @@ body.menu-open {
   .header-overlay-logo {
     font-size: var(--fs-48pt);
   }
+
+  .header-nav-label {
+    font-size: var(--fs-14pt);
+  }
 }
 
 /* md ≤ 1024px */

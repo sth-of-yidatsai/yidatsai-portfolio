@@ -79,7 +79,7 @@
   align-self: start;
 }
 .fs-image-3 .fs-image-frame {
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
 }
 
 .fs-name-block {
@@ -190,15 +190,12 @@
 /* ≤ 1920px */
 @media (max-width: 1920px) {
   .fs-image-3 .fs-image-frame {
-    aspect-ratio: 5 / 7;
+    aspect-ratio: 4 / 7;
   }
 }
 
 /* ≤ 1440px */
 @media (max-width: 1440px) {
-  .fs-image-3 .fs-image-frame {
-    aspect-ratio: 2 / 3;
-  }
   .fs-name {
     font-size: var(--fs-48pt);
   }

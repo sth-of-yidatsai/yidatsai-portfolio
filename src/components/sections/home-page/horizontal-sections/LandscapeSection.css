@@ -27,17 +27,35 @@
   font-weight: var(--fw-regular);
   letter-spacing: 0.04em;
   color: var(--gray-600);
-  white-space: nowrap;
   pointer-events: none;
   user-select: none;
   overflow: hidden;
 }
 
+.ls-label-left {
+  text-align: left;
+}
+.ls-label-right {
+  text-align: right;
+}
+
 /* ── Rolling text (圖片切換動畫) ──────────────────────────────────── */
 
 .ls-rolling-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.ls-rolling-line {
   display: inline-flex;
   column-gap: 0.01em;
+}
+
+.ls-label-left .ls-rolling-text {
+  align-items: flex-start;
+}
+.ls-label-right .ls-rolling-text {
+  align-items: flex-end;
 }
 
 .ls-rolling-space {
@@ -233,7 +251,6 @@
 /* ============================================================
    Responsive
    ============================================================ */
-
 /* ≤ 1440px */
 @media (max-width: 1440px) {
   .ls-label-left {

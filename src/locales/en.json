@@ -98,30 +98,27 @@
           "title": "Logic",
           "titleZh": null,
           "lead": "Clarity begins with structure.",
-          "body": ["Systems and hierarchy", "turn complexity into order."]
+          "body": ["Systems and hierarchy", "create order from complexity."]
         },
         "right": {
           "title": "Aesthetics",
           "titleZh": null,
           "lead": "Form gives emotion its surface.",
-          "body": ["Rhythm and visual tone", "allow meaning to emerge."]
+          "body": ["Rhythm and visual tone", "reveal meaning in form."]
         }
       },
       {
         "left": {
           "title": "Experience",
           "titleZh": null,
-          "lead": "Design is completed through experience.",
-          "body": ["Atmosphere and memory", "shape how it is perceived."]
+          "lead": "Design is shaped through experience.",
+          "body": ["Atmosphere and memory", "define how it is perceived."]
         },
         "right": {
           "title": "Structured Emotion",
           "titleZh": null,
           "lead": "Emotion is carefully constructed.",
-          "body": [
-            "Shaped through structure,",
-            "brought to life through design."
-          ]
+          "body": ["Shaped through structure", "brought to life by design."]
         }
       }
     ]
@@ -153,16 +150,16 @@
   "landscape": {
     "slides": [
       {
-        "leftLabel": "(Visual Language)",
-        "rightLabel": "(Typographic System)"
+        "leftLabel": "Visual \nLanguage",
+        "rightLabel": "Typographic \nSystem"
       },
       {
-        "leftLabel": "(Material Expression)",
-        "rightLabel": "(Tactile Surface)"
+        "leftLabel": "Material \nExpression",
+        "rightLabel": "Tactile \nSurface"
       },
       {
-        "leftLabel": "(Narrative Form)",
-        "rightLabel": "(Editorial Flow)"
+        "leftLabel": "Narrative \nForm",
+        "rightLabel": "Editorial \nFlow"
       }
     ]
   },

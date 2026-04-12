@@ -7,19 +7,24 @@ import { useTranslation } from "../../../../hooks/useTranslation";
 
 /** 逐字捲動（從下方捲入），用於圖片切換時的文字動畫 */
 function RollingText({ children }) {
+  const lines = children.split('\n').map(l => l.trim());
+  let charIndex = 0;
   return (
     <span className="ls-rolling-text" aria-label={children}>
-      {[...children].map((char, i) =>
-        char === " " ? (
-          <span key={i} className="ls-rolling-space">
-            &nbsp;
-          </span>
-        ) : (
-          <span key={i} className="ls-rolling-letter" style={{ "--i": i }}>
-            <span className="ls-rolling-top">{char}</span>
-          </span>
-        ),
-      )}
+      {lines.map((line, lineIdx) => (
+        <span key={lineIdx} className="ls-rolling-line">
+          {[...line].map((char) => {
+            const i = charIndex++;
+            return char === " " ? (
+              <span key={i} className="ls-rolling-space">&nbsp;</span>
+            ) : (
+              <span key={i} className="ls-rolling-letter" style={{ "--i": i }}>
+                <span className="ls-rolling-top">{char}</span>
+              </span>
+            );
+          })}
+        </span>
+      ))}
     </span>
   );
 }

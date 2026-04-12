@@ -95,27 +95,27 @@
         "left": {
           "title": "Logic",
           "titleZh": "邏輯",
-          "lead": "清晰始於結構。",
-          "body": ["系統與層級", "使複雜轉化為秩序。"]
+          "lead": "清晰始於結構",
+          "body": ["系統與層級，", "使複雜轉化為秩序。"]
         },
         "right": {
           "title": "Aesthetics",
           "titleZh": "美學",
-          "lead": "形式承載情感。",
-          "body": ["節奏與視覺基調", "使意義得以浮現。"]
+          "lead": "形式承載情感",
+          "body": ["節奏與視覺基調，", "使意義得以浮現。"]
         }
       },
       {
         "left": {
           "title": "Experience",
           "titleZh": "體驗",
-          "lead": "設計於體驗中完成。",
-          "body": ["氛圍與記憶", "形塑其被感知的方式。"]
+          "lead": "設計於體驗中完成",
+          "body": ["氛圍與記憶，", "形塑其被感知的方式。"]
         },
         "right": {
-          "title": "Structured Emotion",
+          "title": "Structured \nEmotion",
           "titleZh": "結構化情感",
-          "lead": "情感並非隨機產生。",
+          "lead": "情感並非隨機產生",
           "body": ["透過結構被建構，", "並藉由設計被賦予生命。"]
         }
       }
@@ -150,16 +150,16 @@
   "landscape": {
     "slides": [
       {
-        "leftLabel": "(視覺語言)",
-        "rightLabel": "(字體系統)"
+        "leftLabel": "視覺語言",
+        "rightLabel": "字體系統"
       },
       {
-        "leftLabel": "(材質表現)",
-        "rightLabel": "(觸感表面)"
+        "leftLabel": "材質表現",
+        "rightLabel": "觸感表面"
       },
       {
-        "leftLabel": "(敘事形式)",
-        "rightLabel": "(編輯節奏)"
+        "leftLabel": "敘事形式",
+        "rightLabel": "編輯節奏"
       }
     ]
   },
