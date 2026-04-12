@@ -234,6 +234,7 @@
 
   .project-block-number-large {
     font-size: var(--fs-56pt);
+    font-weight: var(--fw-extralight);
     margin-top: 0;
     margin-left: 0;
     flex-shrink: 0;
@@ -271,7 +272,7 @@
     max-width: 44%;
     text-align: right;
     white-space: pre-line;
-    font-size: var(--fs-10pt);
+    font-size: var(--fs-12pt);
   }
 
   /* 覆蓋桌機 CSS hover（touch 裝置的 :hover 殘留） */
@@ -310,10 +311,6 @@
 @media (max-width: 480px) {
   .project-description {
     display: none;
-  }
-
-  .project-block-number-large {
-    font-size: var(--fs-40pt);
   }
 
   .project-block-content-bottom {
