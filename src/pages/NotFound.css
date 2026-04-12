@@ -317,3 +317,89 @@
 /* md ≤ 1024px： */
 @media (max-width: 1024px) {
 }
+
+/* ── Mobile static canvas block ── */
+.nf-mobile-canvas {
+  flex: 1;
+  min-height: 0; /* let flex control height, no overflow */
+  background: #3a3a3a;
+  position: relative;
+  /* inset from all sides so marquee white band (≈28px) doesn't overlap */
+  margin: 12px 28px 28px;
+}
+
+.nf-mobile-canvas .nf-canvas-host {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+/* ── Mobile back-to-home ── */
+.nf-home-btn--mobile {
+  display: none;
+}
+
+/* ≤ 768px — mobile stacked layout */
+@media (max-width: 768px) {
+  .nf-page {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nf-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: calc(clamp(52px, 11vw, 80px) + 28px) clamp(48px, 12vw, 72px)
+      clamp(48px, 11vw, 72px);
+    pointer-events: auto;
+    flex-shrink: 0;
+    z-index: auto;
+  }
+
+  .nf-404 {
+    font-size: clamp(3.5rem, 17vw, 5.5rem);
+    margin-bottom: 8px;
+  }
+
+  .nf-heading {
+    font-size: clamp(1.25rem, 6vw, 2rem);
+    margin-bottom: var(--space-sm);
+  }
+
+  .nf-desc {
+    font-size: var(--fs-12pt);
+  }
+
+  .nf-home-btn--mobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    margin-top: var(--space-md);
+    padding: 13px 28px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: var(--gray-100);
+    text-decoration: none;
+    font-family: var(--font-manrope);
+    font-size: var(--fs-12pt);
+    font-weight: var(--fw-medium);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    pointer-events: auto;
+    transition:
+      border-color 0.2s,
+      color 0.2s;
+    white-space: nowrap;
+  }
+
+  .nf-home-btn--mobile::after {
+    display: none;
+  }
+
+  .nf-home-btn--mobile:hover {
+    border-color: rgba(255, 255, 255, 0.9);
+    color: var(--gray-0);
+  }
+}

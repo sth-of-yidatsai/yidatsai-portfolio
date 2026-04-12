@@ -40,26 +40,62 @@ const router = createBrowserRouter([
         path: ":lang",
         element: <LangWrapper />,
         children: [
-          { index: true, element: <Home />, handle: { title: (_d, lang) => getPageMeta("home", lang).title ?? "YI-DA TSAI", meta: (_d, lang) => getPageMeta("home", lang) } },
-          { path: "about", element: <About />, handle: { title: (_d, lang) => getPageMeta("about", lang).title ?? "About | YI-DA TSAI", meta: (_d, lang) => getPageMeta("about", lang) } },
-          { path: "contact", element: <Contact />, handle: { title: (_d, lang) => getPageMeta("contact", lang).title ?? "Contact | YI-DA TSAI", meta: (_d, lang) => getPageMeta("contact", lang) } },
+          {
+            index: true,
+            element: <Home />,
+            handle: {
+              title: (_d, lang) =>
+                getPageMeta("home", lang).title ?? "YI-DA TSAI",
+              meta: (_d, lang) => getPageMeta("home", lang),
+            },
+          },
+          {
+            path: "about",
+            element: <About />,
+            handle: {
+              title: (_d, lang) =>
+                getPageMeta("about", lang).title ?? "About | YI-DA TSAI",
+              meta: (_d, lang) => getPageMeta("about", lang),
+            },
+          },
+          {
+            path: "contact",
+            element: <Contact />,
+            handle: {
+              title: (_d, lang) =>
+                getPageMeta("contact", lang).title ?? "Contact | YI-DA TSAI",
+              meta: (_d, lang) => getPageMeta("contact", lang),
+            },
+          },
           {
             path: "projects",
             element: <Projects />,
             loader: projectsLoader,
-            handle: { title: (_d, lang) => getPageMeta("projects", lang).title ?? "Projects | YI-DA TSAI", meta: (_d, lang) => getPageMeta("projects", lang) },
+            handle: {
+              title: (_d, lang) =>
+                getPageMeta("projects", lang).title ?? "Projects | YI-DA TSAI",
+              meta: (_d, lang) => getPageMeta("projects", lang),
+            },
           },
           {
             path: "projects/page/:page",
             element: <Projects />,
             loader: projectsLoader,
-            handle: { title: (_d, lang) => getPageMeta("projects", lang).title ?? "Projects | YI-DA TSAI", meta: (_d, lang) => getPageMeta("projects", lang) },
+            handle: {
+              title: (_d, lang) =>
+                getPageMeta("projects", lang).title ?? "Projects | YI-DA TSAI",
+              meta: (_d, lang) => getPageMeta("projects", lang),
+            },
           },
           {
             path: "explore",
             element: <Playground />,
             loader: projectsLoader,
-            handle: { title: (_d, lang) => getPageMeta("explore", lang).title ?? "Explore | YI-DA TSAI", meta: (_d, lang) => getPageMeta("explore", lang) },
+            handle: {
+              title: (_d, lang) =>
+                getPageMeta("explore", lang).title ?? "Explore | YI-DA TSAI",
+              meta: (_d, lang) => getPageMeta("explore", lang),
+            },
           },
           {
             path: "projects/:id",
@@ -67,18 +103,31 @@ const router = createBrowserRouter([
             loader: projectDetailLoader,
             handle: {
               title: (data, lang) => {
-                const title = lang === "zh" && data?.title_zh ? data.title_zh : data?.title;
+                const title =
+                  lang === "zh" && data?.title_zh ? data.title_zh : data?.title;
                 return title ? `${title} | YI-DA TSAI` : "Project | YI-DA TSAI";
               },
               meta: (data, lang) => buildProjectMeta(data, lang),
             },
           },
-          { path: "*", element: <NotFound />, handle: { title: (_d, lang) => getPageMeta("notFound", lang).title ?? "Not Found | YI-DA TSAI", meta: (_d, lang) => getPageMeta("notFound", lang) } },
+          {
+            path: "error-test",
+            element: <ErrorPage standalone={false} />,
+            handle: { title: () => "Error | YI-DA TSAI" },
+          },
+          {
+            path: "*",
+            element: <NotFound />,
+            handle: {
+              title: (_d, lang) =>
+                getPageMeta("notFound", lang).title ?? "Not Found | YI-DA TSAI",
+              meta: (_d, lang) => getPageMeta("notFound", lang),
+            },
+          },
         ],
       },
     ],
   },
-  { path: "error-test", element: <ErrorPage />, handle: { title: () => "Error | YI-DA TSAI" } },
 ]);
 
 export default router;

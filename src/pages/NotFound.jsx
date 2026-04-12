@@ -1,37 +1,58 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import p5 from 'p5';
-import arrowCircleLeft from '../assets/icons/arrow-circle-left.svg';
-import './NotFound.css';
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Link, useParams } from "react-router-dom";
+import p5 from "p5";
+import arrowCircleLeft from "../assets/icons/arrow-circle-left.svg";
+import "./NotFound.css";
 
 /* ── colour-wheel utils ── */
 function hslToRgb(h, s, l) {
   const k = (n) => (n + h * 12) % 12;
   const a = s * Math.min(l, 1 - l);
-  const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-  return { r: Math.round(255 * f(0)), g: Math.round(255 * f(8)), b: Math.round(255 * f(4)) };
+  const f = (n) =>
+    l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+  return {
+    r: Math.round(255 * f(0)),
+    g: Math.round(255 * f(8)),
+    b: Math.round(255 * f(4)),
+  };
 }
 function rgbToHex(r, g, b) {
-  return '#' + [r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('');
+  return "#" + [r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("");
 }
 
 /* ── Draggable OS-style window ── */
-function DraggableWindow({ title, children, initialX, initialY, zIndex, onFocus, onClose, onDragMove, visible = true }) {
+function DraggableWindow({
+  title,
+  children,
+  initialX,
+  initialY,
+  zIndex,
+  onFocus,
+  onClose,
+  onDragMove,
+  visible = true,
+}) {
   const posRef = useRef({ x: initialX, y: initialY });
   const [pos, setPos] = useState({ x: initialX, y: initialY });
   const isDragging = useRef(false);
   const dragStart = useRef({ x: 0, y: 0 });
 
   const onPointerDown = (e) => {
-    if (e.target.closest('.nf-win-close')) return;
+    if (e.target.closest(".nf-win-close")) return;
     onFocus?.();
     isDragging.current = true;
-    dragStart.current = { x: e.clientX - posRef.current.x, y: e.clientY - posRef.current.y };
+    dragStart.current = {
+      x: e.clientX - posRef.current.x,
+      y: e.clientY - posRef.current.y,
+    };
     e.currentTarget.setPointerCapture(e.pointerId);
   };
   const onPointerMove = (e) => {
     if (!isDragging.current) return;
-    const next = { x: e.clientX - dragStart.current.x, y: e.clientY - dragStart.current.y };
+    const next = {
+      x: e.clientX - dragStart.current.x,
+      y: e.clientY - dragStart.current.y,
+    };
     const dx = next.x - posRef.current.x;
     const dy = next.y - posRef.current.y;
     posRef.current = next;
@@ -44,7 +65,15 @@ function DraggableWindow({ title, children, initialX, initialY, zIndex, onFocus,
   };
 
   return (
-    <div className="nf-window" style={{ left: pos.x, top: pos.y, zIndex, display: visible ? undefined : 'none' }}>
+    <div
+      className="nf-window"
+      style={{
+        left: pos.x,
+        top: pos.y,
+        zIndex,
+        display: visible ? undefined : "none",
+      }}
+    >
       <div
         className="nf-win-titlebar"
         onPointerDown={onPointerDown}
@@ -52,7 +81,9 @@ function DraggableWindow({ title, children, initialX, initialY, zIndex, onFocus,
         onPointerUp={onPointerUp}
       >
         <span className="nf-win-title">{title}</span>
-        <button className="nf-win-close" aria-label="close" onClick={onClose}>×</button>
+        <button className="nf-win-close" aria-label="close" onClick={onClose}>
+          ×
+        </button>
       </div>
       {children}
     </div>
@@ -60,10 +91,14 @@ function DraggableWindow({ title, children, initialX, initialY, zIndex, onFocus,
 }
 
 /* ── Perimeter marquee ── */
-function PerimeterMarquee({ color = '#ffffff' }) {
+function PerimeterMarquee({
+  color = "#ffffff",
+  unit = "  PAGE NOT FOUND  \u00B7  404  \u00B7",
+  showBg = false,
+}) {
   const textPathRef = useRef(null);
-  const measureRef  = useRef(null);
-  const animRef     = useRef(null);
+  const measureRef = useRef(null);
+  const animRef = useRef(null);
   const [dims, setDims] = useState(() => ({
     w: window.innerWidth,
     h: window.innerHeight,
@@ -72,16 +107,16 @@ function PerimeterMarquee({ color = '#ffffff' }) {
   useEffect(() => {
     const onResize = () =>
       setDims({ w: window.innerWidth, h: window.innerHeight });
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   const { w, h } = dims;
   const M = 16;
   const pathD = `M ${M} ${M} H ${w - M} V ${h - M} H ${M} Z`;
 
-  const UNIT    = '  PAGE NOT FOUND  \u00B7  404  \u00B7';
-  const REP     = 80;
+  const UNIT = unit;
+  const REP = 80;
   const fullTxt = UNIT.repeat(REP);
 
   useEffect(() => {
@@ -105,7 +140,10 @@ function PerimeterMarquee({ color = '#ffffff' }) {
         const dt = (now - last) / 1000;
         last = now;
         offset = (offset + SPEED * dt) % unitPx;
-        textPathRef.current?.setAttribute('startOffset', `-${offset.toFixed(2)}`);
+        textPathRef.current?.setAttribute(
+          "startOffset",
+          `-${offset.toFixed(2)}`,
+        );
         animRef.current = requestAnimationFrame(tick);
       };
       animRef.current = requestAnimationFrame(tick);
@@ -127,11 +165,21 @@ function PerimeterMarquee({ color = '#ffffff' }) {
       <defs>
         <path id="nf-perim-path" d={pathD} />
       </defs>
+      {/* white background band behind the text on mobile */}
+      {showBg && (
+        <path d={pathD} fill="none" stroke="#ffffff" strokeWidth="24" />
+      )}
       {/* standalone text off-screen — gives accurate getComputedTextLength() */}
-      <text ref={measureRef} x="-9999" y="-9999" className="nf-perimeter-text" aria-hidden>
+      <text
+        ref={measureRef}
+        x="-9999"
+        y="-9999"
+        className="nf-perimeter-text"
+        aria-hidden
+      >
         {UNIT}
       </text>
-      <text className="nf-perimeter-text" style={{ fill: color }}>
+      <text className="nf-perimeter-text" dy={showBg ? '4' : '0'} style={{ fill: color }}>
         <textPath ref={textPathRef} href="#nf-perim-path" startOffset="0">
           {fullTxt}
         </textPath>
@@ -140,23 +188,47 @@ function PerimeterMarquee({ color = '#ffffff' }) {
   );
 }
 
+const isMobile = window.innerWidth <= 768;
+
+/* ── Copy ── */
+const COPY = {
+  en: {
+    heading: "Page not found",
+    desc: "This page doesn't exist —\nor maybe it was never meant to.",
+    backHome: "Back to Home",
+    winP5: "404 Page not found",
+    winColor: "Color picker",
+    marqueeUnit: "  PAGE NOT FOUND  \u00B7  404  \u00B7",
+  },
+  zh: {
+    heading: "找不到此頁面",
+    desc: "這個頁面不存在—\n或許從未存在過。",
+    backHome: "回到首頁",
+    winP5: "404 找不到頁面",
+    winColor: "色彩選取器",
+    marqueeUnit: "  找不到頁面  ·  404  ·",
+  },
+};
+
 /* ── Main page ── */
 export default function NotFound() {
-  const { lang = 'en' } = useParams();
+  const { lang = "en" } = useParams();
+  const t = COPY[lang] ?? COPY.en;
+
   /* window visibility */
   const [showP5, setShowP5] = useState(true);
   const [showColor, setShowColor] = useState(true);
 
   /* z-index focus management */
-  const [topWindow, setTopWindow] = useState('color'); // color picker starts on top
+  const [topWindow, setTopWindow] = useState("color"); // color picker starts on top
 
   /* initial positions — colour picker overlaps 404 window by ~120 px on the right */
   const vw = window.innerWidth;
   const vh = window.innerHeight;
-  const isXL   = vw >= 1920;
+  const isXL = vw >= 1920;
   const isLarge = vw >= 1440;
-  const p5X   = Math.round(vw * (isXL ? 0.36 : 0.34));
-  const p5Y   = isXL ? 160 : isLarge ? 128 : 100;
+  const p5X = Math.round(vw * (isXL ? 0.36 : 0.34));
+  const p5Y = isXL ? 160 : isLarge ? 128 : 100;
   const colorX = Math.max(20, p5X - 240);
   const colorY = Math.round(vh * (isXL ? 0.54 : isLarge ? 0.52 : 0.44));
 
@@ -170,7 +242,7 @@ export default function NotFound() {
   const wheelContainerRef = useRef(null);
   const isPickingRef = useRef(false);
   const [knobPos, setKnobPos] = useState({ x: 0, y: 0 });
-  const [pickedColor, setPickedColor] = useState('#ffffff');
+  const [pickedColor, setPickedColor] = useState("#ffffff");
 
   /* ── draw colour wheel pixels (once) ── */
   const drawWheelPixels = useCallback(() => {
@@ -185,12 +257,13 @@ export default function NotFound() {
     cvs.width = sizeDev;
     cvs.height = sizeDev;
 
-    const ctx = cvs.getContext('2d');
+    const ctx = cvs.getContext("2d");
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     const img = ctx.createImageData(sizeDev, sizeDev);
     for (let y = 0; y < sizeDev; y++) {
       for (let x = 0; x < sizeDev; x++) {
-        const dx = x - rDev, dy = y - rDev;
+        const dx = x - rDev,
+          dy = y - rDev;
         const dist = Math.hypot(dx, dy);
         const idx = (y * sizeDev + x) * 4;
         if (dist <= rDev) {
@@ -199,7 +272,10 @@ export default function NotFound() {
           const sat = dist / rDev;
           const l = 1 - sat * 0.5; // center=white (L=1), edge=full chroma (L=0.5)
           const { r: R, g: G, b: B } = hslToRgb(hue / 360, sat, l);
-          img.data[idx] = R; img.data[idx + 1] = G; img.data[idx + 2] = B; img.data[idx + 3] = 255;
+          img.data[idx] = R;
+          img.data[idx + 1] = G;
+          img.data[idx + 2] = B;
+          img.data[idx + 3] = 255;
         } else {
           img.data[idx + 3] = 0;
         }
@@ -226,9 +302,14 @@ export default function NotFound() {
   /* read pixel colour as hex */
   const readHexAt = (xCss, yCss) => {
     const cvs = wheelCanvasRef.current;
-    const ctx = cvs.getContext('2d');
+    const ctx = cvs.getContext("2d");
     const dpr = window.devicePixelRatio || 1;
-    const px = ctx.getImageData(Math.floor(xCss * dpr), Math.floor(yCss * dpr), 1, 1).data;
+    const px = ctx.getImageData(
+      Math.floor(xCss * dpr),
+      Math.floor(yCss * dpr),
+      1,
+      1,
+    ).data;
     return rgbToHex(px[0], px[1], px[2]);
   };
 
@@ -239,7 +320,8 @@ export default function NotFound() {
     let xC = clientX - rect.left;
     let yC = clientY - rect.top;
     const KNOB_R = 9;
-    const dx = xC - rCss, dy = yC - rCss;
+    const dx = xC - rCss,
+      dy = yC - rCss;
     const dist = Math.hypot(dx, dy);
     const limit = Math.max(1, rCss - KNOB_R);
     if (dist > limit) {
@@ -250,7 +332,8 @@ export default function NotFound() {
     const hex = readHexAt(xC, yC);
     setPickedColor(hex);
     setKnobPos({ x: offX + xC, y: offY + yC });
-    if (p5InstanceRef.current?.setTextColor) p5InstanceRef.current.setTextColor(hex);
+    if (p5InstanceRef.current?.setTextColor)
+      p5InstanceRef.current.setTextColor(hex);
   };
 
   const onWheelDown = (e) => {
@@ -258,7 +341,9 @@ export default function NotFound() {
     updateColor(e.clientX, e.clientY);
     e.currentTarget.setPointerCapture?.(e.pointerId);
   };
-  const onWheelMove = (e) => { if (isPickingRef.current) updateColor(e.clientX, e.clientY); };
+  const onWheelMove = (e) => {
+    if (isPickingRef.current) updateColor(e.clientX, e.clientY);
+  };
   const onWheelUp = (e) => {
     isPickingRef.current = false;
     e.currentTarget.releasePointerCapture?.(e.pointerId);
@@ -279,7 +364,23 @@ export default function NotFound() {
     if (p5InitRef.current || !canvasHostRef.current) return;
     p5InitRef.current = true;
 
-    const LETTERS = ['4', '0', '4', 'P', 'a', 'g', 'e', 'N', 'o', 't', 'F', 'o', 'u', 'n', 'd'];
+    const LETTERS = [
+      "4",
+      "0",
+      "4",
+      "P",
+      "a",
+      "g",
+      "e",
+      "N",
+      "o",
+      "t",
+      "F",
+      "o",
+      "u",
+      "n",
+      "d",
+    ];
 
     const sketch = (p) => {
       let words = [];
@@ -293,35 +394,42 @@ export default function NotFound() {
         const canvas = p.createCanvas(w, h);
         canvas.parent(canvasHostRef.current);
 
-        // larger letters — no hard cap so big screens get big text
-        const fontSize = Math.min(w * 0.2, h * 0.34);
+        // larger letters on mobile; no hard cap so big screens get big text
+        const fontSize = isMobile
+          ? Math.min(w * 0.32, h * 0.5)
+          : Math.min(w * 0.2, h * 0.34);
 
         LETTERS.forEach((ch, i) => {
           const x = p.random(fontSize * 0.7, w - fontSize * 0.7);
           const y = -80 - i * 55 - p.random(0, 40);
           const delay = i * 180 + p.random(-50, 100);
           const rot = p.random(-p.PI / 5, p.PI / 5);
-          words.push(new Word(ch, x, y, delay, rot, fontSize, '#ffffff'));
+          words.push(new Word(ch, x, y, delay, rot, fontSize, "#ffffff"));
         });
 
-        p.setTextColor = (hex) => { words.forEach((w) => (w.color = hex)); };
+        p.setTextColor = (hex) => {
+          words.forEach((w) => (w.color = hex));
+        };
 
         // called when the window is dragged — nudge letters in that direction
         p.applyWindowImpulse = (dx, dy) => {
           const SCALE = 0.22;
-          const MAX   = 10;
+          const MAX = 10;
           const ix = Math.max(-MAX, Math.min(MAX, dx * SCALE));
           const iy = Math.max(-MAX, Math.min(MAX, dy * SCALE));
           words.forEach((w) => {
-            if (w.active) { w.vx += ix; w.vy += iy; }
+            if (w.active) {
+              w.vx += ix;
+              w.vy += iy;
+            }
           });
         };
       };
 
       p.draw = () => {
-        p.background('#3a3a3a');
+        p.background("#3a3a3a");
         for (const w of words) {
-          w.update(p, w === dragged);  // gravity + position update, no gravity when inactive or dragged
+          w.update(p, w === dragged); // gravity + position update, no gravity when inactive or dragged
           w.edges(p);
           w.collide(words);
           w.draw(p);
@@ -342,7 +450,8 @@ export default function NotFound() {
         if (dragged) {
           dragged.x = p.mouseX - dragOff.x;
           dragged.y = p.mouseY - dragOff.y;
-          dragged.vy = 0; dragged.vx = 0;
+          dragged.vy = 0;
+          dragged.vx = 0;
         }
       };
       p.mouseReleased = () => {
@@ -361,7 +470,8 @@ export default function NotFound() {
       class Word {
         constructor(text, x, y, delay, rot, fontSize, color) {
           this.text = text;
-          this.x = x; this.y = y;
+          this.x = x;
+          this.y = y;
           this.vx = (Math.random() - 0.5) * 2.5;
           this.vy = 0;
           this.rot = rot;
@@ -383,7 +493,7 @@ export default function NotFound() {
             return;
           }
           if (!isDragged) {
-            this.vy += 0.2;                // gravity
+            this.vy += 0.2; // gravity
             this.x += this.vx;
             this.y += this.vy;
             // very light air friction — keeps motion alive much longer
@@ -402,7 +512,7 @@ export default function NotFound() {
           if (this.y > p.height - half) {
             this.y = p.height - half;
             this.vy *= -0.7;
-            this.vx *= 0.92;     // slight floor friction on x
+            this.vx *= 0.92; // slight floor friction on x
           }
           // walls — elastic bounce, retains 75% energy
           if (this.x > p.width - half) {
@@ -419,11 +529,13 @@ export default function NotFound() {
           if (!this.active) return;
           for (const other of words) {
             if (other === this || !other.active) continue;
-            const dx = other.x - this.x, dy = other.y - this.y;
+            const dx = other.x - this.x,
+              dy = other.y - this.y;
             const dist = Math.hypot(dx, dy);
             const minD = this.fontSize * 0.75;
             if (dist < minD && dist > 0) {
-              const nx = dx / dist, ny = dy / dist; // collision normal
+              const nx = dx / dist,
+                ny = dy / dist; // collision normal
               // separate positions so letters don't pile on top of each other
               const overlap = (minD - dist) * 0.5;
               this.x -= nx * overlap;
@@ -431,11 +543,13 @@ export default function NotFound() {
               other.x += nx * overlap;
               other.y += ny * overlap;
               // impulse-based velocity exchange (elastic, restitution 0.75)
-              const relVn = (other.vx - this.vx) * nx + (other.vy - this.vy) * ny;
-              if (relVn < 0) {           // only resolve approaching pairs
+              const relVn =
+                (other.vx - this.vx) * nx + (other.vy - this.vy) * ny;
+              if (relVn < 0) {
+                // only resolve approaching pairs
                 const impulse = relVn * 0.875;
-                this.vx  += impulse * nx;
-                this.vy  += impulse * ny;
+                this.vx += impulse * nx;
+                this.vy += impulse * ny;
                 other.vx -= impulse * nx;
                 other.vy -= impulse * ny;
               }
@@ -452,7 +566,7 @@ export default function NotFound() {
           p.textAlign(p.CENTER, p.CENTER);
           p.textSize(this.fontSize);
           p.textFont(
-            'Manrope, "Noto Sans TC", system-ui, -apple-system, sans-serif'
+            'Manrope, "Noto Sans TC", system-ui, -apple-system, sans-serif',
           );
           p.text(this.text, 0, 0);
           p.pop();
@@ -460,7 +574,12 @@ export default function NotFound() {
         hit(px, py) {
           if (!this.active) return false;
           const h = this.fontSize * 0.5;
-          return px > this.x - h && px < this.x + h && py > this.y - h && py < this.y + h;
+          return (
+            px > this.x - h &&
+            px < this.x + h &&
+            py > this.y - h &&
+            py < this.y + h
+          );
         }
       }
     };
@@ -470,7 +589,11 @@ export default function NotFound() {
     return () => {
       p5InitRef.current = false; // allow re-init on React Strict Mode double-invoke
       if (p5InstanceRef.current) {
-        try { p5InstanceRef.current.remove(); } catch { /* noop */ }
+        try {
+          p5InstanceRef.current.remove();
+        } catch {
+          /* noop */
+        }
         p5InstanceRef.current = null;
       }
     };
@@ -481,68 +604,96 @@ export default function NotFound() {
       {/* ── Left info ── */}
       <div className="nf-info">
         <div className="nf-404">404</div>
-        <h1 className="nf-heading">Page not found</h1>
+        <h1 className="nf-heading">{t.heading}</h1>
         <p className="nf-desc">
-          This page doesn't exist —<br />or maybe it was never meant to.
+          {t.desc.split("\n").map((line, i, arr) => (
+            <span key={i}>
+              {line}
+              {i < arr.length - 1 && <br />}
+            </span>
+          ))}
         </p>
+        {isMobile && (
+          <Link to={`/${lang}/`} className="nf-home-btn--mobile" data-clickable="true">
+            {t.backHome}
+          </Link>
+        )}
       </div>
 
-      {/* ── 404 p5 window ── */}
-      <DraggableWindow
-        title="404 Page not found"
-        initialX={p5X}
-        initialY={p5Y}
-        zIndex={topWindow === 'p5' ? 20 : 10}
-        onFocus={() => setTopWindow('p5')}
-        onClose={() => setShowP5(false)}
-        onDragMove={(dx, dy) => p5InstanceRef.current?.applyWindowImpulse?.(dx, dy)}
-        visible={showP5}
-      >
-        <div ref={canvasHostRef} className="nf-canvas-host" />
-      </DraggableWindow>
-
-      {/* ── Color picker window ── */}
-      <DraggableWindow
-        title="Color picker"
-        initialX={colorX}
-        initialY={colorY}
-        zIndex={topWindow === 'color' ? 20 : 10}
-        onFocus={() => setTopWindow('color')}
-        onClose={() => setShowColor(false)}
-        visible={showColor}
-      >
-        <div className="nf-color-content">
-          <div
-            className="nf-wheel-container"
-            ref={wheelContainerRef}
-            onPointerDown={onWheelDown}
-            onPointerMove={onWheelMove}
-            onPointerUp={onWheelUp}
-            onPointerLeave={onWheelUp}
-          >
-            <canvas ref={wheelCanvasRef} className="nf-wheel" />
-            <div
-              className="nf-knob"
-              style={{ left: knobPos.x, top: knobPos.y }}
-              aria-hidden
-            />
-          </div>
-          <div className="nf-color-meta">
-            <span className="nf-color-chip" style={{ background: pickedColor }} />
-            <span className="nf-color-hex">{pickedColor}</span>
-          </div>
+      {isMobile ? (
+        /* ── Mobile: static canvas block ── */
+        <div className="nf-mobile-canvas">
+          <div ref={canvasHostRef} className="nf-canvas-host" />
         </div>
-      </DraggableWindow>
+      ) : (
+        <>
+          {/* ── 404 p5 window ── */}
+          <DraggableWindow
+            title={t.winP5}
+            initialX={p5X}
+            initialY={p5Y}
+            zIndex={topWindow === "p5" ? 20 : 10}
+            onFocus={() => setTopWindow("p5")}
+            onClose={() => setShowP5(false)}
+            onDragMove={(dx, dy) =>
+              p5InstanceRef.current?.applyWindowImpulse?.(dx, dy)
+            }
+            visible={showP5}
+          >
+            <div ref={canvasHostRef} className="nf-canvas-host" />
+          </DraggableWindow>
 
-      {/* ── Back to Home ── */}
-      <Link to={`/${lang}/`} className="nf-home-btn" data-clickable="true">
-        <img src={arrowCircleLeft} alt="" className="nf-home-arrow" />
-        <span className="nf-home-divider" aria-hidden />
-        <span className="nf-home-label">Back to Home</span>
-      </Link>
+          {/* ── Color picker window ── */}
+          <DraggableWindow
+            title={t.winColor}
+            initialX={colorX}
+            initialY={colorY}
+            zIndex={topWindow === "color" ? 20 : 10}
+            onFocus={() => setTopWindow("color")}
+            onClose={() => setShowColor(false)}
+            visible={showColor}
+          >
+            <div className="nf-color-content">
+              <div
+                className="nf-wheel-container"
+                ref={wheelContainerRef}
+                onPointerDown={onWheelDown}
+                onPointerMove={onWheelMove}
+                onPointerUp={onWheelUp}
+                onPointerLeave={onWheelUp}
+              >
+                <canvas ref={wheelCanvasRef} className="nf-wheel" />
+                <div
+                  className="nf-knob"
+                  style={{ left: knobPos.x, top: knobPos.y }}
+                  aria-hidden
+                />
+              </div>
+              <div className="nf-color-meta">
+                <span
+                  className="nf-color-chip"
+                  style={{ background: pickedColor }}
+                />
+                <span className="nf-color-hex">{pickedColor}</span>
+              </div>
+            </div>
+          </DraggableWindow>
+
+          {/* ── Back to Home ── */}
+          <Link to={`/${lang}/`} className="nf-home-btn" data-clickable="true">
+            <img src={arrowCircleLeft} alt="" className="nf-home-arrow" />
+            <span className="nf-home-divider" aria-hidden />
+            <span className="nf-home-label">{t.backHome}</span>
+          </Link>
+        </>
+      )}
 
       {/* ── Perimeter marquee ── */}
-      <PerimeterMarquee color={pickedColor} />
+      <PerimeterMarquee
+        color={isMobile ? '#1a1a1a' : pickedColor}
+        unit={t.marqueeUnit}
+        showBg={isMobile}
+      />
     </div>
   );
 }
