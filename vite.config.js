@@ -61,7 +61,11 @@ export default defineConfig({
         renderAfterTime: 3000,
       }),
       postProcess(renderedRoute) {
-        const projectMatch = renderedRoute.route.match(/^\/(en|zh)\/projects\/(.+)$/)
+        const { PAGE_META } = require('./src/seo/seoConfig.js')
+        const route = renderedRoute.route
+
+        // Project detail pages
+        const projectMatch = route.match(/^\/(en|zh)\/projects\/(.+)$/)
         if (projectMatch) {
           const lang = projectMatch[1]
           const projectId = projectMatch[2]
@@ -78,7 +82,35 @@ export default defineConfig({
               ogType: 'article',
             })
           }
+          return renderedRoute
         }
+
+        // Static pages: home, about, projects, explore, contact
+        const staticMatch = route.match(/^\/(en|zh)(\/.*)?$/)
+        if (staticMatch) {
+          const lang = staticMatch[1]
+          const suffix = (staticMatch[2] ?? '/').replace(/^\//, '')
+          const pageKey = suffix === '' || suffix === '/' ? 'home'
+            : suffix === 'about' ? 'about'
+            : suffix === 'projects' ? 'projects'
+            : suffix === 'explore' ? 'explore'
+            : suffix === 'contact' ? 'contact'
+            : null
+          if (pageKey) {
+            const pageMeta = PAGE_META[pageKey]?.[lang] ?? PAGE_META[pageKey]?.en
+            const ogUrl = pageKey === 'home'
+              ? `${BASE_URL}/${lang}/`
+              : `${BASE_URL}/${lang}/${suffix}`
+            renderedRoute.html = injectMeta(renderedRoute.html, {
+              title: pageMeta?.title ?? 'YI-DA TSAI',
+              description: pageMeta?.description ?? '',
+              ogImage: `${BASE_URL}/images/og-default.jpg?v=2`,
+              ogUrl,
+              ogType: 'website',
+            })
+          }
+        }
+
         return renderedRoute
       },
     }),

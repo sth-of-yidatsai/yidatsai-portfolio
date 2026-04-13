@@ -19,8 +19,7 @@ export function useMeta({
   jsonLd,
 } = {}) {
   useEffect(() => {
-    const currentUrl = window.location.href;
-    const resolvedOgUrl = ogUrl ?? currentUrl;
+    const resolvedOgUrl = ogUrl ?? `${SITE.baseUrl}${window.location.pathname}`;
     const resolvedOgTitle = ogTitle ?? title ?? SITE.name;
     const resolvedOgDescription = ogDescription ?? description ?? SITE.defaultDescription;
     const resolvedOgImage = ogImage ?? SITE.defaultOgImage;

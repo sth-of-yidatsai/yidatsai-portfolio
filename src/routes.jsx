@@ -13,7 +13,7 @@ import ErrorPage from "./pages/ErrorPage.jsx";
 import LangWrapper from "./components/LangWrapper.jsx";
 
 import projects from "./data/projects.json";
-import { getPageMeta, buildProjectMeta } from "./seo/seoConfig.js";
+import { SITE, getPageMeta, buildProjectMeta } from "./seo/seoConfig.js";
 
 // loaders
 export async function projectsLoader() {
@@ -46,7 +46,10 @@ const router = createBrowserRouter([
             handle: {
               title: (_d, lang) =>
                 getPageMeta("home", lang).title ?? "YI-DA TSAI",
-              meta: (_d, lang) => getPageMeta("home", lang),
+              meta: (_d, lang) => ({
+                ...getPageMeta("home", lang),
+                ogUrl: `${SITE.baseUrl}/${lang}/`,
+              }),
             },
           },
           {
@@ -55,7 +58,10 @@ const router = createBrowserRouter([
             handle: {
               title: (_d, lang) =>
                 getPageMeta("about", lang).title ?? "About | YI-DA TSAI",
-              meta: (_d, lang) => getPageMeta("about", lang),
+              meta: (_d, lang) => ({
+                ...getPageMeta("about", lang),
+                ogUrl: `${SITE.baseUrl}/${lang}/about`,
+              }),
             },
           },
           {
@@ -64,7 +70,10 @@ const router = createBrowserRouter([
             handle: {
               title: (_d, lang) =>
                 getPageMeta("contact", lang).title ?? "Contact | YI-DA TSAI",
-              meta: (_d, lang) => getPageMeta("contact", lang),
+              meta: (_d, lang) => ({
+                ...getPageMeta("contact", lang),
+                ogUrl: `${SITE.baseUrl}/${lang}/contact`,
+              }),
             },
           },
           {
@@ -74,7 +83,10 @@ const router = createBrowserRouter([
             handle: {
               title: (_d, lang) =>
                 getPageMeta("projects", lang).title ?? "Projects | YI-DA TSAI",
-              meta: (_d, lang) => getPageMeta("projects", lang),
+              meta: (_d, lang) => ({
+                ...getPageMeta("projects", lang),
+                ogUrl: `${SITE.baseUrl}/${lang}/projects`,
+              }),
             },
           },
           {
@@ -84,7 +96,10 @@ const router = createBrowserRouter([
             handle: {
               title: (_d, lang) =>
                 getPageMeta("projects", lang).title ?? "Projects | YI-DA TSAI",
-              meta: (_d, lang) => getPageMeta("projects", lang),
+              meta: (_d, lang) => ({
+                ...getPageMeta("projects", lang),
+                ogUrl: `${SITE.baseUrl}/${lang}/projects`,
+              }),
             },
           },
           {
@@ -94,7 +109,10 @@ const router = createBrowserRouter([
             handle: {
               title: (_d, lang) =>
                 getPageMeta("explore", lang).title ?? "Explore | YI-DA TSAI",
-              meta: (_d, lang) => getPageMeta("explore", lang),
+              meta: (_d, lang) => ({
+                ...getPageMeta("explore", lang),
+                ogUrl: `${SITE.baseUrl}/${lang}/explore`,
+              }),
             },
           },
           {

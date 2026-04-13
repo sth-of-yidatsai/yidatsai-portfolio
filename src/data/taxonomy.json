@@ -33,9 +33,7 @@
     "exhibition": { "en": "Exhibition", "zh": "展覽設計" },
 
     "research": { "en": "Research", "zh": "設計研究" },
-    "concept": { "en": "Concept", "zh": "概念設計" },
-
-    "test": { "en": "Test", "zh": "測試" }
+    "concept": { "en": "Concept", "zh": "概念設計" }
   },
 
   "tags": {
@@ -80,8 +78,6 @@
     "case-study": { "en": "Case Study", "zh": "案例研究" },
 
     "personal": { "en": "Personal Project", "zh": "個人專案" },
-    "client": { "en": "Client Work", "zh": "商業案" },
-
-    "placeholder": { "en": "Placeholder", "zh": "佔位" }
+    "client": { "en": "Client Work", "zh": "商業案" }
   }
 }

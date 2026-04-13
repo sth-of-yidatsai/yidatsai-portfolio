@@ -3,7 +3,7 @@ export const SITE = {
   baseUrl: "https://yidatsai.com",
   defaultDescription:
     "Yi-Da Tsai (蔡易達) is a visual designer and frontend developer based in Taipei, Taiwan, specializing in typography, editorial design, and digital experiences.",
-  defaultOgImage: "https://yidatsai.com/images/og-default.jpg",
+  defaultOgImage: "https://yidatsai.com/images/og-default.jpg?v=2",
 };
 
 export const PAGE_META = {
@@ -12,14 +12,14 @@ export const PAGE_META = {
       title: "Yi-Da Tsai 蔡易達｜Visual Designer & Frontend Developer",
       description:
         "Yi-Da Tsai is a visual designer and frontend developer based in Taipei, Taiwan, specializing in typography, editorial design, and digital experiences.",
-      ogImage: "https://yidatsai.com/images/og-default.jpg",
+      ogImage: "https://yidatsai.com/images/og-default.jpg?v=2",
       ogLocale: "en_US",
     },
     zh: {
       title: "蔡易達｜視覺設計師與前端工程師",
       description:
         "蔡易達（Yi-Da Tsai）是台灣台北的視覺設計師與前端工程師，專注於字體排印、編輯設計與數位體驗。",
-      ogImage: "https://yidatsai.com/images/og-default.jpg",
+      ogImage: "https://yidatsai.com/images/og-default.jpg?v=2",
       ogLocale: "zh_TW",
     },
   },
@@ -125,6 +125,7 @@ export function buildProjectMeta(project, language = "en") {
   return {
     title: `${title} | YI-DA TSAI`,
     description: description ?? SITE.defaultDescription,
+    ogUrl: `${SITE.baseUrl}/${language}/projects/${project.id}`,
     ogImage: `${SITE.baseUrl}/images/projects/${project.id}/${project.ogImage ?? project.cover}`,
     ogLocale: language === "zh" ? "zh_TW" : "en_US",
     ogType: "article",
