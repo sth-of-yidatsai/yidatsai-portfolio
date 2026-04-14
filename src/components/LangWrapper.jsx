@@ -11,6 +11,7 @@ export default function LangWrapper() {
   useEffect(() => {
     if (VALID_LANGS.includes(lang)) {
       setLanguage(lang);
+      document.documentElement.lang = lang === 'zh' ? 'zh-TW' : 'en';
     }
   }, [lang, setLanguage]);
 

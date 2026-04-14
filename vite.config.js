@@ -85,6 +85,16 @@ export default defineConfig({
           return renderedRoute
         }
 
+        // Set <html lang> based on route language
+        const langMatch = route.match(/^\/(en|zh)/)
+        if (langMatch) {
+          const routeLang = langMatch[1]
+          renderedRoute.html = renderedRoute.html.replace(
+            /(<html[^>]*)\slang="[^"]*"/,
+            `$1 lang="${routeLang === 'zh' ? 'zh-TW' : 'en'}"`
+          )
+        }
+
         // Static pages: home, about, projects, explore, contact
         const staticMatch = route.match(/^\/(en|zh)(\/.*)?$/)
         if (staticMatch) {
