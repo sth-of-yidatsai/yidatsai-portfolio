@@ -125,7 +125,8 @@
   },
   "projectsPage": {
     "selectEyebrow": "Selected Projects",
-    "allEyebrow": "All Projects"
+    "allEyebrow": "All Projects",
+    "viewProject": "View project"
   },
   "projects": {
     "areas": {

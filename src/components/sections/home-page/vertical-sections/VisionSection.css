@@ -523,10 +523,6 @@
     margin-bottom: var(--space-lg);
   }
 
-  .vs-title {
-    font-size: var(--fs-44pt);
-  }
-
   /* 隨 vs-title 等比縮放 */
   .vs-title-sub {
     font-size: 1.07em;

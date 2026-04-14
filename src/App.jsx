@@ -1,4 +1,4 @@
-import { Outlet, useMatches } from "react-router-dom";
+import { Outlet, useMatches, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useMeta } from "./hooks/useMeta";
 import { useLanguage } from "./contexts/LanguageContext";
@@ -14,9 +14,20 @@ import { Providers } from "./providers";
 // Inner shell — rendered inside <Providers>, so context hooks work here
 function AppShell({ lenisRef }) {
   const matches = useMatches();
+  const location = useLocation();
   const [currentMeta, setCurrentMeta] = useState({});
   const { language } = useLanguage();
   useMeta(currentMeta);
+
+  // 切換路由時強制回到頂部（Lenis 接管 scroll，需用 lenis.scrollTo）
+  useEffect(() => {
+    const lenis = lenisRef.current;
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
 
   // loader 隱藏後（overflow:'' 恢復）重新計算頁面高度。
   useEffect(() => {

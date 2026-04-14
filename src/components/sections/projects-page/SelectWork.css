@@ -202,23 +202,73 @@
   }
 }
 
+/* ── Tap-to-reveal（行動裝置替代 hover）────────────────────────────────── */
+
+.select-work__card.is-revealed .select-work__card-overlay {
+  transform: translate3d(0, 0, 0);
+}
+
+/* 未 revealed 時在右下角顯示 ↗ 提示，告知可點擊 */
+@media (hover: none) and (pointer: coarse) {
+  .select-work__card-overlay-hint {
+    position: absolute;
+    bottom: var(--space-md);
+    right: var(--space-md);
+    font-family: var(--font-manrope);
+    font-size: var(--fs-10pt);
+    letter-spacing: 0.08em;
+    color: var(--gray-300);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  /* revealed 時 hint 消失，overlay 顯示 */
+  .select-work__card.is-revealed .select-work__card-overlay-hint {
+    display: none;
+  }
+
+  /* overlay 內加「→ 前往」引導 */
+  .select-work__card-overlay::after {
+    content: '→ ' attr(data-go);
+    display: block;
+    font-family: var(--font-manrope);
+    font-size: var(--fs-10pt);
+    letter-spacing: 0.1em;
+    color: var(--gray-400);
+    margin-top: var(--space-sm);
+  }
+}
+
 /* md ≤ 1024px：每次顯示 1 張 + 右側微露 peek */
 @media (max-width: 1024px) {
   .select-work {
+    height: auto;       /* 讓內容可超過 viewport 而不被截斷 */
+    min-height: 100vh;  /* fallback */
+    min-height: 100svh; /* svh 扣掉 Safari address bar，確保深色背景填滿螢幕 */
+    overflow: visible;  /* section 不 clip；viewport 自行管 overflow */
+    /* 明確加大 top clearance：header top(32px) + height(48px) + 安全距離(48px) */
+    padding-top: calc(var(--space-lg) + 48px + var(--space-xl));
     padding-bottom: var(--space-lg);
   }
 
   .select-work__viewport {
     flex: none;
     height: auto;
+    overflow: hidden;   /* 明確保留：讓 track 在這裡被裁剪 */
   }
 
   .select-work__track {
     height: auto;
   }
 
+  /* 行動端動畫縮短，避免 flick 後感覺遲鈍 */
+  .select-work__track.is-animating {
+    transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* 卡片寬度約 80% 可見區域，讓右側露出約 20% peek */
   .select-work__card-wrap {
-    width: calc(100vw - 2 * var(--px-page) - 24px);
+    width: calc((100vw - 2 * var(--px-page)) * 0.8);
   }
 
   .select-work__card {
@@ -245,6 +295,6 @@
   }
 
   .select-work__card-wrap {
-    width: calc(100vw - 2 * var(--space-md) - 24px);
+    width: calc((100vw - 2 * var(--space-md)) * 0.85);
   }
 }

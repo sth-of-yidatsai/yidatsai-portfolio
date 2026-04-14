@@ -376,13 +376,24 @@
   .footer-inner {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto; /* drop explicit 4-row subgrid structure */
-    row-gap: clamp(var(--space-lg), 4vw, var(--space-xl));
+    row-gap: var(--space-xl);
   }
 
   .footer-logo {
     grid-column: 1;
     grid-row: 1;
-    font-size: var(--fs-64pt);
+    font-size: var(--fs-64pt); /* match header-overlay-logo ≤1024px */
+  }
+
+  /* nav label：match header-overlay .header-nav-label ≤1024px = fs-22pt */
+  .footer-nav-label {
+    font-size: var(--fs-22pt);
+  }
+
+  /* nav item gap：match header-overlay .header-nav-item gap = space-lg */
+  .footer-nav-item {
+    gap: var(--space-lg);
+    padding: var(--space-md) 0;
   }
 
   .footer-mid {
@@ -432,9 +443,7 @@
     padding: var(--space-xl) var(--px-page);
   }
 
-  .footer-nav-label {
-    font-size: var(--fs-14pt);
-  }
+  /* 不覆蓋 ≤1024px 設定的 fs-22pt，讓 nav label 維持與 header-overlay 一致 */
 
   .footer-inner {
     grid-template-columns: 1fr 1fr;
@@ -476,12 +485,14 @@
     padding: var(--space-lg) var(--px-page);
   }
 
+  /* logo：match header-overlay-logo（≤480px 無特別 override，維持 fs-64pt） */
   .footer-logo {
-    font-size: clamp(2.5rem, 10vw, 3.5rem);
+    font-size: var(--fs-64pt);
   }
 
+  /* nav label：match header-overlay .header-nav-label ≤480px = fs-20pt */
   .footer-nav-label {
-    font-size: var(--fs-12pt);
+    font-size: var(--fs-20pt);
   }
 
   .footer-badge {

@@ -18,7 +18,7 @@ function LineRoll({ children }) {
 
 // ── 圖片配置 ── 統一管理，方便置換
 const FIELD_IMAGES = [
-  { projectId: "foucault-book-binding", image: "08.webp" },
+  { projectId: "patterned-glass-notebook", image: "08.webp" },
   { projectId: "patterned-glass-notebook", image: "16.webp" },
   { projectId: "patterned-glass-notebook", image: "12.webp" },
   { projectId: "patterned-glass-notebook", image: "05.webp" },

@@ -79,22 +79,6 @@ export default function LandscapeSection({
     [locale],
   );
 
-  // ── Mobile carousel state ─────────────────────────────────────────
-  const [mobileIndex, setMobileIndex] = useState(0);
-  const touchStartX = useRef(null);
-
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-  const handleTouchEnd = (e) => {
-    if (touchStartX.current === null) return;
-    const dx = e.changedTouches[0].clientX - touchStartX.current;
-    if (dx < -40) setMobileIndex((i) => (i + 1) % slides.length);
-    else if (dx > 40)
-      setMobileIndex((i) => (i - 1 + slides.length) % slides.length);
-    touchStartX.current = null;
-  };
-
   // Refs for measuring the actual frame position inside the section
   const sectionRef = useRef(null);
   const frameRef = useRef(null);
@@ -286,37 +270,24 @@ export default function LandscapeSection({
         </p>
       </div>
 
-      {/* Mobile carousel (≤1024px) */}
-      <div className="ls-mobile-carousel">
-        <div
-          className="ls-mobile-track"
-          style={{ transform: `translateX(-${mobileIndex * 100}%)` }}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          {slides.map((slide, i) => (
-            <div key={i} className="ls-mobile-slide">
-              <img
-                src={slide.image}
-                srcSet={buildSrcSet(slide.image)}
-                sizes="100vw"
-                alt={slide.leftLabel}
-                className="ls-mobile-img"
-                draggable={false}
-              />
-            </div>
-          ))}
-        </div>
-        <div className="ls-mobile-dots">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              className={`ls-mobile-dot${i === mobileIndex ? " ls-mobile-dot-active" : ""}`}
-              onClick={() => setMobileIndex(i)}
-              aria-label={`Slide ${i + 1}`}
+      {/* Mobile filmstrip (≤1024px) — CSS scroll-snap, no JS state */}
+      <div className="ls-mobile-filmstrip">
+        {slides.map((slide, i) => (
+          <div key={i} className="ls-mobile-filmstrip-slide">
+            <img
+              src={slide.image}
+              srcSet={buildSrcSet(slide.image)}
+              sizes="80vw"
+              alt={slide.leftLabel}
+              className="ls-mobile-filmstrip-img"
+              draggable={false}
             />
-          ))}
-        </div>
+            <div className="ls-mobile-filmstrip-meta">
+              <span className="ls-mobile-filmstrip-name">{slide.leftLabel}</span>
+              <span className="ls-mobile-filmstrip-num">{slide.caption}</span>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Fullscreen overlay — 3rd image grows from exact frame position to full section */}

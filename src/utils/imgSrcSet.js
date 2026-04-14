@@ -1,7 +1,6 @@
 
 /**
- * Given a WebP image path, returns a srcset string with 800w, 1200w, 1600w, 2400w, 3200w variants
- * plus the original at its actual pixel width (from imageWidths.json manifest) if > 3200px.
+ * Given a WebP image path, returns a srcset string with 800w, 1200w, 1600w, 2400w, 3200w variants.
  * SVG paths and null/undefined values return null (no srcset).
  *
  * Example:

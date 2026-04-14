@@ -242,9 +242,9 @@
   overflow: hidden;
 }
 
-/* ── Mobile carousel (hidden on desktop) ────────────────────────── */
+/* ── Mobile filmstrip (hidden on desktop) ───────────────────────── */
 
-.ls-mobile-carousel {
+.ls-mobile-filmstrip {
   display: none;
 }
 
@@ -262,12 +262,13 @@
   }
 }
 
-/* ≤ 1024px: switch to swipe carousel, hide desktop layout */
+/* ≤ 1024px: switch to horizontal filmstrip, hide desktop layout */
 @media (max-width: 1024px) {
   .ls-section {
     height: auto;
     display: block;
     overflow: hidden;
+    padding: var(--space-xl) 0 var(--space-xl);
   }
 
   /* hide all desktop-only elements */
@@ -276,59 +277,55 @@
     display: none;
   }
 
-  /* show carousel */
-  .ls-mobile-carousel {
-    display: block;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .ls-mobile-track {
+  /* show filmstrip */
+  .ls-mobile-filmstrip {
     display: flex;
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    will-change: transform;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: var(--px-page);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 12px;
   }
 
-  .ls-mobile-slide {
-    width: 100vw;
+  .ls-mobile-filmstrip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ls-mobile-filmstrip-slide {
     flex-shrink: 0;
-    /* maintain same aspect ratio as desktop frame (62 : 37) */
-    aspect-ratio: 62 / 37;
+    width: 80vw;
+    scroll-snap-align: start;
   }
 
-  .ls-mobile-img {
+  .ls-mobile-filmstrip-slide:first-child {
+    margin-left: var(--px-page);
+  }
+
+  .ls-mobile-filmstrip-slide:last-child {
+    margin-right: var(--px-page);
+  }
+
+  .ls-mobile-filmstrip-img {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 62 / 37;
     object-fit: cover;
     display: block;
     user-select: none;
     pointer-events: none;
   }
 
-  /* dots overlaid on the image */
-  .ls-mobile-dots {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
+  .ls-mobile-filmstrip-meta {
     display: flex;
-    gap: 6px;
-    z-index: 2;
-  }
-
-  .ls-mobile-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-    padding: 0;
-    transition: background 0.2s;
-  }
-
-  .ls-mobile-dot-active {
-    background: rgba(255, 255, 255, 0.95);
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 8px;
+    font-family: var(--font-manrope);
+    font-size: var(--fs-12pt);
+    font-weight: var(--fw-regular);
+    letter-spacing: 0.04em;
+    color: var(--gray-600);
+    pointer-events: none;
+    user-select: none;
   }
 }

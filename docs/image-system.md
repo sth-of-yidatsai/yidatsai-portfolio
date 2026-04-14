@@ -7,7 +7,6 @@
 ```
 scripts/generate-responsive-images.js   ← 產生各尺寸圖片檔
 scripts/generate-alt-texts.js           ← 用 Claude CLI 自動生成中英文 alt 文字
-src/data/imageWidths.json               ← 原圖尺寸清單（自動產生）
 src/data/image-alts.json               ← 圖片 alt 文字庫（自動產生，commit 進 repo）
 src/utils/imgSrcSet.js                  ← srcset 字串建構 & preload 選圖
 src/utils/getAltText.js                 ← alt 文字查詢工具（支援語言參數）
@@ -184,7 +183,7 @@ public/images/projects/{新專案-slug}/
 npm run generate-images
 ```
 
-執行後自動產生 `-800` / `-1200` / `-1600` / `-2400` / `-3200` 五組變體，並更新 `src/data/imageWidths.json`。
+執行後自動產生 `-800` / `-1200` / `-1600` / `-2400` / `-3200` 五組變體。
 
 ### Step 2.5 — 生成 Alt 文字
 

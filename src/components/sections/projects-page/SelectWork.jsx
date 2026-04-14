@@ -60,11 +60,13 @@ export default function SelectWork() {
   const viewportRef = useRef(null);
   const offsetRef = useRef(0);
   const autoTimer = useRef(null);
-  const dragRef = useRef({ active: false, startX: 0, startOffset: 0, hasMoved: false });
+  const dragRef = useRef({ active: false, startX: 0, startOffset: 0, hasMoved: false, lastX: 0, lastTime: 0, velocity: 0 });
 
   const [offset, setOffset] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [revealedIdx, setRevealedIdx] = useState(null); // tap-to-reveal on touch
+  const isTouchRef = useRef(false);
 
   const getStep = useCallback(() => {
     const card = trackRef.current?.querySelector(".select-work__card-wrap");
@@ -74,6 +76,7 @@ export default function SelectWork() {
   // Animate to a target offset, then silently teleport to equivalent middle-set position
   const animateTo = useCallback(
     (targetOffset) => {
+      setRevealedIdx(null); // 切換卡片時收起任何已展開的 overlay
       offsetRef.current = targetOffset;
       setOffset(targetOffset);
       setIsAnimating(true);
@@ -139,6 +142,12 @@ export default function SelectWork() {
       if (Math.abs(delta) > 5) dragRef.current.hasMoved = true;
       const newOffset = dragRef.current.startOffset - delta;
       offsetRef.current = newOffset;
+      // 記錄速度（px/ms），用於 onUp 的 flick 判斷
+      const now = Date.now();
+      const dt = now - dragRef.current.lastTime;
+      if (dt > 0) dragRef.current.velocity = (e.clientX - dragRef.current.lastX) / dt;
+      dragRef.current.lastX = e.clientX;
+      dragRef.current.lastTime = now;
       if (trackRef.current) {
         trackRef.current.style.transform = `translateX(${-newOffset}px)`;
       }
@@ -147,10 +156,28 @@ export default function SelectWork() {
       if (!dragRef.current.active) return;
       dragRef.current.active = false;
       setIsDragging(false);
+
+      if (!dragRef.current.hasMoved) {
+        // 純 tap：不呼叫 animateTo（避免 setRevealedIdx(null) 在 click 前執行）
+        // click 事件會接手處理 reveal / 導航
+        startAutoAdvance();
+        return;
+      }
+
+      // 真正拖曳：snap 到最近卡片，並清除 overlay
       const step = getStep();
       if (!step) return;
-      const snapIdx = Math.round(offsetRef.current / step);
-      animateTo(snapIdx * step);
+      const FLICK_VX = 0.3; // px/ms
+      const v = dragRef.current.velocity;
+      let snapIdx;
+      if (Math.abs(v) > FLICK_VX) {
+        snapIdx = v < 0
+          ? Math.ceil(offsetRef.current / step)   // 向左 flick → 下一張
+          : Math.floor(offsetRef.current / step);  // 向右 flick → 上一張
+      } else {
+        snapIdx = Math.round(offsetRef.current / step);
+      }
+      animateTo(snapIdx * step); // animateTo 內部已呼叫 setRevealedIdx(null)
       startAutoAdvance();
     };
     window.addEventListener("pointermove", onMove);
@@ -165,8 +192,9 @@ export default function SelectWork() {
 
   const handlePointerDown = useCallback((e) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
+    isTouchRef.current = e.pointerType !== "mouse";
     clearInterval(autoTimer.current);
-    dragRef.current = { active: true, startX: e.clientX, startOffset: offsetRef.current, hasMoved: false };
+    dragRef.current = { active: true, startX: e.clientX, startOffset: offsetRef.current, hasMoved: false, lastX: e.clientX, lastTime: Date.now(), velocity: 0 };
     setIsAnimating(false);
     setIsDragging(true);
   }, []);
@@ -197,11 +225,22 @@ export default function SelectWork() {
               draggable={false}
               onClick={(e) => {
                 e.preventDefault();
-                if (!dragRef.current.hasMoved) handleCardClick(card);
+                if (dragRef.current.hasMoved) return;
+                if (isTouchRef.current) {
+                  // 第一次 tap：展開 overlay；第二次 tap：前往專案
+                  if (revealedIdx === i) {
+                    setRevealedIdx(null);
+                    handleCardClick(card);
+                  } else {
+                    setRevealedIdx(i);
+                  }
+                } else {
+                  handleCardClick(card);
+                }
               }}
               data-clickable
             >
-              <div className="select-work__card">
+              <div className={`select-work__card${revealedIdx === i ? " is-revealed" : ""}`}>
                 <div className="select-work__card-img-wrapper">
                   <img
                     src={card.image}
@@ -212,11 +251,13 @@ export default function SelectWork() {
                     draggable={false}
                   />
                 </div>
-                <div className="select-work__card-overlay">
+                <div className="select-work__card-overlay" data-go={t('projectsPage.viewProject') ?? 'View project'}>
                   <h3 className="select-work__card-title">{card.title}</h3>
                   <span className="select-work__card-rule" />
                   <p className="select-work__card-desc">{card.description}</p>
                 </div>
+                {/* 在觸控裝置上、overlay 收起時顯示輕量提示 */}
+                <span className="select-work__card-overlay-hint" aria-hidden="true">↗</span>
               </div>
               <span className="select-work__card-number">{card.number}</span>
             </a>
