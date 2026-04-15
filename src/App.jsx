@@ -69,8 +69,15 @@ function App() {
   const lenisRef = useRef(null);
 
   useEffect(() => {
+    // 依螢幕高度與 DPR 自適應滾動參數（解決 2K 滾動偏慢問題）
+    const vh = window.innerHeight;
+    const dpr = window.devicePixelRatio || 1;
+    const lerpValue = Math.min(0.14, 0.1 * (vh / 1080));
+    const wheelMultiplier = 1 + (dpr - 1) * 0.15;
+
     const lenis = new Lenis({
-      lerp: 0.1,
+      lerp: lerpValue,
+      wheelMultiplier: wheelMultiplier,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       smoothWheel: true,

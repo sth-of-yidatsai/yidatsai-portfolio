@@ -181,6 +181,7 @@
   line-height: 1.5;
   color: var(--gray-300);
   margin: 0;
+  white-space: pre-line;
 }
 
 /* ============================================================
@@ -232,10 +233,10 @@
     margin-top: 0;
   }
 
-  /* 2–3. 名字（左 row2）+ Bio（左 row3）；Image 2（右，跨 row 2–3） */
+  /* 名字與 Bio 共用同一 grid area（left, rows 2–4），分別釘頂/底對齊 image-2 */
   .fs-name-block {
     grid-column: 1 / 2;
-    grid-row: 2;
+    grid-row: 2 / 4;
     align-self: start;
   }
   .fs-image-2 {
@@ -245,11 +246,15 @@
 
   .fs-bio-block {
     grid-column: 1 / 2;
-    grid-row: 3;
-    align-self: start;
+    grid-row: 2 / 4;
+    align-self: end;
   }
 
   /* 4. 兩圖並列 */
+  .fs-image-2 .fs-image-frame {
+    aspect-ratio: 4 / 5;
+  }
+
   .fs-image-3 {
     grid-column: 1 / 2;
     grid-row: 4;
@@ -262,6 +267,10 @@
     grid-column: 2 / 3;
     grid-row: 4;
     margin-top: 0;
+  }
+
+  .fs-name {
+    font-size: var(--fs-64pt);
   }
 }
 

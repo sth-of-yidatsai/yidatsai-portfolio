@@ -228,18 +228,19 @@
     flex-direction: row;
     align-items: flex-end;
     justify-content: flex-start;
-    gap: var(--space-md);
+    gap: var(--space-lg);
     padding: var(--space-md) var(--px-page);
   }
 
   .project-block-number-large {
-    font-size: var(--fs-56pt);
     font-weight: var(--fw-extralight);
     margin-top: 0;
     margin-left: 0;
     flex-shrink: 0;
     transform: none;
     opacity: 0.9;
+    /* 固定寬度：確保 "1" 與 "2"~"4" 佔同等空間，text 區塊左緣對齊 */
+    min-width: 0.75em;
   }
 
   .project-block-content-bottom {
@@ -252,14 +253,14 @@
     gap: var(--space-sm);
     transform: none;
     opacity: 1;
-    padding-bottom: 6px;
+    padding-bottom: var(--space-md);
     flex: 1;
     justify-content: space-between;
     align-items: flex-end;
   }
 
   .project-practice-areas-large {
-    font-size: var(--fs-18pt);
+    font-size: var(--fs-28pt);
   }
 
   /* 分隔線隱藏，description 改靠右顯示 */
@@ -304,6 +305,21 @@
   .fullscreen-project-block.is-tapped .project-block-content-bottom {
     opacity: 0;
     transform: translateY(-4px);
+  }
+}
+
+/* ≤ 768px */
+@media (max-width: 768px) {
+  .project-block-overlay {
+    gap: var(--space-md);
+  }
+
+  .project-block-number-large {
+    font-size: var(--fs-56pt);
+  }
+
+  .project-practice-areas-large {
+    font-size: var(--fs-22pt);
   }
 }
 

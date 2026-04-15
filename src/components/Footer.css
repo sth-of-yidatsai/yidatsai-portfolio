@@ -425,8 +425,9 @@
 
   .footer-badge {
     align-self: flex-end;
-    width: clamp(10rem, 18vw, 18rem);
-    height: clamp(10rem, 18vw, 18rem);
+    /* 3行 × line-height 1.25 = 3.75 × fs-64pt，與 logo 等高 */
+    width: calc(var(--fs-64pt) * 3.75);
+    height: calc(var(--fs-64pt) * 3.75);
   }
 
   .footer-badge-svg {
@@ -499,5 +500,51 @@
     width: auto;
     height: auto;
     max-width: 160px;
+  }
+}
+
+/* xxs ≤ 430px：nav 全部上方、contact 全部下方，避免交叉分組混淆 */
+@media (max-width: 430px) {
+  .footer-logo {
+    font-size: var(--fs-48pt);
+  }
+
+  /* flexbox + order 重新分組，強制靠左 */
+  .footer-mid {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 子項目靠左 */
+    width: 100%;
+  }
+
+  /* nav 全部上方，每條加下邊框 */
+  .footer-nav-item {
+    order: 1;
+    width: 100%;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--gray-700);
+    opacity: 1;
+    justify-content: flex-start;
+  }
+
+  .footer-nav-label {
+    font-size: var(--fs-16pt);
+  }
+
+  /* contact 全部下方，每條獨立上下邊框 */
+  .footer-contact-row {
+    order: 2;
+    width: 100%;
+    justify-content: flex-start;
+    border-top: none;
+    border-bottom: 1px solid var(--gray-700);
+    padding: var(--space-sm) 0;
+    margin-bottom: -1px;
+  }
+
+  /* 第一個 contact-row 上方留間距區隔 nav 群組 */
+  .footer-contact-row:first-of-type {
+    margin-top: var(--space-lg);
   }
 }

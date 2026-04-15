@@ -177,8 +177,8 @@
 
 .vs-copy-title .biling-zh {
   font-family: var(--font-cjk);
-  font-size: 0.5em;
-  letter-spacing: 0.12em;
+  font-size: 0.55em;
+  letter-spacing: 0.1em;
   text-wrap: wrap;
 }
 
@@ -478,15 +478,6 @@
     right: var(--px-page);
     left: calc(50% + 31.3vh + 1vw + var(--space-lg));
   }
-  .vs-copy-title {
-    font-size: var(--fs-18pt);
-  }
-  .vs-copy-lead {
-    font-size: var(--fs-12pt);
-  }
-  .vs-copy-body {
-    font-size: var(--fs-10pt);
-  }
 }
 
 /* ≤ 1280px */
@@ -501,15 +492,6 @@
   .vs-text-col--right {
     right: var(--px-page);
     left: calc(50% + 29.7vh + 1vw + var(--space-lg));
-  }
-  .vs-copy-title {
-    font-size: var(--fs-18pt);
-  }
-  .vs-copy-lead {
-    font-size: var(--fs-12pt);
-  }
-  .vs-copy-body {
-    font-size: var(--fs-10pt);
   }
 }
 
@@ -607,6 +589,7 @@
   }
 
   .vs-copy-title {
+    font-size: var(--fs-28pt);
     white-space: nowrap;
   }
   .vs-copy-title br {
@@ -664,7 +647,7 @@
 /* xs ≤ 480px */
 @media (max-width: 480px) {
   .vs-title {
-    font-size: var(--fs-32pt);
+    font-size: var(--fs-40pt);
   }
 
   /* 手機：恢復 flex 直排 */

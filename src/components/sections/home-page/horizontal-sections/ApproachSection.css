@@ -170,6 +170,10 @@
     width: 38%;
     flex-shrink: 0;
   }
+
+  .as-title {
+    font-size: var(--fs-28pt);
+  }
 }
 
 /* xs ≤ 480px */

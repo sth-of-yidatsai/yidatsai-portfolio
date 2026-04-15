@@ -344,8 +344,14 @@ body.menu-open .ts__scrollbar {
   }
 
   .ts__header {
-    margin-top: var(--space-lg);
-    padding: 0 var(--px-page);
+    /* 清空 margin-top，改用 padding-top 淨空 fixed header（32px top + 48px height + 16px 間距） */
+    margin-top: 0;
+    padding: calc(var(--space-lg) + 48px + var(--space-md)) var(--px-page) 0;
+  }
+
+  /* 限制圖片高度，避免佔滿畫面 */
+  .ts__img-wrap {
+    max-height: 50vh;
   }
 
   /* Hide desktop scrolling timeline; show static mobile dots row */
