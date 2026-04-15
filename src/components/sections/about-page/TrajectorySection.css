@@ -349,9 +349,9 @@ body.menu-open .ts__scrollbar {
     padding: calc(var(--space-lg) + 48px + var(--space-md)) var(--px-page) 0;
   }
 
-  /* 限制圖片高度，避免佔滿畫面 */
+  /* JS 已將 --ts-img-w 限制在 50vh 以內，CSS 直接使用即可 */
   .ts__img-wrap {
-    max-height: 50vh;
+    width: var(--ts-img-w, 294px);
   }
 
   /* Hide desktop scrolling timeline; show static mobile dots row */

@@ -236,6 +236,7 @@
     font-weight: var(--fw-extralight);
     margin-top: 0;
     margin-left: 0;
+    margin-bottom: var(--space-sm);
     flex-shrink: 0;
     transform: none;
     opacity: 0.9;

@@ -480,31 +480,12 @@
   }
 }
 
-/* xs ≤ 480px */
+/* xxs ≤ 430px：nav 全部上方、contact 全部下方，避免交叉分組混淆 */
 @media (max-width: 480px) {
   .footer {
     padding: var(--space-lg) var(--px-page);
   }
 
-  /* logo：match header-overlay-logo（≤480px 無特別 override，維持 fs-64pt） */
-  .footer-logo {
-    font-size: var(--fs-64pt);
-  }
-
-  /* nav label：match header-overlay .header-nav-label ≤480px = fs-20pt */
-  .footer-nav-label {
-    font-size: var(--fs-20pt);
-  }
-
-  .footer-badge {
-    width: auto;
-    height: auto;
-    max-width: 160px;
-  }
-}
-
-/* xxs ≤ 430px：nav 全部上方、contact 全部下方，避免交叉分組混淆 */
-@media (max-width: 430px) {
   .footer-logo {
     font-size: var(--fs-48pt);
   }
@@ -546,5 +527,11 @@
   /* 第一個 contact-row 上方留間距區隔 nav 群組 */
   .footer-contact-row:first-of-type {
     margin-top: var(--space-lg);
+  }
+
+  .footer-badge {
+    width: auto;
+    height: auto;
+    max-width: 160px;
   }
 }

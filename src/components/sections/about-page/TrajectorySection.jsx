@@ -69,8 +69,11 @@ export default function TrajectorySection() {
       const gapCount = shown - 1;
       const pxPagePx = parseFloat(getComputedStyle(track).paddingLeft) || 64;
       const VISUAL_GAP = 24;
-      const imgW =
+      const rawImgW =
         (window.innerWidth - 2 * pxPagePx - gapCount * VISUAL_GAP) / shown;
+      // mobile 時限制正方形卡片高度不超過 50svh，CSS 同步套用 min()
+      const maxImgW = isMobile ? window.innerHeight * 0.5 : Infinity;
+      const imgW = Math.min(rawImgW, maxImgW);
       const cardW = imgW * (3 / 4);
       const gapPx = VISUAL_GAP + imgW / 4;
 
@@ -169,8 +172,14 @@ export default function TrajectorySection() {
 
     setup();
 
+    // Safari のアドレスバー開閉は height のみ変化し width は不変。
+    // その場合は setup() を呼ばず、カードサイズの跳びを防ぐ。
+    let lastWidth = window.innerWidth;
     const onResize = () => {
-      setup();
+      const newWidth = window.innerWidth;
+      const widthChanged = Math.abs(newWidth - lastWidth) >= 5;
+      lastWidth = newWidth;
+      if (widthChanged) setup();
       if (!isMobileRef.current) ScrollTrigger.refresh();
     };
     window.addEventListener("resize", onResize);
