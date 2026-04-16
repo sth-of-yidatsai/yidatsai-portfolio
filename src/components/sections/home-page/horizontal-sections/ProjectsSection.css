@@ -264,6 +264,10 @@
     font-size: var(--fs-28pt);
   }
 
+  .project-practice-areas-large .biling-zh {
+    font-size: var(--fs-12pt);
+  }
+
   /* 分隔線隱藏，description 改靠右顯示 */
   .project-rule {
     display: none;
@@ -317,10 +321,6 @@
 
   .project-block-number-large {
     font-size: var(--fs-56pt);
-  }
-
-  .project-practice-areas-large {
-    font-size: var(--fs-22pt);
   }
 }
 

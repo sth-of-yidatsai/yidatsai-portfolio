@@ -88,8 +88,8 @@
     "header2": "ART & SYSTEM",
     "titleZh": "藝術與系統之間",
     "subtitle": "美學、邏輯與體驗的交會之處",
-    "center1": "STRUCTURED",
-    "center2": "EMOTION",
+    "center1": "Construct",
+    "center2": "",
     "steps": [
       {
         "left": {
@@ -113,8 +113,8 @@
           "body": ["氛圍與記憶，", "形塑其被感知的方式。"]
         },
         "right": {
-          "title": "Structured \nEmotion",
-          "titleZh": "結構化情感",
+          "title": "Construct",
+          "titleZh": "形構",
           "lead": "情感並非隨機產生",
           "body": ["透過結構被建構，", "並藉由設計被賦予生命。"]
         }
@@ -289,7 +289,8 @@
     "openMenu": "開啟選單"
   },
   "explore": {
-    "dragHint": "拖曳移動"
+    "dragHint": "拖曳移動",
+    "clickHint": "點擊圖片前往專案"
   },
   "projectDetail": {
     "discoverMore": "探索更多"

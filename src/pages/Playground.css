@@ -117,26 +117,28 @@ html.projects-no-scroll-html {
   z-index: 850; /* 低於 header(999) */
   top: 0;
   left: 0;
-  background-color: var(--gray-900);
-  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent; /* 黑底由 overlay 負責 */
+  overflow: visible;
   cursor: default;
-  pointer-events: none; /* 容器不攔截事件，避免遮擋 Header / 自訂游標 */
+  pointer-events: none; /* 全域不攔截，僅 inner img 攔截 */
+}
+
+/* 內層：contain 尺寸的動畫主體，絕對位置由 GSAP 控制 */
+.gallery-expanded-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
   border-radius: var(--border-radius, 0px);
 }
 
-/* 極輕微暗層，提升 mix-blend 差值游標對比，但不影響畫面觀感 */
-.gallery-expanded-item::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.04);
-  pointer-events: none;
-}
-
-.gallery-expanded-item img {
+.gallery-expanded-inner img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   pointer-events: auto; /* 僅圖片可點擊導頁 */
   cursor: pointer;
 }
@@ -216,7 +218,7 @@ body.menu-open .gallery-expanded-item {
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.35);
   pointer-events: none;
-  z-index: 800;
+  z-index: 900; /* 高於 expanded-item(850) 與 overlay(800)，低於 header(999) */
   margin: 0;
   opacity: 1;
   transition: opacity 0.4s ease;

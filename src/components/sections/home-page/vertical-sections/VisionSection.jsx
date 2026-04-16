@@ -19,69 +19,107 @@ import BilingTitle from "../../../BilingTitle";
        Arrow 3  102°→198°   (287,648)→( 60,256)   past L
    ══════════════════════════════════════════════════════════════════ */
 
-const R   = 155;
-const AX  = 350, AY = 234;
-const LX  = 250, LY = 408;
-const EX  = 450, EY = 408;
+const R = 155;
+const AX = 350,
+  AY = 234;
+const LX = 250,
+  LY = 408;
+const EX = 450,
+  EY = 408;
 const OFF = 44;
 
 const CIRCLES = [
   {
-    id: "aes", cx: AX, cy: AY,
+    id: "aes",
+    cx: AX,
+    cy: AY,
     rotation: 0,
     title: "AESTHETICS",
-    kw1: "Form · Rhythm · Texture ·", kw2: "Visual Tone",
-    tx: AX,   ty: 172,  k1y: 196, k2y: 212,
+    kw1: "Form · Rhythm · Texture ·",
+    kw2: "Visual Tone",
+    tx: AX,
+    ty: 172,
+    k1y: 196,
+    k2y: 212,
   },
   {
-    id: "log", cx: LX, cy: LY,
+    id: "log",
+    cx: LX,
+    cy: LY,
     rotation: 240,
     title: "LOGIC",
-    kw1: "System · Hierarchy ·", kw2: "Clarity · Function",
-    tx: LX + OFF * -0.866,  ty: LY + OFF * 0.5 - 18,
-    k1y: LY + OFF * 0.5 + 6, k2y: LY + OFF * 0.5 + 22,
+    kw1: "System · Hierarchy ·",
+    kw2: "Clarity · Function",
+    tx: LX + OFF * -0.866,
+    ty: LY + OFF * 0.5 - 18,
+    k1y: LY + OFF * 0.5 + 6,
+    k2y: LY + OFF * 0.5 + 22,
   },
   {
-    id: "exp", cx: EX, cy: EY,
+    id: "exp",
+    cx: EX,
+    cy: EY,
     rotation: 120,
     title: "EXPERIENCE",
-    kw1: "Narrative · Atmosphere ·", kw2: "Memory · Presence",
-    tx: EX + OFF * 0.866,   ty: EY + OFF * 0.5 - 18,
-    k1y: EY + OFF * 0.5 + 6, k2y: EY + OFF * 0.5 + 22,
+    kw1: "Narrative · Atmosphere ·",
+    kw2: "Memory · Presence",
+    tx: EX + OFF * 0.866,
+    ty: EY + OFF * 0.5 - 18,
+    k1y: EY + OFF * 0.5 + 6,
+    k2y: EY + OFF * 0.5 + 22,
   },
 ];
 
 /* R_arc=305 — each arc is 96° CW, clearly outside all three spheres */
 const ARROWS = [
-  "M 123 146 A 305 305 0 0 1 577 146",   // L-A gap → A-E gap  (over top of A)
-  "M 640 256 A 305 305 0 0 1 413 648",   // A-E gap → E-L gap  (right, past E)
-  "M 287 648 A 305 305 0 0 1  60 256",   // E-L gap → L-A gap  (bottom-left, past L)
+  "M 123 146 A 305 305 0 0 1 577 146", // L-A gap → A-E gap  (over top of A)
+  "M 640 256 A 305 305 0 0 1 413 648", // A-E gap → E-L gap  (right, past E)
+  "M 287 648 A 305 305 0 0 1  60 256", // E-L gap → L-A gap  (bottom-left, past L)
 ];
 
 /* Arrowhead endpoint positions + rotation angles (tangent of CW arc at each end) */
 const ARROW_ENDS = [
-  { x: 577, y: 146, angle:  48 },  // end of arrow 1 (318° on arc)
-  { x: 413, y: 648, angle: 168 },  // end of arrow 2 (78° on arc)
-  { x:  60, y: 256, angle: 288 },  // end of arrow 3 (198° on arc)
+  { x: 577, y: 146, angle: 48 }, // end of arrow 1 (318° on arc)
+  { x: 413, y: 648, angle: 168 }, // end of arrow 2 (78° on arc)
+  { x: 60, y: 256, angle: 288 }, // end of arrow 3 (198° on arc)
 ];
 
-const ANIM_DURATION  = 900; // ms — must match CSS animation duration
+const ANIM_DURATION = 900; // ms — must match CSS animation duration
 const ENTER_DEBOUNCE = 120; // ms — ignore rapid enter/leave sweeps
 
 /* COPY_STEPS are now loaded from locale — see VisionSection() */
 
-function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
-                      onHoverStart, onHoverEnd }) {
+function VennCircle({
+  cx,
+  cy,
+  id,
+  rotation,
+  title,
+  kw1,
+  kw2,
+  tx,
+  ty,
+  k1y,
+  k2y,
+  onHoverStart,
+  onHoverEnd,
+}) {
   const [phase, setPhase] = useState("idle");
-  const phaseRef    = useRef("idle");          // shadow state — stale-closure safe
-  const enterTimer  = useRef(null);
-  const leaveTimer  = useRef(null);
+  const phaseRef = useRef("idle"); // shadow state — stale-closure safe
+  const enterTimer = useRef(null);
+  const leaveTimer = useRef(null);
 
-  const setP = (p) => { phaseRef.current = p; setPhase(p); };
+  const setP = (p) => {
+    phaseRef.current = p;
+    setPhase(p);
+  };
 
   const handleEnter = useCallback(() => {
     // Cancel any in-flight leave reset
-    if (leaveTimer.current) { clearTimeout(leaveTimer.current); leaveTimer.current = null; }
+    if (leaveTimer.current) {
+      clearTimeout(leaveTimer.current);
+      leaveTimer.current = null;
+    }
     // Cancel previous pending enter (re-debounce)
     if (enterTimer.current) clearTimeout(enterTimer.current);
 
@@ -90,7 +128,10 @@ function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
       // Ask parent how long to wait for the previous leave to finish
       const wait = onHoverStart();
       if (wait > 0) {
-        enterTimer.current = setTimeout(() => { enterTimer.current = null; setP("hovering"); }, wait);
+        enterTimer.current = setTimeout(() => {
+          enterTimer.current = null;
+          setP("hovering");
+        }, wait);
       } else {
         setP("hovering");
       }
@@ -109,11 +150,18 @@ function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
 
     setP("leaving");
     onHoverEnd();
-    leaveTimer.current = setTimeout(() => { leaveTimer.current = null; setP("idle"); }, ANIM_DURATION);
+    leaveTimer.current = setTimeout(() => {
+      leaveTimer.current = null;
+      setP("idle");
+    }, ANIM_DURATION);
   }, [onHoverEnd]);
 
   const rotStyle = rotation
-    ? { transform: `rotate(${rotation}deg)`, transformBox: "fill-box", transformOrigin: "center" }
+    ? {
+        transform: `rotate(${rotation}deg)`,
+        transformBox: "fill-box",
+        transformOrigin: "center",
+      }
     : undefined;
 
   return (
@@ -127,7 +175,10 @@ function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
           Keeping blur out of the drift animation eliminates per-frame
           feGaussianBlur recomputation in Firefox. Pure radial gradient
           provides sufficient soft falloff without the filter. */}
-      <circle cx={cx} cy={cy} r={R + 70}
+      <circle
+        cx={cx}
+        cy={cy}
+        r={R + 70}
         fill="url(#glow-atm)"
         pointerEvents="none"
         className="vs-halo"
@@ -135,22 +186,28 @@ function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
 
       {/* Inner shape group — idle drift applies here only (text excluded) */}
       <g className={`vs-shape vs-shape-${id}`}>
-
         {/* vision-circle.svg */}
         <image
           href={visionCircle}
-          x={cx - R} y={cy - R}
-          width={R * 2} height={R * 2}
+          x={cx - R}
+          y={cy - R}
+          width={R * 2}
+          height={R * 2}
           style={rotStyle}
           className="vs-circle-fill"
         />
-
       </g>
 
       {/* Labels — in outer group: move with hover but NOT with idle drift */}
-      <text x={tx} y={ty}  textAnchor="middle" className="vs-svg-title">{title}</text>
-      <text x={tx} y={k1y} textAnchor="middle" className="vs-svg-kw">{kw1}</text>
-      <text x={tx} y={k2y} textAnchor="middle" className="vs-svg-kw">{kw2}</text>
+      <text x={tx} y={ty} textAnchor="middle" className="vs-svg-title">
+        {title}
+      </text>
+      <text x={tx} y={k1y} textAnchor="middle" className="vs-svg-kw">
+        {kw1}
+      </text>
+      <text x={tx} y={k2y} textAnchor="middle" className="vs-svg-kw">
+        {kw2}
+      </text>
     </g>
   );
 }
@@ -158,12 +215,20 @@ function VennCircle({ cx, cy, id, rotation, title, kw1, kw2, tx, ty, k1y, k2y,
 function CopyPanel({ data, active }) {
   return (
     <div className={`vs-copy${active ? " vs-copy--active" : ""}`}>
-      <BilingTitle en={data.title} zh={data.titleZh ?? null} as="h3" className="vs-copy-title" />
+      <BilingTitle
+        en={data.title}
+        zh={data.titleZh ?? null}
+        as="h3"
+        className="vs-copy-title"
+      />
       <div className="vs-copy-line" />
       <p className="vs-copy-lead">{data.lead}</p>
       <p className="vs-copy-body">
         {data.body.map((line, i) => (
-          <span key={i}>{line}{i < data.body.length - 1 && <br />}</span>
+          <span key={i}>
+            {line}
+            {i < data.body.length - 1 && <br />}
+          </span>
         ))}
       </p>
     </div>
@@ -173,8 +238,8 @@ function CopyPanel({ data, active }) {
 export default function VisionSection() {
   const { t, locale } = useTranslation();
   const COPY_STEPS = locale.vision.steps;
-  const headerRef      = useRef(null);
-  const scrollZoneRef  = useRef(null);
+  const headerRef = useRef(null);
+  const scrollZoneRef = useRef(null);
   const [isHeaderInView, setIsHeaderInView] = useState(false);
   const [scrollStep, setScrollStep] = useState(0);
 
@@ -202,7 +267,7 @@ export default function VisionSection() {
           observer.disconnect();
         }
       },
-      { rootMargin: "-30% 0px -30% 0px", threshold: 0 }
+      { rootMargin: "-30% 0px -30% 0px", threshold: 0 },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -226,7 +291,6 @@ export default function VisionSection() {
 
   return (
     <section className="vs-section">
-
       {/* Header — scrolls normally above the sticky zone */}
       <div className="vs-inner">
         <header
@@ -236,17 +300,25 @@ export default function VisionSection() {
           <h2 className="vs-title">
             <span className="line-roll">
               <span className="line-roll-top">BETWEEN</span>
-              <span className="line-roll-bottom" aria-hidden="true">BETWEEN</span>
+              <span className="line-roll-bottom" aria-hidden="true">
+                BETWEEN
+              </span>
             </span>
             <span className="line-roll">
-              <span className="line-roll-top">ART <span className="vs-title-sub">&amp; SYSTEM</span></span>
-              <span className="line-roll-bottom" aria-hidden="true">ART <span className="vs-title-sub">&amp; SYSTEM</span></span>
+              <span className="line-roll-top">
+                ART <span className="vs-title-sub">&amp; SYSTEM</span>
+              </span>
+              <span className="line-roll-bottom" aria-hidden="true">
+                ART <span className="vs-title-sub">&amp; SYSTEM</span>
+              </span>
             </span>
           </h2>
           {locale.vision?.titleZh && (
-            <p className="vs-title-zh" lang="zh-TW">{locale.vision.titleZh}</p>
+            <p className="vs-title-zh" lang="zh-TW">
+              {locale.vision.titleZh}
+            </p>
           )}
-          <p className="vs-subtitle">{t('vision.subtitle')}</p>
+          <p className="vs-subtitle">{t("vision.subtitle")}</p>
         </header>
       </div>
 
@@ -254,11 +326,14 @@ export default function VisionSection() {
       <div className="vs-scroll-zone" ref={scrollZoneRef}>
         <div className="vs-sticky-panel">
           <div className="vs-layout">
-
             {/* Left text column */}
             <div className="vs-text-col vs-text-col--left">
               {COPY_STEPS.map((step, si) => (
-                <CopyPanel key={si} data={step.left} active={scrollStep === si} />
+                <CopyPanel
+                  key={si}
+                  data={step.left}
+                  active={scrollStep === si}
+                />
               ))}
             </div>
 
@@ -271,31 +346,59 @@ export default function VisionSection() {
                 aria-hidden="true"
               >
                 <defs>
-
-                  <radialGradient id="glow-atm" cx="50%" cy="50%" r="50%"
-                    gradientUnits="objectBoundingBox">
-                    <stop offset="0%"   stopColor="#cccccc" stopOpacity="0.22" />
-                    <stop offset="35%"  stopColor="#888888" stopOpacity="0.10" />
-                    <stop offset="70%"  stopColor="#444444" stopOpacity="0.03" />
-                    <stop offset="100%" stopColor="#000000" stopOpacity="0"    />
+                  <radialGradient
+                    id="glow-atm"
+                    cx="50%"
+                    cy="50%"
+                    r="50%"
+                    gradientUnits="objectBoundingBox"
+                  >
+                    <stop offset="0%" stopColor="#cccccc" stopOpacity="0.22" />
+                    <stop offset="35%" stopColor="#888888" stopOpacity="0.10" />
+                    <stop offset="70%" stopColor="#444444" stopOpacity="0.03" />
+                    <stop offset="100%" stopColor="#000000" stopOpacity="0" />
                   </radialGradient>
-
                 </defs>
 
                 {/* Circles — rendered first (back layer) */}
-                {CIRCLES.map(({ id, cx, cy, rotation, title, kw1, kw2, tx, ty, k1y, k2y }) => (
-                  <VennCircle key={id}
-                    cx={cx} cy={cy} id={id} rotation={rotation}
-                    title={title} kw1={kw1} kw2={kw2}
-                    tx={tx} ty={ty} k1y={k1y} k2y={k2y}
-                    onHoverStart={handleHoverStart}
-                    onHoverEnd={handleHoverEnd}
-                  />
-                ))}
+                {CIRCLES.map(
+                  ({
+                    id,
+                    cx,
+                    cy,
+                    rotation,
+                    title,
+                    kw1,
+                    kw2,
+                    tx,
+                    ty,
+                    k1y,
+                    k2y,
+                  }) => (
+                    <VennCircle
+                      key={id}
+                      cx={cx}
+                      cy={cy}
+                      id={id}
+                      rotation={rotation}
+                      title={title}
+                      kw1={kw1}
+                      kw2={kw2}
+                      tx={tx}
+                      ty={ty}
+                      k1y={k1y}
+                      k2y={k2y}
+                      onHoverStart={handleHoverStart}
+                      onHoverEnd={handleHoverEnd}
+                    />
+                  ),
+                )}
 
                 {/* Arrows — trim-path animation, staggered */}
                 {ARROWS.map((d, i) => (
-                  <path key={i} d={d}
+                  <path
+                    key={i}
+                    d={d}
                     fill="none"
                     stroke="rgba(255,255,255,0.38)"
                     strokeWidth="1.2"
@@ -306,33 +409,41 @@ export default function VisionSection() {
 
                 {/* Arrowheads — appear only when trim-path stroke reaches endpoint */}
                 {ARROW_ENDS.map(({ x, y, angle }, i) => (
-                  <polygon key={i}
+                  <polygon
+                    key={i}
                     points="0 0, 7 2.5, 0 5"
                     fill="rgba(255,255,255,0.35)"
                     transform={`translate(${x}, ${y}) rotate(${angle}) translate(-6, -2.5)`}
                     className="vs-arrowhead"
-                    style={{ '--arrowhead-delay': `${i * 2}s` }}
+                    style={{ "--arrowhead-delay": `${i * 2}s` }}
                   />
                 ))}
 
                 {/* Centre label */}
-                <text x="350" y="346" textAnchor="middle" className="vs-svg-center">STRUCTURED</text>
-                <text x="350" y="360" textAnchor="middle" className="vs-svg-center">EMOTION</text>
-
+                <text
+                  x="350"
+                  y="353"
+                  textAnchor="middle"
+                  className="vs-svg-center"
+                >
+                  Construct
+                </text>
               </svg>
             </div>
 
             {/* Right text column */}
             <div className="vs-text-col vs-text-col--right">
               {COPY_STEPS.map((step, si) => (
-                <CopyPanel key={si} data={step.right} active={scrollStep === si} />
+                <CopyPanel
+                  key={si}
+                  data={step.right}
+                  active={scrollStep === si}
+                />
               ))}
             </div>
-
           </div>
         </div>
       </div>
-
     </section>
   );
 }

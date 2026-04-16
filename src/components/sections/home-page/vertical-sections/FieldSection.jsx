@@ -72,7 +72,6 @@ export default function FieldSection() {
               loading="eager"
             />
           </div>
-          <span className="fs-image-label">{images[0].label}</span>
         </div>
 
         {/* Image 2 — Graphic Design (portrait, top-right) */}
@@ -88,7 +87,6 @@ export default function FieldSection() {
               loading="eager"
             />
           </div>
-          <span className="fs-image-label">{images[1].label}</span>
         </div>
 
         {/* Image 3 — Typography (portrait, mid-left) */}
@@ -104,7 +102,6 @@ export default function FieldSection() {
               loading="eager"
             />
           </div>
-          <span className="fs-image-label">{images[2].label}</span>
         </div>
 
         {/* Name block */}
@@ -142,7 +139,6 @@ export default function FieldSection() {
               loading="eager"
             />
           </div>
-          <span className="fs-image-label">{images[3].label}</span>
         </div>
       </div>
     </section>

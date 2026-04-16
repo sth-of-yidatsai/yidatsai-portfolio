@@ -103,7 +103,8 @@
 @media (max-width: 1024px) {
   .bs__text-block {
     min-height: unset;
-    padding: var(--space-xl) var(--px-page);
+    padding-left: var(--px-page);
+    padding-right: var(--px-page);
     opacity: 0;
     transform: translateY(24px);
     transition:
@@ -114,6 +115,11 @@
   /* First text block needs extra top clearance for fixed header (16px top + 48px height) */
   .bs .bs__text-block:first-child {
     padding-top: calc(var(--space-md) + 48px + var(--space-xl));
+    padding-bottom: var(--space-lg);
+  }
+  .bs .bs__text-block:last-child {
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
   }
 
   .bs__text-block.is-visible {
@@ -142,25 +148,5 @@
 @media (max-width: 480px) {
   .bs__text {
     font-size: var(--fs-28pt);
-  }
-}
-
-/* ── Chinese bio (SEO supplemental text) ────────────────────── */
-.bs__zh-bio {
-  padding: var(--space-xl) var(--px-page);
-  background: var(--gray-900);
-}
-
-.bs__zh-bio p {
-  font-family: var(--font-cjk), sans-serif;
-  font-size: var(--fs-10pt);
-  line-height: 1.8;
-  color: var(--gray-500);
-  margin: 0;
-}
-
-@media (max-width: 768px) {
-  .bs__zh-bio {
-    padding: 0 var(--px-page) var(--space-lg);
   }
 }

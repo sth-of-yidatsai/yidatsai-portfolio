@@ -90,8 +90,8 @@
     "header2": "ART & SYSTEM",
     "titleZh": null,
     "subtitle": "Where aesthetics, logic, and experience intersect",
-    "center1": "STRUCTURED",
-    "center2": "EMOTION",
+    "center1": "Construct",
+    "center2": "",
     "steps": [
       {
         "left": {
@@ -115,7 +115,7 @@
           "body": ["Atmosphere and memory", "define how it is perceived."]
         },
         "right": {
-          "title": "Structured Emotion",
+          "title": "Construct",
           "titleZh": null,
           "lead": "Emotion is carefully constructed.",
           "body": ["Shaped through structure", "brought to life by design."]
@@ -307,7 +307,8 @@
     "openMenu": "Open menu"
   },
   "explore": {
-    "dragHint": "Drag to move"
+    "dragHint": "Drag to move",
+    "clickHint": "Click image to view project"
   },
   "projectDetail": {
     "discoverMore": "Discover More"

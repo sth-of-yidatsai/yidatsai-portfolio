@@ -23,16 +23,6 @@ const SIZE_DIMS = {
 const DEFAULT_DIMS = { width: 360, height: 480 }; // fallback（同 portrait）
 
 // 依螢幕寬度決定卡片縮放比例
-// 計算 contain 尺寸：在螢幕內完整顯示圖片，不超出任何一邊
-const calcContainSize = (imgW, imgH) => {
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  const scaleByW = vw / imgW;
-  const scaleByH = vh / imgH;
-  const scale = Math.min(scaleByW, scaleByH);
-  return { targetWidth: imgW * scale, targetHeight: imgH * scale };
-};
-
 const getDeviceScale = () => {
   const w = window.innerWidth;
   if (w < 480) return 0.58;
@@ -331,11 +321,26 @@ export default function Playground() {
     // 暗場
     animateOverlayIn();
 
-    // 建立展開元件
+    // 提示文字切換
+    if (dragHintRef.current) {
+      dragHintRef.current.textContent = t('explore.clickHint');
+    }
+
+    // 計算 contain 尺寸（圖片最大顯示範圍，不超出 viewport）
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const imgScale = Math.min(vw / itemWidth, vh / itemHeight);
+    const imgDisplayW = Math.round(itemWidth * imgScale);
+    const imgDisplayH = Math.round(itemHeight * imgScale);
+
+    // 外層：full viewport，透明，pointer-events:none（只作為 stacking context）
     const expanded = document.createElement("div");
     expanded.className = "gallery-expanded-item";
-    expanded.style.width = `${itemWidth}px`;
-    expanded.style.height = `${itemHeight}px`;
+
+    // 內層：contain 尺寸，絕對置中，動畫主體
+    const inner = document.createElement("div");
+    inner.className = "gallery-expanded-inner";
+
     const img = document.createElement("img");
     img.src = imgSrc;
     const expandedSrcSet = buildSrcSet(imgSrc);
@@ -345,8 +350,10 @@ export default function Playground() {
     }
     img.classList.add("clickable");
     img.setAttribute("data-clickable", "true");
-    expanded.appendChild(img);
-    // 點擊展開圖：先確保收尾（overlay 與節點移除）再導頁，避免殘留
+    inner.appendChild(img);
+    expanded.appendChild(inner);
+
+    // 點擊圖片：收尾後導頁
     img.addEventListener("click", () => {
       hideTitleImmediately();
       const overlay = overlayRef.current;
@@ -370,7 +377,8 @@ export default function Playground() {
         },
       });
     });
-    // 將展開節點附加在本頁容器內，避免脫離 #root 後建立更高層的堆疊上下文
+
+    // 將展開節點附加在本頁容器內
     const host =
       containerRef.current ||
       document.getElementById("gallery-canvas") ||
@@ -389,7 +397,7 @@ export default function Playground() {
       }
     });
 
-    // 動畫到中央
+    // 動畫到中央（動畫 inner，outer 固定為 full viewport）
     const rect = item.getBoundingClientRect();
     s.originalPosition = {
       id: item.id,
@@ -399,14 +407,8 @@ export default function Playground() {
       height: itemHeight,
     };
 
-    // contain：依裝置方向決定由寬還是高限制，確保圖片完整顯示不超出螢幕
-    const { targetWidth, targetHeight } = calcContainSize(itemWidth, itemHeight);
-
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-
     gsap.fromTo(
-      expanded,
+      inner,
       {
         width: itemWidth,
         height: itemHeight,
@@ -414,10 +416,10 @@ export default function Playground() {
         y: rect.top,
       },
       {
-        width: targetWidth,
-        height: targetHeight,
-        x: (vw - targetWidth) / 2,
-        y: (vh - targetHeight) / 2,
+        width: imgDisplayW,
+        height: imgDisplayH,
+        x: (vw - imgDisplayW) / 2,
+        y: (vh - imgDisplayH) / 2,
         duration: settings.zoomDuration,
         ease: "hop",
       }
@@ -431,6 +433,11 @@ export default function Playground() {
     // 立即隱藏標題與全版黑底
     hideTitleImmediately();
     animateOverlayOut();
+
+    // 恢復拖曳提示文字
+    if (dragHintRef.current) {
+      dragHintRef.current.textContent = t('explore.dragHint');
+    }
 
     // 其它卡片淡入
     document.querySelectorAll(".gallery-item").forEach((el) => {
@@ -448,7 +455,8 @@ export default function Playground() {
     const originalWidth = s.originalPosition.width;
     const originalHeight = s.originalPosition.height;
 
-    gsap.to(s.expandedItem, {
+    const inner = s.expandedItem?.querySelector(".gallery-expanded-inner");
+    gsap.to(inner || s.expandedItem, {
       width: originalWidth,
       height: originalHeight,
       x: originalRect.left,
@@ -597,18 +605,18 @@ export default function Playground() {
     };
     const onResize = () => {
       if (s.isExpanded && s.expandedItem && s.originalPosition) {
-        const { targetWidth, targetHeight } = calcContainSize(
-          s.originalPosition.width,
-          s.originalPosition.height
-        );
-
         const vw = window.innerWidth;
         const vh = window.innerHeight;
-        gsap.to(s.expandedItem, {
-          width: targetWidth,
-          height: targetHeight,
-          x: (vw - targetWidth) / 2,
-          y: (vh - targetHeight) / 2,
+        const { width: w, height: h } = s.originalPosition;
+        const sc = Math.min(vw / w, vh / h);
+        const imgDisplayW = Math.round(w * sc);
+        const imgDisplayH = Math.round(h * sc);
+        const inner = s.expandedItem.querySelector(".gallery-expanded-inner");
+        gsap.to(inner || s.expandedItem, {
+          width: imgDisplayW,
+          height: imgDisplayH,
+          x: (vw - imgDisplayW) / 2,
+          y: (vh - imgDisplayH) / 2,
           duration: 0.3,
           ease: "power2.out",
         });

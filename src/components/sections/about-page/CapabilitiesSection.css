@@ -256,6 +256,7 @@
 
   .cs__title {
     font-size: var(--fs-40pt);
+    font-weight: var(--fw-light);
   }
 }
 

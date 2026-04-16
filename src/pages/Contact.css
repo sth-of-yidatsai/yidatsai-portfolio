@@ -37,7 +37,6 @@
 @media (max-width: 1024px) {
   .contact-title {
     font-size: var(--fs-48pt);
-    font-weight: var(--fw-light);
   }
 }
 
@@ -49,6 +48,7 @@
 
   .contact-title {
     font-size: var(--fs-40pt);
+    font-weight: var(--fw-light);
   }
 }
 

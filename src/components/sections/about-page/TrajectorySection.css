@@ -384,6 +384,7 @@ body.menu-open .ts__scrollbar {
 @media (max-width: 768px) {
   .ts__title {
     font-size: var(--fs-40pt);
+    font-weight: var(--fw-light);
   }
 
   .ts__year {

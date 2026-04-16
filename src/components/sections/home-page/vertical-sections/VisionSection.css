@@ -440,10 +440,11 @@
 
 .vs-svg-center {
   font-family: var(--font-manrope), sans-serif;
-  font-size: var(--fs-8pt);
+  font-size: var(--fs-10pt);
   font-weight: var(--fw-medium);
   fill: rgba(255, 255, 255, 0.68);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
 }
 
 /* ============================================================
@@ -591,6 +592,10 @@
   .vs-copy-title {
     font-size: var(--fs-28pt);
     white-space: nowrap;
+  }
+
+  .vs-copy-title .biling-zh {
+    font-size: var(--fs-12pt);
   }
   .vs-copy-title br {
     display: none;

@@ -174,6 +174,10 @@
   .as-title {
     font-size: var(--fs-28pt);
   }
+
+  .as-title .biling-zh {
+    font-size: var(--fs-12pt);
+  }
 }
 
 /* xs ≤ 480px */
