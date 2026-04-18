@@ -14,7 +14,7 @@
   content: "";
   display: block;
   margin: 0 var(--px-page);
-  border-top: 1px solid var(--gray-500);
+  border-top: 2px solid var(--gray-600);
 }
 
 .vs-inner {
@@ -568,15 +568,16 @@
     grid-column: unset;
   }
 
-  /* 每段文案：25vh 高度 */
+  /* 每段文案：高度由內容決定，不固定 25vh */
   .vs-copy {
     width: 100%;
     max-width: none;
-    height: 25vh;
+    height: auto;
+    min-height: 160px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: var(--space-md) var(--px-page);
+    padding: var(--space-lg) var(--px-page);
     box-sizing: border-box;
     opacity: 1;
     transform: none;
@@ -704,6 +705,6 @@
   }
 
   .vs-section::after {
-    border-top: 1px solid var(--gray-500);
+    border-top: 2px solid var(--gray-600);
   }
 }

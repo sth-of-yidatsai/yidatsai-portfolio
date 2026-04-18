@@ -272,18 +272,46 @@
   .fs-name {
     font-size: var(--fs-64pt);
   }
+
+  /* 防止圖片高度過高導致整頁滾動距離暴增 */
+  .fs-image-1 .fs-image-frame {
+    max-height: 40vw;
+  }
+
+  .fs-image-2 .fs-image-frame {
+    max-height: 50vw;
+  }
 }
 
 /* ── Mobile ≤ 768px — 還原 image-2 單行、bio 全寬 ── */
 @media (max-width: 480px) {
+  /* name-block 只占 row 2，不再跨到 row 4 */
+  .fs-name-block {
+    grid-row: 2;
+  }
+
   .fs-image-2 {
     grid-column: 2 / 3;
     grid-row: 2;
+    align-self: end; /* 圖片底部對齊 YIDATSAI 文字底部 */
   }
 
   .fs-bio-block {
     grid-column: 1 / 3;
     grid-row: 3;
     align-self: auto;
+  }
+
+  .fs-image-1 .fs-image-frame {
+    max-height: 45vw;
+  }
+
+  .fs-image-2 .fs-image-frame {
+    aspect-ratio: 2 / 3;
+  }
+
+  .fs-image-3 .fs-image-frame,
+  .fs-image-4 .fs-image-frame {
+    max-height: 52vw;
   }
 }

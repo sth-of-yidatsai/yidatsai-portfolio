@@ -141,7 +141,7 @@
 
 /* ── Responsive ──────────────────────────────────────────────────── */
 
-/* md ≤ 1024px：左右 50vw 改為上下堆疊；圖文橫排 */
+/* md ≤ 1024px：上下堆疊；左側圖文橫排（圖左文右，與 FieldSection 正方形圖同寬） */
 @media (max-width: 1024px) {
   .as-section {
     flex-direction: column;
@@ -152,22 +152,46 @@
     width: 100%;
     height: auto;
     padding: var(--space-lg) var(--px-page) var(--space-xl);
+    align-items: stretch;
   }
 
-  .as-right {
-    width: 100%;
-    height: 100vw;
-  }
-
-  /* 圖片與文字橫排 */
+  /* iPad：圖左文右 */
   .as-left-content {
     flex-direction: row;
     align-items: flex-end;
     gap: var(--space-lg);
   }
 
+  /* 與 FieldSection 2 欄格線的正方形圖同寬 */
   .as-small-image {
-    width: 38%;
+    width: calc(50% - var(--space-lg) / 2);
+    flex-shrink: 0;
+  }
+
+  .as-text-block {
+    flex: 1;
+  }
+
+  .as-right {
+    width: 100%;
+    height: min(100vw, 56vh);
+  }
+}
+
+/* xs ≤ 480px：恢復直排 */
+@media (max-width: 480px) {
+  .as-right {
+    height: min(80vw, 50vh);
+  }
+
+  .as-left-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xl);
+  }
+
+  .as-small-image {
+    width: calc(50% - var(--space-lg) / 2);
     flex-shrink: 0;
   }
 
@@ -177,19 +201,5 @@
 
   .as-title .biling-zh {
     font-size: var(--fs-12pt);
-  }
-}
-
-/* xs ≤ 480px */
-@media (max-width: 480px) {
-  /* 手機：恢復直排 */
-  .as-left-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-xl);
-  }
-
-  .as-small-image {
-    width: calc(50% - var(--space-lg) / 2);
   }
 }

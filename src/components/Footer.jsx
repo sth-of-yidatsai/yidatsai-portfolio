@@ -1,4 +1,4 @@
-import { Fragment, useRef } from 'react';
+import { useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import footerCircleAnimation from '../assets/icons/FooterCircle.json';
@@ -98,33 +98,34 @@ export default function Footer() {
           <LineRoll>TSAI</LineRoll>
         </Link>
 
-        {/* Cols 2–3 — aligned nav + contact grid */}
-        <div className="footer-mid">
-          {FOOTER_ROWS.map(({ nav, contact }) => (
-            <Fragment key={nav.to}>
-              <Link to={`/${lang}${nav.to}`} className="footer-nav-item clickable">
-                <span className="footer-nav-bullet" aria-hidden="true" />
-                <span className="footer-nav-label">
-                  <RollingText>{t(nav.key)}</RollingText>
-                </span>
-              </Link>
+        {/* Col 2 — Nav */}
+        <div className="footer-nav-col">
+          {FOOTER_ROWS.map(({ nav }) => (
+            <Link key={nav.to} to={`/${lang}${nav.to}`} className="footer-nav-item clickable">
+              <span className="footer-nav-bullet" aria-hidden="true" />
+              <span className="footer-nav-label">
+                <RollingText>{t(nav.key)}</RollingText>
+              </span>
+            </Link>
+          ))}
+        </div>
 
+        {/* Col 3 — Contact */}
+        <div className="footer-contact-col">
+          {FOOTER_ROWS.map(({ contact }, i) => (
+            <div key={i} className="footer-contact-row">
               {contact.type === 'link' ? (
-                <div className="footer-contact-row">
-                  <a
-                    href={contact.href}
-                    className="footer-contact-link clickable"
-                    {...(contact.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  >
-                    {contact.text}
-                  </a>
-                </div>
+                <a
+                  href={contact.href}
+                  className="footer-contact-link clickable"
+                  {...(contact.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
+                  {contact.text}
+                </a>
               ) : (
-                <div className="footer-contact-row">
-                  <p className="footer-copyright">{tf('footer.copyright', { year })}</p>
-                </div>
+                <p className="footer-copyright">{tf('footer.copyright', { year })}</p>
               )}
-            </Fragment>
+            </div>
           ))}
         </div>
 

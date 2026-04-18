@@ -81,7 +81,7 @@ function TitleBlock({
       window.removeEventListener("resize", setup);
       ctx?.revert();
     };
-  }, [fillColor, emptyColor]);
+  }, [fillColor, emptyColor, title, description]);
 
   return (
     <section

@@ -8,10 +8,10 @@
 }
 
 .block--discover-more::after {
-  content: '';
+  content: "";
   display: block;
   margin-top: var(--space-xl);
-  border-top: 1px solid var(--gray-500);
+  border-top: 2px solid var(--gray-600);
 }
 
 /* ── Heading ─────────────────────────────────────────────────────────────── */

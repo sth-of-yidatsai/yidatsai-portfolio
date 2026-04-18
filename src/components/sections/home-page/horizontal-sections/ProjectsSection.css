@@ -233,7 +233,6 @@
   }
 
   .project-block-number-large {
-    font-weight: var(--fw-extralight);
     margin-top: 0;
     margin-left: 0;
     margin-bottom: var(--space-sm);
@@ -320,7 +319,8 @@
   }
 
   .project-block-number-large {
-    font-size: var(--fs-56pt);
+    font-size: var(--fs-64pt);
+    font-weight: var(--fw-extralight);
   }
 }
 
