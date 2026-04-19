@@ -13,7 +13,7 @@ import ErrorPage from "./pages/ErrorPage.jsx";
 import LangWrapper from "./components/LangWrapper.jsx";
 
 import projects from "./data/projects.json";
-import { SITE, getPageMeta, buildProjectMeta } from "./seo/seoConfig.js";
+import { SITE, getPageMeta, buildProjectMeta, buildBreadcrumbJsonLd } from "./seo/seoConfig.js";
 
 // loaders
 export async function projectsLoader() {
@@ -61,6 +61,7 @@ const router = createBrowserRouter([
               meta: (_d, lang) => ({
                 ...getPageMeta("about", lang),
                 ogUrl: `${SITE.baseUrl}/${lang}/about`,
+                jsonLd: buildBreadcrumbJsonLd("about", lang),
               }),
             },
           },
@@ -73,6 +74,7 @@ const router = createBrowserRouter([
               meta: (_d, lang) => ({
                 ...getPageMeta("contact", lang),
                 ogUrl: `${SITE.baseUrl}/${lang}/contact`,
+                jsonLd: buildBreadcrumbJsonLd("contact", lang),
               }),
             },
           },
@@ -86,6 +88,7 @@ const router = createBrowserRouter([
               meta: (_d, lang) => ({
                 ...getPageMeta("projects", lang),
                 ogUrl: `${SITE.baseUrl}/${lang}/projects`,
+                jsonLd: buildBreadcrumbJsonLd("projects", lang),
               }),
             },
           },
@@ -99,6 +102,7 @@ const router = createBrowserRouter([
               meta: (_d, lang) => ({
                 ...getPageMeta("projects", lang),
                 ogUrl: `${SITE.baseUrl}/${lang}/projects`,
+                jsonLd: buildBreadcrumbJsonLd("projects", lang),
               }),
             },
           },
@@ -112,6 +116,7 @@ const router = createBrowserRouter([
               meta: (_d, lang) => ({
                 ...getPageMeta("explore", lang),
                 ogUrl: `${SITE.baseUrl}/${lang}/explore`,
+                jsonLd: buildBreadcrumbJsonLd("explore", lang),
               }),
             },
           },

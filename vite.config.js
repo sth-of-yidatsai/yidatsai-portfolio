@@ -22,18 +22,28 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
 }
 
-function injectMeta(html, { title, description, ogImage, ogUrl, ogType }) {
-  return html
+function injectMeta(html, { title, description, ogImage, ogUrl, ogType, ogLocale }) {
+  let out = html
     .replace(/(<title>)[^<]*(<\/title>)/, `$1${escapeHtml(title)}$2`)
     .replace(/(<meta property="og:title" content=")[^"]*(")/,  `$1${escapeHtml(title)}$2`)
     .replace(/(<meta name="twitter:title" content=")[^"]*(")/,  `$1${escapeHtml(title)}$2`)
     .replace(/(<meta property="og:description" content=")[^"]*(")/,  `$1${escapeHtml(description)}$2`)
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/,  `$1${escapeHtml(description)}$2`)
+    .replace(/(<meta name="description" content=")[^"]*(")/,  `$1${escapeHtml(description)}$2`)
     .replace(/(<meta property="og:image" content=")[^"]*(")/,  `$1${ogImage}$2`)
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/,  `$1${ogImage}$2`)
     .replace(/(<meta property="og:url" content=")[^"]*(")/,  `$1${ogUrl}$2`)
     .replace(/(<link rel="canonical"[^>]*href=")[^"]*(")/,  `$1${ogUrl}$2`)
     .replace(/(<meta property="og:type" content=")[^"]*(")/,  `$1${ogType}$2`)
+
+  if (ogLocale) {
+    const alt = ogLocale === 'zh_TW' ? 'en_US' : 'zh_TW'
+    out = out
+      .replace(/(<meta property="og:locale" content=")[^"]*(")/, `$1${ogLocale}$2`)
+      .replace(/(<meta property="og:locale:alternate" content=")[^"]*(")/, `$1${alt}$2`)
+  }
+
+  return out
 }
 
 // Vercel / CI environments don't have Puppeteer's system dependencies.
@@ -41,6 +51,13 @@ function injectMeta(html, { title, description, ogImage, ogUrl, ogType }) {
 const isCI = !!process.env.VERCEL || !!process.env.CI
 
 export default defineConfig({
+  build: {
+    // Puppeteer bundled with vite-plugin-prerender is v1.20 (~Chromium 71),
+    // which predates optional chaining (?.) and nullish coalescing (??).
+    // Targeting es2019 makes esbuild transpile those syntaxes so the prerender
+    // Chromium can execute the bundle and capture the React-rendered DOM.
+    target: 'es2019',
+  },
   plugins: [
     react(),
     !isCI && vitePrerender({
@@ -59,6 +76,9 @@ export default defineConfig({
       })(),
       renderer: new PuppeteerRenderer({
         renderAfterTime: 3000,
+        consoleHandler: (route, message) => {
+          console.log(`[prerender:${message.type()}] ${route}: ${message.text()}`)
+        },
       }),
       postProcess(renderedRoute) {
         const { PAGE_META } = require('./src/seo/seoConfig.js')
@@ -80,7 +100,13 @@ export default defineConfig({
               ogImage: `${BASE_URL}/images/projects/${project.id}/${project.ogImage ?? project.cover}`,
               ogUrl: `${BASE_URL}/${lang}/projects/${project.id}`,
               ogType: 'article',
+              ogLocale: lang === 'zh' ? 'zh_TW' : 'en_US',
             })
+            // Also fix <html lang> for project detail pages
+            renderedRoute.html = renderedRoute.html.replace(
+              /(<html[^>]*)\slang="[^"]*"/,
+              `$1 lang="${lang === 'zh' ? 'zh-TW' : 'en'}"`
+            )
           }
           return renderedRoute
         }
@@ -117,6 +143,7 @@ export default defineConfig({
               ogImage: `${BASE_URL}/images/og-default.jpg?v=2`,
               ogUrl,
               ogType: 'website',
+              ogLocale: lang === 'zh' ? 'zh_TW' : 'en_US',
             })
           }
         }

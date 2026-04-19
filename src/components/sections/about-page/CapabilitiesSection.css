@@ -72,7 +72,7 @@
   letter-spacing: 0.04em;
   white-space: nowrap;
   align-self: flex-start;
-  padding-top: 0.2em;
+  margin-top: calc(var(--space-ml) - var(--space-xl));
 }
 
 /* ── Item title ────────────────────────────────────────────────── */
@@ -218,12 +218,12 @@
   }
 
   .cs__desc {
-    grid-column: 1 / -1;
+    grid-column: 2 / -1;
   }
 
   .cs__item-title {
     font-size: var(--fs-32pt);
-    padding-left: var(--space-md);
+    padding-left: 0;
   }
 
   .cs__img-frame {
@@ -267,6 +267,10 @@
     padding-bottom: var(--space-lg);
   }
 
+  .cs__num {
+    margin-top: calc(var(--space-md) - var(--space-lg));
+  }
+
   .cs__item-title {
     font-size: var(--fs-28pt);
   }
@@ -285,11 +289,5 @@
 
   .cs__item-title {
     font-size: var(--fs-22pt);
-  }
-
-  .cs__header,
-  .cs__rows {
-    padding-left: var(--space-md);
-    padding-right: var(--space-md);
   }
 }

@@ -3,6 +3,7 @@ import "./Home.css";
 import HorizontalScroller from "../components/sections/home-page/horizontal-sections/HorizontalScroller";
 import { HeroSection, FieldSection, VisionSection } from "../components/sections/home-page/vertical-sections";
 import { usePagePreloader } from "../hooks/usePagePreloader";
+import { useTranslation } from "../hooks/useTranslation";
 
 const PRELOAD_IMAGES = [
   // HeroSection carousel
@@ -25,8 +26,10 @@ const PRELOAD_IMAGES = [
 
 export default function Home() {
   usePagePreloader(PRELOAD_IMAGES);
+  const { t } = useTranslation();
   return (
     <div className="home-container">
+      <h1 className="sr-only">{t('seo.h1.home')}</h1>
       <HeroSection />
       <FieldSection />
       <HorizontalScroller />

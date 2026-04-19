@@ -4,6 +4,11 @@ export const SITE = {
   defaultDescription:
     "Yi-Da Tsai (蔡易達) is a visual designer and frontend developer based in Taipei, Taiwan, specializing in typography, editorial design, and digital experiences.",
   defaultOgImage: "https://yidatsai.com/images/og-default.jpg?v=2",
+  sameAs: [
+    "https://x.com/Yida_Tsai",
+    "https://www.behance.net/sth_of_yidatsai",
+    "https://github.com/sth-of-yidatsai",
+  ],
 };
 
 export const PAGE_META = {
@@ -137,6 +142,39 @@ export function buildProjectMeta(project, language = "en") {
   };
 }
 
+const BREADCRUMB_LABELS = {
+  home: { en: "Home", zh: "首頁" },
+  about: { en: "About", zh: "關於" },
+  projects: { en: "Projects", zh: "專案" },
+  explore: { en: "Explore", zh: "探索" },
+  contact: { en: "Contact", zh: "聯絡" },
+};
+
+export function buildBreadcrumbJsonLd(pageKey, language = "en") {
+  if (pageKey === "home" || !BREADCRUMB_LABELS[pageKey]) return null;
+  const lang = language === "zh" ? "zh" : "en";
+  const homeLabel = BREADCRUMB_LABELS.home[lang];
+  const pageLabel = BREADCRUMB_LABELS[pageKey][lang];
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: homeLabel,
+        item: `${SITE.baseUrl}/${lang}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: pageLabel,
+        item: `${SITE.baseUrl}/${lang}/${pageKey}`,
+      },
+    ],
+  };
+}
+
 export function buildProjectJsonLd(project, language = "en") {
   const title =
     language === "zh" && project.title_zh ? project.title_zh : project.title;
@@ -157,6 +195,7 @@ export function buildProjectJsonLd(project, language = "en") {
           name: "Yi-Da Tsai",
           alternateName: "蔡易達",
           url: SITE.baseUrl,
+          sameAs: SITE.sameAs,
         },
         dateCreated: String(project.year),
         image: `${SITE.baseUrl}/images/projects/${project.id}/${project.cover}`,

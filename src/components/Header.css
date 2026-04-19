@@ -590,7 +590,7 @@ body.menu-open {
     align-items: flex-start;
     justify-content: flex-end;
     gap: var(--space-xl);
-    padding: var(--space-xl) var(--px-page);
+    padding: var(--space-lg) var(--px-page);
   }
 
   .header-overlay-glass {
@@ -631,6 +631,10 @@ body.menu-open {
 
   .header-overlay-glass {
     height: 30vh;
+  }
+
+  .header-overlay-logo {
+    font-size: var(--fs-48pt);
   }
 
   .header-nav-label {

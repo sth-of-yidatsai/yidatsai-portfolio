@@ -70,13 +70,6 @@
   }
 }
 
-/* xs ≤ 480px */
-@media (max-width: 480px) {
-  .all-work {
-    padding: var(--space-lg) var(--space-md);
-  }
-}
-
 /* ── Card Wrap ───────────────────────────────────────────────────────────── */
 
 .all-work__card-wrap::after {
@@ -113,13 +106,19 @@
 /* ── Size modifiers ──────────────────────────────────────────────────────── */
 
 /* landscape → 4:3 */
-.all-work__card-wrap--landscape .all-work__card { aspect-ratio: 4 / 3; }
+.all-work__card-wrap--landscape .all-work__card {
+  aspect-ratio: 4 / 3;
+}
 
 /* portrait → 3:4 */
-.all-work__card-wrap--portrait  .all-work__card { aspect-ratio: 3 / 4; }
+.all-work__card-wrap--portrait .all-work__card {
+  aspect-ratio: 3 / 4;
+}
 
 /* square → 1:1 */
-.all-work__card-wrap--square    .all-work__card { aspect-ratio: 1 / 1; }
+.all-work__card-wrap--square .all-work__card {
+  aspect-ratio: 1 / 1;
+}
 
 /* ── Card image — oversized for parallax travel ──────────────────────────── */
 

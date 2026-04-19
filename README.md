@@ -1,12 +1,35 @@
-# React + Vite
+# 蔡易達 Yi-Da Tsai — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio of **Yi-Da Tsai (蔡易達)**, a visual designer and frontend developer based in Taipei, Taiwan, focused on typography, editorial design, and interactive web experiences.
 
-Currently, two official plugins are available:
+Live site: https://yidatsai.com
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech
 
-## Expanding the ESLint configuration
+- React + Vite
+- GSAP ScrollTrigger, Lenis smooth scroll
+- File-based project pages with reusable block components
+- Bilingual (en / zh-TW) routing with prerendered static HTML for SEO
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Develop
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build     # generates sitemap, builds, and prerenders static HTML
+npm run preview
+```
+
+## Structure
+
+- `src/pages/` — route-level pages (Home, About, Projects, ProjectDetail, Contact)
+- `src/pages/projects/` — individual project detail pages composed from `src/components/blocks/`
+- `src/components/sections/` — section-level components per page
+- `src/seo/seoConfig.js` — centralized SEO meta + JSON-LD
+- `src/locales/{en,zh}.json` — translations
+- `scripts/generate-sitemap.js` — builds `public/sitemap.xml` at prebuild time

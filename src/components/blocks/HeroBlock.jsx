@@ -8,6 +8,7 @@ function HeroBlock({ image, project = {} }) {
 
   return (
     <section className="block block--hero">
+      {title && <h1 className="sr-only">{title}</h1>}
       <div
         className="block--hero__bg"
         style={{ backgroundImage: image ? `url(${image})` : undefined }}

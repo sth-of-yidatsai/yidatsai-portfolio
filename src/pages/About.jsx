@@ -6,6 +6,7 @@ import TrajectorySection from "../components/sections/about-page/TrajectorySecti
 import CapabilitiesSection from "../components/sections/about-page/CapabilitiesSection";
 import "./About.css";
 import { usePagePreloader } from "../hooks/usePagePreloader";
+import { useTranslation } from "../hooks/useTranslation";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,6 +20,7 @@ const PRELOAD_IMAGES = [
 
 export default function About() {
   usePagePreloader(PRELOAD_IMAGES);
+  const { t } = useTranslation();
 
   // ScrollTriggers are created while body.overflow='hidden' (loader active).
   // Once the loader hides and overflow is restored, the true scrollable height
@@ -31,6 +33,7 @@ export default function About() {
 
   return (
     <main className="about-page">
+      <h1 className="sr-only">{t('seo.h1.about')}</h1>
       <BioSection />
       <TrajectorySection />
       <CapabilitiesSection />
