@@ -117,7 +117,7 @@ export default function TrajectorySection() {
           pin: true,
           start: "top top",
           end: `+=${totalScroll}`,
-          scrub: 0.5,
+          scrub: 0.25,
           id: "trajectory-scroll",
 
           onEnter() {
@@ -172,8 +172,9 @@ export default function TrajectorySection() {
 
     setup();
 
-    // Safari のアドレスバー開閉は height のみ変化し width は不変。
-    // その場合は setup() を呼ばず、カードサイズの跳びを防ぐ。
+    // 在 Safari 中開啟和關閉網址列時，只有高度會改變，寬度不變。
+    // 在此情況下，不要呼叫 setup() 函數來防止卡片大小跳動。
+
     let lastWidth = window.innerWidth;
     const onResize = () => {
       const newWidth = window.innerWidth;
@@ -215,11 +216,43 @@ export default function TrajectorySection() {
     });
   }, [activeIndex]);
 
-  // ── Mobile swipe handlers ─────────────────────────────────────────────────
+  // ── Swipe handlers — 行動 & 桌面觸控（平板橫向）共用 ────────────────────
   const swipeRef = useRef({ startX: 0, startY: 0, locked: false });
+  const scrollProxyRef = useRef({ y: 0 });
+
+  // Desktop: 換算目標 card idx → 實際 scrollTop，用 GSAP tween 帶動 ScrollTrigger
+  // swipe 與 dot 點擊共用此函式
+  const scrollToCardIdx = (rawIdx) => {
+    const st = stRef.current;
+    if (!st) return;
+    const n = CARDS.length;
+    const targetIdx = Math.max(0, Math.min(n - 1, rawIdx));
+    if (targetIdx === activeIdxRef.current) return;
+
+    const targetCp =
+      targetIdx <= n - 2 ? (targetIdx / (n - 2)) * PHASE1_END : 1;
+    const endPause = window.innerHeight * 0.2;
+    const totalScroll = CONTENT_SCROLL + endPause;
+    const contentFraction = CONTENT_SCROLL / totalScroll;
+    const targetProgress = targetCp * contentFraction;
+    const scrollTarget = st.start + targetProgress * (st.end - st.start);
+
+    // iOS Safari + ScrollTrigger pin 不適合 native smooth scroll（chunk/跳動）
+    // 用 GSAP RAF-tween 代理 scrollY，連續操作會覆蓋前一個 tween
+    const proxy = scrollProxyRef.current;
+    proxy.y = window.scrollY;
+    gsap.killTweensOf(proxy);
+    gsap.to(proxy, {
+      y: scrollTarget,
+      duration: 0.5,
+      ease: "power2.out",
+      onUpdate() {
+        window.scrollTo(0, proxy.y);
+      },
+    });
+  };
 
   const handleTouchStart = (e) => {
-    if (!isMobileRef.current) return;
     swipeRef.current = {
       startX: e.touches[0].clientX,
       startY: e.touches[0].clientY,
@@ -228,19 +261,26 @@ export default function TrajectorySection() {
   };
 
   const handleTouchEnd = (e) => {
-    if (!isMobileRef.current) return;
-    const dx = e.changedTouches[0].clientX - swipeRef.current.startX;
-    const dy = e.changedTouches[0].clientY - swipeRef.current.startY;
-    // Ignore if mostly vertical (user scrolling page)
+    const t = e.changedTouches?.[0];
+    if (!t) return;
+    const dx = t.clientX - swipeRef.current.startX;
+    const dy = t.clientY - swipeRef.current.startY;
     if (Math.abs(dy) > Math.abs(dx)) return;
-    // Require at least 40px horizontal movement
     if (Math.abs(dx) < 40) return;
+
     const n = CARDS.length;
-    if (dx < 0) {
-      setActiveIndex((prev) => Math.min(prev + 1, n - 1));
-    } else {
-      setActiveIndex((prev) => Math.max(prev - 1, 0));
+
+    if (isMobileRef.current) {
+      if (dx < 0) {
+        setActiveIndex((prev) => Math.min(prev + 1, n - 1));
+      } else {
+        setActiveIndex((prev) => Math.max(prev - 1, 0));
+      }
+      return;
     }
+
+    const currentIdx = activeIdxRef.current;
+    scrollToCardIdx(dx < 0 ? currentIdx + 1 : currentIdx - 1);
   };
 
   // ── Desktop scrollbar drag handlers ──────────────────────────────────────
@@ -307,23 +347,24 @@ export default function TrajectorySection() {
       <section className="ts">
         {/* Header */}
         <div className="ts__header">
-          <p className="ts__subtitle">{t('trajectory.eyebrow')}</p>
+          <p className="ts__subtitle">{t("trajectory.eyebrow")}</p>
           <BilingTitle
-            en={t('trajectory.title')}
+            en={t("trajectory.title")}
             zh={locale.trajectory?.titleZh ?? null}
             className="ts__title"
           />
         </div>
 
         {/* Desktop: pinned 100vh viewport / Mobile: natural height */}
-        <div className="ts__inner" ref={innerRef}>
+        <div
+          className="ts__inner"
+          ref={innerRef}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
+        >
           {/* Scroll wrapper — desktop: slides via ScrollTrigger; mobile: slides via click */}
-          <div
-            className="ts__scroll-wrap"
-            ref={scrollWrapRef}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-          >
+          <div className="ts__scroll-wrap" ref={scrollWrapRef}>
             {/* Cards track */}
             <div className="ts__track" ref={trackRef}>
               {CARDS.map((card, i) => (
@@ -355,6 +396,7 @@ export default function TrajectorySection() {
                   <div
                     key={i}
                     className={`ts__step${activeIndex === i ? " ts__step--active" : ""}`}
+                    onClick={() => scrollToCardIdx(i)}
                   >
                     <div className="ts__dot-wrap">
                       <span className="ts__dot" />

@@ -54,11 +54,26 @@
   white-space: pre-wrap;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1366px) {
   .block--title {
     min-height: unset;
     padding: var(--space-xl) var(--px-page);
   }
+  /* 入場動畫只作用在文字（label / title / description），背景固定不動 */
+  .block--title .block--title__inner {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+  .block--title.is-visible .block--title__inner {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1024px) {
   .block--title__title {
     font-weight: var(--fw-light);
     font-size: var(--fs-22pt);

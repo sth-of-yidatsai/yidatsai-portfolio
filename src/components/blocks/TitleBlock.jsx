@@ -32,8 +32,10 @@ function TitleBlock({
     const allChars = [...titleChars, ...descChars];
     if (!section || !allChars.length) return;
 
-    /* ── Mobile: entrance animation only, no GSAP pin ── */
-    if (window.innerWidth <= 1024) {
+    /* ── Tablet/Mobile (含 iPad 13" landscape): entrance animation, no GSAP pin
+       iPad Safari 對 pinSpacing + dynamic viewport 有 layout quirks，會與後方
+       pinned section 視覺重疊；簡化為入場動畫即可。 */
+    if (window.innerWidth <= 1366) {
       allChars.forEach((c) => {
         c.style.color = FILL_COLOR;
       });
@@ -44,7 +46,7 @@ function TitleBlock({
             observer.disconnect();
           }
         },
-        { threshold: 0.1, rootMargin: "0px 0px -38% 0px" },
+        { threshold: 0, rootMargin: "0px 0px -10% 0px" },
       );
       observer.observe(section);
       return () => observer.disconnect();
@@ -63,7 +65,9 @@ function TitleBlock({
           trigger: section,
           pin: true,
           start: "top top",
-          end: `+=${Math.max(window.innerHeight, section.offsetHeight * 1.1)}`,
+          // 滾動距離 = section 高度，確保 spacer 不短於 section（避免與下方 pin 重疊）
+          end: () => `+=${section.offsetHeight}`,
+          invalidateOnRefresh: true,
           scrub: 0.6,
           onUpdate(self) {
             const filled = Math.round(self.progress * allChars.length);

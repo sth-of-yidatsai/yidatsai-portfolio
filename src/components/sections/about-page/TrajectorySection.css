@@ -327,6 +327,18 @@ body.menu-open .ts__scrollbar {
 
 /* ── Responsive ───────────────────────────────────────────────── */
 
+/* 中間斷點：平板橫向（如 iPad 13" landscape 1366×1024）
+   仍走 desktop pinned 流程，但卡片較窄，EN 標題與本文會超出 desc-wrap。 */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .ts__desc-title {
+    text-wrap: wrap;
+    white-space: normal;
+  }
+  .ts__desc-wrap {
+    height: 18rem;
+  }
+}
+
 @media (max-width: 1024px) {
   /* Mobile: no pin, natural height */
   .ts__inner {

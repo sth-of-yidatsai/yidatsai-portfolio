@@ -17,7 +17,7 @@
 .bs__img-block {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100svh;
   background: var(--gray-900);
   box-sizing: border-box;
 }
@@ -46,7 +46,7 @@
 .bs__text {
   font-family: var(--font-hatton);
   font-weight: var(--fw-extralight);
-  font-size: var(--fs-56pt);
+  font-size: var(--fs-48pt);
   line-height: 1.25;
   margin: 0;
   white-space: normal;
@@ -99,8 +99,8 @@
   }
 }
 
-/* md ≤ 1024px — entrance animation, auto height */
-@media (max-width: 1024px) {
+/* md ≤ 1366px — entrance animation, auto height (含 iPad 13" landscape) */
+@media (max-width: 1366px) {
   .bs__text-block {
     min-height: unset;
     padding-left: var(--px-page);

@@ -18,8 +18,10 @@ function StickyText({ text, label, isFirst = false }) {
     const chars = charsRef.current.filter(Boolean);
     if (!section || !chars.length) return;
 
-    /* ── Tablet/Mobile: entrance animation only, no GSAP pin ── */
-    if (window.innerWidth <= 1024) {
+    /* ── Tablet/Mobile (含 iPad 13" landscape): entrance animation only, no GSAP pin
+       iPad Safari 對 pinSpacing + dynamic viewport 有 layout quirks，會與後方
+       pinned section 視覺重疊；簡化為入場動畫即可。 */
+    if (window.innerWidth <= 1366) {
       chars.forEach((c) => {
         c.style.color = "var(--gray-50)";
       });
@@ -36,7 +38,7 @@ function StickyText({ text, label, isFirst = false }) {
           window.removeEventListener("loader:exit-start", onExitStart);
       }
 
-      // 字2：接近螢幕中央時才觸發（rootMargin 往內縮 25%）
+      // 字2：section 一進入 viewport 就觸發（往上縮 10%，避免太晚像 lag）
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
@@ -44,7 +46,7 @@ function StickyText({ text, label, isFirst = false }) {
             observer.disconnect();
           }
         },
-        { threshold: 0.1, rootMargin: "0px 0px -40% 0px" },
+        { threshold: 0, rootMargin: "0px 0px -10% 0px" },
       );
       observer.observe(section);
       return () => observer.disconnect();
@@ -62,8 +64,13 @@ function StickyText({ text, label, isFirst = false }) {
         ScrollTrigger.create({
           trigger: section,
           pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
           start: "top top",
-          end: `+=${Math.max(window.innerHeight, section.offsetHeight * 1.1)}`,
+          // 滾動距離 = section 高度，確保 spacer 不短於 section（避免與下方 pin 重疊）
+          // 同時比原本 section.offsetHeight*1.1 略短
+          end: () => `+=${section.offsetHeight}`,
+          invalidateOnRefresh: true,
           scrub: 0.6,
           onUpdate(self) {
             const filled = Math.round(self.progress * chars.length);
@@ -76,8 +83,18 @@ function StickyText({ text, label, isFirst = false }) {
     };
 
     setup();
+
+    // 字型載入完成後重算 ScrollTrigger，避免初次 layout 時 section 高度尚未穩定
+    let cancelled = false;
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => {
+        if (!cancelled) ScrollTrigger.refresh();
+      });
+    }
+
     window.addEventListener("resize", setup);
     return () => {
+      cancelled = true;
       window.removeEventListener("resize", setup);
       ctx?.revert();
     };
