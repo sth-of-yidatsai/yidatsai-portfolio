@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import emailjs from "@emailjs/browser";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import ReCAPTCHA from "react-google-recaptcha";
 import { useTranslation } from "../../../hooks/useTranslation";
 import "./ContactForm.css";
 
@@ -10,6 +10,7 @@ const EMAILJS_TEMPLATE_ID =
   import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
 const EMAILJS_PUBLIC_KEY =
   import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
 
 // Rate limit: max 3 submissions per hour
 const RATE_LIMIT_MAX = 3;
@@ -341,9 +342,10 @@ export default function ContactForm() {
   const [status, setStatus] = useState("idle"); // idle | sending | success | error | rate-limited
   const [toastVisible, setToastVisible] = useState(false);
   const [isBudgetLocked, setIsBudgetLocked] = useState(false);
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
 
   const budgetDotsRef = useRef(null);
+  const recaptchaRef = useRef(null);
 
   // Auto-dismiss toast (skipped in preview mode)
   useEffect(() => {
@@ -482,7 +484,7 @@ export default function ContactForm() {
       if (form.honeypot) return;
 
       if (!form.firstName || !form.lastName || !form.email) return;
-      if (!executeRecaptcha) return;
+      if (!recaptchaToken) return;
 
       // Rate limit check
       if (isRateLimited()) {
@@ -493,8 +495,6 @@ export default function ContactForm() {
       setStatus("sending");
 
       try {
-        await executeRecaptcha("contact_form");
-
         const budgetValue = BUDGET_STEPS[form.budgetIndex];
         const budgetLabel =
           form.budgetIndex === BUDGET_STEPS.length - 1
@@ -516,6 +516,7 @@ export default function ContactForm() {
           budget: budgetLabel,
           timeline: form.timeline || "—",
           message: form.message || "—",
+          "g-recaptcha-response": recaptchaToken,
         };
 
         await emailjs.send(
@@ -528,12 +529,16 @@ export default function ContactForm() {
         recordSubmission();
         setStatus("success");
         setForm(initialForm);
+        setRecaptchaToken(null);
+        recaptchaRef.current?.reset();
       } catch (err) {
         console.error("EmailJS error:", err);
         setStatus("error");
+        setRecaptchaToken(null);
+        recaptchaRef.current?.reset();
       }
     },
-    [form, executeRecaptcha],
+    [form, recaptchaToken],
   );
 
   // ─── Derived ───────────────────────────────────────────────────────────────
@@ -813,12 +818,23 @@ export default function ContactForm() {
           <p className="cf__note">{t('contact.form.requiredNote')}</p>
         </div>
 
+        {/* ── reCAPTCHA v2 checkbox ── */}
+        <div className="cf__recaptcha-wrap">
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={RECAPTCHA_SITE_KEY}
+            onChange={(token) => setRecaptchaToken(token)}
+            onExpired={() => setRecaptchaToken(null)}
+            onErrored={() => setRecaptchaToken(null)}
+          />
+        </div>
+
         {/* ── Send button ── */}
         <div className="cf__send-wrap">
           <button
             type="submit"
             className={`cf__send-btn clickable${status === "sending" ? " cf__send-btn--sending" : ""}`}
-            disabled={status === "sending"}
+            disabled={status === "sending" || !recaptchaToken}
             aria-label={t('contact.form.sendBtn')}
           >
             <span className="cf__send-text">

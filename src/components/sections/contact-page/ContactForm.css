@@ -579,10 +579,22 @@
   flex: 1;
 }
 
+/* ── reCAPTCHA ────────────────────────────────────────────────── */
+.cf__recaptcha-wrap {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--space-md);
+}
+
 /* ── Send button ──────────────────────────────────────────────── */
 .cf__send-wrap {
   display: flex;
   align-items: center;
+}
+
+.cf__send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .cf__send-btn {
@@ -712,6 +724,12 @@
     margin-top: var(--space-md);
     padding-top: 0;
     border-top: none;
+  }
+
+  /* reCAPTCHA — left-align on mobile */
+  .cf__recaptcha-wrap {
+    justify-content: flex-start;
+    padding-top: var(--space-sm);
   }
 
   /* full-width rectangular send button */
