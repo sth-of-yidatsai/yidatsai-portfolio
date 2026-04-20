@@ -18,23 +18,23 @@ export default function ProjectsSection({ index }) {
     () => [
       {
         blockNumber: "1",
-        projectId: "foucault-book-binding",
-        image: "02.webp",
+        projectId: "formosa-font",
+        image: "13.webp",
       }, // 區塊1
       {
         blockNumber: "2",
         projectId: "foucault-book-binding",
-        image: "07.webp",
+        image: "03.webp",
       }, // 區塊2
       {
         blockNumber: "3",
-        projectId: "foucault-book-binding",
-        image: "05.webp",
+        projectId: "patterned-glass-notebook",
+        image: "13.webp",
       }, // 區塊3
       {
         blockNumber: "4",
-        projectId: "foucault-book-binding",
-        image: "03.webp",
+        projectId: "patterned-glass-notebook",
+        image: "16.webp",
       }, // 區塊4
     ],
     [],

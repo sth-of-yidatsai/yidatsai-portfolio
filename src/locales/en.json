@@ -1,15 +1,15 @@
 {
   "seo": {
     "h1": {
-      "home": "Yi-Da Tsai — Visual Designer & Frontend Developer based in Taipei",
+      "home": "Yi-Da Tsai — Designer of Visual Language & Frontend Systems in Taipei",
       "about": "About Yi-Da Tsai",
-      "projects": "Design Projects by Yi-Da Tsai"
+      "projects": "Selected Design Projects — Yi-Da Tsai"
     }
   },
   "bio": {
     "eyebrow": "About",
     "text1": "Yi-Da Tsai is a multidisciplinary designer based in Taipei, working across visual design, typography, editorial design, and frontend development. A graduate of the Department of Visual Communication Design at National Taiwan University of Arts, his practice bridges print and digital through a focus on structure, material, and narrative.",
-    "text2": "With clear layouts, systematic typography, and a rigorous approach to structure, he helps brands build a coherent visual language across print, publishing, web, and interface. Working with React on the frontend, Yi-Da Tsai extends design from static composition into interactive digital experiences."
+    "text2": "Focusing on structure, systematic typography, and clarity in layout, he builds coherent visual languages that extend across print, publishing, web, and interface. With frontend development using React, Yi-Da Tsai translates design from static composition into scalable and interactive digital systems."
   },
   "capabilities": {
     "eyebrow": "Capabilities",
@@ -83,7 +83,7 @@
   },
 
   "field": {
-    "tagline": "Multidisciplinary designer based in Taipei.\nFocused on visual design and digital experience.",
+    "tagline": "Multidisciplinary designer based in Taipei.\nVisual design, typography, editorial, and frontend development.",
     "taglineSub": "Through structure and systems,\ntransforming concepts into perceptible design.",
     "labels": [
       "Visual Language",

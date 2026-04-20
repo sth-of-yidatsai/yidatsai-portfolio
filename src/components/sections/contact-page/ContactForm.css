@@ -561,12 +561,18 @@
 /* ── Footer ───────────────────────────────────────────────────── */
 .cf__footer {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-lg);
   padding-top: var(--space-lg);
   border-top: 1px solid var(--gray-200);
-  flex-wrap: wrap;
+}
+
+.cf__footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-sm);
 }
 
 .cf__note {
@@ -576,20 +582,19 @@
   text-align: right;
   line-height: 1.5;
   margin: 0;
-  flex: 1;
 }
 
 /* ── reCAPTCHA ────────────────────────────────────────────────── */
 .cf__recaptcha-wrap {
   display: flex;
   justify-content: flex-end;
-  padding-top: var(--space-md);
 }
 
 /* ── Send button ──────────────────────────────────────────────── */
 .cf__send-wrap {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .cf__send-btn:disabled {
@@ -707,29 +712,25 @@
   }
 
   .cf__footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .cf__note {
-    text-align: left;
-    flex: none;
-  }
-
-  .cf__send-btn {
-    margin-top: var(--space-lg);
-  }
-
-  .cf__footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: var(--space-md);
     margin-top: var(--space-md);
     padding-top: 0;
     border-top: none;
   }
 
+  .cf__footer-right {
+    align-items: flex-start;
+  }
+
+  .cf__note {
+    text-align: left;
+  }
+
   /* reCAPTCHA — left-align on mobile */
   .cf__recaptcha-wrap {
     justify-content: flex-start;
-    padding-top: var(--space-sm);
   }
 
   /* full-width rectangular send button */
@@ -816,14 +817,8 @@
     padding-left: 0;
   }
 
-  .cf__footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .cf__note {
     text-align: left;
-    flex: none;
   }
 }
 

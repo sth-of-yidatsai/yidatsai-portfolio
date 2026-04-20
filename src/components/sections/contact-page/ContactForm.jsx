@@ -813,34 +813,33 @@ export default function ContactForm() {
           </div>
         </div>
 
-        {/* ── Footer: note ── */}
+        {/* ── Footer: send button + (note, reCAPTCHA) ── */}
         <div className="cf__footer">
-          <p className="cf__note">{t('contact.form.requiredNote')}</p>
-        </div>
+          <div className="cf__send-wrap">
+            <button
+              type="submit"
+              className={`cf__send-btn clickable${status === "sending" ? " cf__send-btn--sending" : ""}`}
+              disabled={status === "sending" || !recaptchaToken}
+              aria-label={t('contact.form.sendBtn')}
+            >
+              <span className="cf__send-text">
+                {status === "sending" ? t('contact.form.sendingBtn') : t('contact.form.sendBtn')}
+              </span>
+            </button>
+          </div>
 
-        {/* ── reCAPTCHA v2 checkbox ── */}
-        <div className="cf__recaptcha-wrap">
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={RECAPTCHA_SITE_KEY}
-            onChange={(token) => setRecaptchaToken(token)}
-            onExpired={() => setRecaptchaToken(null)}
-            onErrored={() => setRecaptchaToken(null)}
-          />
-        </div>
-
-        {/* ── Send button ── */}
-        <div className="cf__send-wrap">
-          <button
-            type="submit"
-            className={`cf__send-btn clickable${status === "sending" ? " cf__send-btn--sending" : ""}`}
-            disabled={status === "sending" || !recaptchaToken}
-            aria-label={t('contact.form.sendBtn')}
-          >
-            <span className="cf__send-text">
-              {status === "sending" ? t('contact.form.sendingBtn') : t('contact.form.sendBtn')}
-            </span>
-          </button>
+          <div className="cf__footer-right">
+            <p className="cf__note">{t('contact.form.requiredNote')}</p>
+            <div className="cf__recaptcha-wrap">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={RECAPTCHA_SITE_KEY}
+                onChange={(token) => setRecaptchaToken(token)}
+                onExpired={() => setRecaptchaToken(null)}
+                onErrored={() => setRecaptchaToken(null)}
+              />
+            </div>
+          </div>
         </div>
       </form>
     </section>

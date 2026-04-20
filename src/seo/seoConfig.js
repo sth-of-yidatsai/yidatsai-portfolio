@@ -2,7 +2,7 @@ export const SITE = {
   name: "Yi-Da Tsai 蔡易達",
   baseUrl: "https://yidatsai.com",
   defaultDescription:
-    "Yi-Da Tsai (蔡易達) is a visual designer and frontend developer based in Taipei, Taiwan, specializing in typography, editorial design, and digital experiences.",
+    "Yi-Da Tsai (蔡易達) is a multidisciplinary designer based in Taipei, Taiwan, working across visual design, typography, editorial design, and frontend development.",
   defaultOgImage: "https://yidatsai.com/images/og-default.jpg?v=2",
   sameAs: [
     "https://x.com/Yida_Tsai",
@@ -16,14 +16,14 @@ export const PAGE_META = {
     en: {
       title: "Yi-Da Tsai 蔡易達｜Visual Designer & Frontend Developer",
       description:
-        "Yi-Da Tsai is a visual designer and frontend developer based in Taipei, Taiwan, specializing in typography, editorial design, and digital experiences.",
+        "Yi-Da Tsai is a multidisciplinary designer based in Taipei, Taiwan, working across visual design, typography, editorial design, and frontend development.",
       ogImage: "https://yidatsai.com/images/og-default.jpg?v=2",
       ogLocale: "en_US",
     },
     zh: {
       title: "蔡易達｜視覺設計師與前端工程師",
       description:
-        "蔡易達（Yi-Da Tsai）是台灣台北的視覺設計師與前端工程師，專注於字體排印、編輯設計與數位體驗。",
+        "蔡易達（Yi-Da Tsai）是台灣台北的跨領域設計師，專注於視覺設計、字體設計、編輯設計與前端開發。",
       ogImage: "https://yidatsai.com/images/og-default.jpg?v=2",
       ogLocale: "zh_TW",
     },
@@ -32,13 +32,13 @@ export const PAGE_META = {
     en: {
       title: "About | YI-DA TSAI 蔡易達",
       description:
-        "Yi-Da Tsai is a multidisciplinary designer based in Taipei, working between visual design and digital experience.",
+        "About Yi-Da Tsai — a Taipei-based multidisciplinary designer working across visual design, typography, editorial design, and frontend development, extending design into interactive digital systems with React.",
       ogLocale: "en_US",
     },
     zh: {
       title: "關於 | 蔡易達 YI-DA TSAI",
       description:
-        "蔡易達（Yi-Da Tsai）是台灣台北的視覺設計師，專注於編輯設計、書籍裝幀與字體排印系統。",
+        "關於蔡易達 — 現居台北的跨領域設計師，專注於視覺設計、字體設計、編輯設計與前端開發，並透過 React 將設計延伸至可互動的數位系統。",
       ogLocale: "zh_TW",
     },
   },
@@ -46,13 +46,13 @@ export const PAGE_META = {
     en: {
       title: "Projects | YI-DA TSAI 蔡易達",
       description:
-        "Design projects by Yi-Da Tsai, covering editorial design, bookbinding, typography, and visual identity.",
+        "Design projects by Yi-Da Tsai, spanning visual design, typography, editorial design, and frontend development.",
       ogLocale: "en_US",
     },
     zh: {
       title: "專案 | 蔡易達 YI-DA TSAI",
       description:
-        "蔡易達（Yi-Da Tsai）的設計專案，涵蓋編輯設計、書籍裝幀、字體排印與視覺識別。",
+        "蔡易達（Yi-Da Tsai）的設計作品，涵蓋視覺設計、字體設計、編輯設計與前端開發等跨領域實踐。",
       ogLocale: "zh_TW",
     },
   },
