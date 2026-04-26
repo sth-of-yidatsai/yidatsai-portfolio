@@ -1,6 +1,7 @@
 .hs-section {
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,6 +23,7 @@
   display: flex;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   position: absolute;
   top: 0;
   left: 0;
@@ -30,6 +32,7 @@
 .fullscreen-project-block {
   width: calc(100vw / 4);
   height: 100vh;
+  height: 100dvh;
   position: relative;
   cursor: none;
   overflow: hidden;
@@ -203,6 +206,7 @@
   .fullscreen-projects-content {
     flex-direction: column;
     height: 100vh;
+    height: 100dvh;
   }
 
   .fullscreen-project-block {

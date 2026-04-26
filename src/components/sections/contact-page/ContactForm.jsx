@@ -474,6 +474,17 @@ export default function ContactForm() {
     setForm((prev) => ({ ...prev, timeline: prev.timeline === val ? "" : val }));
   }, []);
 
+  // Hide custom cursor over cross-origin reCAPTCHA iframe (pointer events don't cross iframe boundary)
+  const handleRecaptchaPointerEnter = useCallback(() => {
+    document.body.classList.add("cursor-over-iframe");
+  }, []);
+  const handleRecaptchaPointerLeave = useCallback(() => {
+    document.body.classList.remove("cursor-over-iframe");
+  }, []);
+  useEffect(() => {
+    return () => document.body.classList.remove("cursor-over-iframe");
+  }, []);
+
   // ─── Submit ────────────────────────────────────────────────────────────────
 
   const handleSubmit = useCallback(
@@ -830,7 +841,11 @@ export default function ContactForm() {
 
           <div className="cf__footer-right">
             <p className="cf__note">{t('contact.form.requiredNote')}</p>
-            <div className="cf__recaptcha-wrap">
+            <div
+              className="cf__recaptcha-wrap"
+              onPointerEnter={handleRecaptchaPointerEnter}
+              onPointerLeave={handleRecaptchaPointerLeave}
+            >
               <ReCAPTCHA
                 ref={recaptchaRef}
                 sitekey={RECAPTCHA_SITE_KEY}

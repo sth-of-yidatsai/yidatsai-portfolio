@@ -193,6 +193,13 @@
   }
 }
 
+/* 1025–1440px — image-3 加高，避免 bio 文字超出圖片底部 */
+@media (max-width: 1440px) and (min-width: 1025px) {
+  .fs-image-3 .fs-image-frame {
+    aspect-ratio: 1 / 2;
+  }
+}
+
 /* ── Tablet ≤ 1024px — 縮小錯落偏移 ── */
 @media (max-width: 1024px) {
   .fs-section {

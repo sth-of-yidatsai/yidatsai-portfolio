@@ -618,11 +618,11 @@
     transform 0.3s ease;
 }
 
-.cf__send-btn:hover {
+.cf__send-btn:not(:disabled):hover {
   background: var(--gray-700);
 }
 
-.cf__send-btn:hover .cf__send-text {
+.cf__send-btn:not(:disabled):hover .cf__send-text {
   color: var(--gray-0);
 }
 

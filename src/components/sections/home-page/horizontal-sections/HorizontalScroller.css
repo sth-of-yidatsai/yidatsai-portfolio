@@ -12,6 +12,7 @@ html {
 .hs-container {
   position: relative;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   background: transparent;
   /* 不加 will-change/transform-style：GSAP pin 機制在 Firefox 下

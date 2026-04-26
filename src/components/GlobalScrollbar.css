@@ -4,6 +4,7 @@
   right: 0;
   width: 6px; /* 扁平極細 */
   height: 100vh;
+  height: 100dvh;
   background: var(--gray-100);
   z-index: 1200; /* 高於內容，低於全局導航如需調整 */
   opacity: 0;

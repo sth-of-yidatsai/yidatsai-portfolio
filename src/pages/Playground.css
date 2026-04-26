@@ -4,6 +4,7 @@
   position: relative;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   margin-left: var(--space-xl);
   overflow: hidden;
   background-color: var(--gray-900);
@@ -24,6 +25,7 @@ html.projects-no-scroll-html {
   position: relative;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   cursor: grab;
   touch-action: none; /* 啟用觸控拖曳，避免瀏覽器預設手勢 */
@@ -119,6 +121,7 @@ html.projects-no-scroll-html {
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background-color: transparent; /* 黑底由 overlay 負責 */
   overflow: visible;
   cursor: default;

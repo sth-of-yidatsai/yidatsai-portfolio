@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://yidatsai.com/en/</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/"/>
@@ -12,7 +12,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/zh/</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/"/>
@@ -21,7 +21,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/en/about</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/about"/>
@@ -30,7 +30,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/zh/about</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/about"/>
@@ -39,7 +39,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/en/projects</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects"/>
@@ -48,7 +48,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/zh/projects</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects"/>
@@ -57,7 +57,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/en/explore</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/explore"/>
@@ -66,7 +66,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/zh/explore</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/explore"/>
@@ -75,7 +75,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/en/contact</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/contact"/>
@@ -84,7 +84,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/zh/contact</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/contact"/>
@@ -93,7 +93,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/en/projects/formosa-font</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/formosa-font"/>
@@ -102,7 +102,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/zh/projects/formosa-font</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/formosa-font"/>
@@ -111,7 +111,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/en/projects/patterned-glass-notebook</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/patterned-glass-notebook"/>
@@ -120,7 +120,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/zh/projects/patterned-glass-notebook</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/patterned-glass-notebook"/>
@@ -129,7 +129,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/en/projects/foucault-book-binding</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/foucault-book-binding"/>
@@ -138,7 +138,7 @@
   </url>
   <url>
     <loc>https://yidatsai.com/zh/projects/foucault-book-binding</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://yidatsai.com/en/projects/foucault-book-binding"/>

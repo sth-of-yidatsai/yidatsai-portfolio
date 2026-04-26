@@ -4,6 +4,7 @@
 
 .contact-page {
   min-height: 100vh;
+  min-height: 100dvh;
   padding-top: var(--space-2xl);
   background: var(--gray-25);
 }

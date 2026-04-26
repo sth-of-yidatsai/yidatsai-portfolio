@@ -91,3 +91,12 @@ dd {
     scroll-behavior: auto !important;
   }
 }
+
+/* 11. iOS Safari: 強制表單字級 ≥16px，避免 focus 時頁面自動縮放 */
+@supports (-webkit-touch-callout: none) {
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1rem);
+  }
+}

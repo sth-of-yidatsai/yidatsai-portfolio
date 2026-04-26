@@ -69,6 +69,11 @@ function App() {
   const lenisRef = useRef(null);
 
   useEffect(() => {
+    // 尊重使用者「減少動態效果」偏好：直接跳過 Lenis，使用瀏覽器原生捲動
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
     // 依螢幕高度與 DPR 自適應滾動參數（解決 2K 滾動偏慢問題）
     const vh = window.innerHeight;
     const dpr = window.devicePixelRatio || 1;
