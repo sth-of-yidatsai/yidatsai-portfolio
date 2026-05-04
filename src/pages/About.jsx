@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import BioSection from "../components/sections/about-page/BioSection";
 import TrajectorySection from "../components/sections/about-page/TrajectorySection";
 import CapabilitiesSection from "../components/sections/about-page/CapabilitiesSection";
+import FaqSection from "../components/sections/about-page/FaqSection";
 import "./About.css";
 import { usePagePreloader } from "../hooks/usePagePreloader";
 import { useTranslation } from "../hooks/useTranslation";
@@ -37,6 +38,7 @@ export default function About() {
       <BioSection />
       <TrajectorySection />
       <CapabilitiesSection />
+      <FaqSection />
     </main>
   );
 }

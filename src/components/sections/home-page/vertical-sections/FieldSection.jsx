@@ -117,7 +117,7 @@ export default function FieldSection() {
         </div>
 
         {/* Bio block */}
-        <div className="fs-bio-block">
+        <div className="fs-bio-block" data-speakable="">
           <p className="fs-bio-text">
             <span>Yi-Da Tsai｜蔡易達</span>
             {t("field.tagline")}

@@ -336,7 +336,10 @@ body.menu-open .ts__scrollbar {
     white-space: normal;
   }
   .ts__desc-wrap {
-    height: 18rem;
+    height: 16rem;
+  }
+  .ts__inner {
+    padding: calc(var(--space-xl) + var(--space-md)) 0 0 0;
   }
 }
 

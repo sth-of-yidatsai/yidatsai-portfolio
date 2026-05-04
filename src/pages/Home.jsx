@@ -29,7 +29,7 @@ export default function Home() {
   const { t } = useTranslation();
   return (
     <div className="home-container">
-      <h1 className="sr-only">{t('seo.h1.home')}</h1>
+      <h1 className="sr-only" data-speakable="">{t('seo.h1.home')}</h1>
       <HeroSection />
       <FieldSection />
       <HorizontalScroller />
