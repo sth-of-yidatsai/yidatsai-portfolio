@@ -14,6 +14,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const BASE_URL = 'https://yidatsai.com'
 
+// Puppeteer captures the React-hydrated DOM, which already has useMeta-injected
+// elements (data-seo="managed"). Strip them here so they aren't duplicated when
+// React hydrates again on the client.
+function stripManagedSeo(html) {
+  // <script data-seo="managed">...</script> (JSON-LD blocks)
+  let result = html.replace(/<script(?=[^>]*\sdata-seo="managed")[^>]*>[\s\S]*?<\/script>/gi, '')
+  // <meta ...> and <link ...> self-closing managed elements
+  result = result.replace(/<(?:meta|link)(?=[^>]*\sdata-seo="managed")[^>]*\/?>/gi, '')
+  return result
+}
+
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -83,6 +94,10 @@ export default defineConfig({
       postProcess(renderedRoute) {
         const { PAGE_META } = require('./src/seo/seoConfig.js')
         const route = renderedRoute.route
+
+        // Strip React-managed SEO elements — they'll be re-injected on client
+        // hydration, so keeping them in the static HTML causes duplicates.
+        renderedRoute.html = stripManagedSeo(renderedRoute.html)
 
         // Project detail pages
         const projectMatch = route.match(/^\/(en|zh)\/projects\/(.+)$/)
